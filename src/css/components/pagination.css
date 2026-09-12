@@ -1,0 +1,25 @@
+@layer components {
+  .ply-pagination {
+    & > ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ply-space-2);
+      list-style: none;
+      padding: 0;
+    }
+    & > ul > li > :is(a, span) {
+      display: inline-grid;
+      place-items: center;
+      min-inline-size: var(--ply-control-size);
+      min-block-size: var(--ply-control-size);
+      padding-inline: var(--ply-space-3);
+      border: 1px solid var(--ply-border);
+      border-radius: var(--ply-radius-control);
+    }
+    & > ul > li > [data-current="true"] {
+      color: var(--ply-surface);
+      background: var(--ply-ink);
+      border-color: var(--ply-ink);
+    }
+  }
+}

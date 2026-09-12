@@ -1,0 +1,15 @@
+@layer components {
+  .ply-task-list {
+    display: grid;
+    list-style: none;
+    padding: 0;
+    & > li {
+      padding-block: var(--ply-space-3);
+      border-block-end: 1px solid var(--ply-border);
+    }
+    & input:checked + span > strong {
+      text-decoration: line-through;
+      color: var(--ply-muted);
+    }
+  }
+}

@@ -1,0 +1,31 @@
+@layer components {
+  .ply-navigation {
+    display: grid;
+    align-content: start;
+    gap: var(--ply-space-1);
+    & > a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--ply-space-3);
+      min-block-size: var(--ply-control-size);
+      padding-inline: var(--ply-space-3);
+      padding-block: var(--ply-space-2);
+      border-inline-start: 3px solid transparent;
+      text-decoration: none;
+      color: var(--ply-text);
+    }
+    & > a:hover {
+      background: var(--ply-background);
+      text-decoration: underline;
+    }
+    & > a[data-current="true"] {
+      border-inline-start-color: var(--ply-link);
+      background: var(--ply-info-soft);
+      font-weight: 600;
+    }
+    & small {
+      color: var(--ply-muted);
+    }
+  }
+}

@@ -1,0 +1,16 @@
+@layer components {
+  .ply-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--ply-space-2);
+    min-inline-size: 0;
+    padding-block: var(--ply-space-2);
+    border-block: 1px solid var(--ply-border);
+
+    & > * {
+      min-inline-size: 0;
+      max-inline-size: 100%;
+    }
+  }
+}

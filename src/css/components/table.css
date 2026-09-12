@@ -1,0 +1,46 @@
+@layer components {
+  .ply-table-scroll {
+    min-inline-size: 0;
+    overflow: auto;
+  }
+  .ply-table {
+    inline-size: 100%;
+    min-inline-size: 38rem;
+    border-collapse: collapse;
+    font-size: var(--ply-label);
+    & > caption {
+      text-align: start;
+      font-size: 1rem;
+      font-weight: 600;
+      padding-block-end: var(--ply-space-4);
+    }
+    & > :is(thead, tbody, tfoot) > tr > :is(th, td) {
+      padding-block: var(--ply-space-3);
+      padding-inline: var(--ply-space-3);
+      border-block-end: 1px solid var(--ply-border);
+      text-align: start;
+      vertical-align: baseline;
+    }
+    & > thead > tr > th {
+      color: var(--ply-muted);
+      font-size: var(--ply-small);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    & > :is(thead, tbody, tfoot) > tr > [data-cell="numeric"] {
+      text-align: end;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    & > :is(thead, tbody, tfoot) > tr > [data-cell="short"] {
+      white-space: nowrap;
+    }
+    & > :is(thead, tbody, tfoot) > tr > [data-cell="text"] {
+      overflow-wrap: anywhere;
+    }
+    & > tfoot > tr > :is(th, td) {
+      font-weight: 700;
+      border-block-end: 0;
+    }
+  }
+}

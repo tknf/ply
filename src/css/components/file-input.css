@@ -1,0 +1,130 @@
+@layer components {
+  .ply-file-input {
+    position: relative;
+    display: grid;
+    gap: var(--ply-space-2);
+    padding-block: var(--ply-space-3);
+    padding-inline: var(--ply-space-3);
+    min-inline-size: 0;
+    border: 1px dashed var(--ply-control-border);
+    border-radius: calc(4em / 7);
+    background: var(--ply-surface);
+    font-size: var(--ply-label);
+    line-height: calc(10 / 7);
+    transition:
+      background-color var(--ply-duration) ease,
+      border-color var(--ply-duration) ease;
+
+    &[data-state="dragover"] {
+      border-color: var(--ply-link);
+      background: var(--ply-info-soft);
+      outline: 2px solid var(--ply-link);
+      outline-offset: 2px;
+    }
+    &:has(> .ply-input[data-invalid="true"]) {
+      border-color: var(--ply-danger);
+    }
+    &:has(> .ply-input:disabled) {
+      border-color: var(--ply-input-border);
+      background: var(--ply-background);
+      color: var(--ply-muted);
+      outline: none;
+    }
+    &:has(> .ply-input:disabled) > .ply-file-input-hint {
+      display: none;
+    }
+    /* 選択した名前は折り返せる一覧へ出し、標準入力との二重表示を避ける。 */
+    &[data-enhanced="true"] > .ply-input {
+      color: transparent;
+    }
+    & > .ply-input[type="file"] {
+      block-size: auto;
+      min-block-size: var(--ply-button-size);
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      font-size: inherit;
+      line-height: calc(16em / 7);
+
+      &::file-selector-button {
+        min-block-size: var(--ply-button-size);
+        padding-block: 0;
+        padding-inline: 0.75em;
+        margin-inline-end: var(--ply-space-3);
+        border: 1px solid var(--ply-link);
+        border-radius: calc(4em / 7);
+        background: var(--ply-surface);
+        color: var(--ply-link);
+        font: inherit;
+        line-height: calc(16em / 7 - 2px);
+        cursor: pointer;
+        transition: background-color var(--ply-duration) ease;
+      }
+      &::file-selector-button:hover {
+        background: var(--ply-info-soft);
+      }
+      &::file-selector-button:active {
+        background: color-mix(in srgb, var(--ply-link) 14%, var(--ply-surface));
+      }
+      &:disabled::file-selector-button {
+        border-color: var(--ply-input-border);
+        background: var(--ply-background);
+        color: var(--ply-muted);
+        cursor: not-allowed;
+      }
+    }
+  }
+  .ply-file-input-hint {
+    color: var(--ply-muted);
+    font-size: var(--ply-small);
+  }
+  .ply-file-input-files {
+    min-inline-size: 0;
+    padding: 0;
+    list-style: none;
+
+    & > li {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      gap: var(--ply-space-3);
+      padding-block: var(--ply-space-2);
+      border-block-start: 1px solid var(--ply-border);
+    }
+    & > li > span {
+      overflow-wrap: anywhere;
+    }
+    & > li > small {
+      color: var(--ply-muted);
+      font-size: inherit;
+      white-space: nowrap;
+    }
+  }
+  .ply-file-input-status {
+    color: var(--ply-danger);
+
+    &:not([data-invalid="true"]) {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+  @media (pointer: coarse) {
+    .ply-file-input > .ply-input[type="file"]::file-selector-button,
+    .ply-file-input > .ply-button {
+      min-block-size: 2.75rem;
+    }
+    .ply-file-input-hint {
+      display: none;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-file-input[data-enhanced="true"] > .ply-input {
+      color: CanvasText;
+    }
+  }
+}

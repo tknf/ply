@@ -1,0 +1,47 @@
+@layer components {
+  .ply-surface {
+    container: ply-surface / inline-size;
+    min-inline-size: 0;
+    background: var(--ply-surface);
+    border: 1px solid var(--ply-border);
+    border-radius: var(--ply-radius-surface);
+    box-shadow: var(--ply-shadow-sheet);
+
+    & > .ply-surface-body {
+      display: grid;
+      gap: var(--ply-space-8);
+      padding-block: var(--ply-space-6);
+      padding-inline: var(--ply-space-6);
+      min-inline-size: 0;
+    }
+    &[data-tone="warm"] {
+      background: var(--ply-soft);
+    }
+    &[data-tone="cool"] {
+      background: var(--ply-info-soft);
+    }
+    &[data-kind="panel"] {
+      box-shadow: none;
+      border-color: transparent;
+    }
+    &[data-kind="panel"] > .ply-surface-body {
+      padding-block: var(--ply-space-6);
+      padding-inline: var(--ply-space-6);
+      gap: var(--ply-space-4);
+    }
+    @container ply-surface (inline-size >= 45rem) {
+      &:not([data-kind="panel"]) > .ply-surface-body {
+        padding-block: var(--ply-space-8);
+        padding-inline: var(--ply-space-8);
+      }
+    }
+  }
+}
+
+@layer components {
+  .ply-surface[data-layout="document"] > .ply-surface-body {
+    gap: var(--ply-space-6);
+    padding-inline: max(var(--ply-space-6), calc((100% - 48rem) / 2));
+    padding-block: var(--ply-space-8);
+  }
+}

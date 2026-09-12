@@ -1,0 +1,33 @@
+@layer components {
+  .ply-badge {
+    display: inline-grid;
+    max-inline-size: 100%;
+    padding-block: var(--ply-space-1);
+    padding-inline: var(--ply-space-2);
+    border: 1px solid transparent;
+    background: var(--ply-soft);
+    font-weight: 600;
+    border-radius: var(--ply-radius-pill);
+    color: var(--ply-muted);
+    font-size: var(--ply-small);
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+
+    &[data-tone="info"] {
+      color: var(--ply-info);
+      background: var(--ply-info-soft);
+    }
+    &[data-tone="success"] {
+      color: var(--ply-success);
+      background: var(--ply-success-soft);
+    }
+    &[data-tone="warning"] {
+      color: var(--ply-warning);
+      background: var(--ply-warning-soft);
+    }
+    &[data-tone="danger"] {
+      color: var(--ply-danger);
+      background: var(--ply-danger-soft);
+    }
+  }
+}

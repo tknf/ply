@@ -1,0 +1,103 @@
+@layer components {
+  .ply-input-group {
+    container: ply-input-group / inline-size;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    gap: var(--ply-space-2);
+    min-inline-size: 0;
+
+    & > .ply-button {
+      min-inline-size: 0;
+      max-inline-size: 45%;
+    }
+  }
+
+  .ply-input-group-control {
+    --ply-input-group-size: calc(16em / 7);
+    display: flex;
+    align-items: stretch;
+    column-gap: 0.375em;
+    flex: 1;
+    min-inline-size: 0;
+    min-block-size: var(--ply-input-group-size);
+    padding-inline: 0.75em;
+    border: 1px solid var(--ply-input-border);
+    border-radius: calc(4em / 7);
+    background: var(--ply-surface);
+    color: var(--ply-muted);
+    font-family: var(--ply-control-font-family);
+    font-size: var(--ply-label);
+    line-height: calc(10 / 7);
+
+    & > .ply-input {
+      --ply-input-size: calc(var(--ply-input-group-size) - 2px);
+      --ply-input-border-size: 0px;
+      flex: 1;
+      min-block-size: 0;
+      padding: 0;
+      border: 0;
+      border-radius: inherit;
+      background: transparent;
+      outline: none;
+    }
+
+    &:has(> .ply-input:focus-visible) {
+      border-color: var(--ply-link);
+      outline: 2px solid var(--ply-link);
+      outline-offset: 2px;
+    }
+
+    &:has(> .ply-input[data-invalid="true"]) {
+      border-color: var(--ply-danger);
+    }
+
+    &:has(> .ply-input:disabled),
+    &:has(> .ply-input[readonly]) {
+      background: var(--ply-background);
+    }
+
+    &[data-size="large"] {
+      --ply-input-group-size: 2.5em;
+      border-radius: 0.5em;
+      font-size: var(--ply-body);
+      line-height: var(--ply-control-leading);
+    }
+  }
+
+  .ply-input-affix {
+    display: flex;
+    align-items: center;
+    flex: 0 1 auto;
+    min-inline-size: 0;
+    max-inline-size: 45%;
+    overflow-wrap: anywhere;
+  }
+
+  @container ply-input-group (inline-size < 14rem) {
+    .ply-input-group-control {
+      flex-basis: 100%;
+
+      &:has(> .ply-input-affix:first-child + .ply-input + .ply-input-affix) {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+
+        & > .ply-input-affix {
+          max-inline-size: 100%;
+        }
+
+        & > .ply-input-affix:first-child {
+          padding-block-start: calc(5em / 14);
+        }
+
+        & > .ply-input-affix:last-child {
+          padding-block-end: calc(5em / 14);
+        }
+      }
+    }
+
+    .ply-input-group > .ply-button {
+      max-inline-size: 100%;
+    }
+  }
+}

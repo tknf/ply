@@ -1,0 +1,27 @@
+@layer components {
+  .ply-data-list {
+    display: grid;
+    list-style: none;
+    padding: 0;
+    & > li {
+      display: grid;
+      gap: var(--ply-space-3);
+      padding-block: var(--ply-space-4);
+      border-block-end: 1px solid var(--ply-border);
+    }
+    & > li > div {
+      min-inline-size: 0;
+      overflow-wrap: anywhere;
+    }
+    & > li > div > p {
+      margin-block-start: var(--ply-space-1);
+      color: var(--ply-muted);
+    }
+    @container ply-surface (inline-size >= 40rem) {
+      & > li {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+      }
+    }
+  }
+}

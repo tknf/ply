@@ -1,0 +1,19 @@
+@layer components {
+  .ply-notice {
+    display: grid;
+    gap: var(--ply-space-2);
+    color: var(--ply-text);
+    overflow-wrap: anywhere;
+    &[data-tone="success"] {
+      color: var(--ply-text);
+    }
+    &[data-tone="warning"],
+    &[data-tone="danger"] {
+      padding-inline-start: var(--ply-space-3);
+      border-inline-start: 2px solid var(--ply-warning);
+    }
+    &[data-tone="danger"] {
+      border-inline-start-color: var(--ply-danger);
+    }
+  }
+}

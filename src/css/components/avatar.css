@@ -1,0 +1,25 @@
+@layer components {
+  .ply-avatar {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--ply-soft);
+    border: 1px solid var(--ply-control-border);
+    font-weight: 600;
+    font-size: var(--ply-label);
+    overflow: hidden;
+    & > img {
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+    }
+    &[data-size="small"] {
+      inline-size: 2rem;
+      block-size: 2rem;
+      font-size: var(--ply-small);
+    }
+  }
+}

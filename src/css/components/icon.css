@@ -1,0 +1,9 @@
+@layer components {
+  .ply-icon {
+    display: inline-block;
+    inline-size: 1.25em;
+    block-size: 1.25em;
+    vertical-align: -0.2em;
+    flex-shrink: 0;
+  }
+}

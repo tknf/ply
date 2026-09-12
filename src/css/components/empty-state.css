@@ -1,0 +1,10 @@
+@layer components {
+  .ply-empty-state {
+    display: grid;
+    justify-items: center;
+    gap: var(--ply-space-3);
+    padding-block: var(--ply-space-12);
+    text-align: center;
+    color: var(--ply-text);
+  }
+}

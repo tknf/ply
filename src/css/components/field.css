@@ -1,0 +1,614 @@
+@layer components {
+  .ply-field-label {
+    font-size: var(--ply-label);
+    font-weight: 700;
+    line-height: calc(10 / 7);
+  }
+  .ply-choice {
+    display: grid;
+    grid-template-columns: calc(9em / 7) minmax(0, 1fr);
+    align-items: start;
+    gap: 0.5em;
+    font-size: var(--ply-label);
+    line-height: calc(10 / 7);
+    cursor: pointer;
+    & > input {
+      appearance: none;
+      display: grid;
+      place-items: center;
+      inline-size: calc(9em / 7);
+      block-size: calc(9em / 7);
+      margin: 0;
+      margin-block-start: calc(1em / 14);
+      border: 1px solid var(--ply-input-border);
+      border-radius: calc(3em / 14);
+      background: var(--ply-surface);
+      color: var(--ply-surface);
+      cursor: inherit;
+      transition:
+        background-color var(--ply-duration) ease,
+        border-color var(--ply-duration) ease;
+      &::before {
+        content: "";
+        inline-size: 0.8rem;
+        block-size: 0.8rem;
+        background: currentColor;
+        clip-path: polygon(12% 45%, 38% 70%, 88% 16%, 100% 28%, 39% 94%, 0 57%);
+        transform: scale(0);
+        transition: transform var(--ply-duration) ease;
+      }
+      &:checked,
+      &:indeterminate {
+        background: var(--ply-link);
+        border-color: var(--ply-link);
+      }
+      &:checked::before,
+      &:indeterminate::before {
+        transform: scale(1);
+      }
+      &[type="radio"] {
+        border-radius: 50%;
+      }
+      &[type="radio"]::before {
+        inline-size: 0.5rem;
+        block-size: 0.5rem;
+        clip-path: none;
+        border-radius: 50%;
+      }
+      &:indeterminate::before {
+        inline-size: 0.65rem;
+        block-size: 2px;
+        clip-path: none;
+      }
+      &:disabled {
+        background: var(--ply-background);
+        border-color: var(--ply-input-border);
+        color: var(--ply-muted);
+      }
+      &:focus-visible {
+        outline: 2px solid var(--ply-link);
+        outline-offset: 3px;
+      }
+    }
+    & > span {
+      min-inline-size: 0;
+    }
+    & > span > strong {
+      display: block;
+      font-weight: 600;
+    }
+    & > span > small {
+      display: block;
+      color: var(--ply-muted);
+      font-size: var(--ply-small);
+      margin-block-start: var(--ply-space-1);
+    }
+    &:hover > input:not(:disabled) {
+      border-color: var(--ply-link);
+    }
+    &:has(> input:disabled) {
+      color: var(--ply-muted);
+      cursor: not-allowed;
+    }
+    &[data-kind="option"] {
+      padding-block: var(--ply-space-3);
+      padding-inline: var(--ply-space-4);
+      border: 1px solid var(--ply-input-border);
+      border-radius: calc(4em / 7);
+    }
+    &[data-kind="option"]:has(> input:checked) {
+      border-color: var(--ply-link);
+    }
+    &[data-kind="option"]:has(> input:disabled) {
+      background: var(--ply-background);
+    }
+  }
+  .ply-choice-list {
+    display: grid;
+    gap: var(--ply-space-2);
+    min-inline-size: 0;
+  }
+  .ply-field {
+    display: grid;
+    align-content: start;
+    min-inline-size: 0;
+
+    & > * + * {
+      margin-block-start: var(--ply-space-2);
+    }
+
+    /* 状態ラベルを内容幅で折り返すため、この見出し行のみFlex。 */
+    & > .ply-field-heading {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--ply-space-2);
+
+      & > label {
+        font-size: var(--ply-label);
+        font-weight: 700;
+        line-height: calc(10 / 7);
+      }
+    }
+  }
+
+  .ply-field-messages {
+    & > * + * {
+      margin-block-start: var(--ply-space-1);
+    }
+
+    & > .ply-field-help,
+    & > .ply-field-error {
+      display: grid;
+      grid-template-columns: 1em minmax(0, 1fr);
+      align-items: start;
+      gap: 0.375em;
+      font-size: var(--ply-label);
+      line-height: calc(10 / 7);
+
+      & > .ply-icon {
+        inline-size: 1em;
+        block-size: 1em;
+        margin-block-start: calc(3em / 14);
+      }
+    }
+
+    & > .ply-field-help {
+      color: var(--ply-muted);
+    }
+
+    & > .ply-field-error {
+      color: var(--ply-danger);
+    }
+  }
+
+  .ply-input {
+    --ply-input-size: calc(16em / 7);
+    --ply-input-border-size: 1px;
+    inline-size: 100%;
+    min-inline-size: 0;
+    min-block-size: var(--ply-input-size);
+    padding-block: calc(5em / 14);
+    padding-inline: 0.75em;
+    border: var(--ply-input-border-size) solid var(--ply-input-border);
+    border-radius: calc(4em / 7);
+    background: var(--ply-surface);
+    color: var(--ply-text);
+    font-family: var(--ply-control-font-family);
+    font-size: var(--ply-label);
+    line-height: calc(10 / 7);
+    transition:
+      border-color var(--ply-duration) ease,
+      box-shadow var(--ply-duration) ease;
+    &:focus-visible {
+      outline: 2px solid var(--ply-link);
+      outline-offset: 2px;
+      border-color: var(--ply-link);
+    }
+    &[data-size="short"] {
+      max-inline-size: 8rem;
+    }
+    &::placeholder {
+      color: var(--ply-muted);
+      opacity: 1;
+    }
+
+    &[data-invalid="true"] {
+      border-color: var(--ply-danger);
+    }
+
+    &:disabled,
+    &[readonly] {
+      background: var(--ply-background);
+    }
+
+    &:disabled {
+      color: var(--ply-muted);
+    }
+    &:where([data-size="large"]) {
+      --ply-input-size: 2.5em;
+      padding-block: 0.4375em;
+      padding-inline: 0.5em;
+      border-radius: 0.5em;
+      font-size: var(--ply-body);
+      line-height: var(--ply-control-leading);
+    }
+  }
+
+  input.ply-input {
+    block-size: var(--ply-input-size);
+
+    /* 一行入力は内寸を行高に使い、上下paddingとの二重配置をなくす。 */
+    &:where(:not([type="file"])) {
+      padding-block: 0;
+      line-height: calc(var(--ply-input-size) - 2 * var(--ply-input-border-size));
+    }
+  }
+
+  textarea.ply-input {
+    resize: vertical;
+  }
+
+  .ply-password {
+    position: relative;
+    min-inline-size: 0;
+    font-size: var(--ply-label);
+
+    & > .ply-input {
+      padding-inline-end: 3em;
+    }
+
+    & > button[data-state="hidden"] .ply-password-hide,
+    & > button[data-state="visible"] .ply-password-show {
+      display: none;
+    }
+  }
+
+  .ply-field-toggle {
+    appearance: none;
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    display: grid;
+    place-items: center;
+    inline-size: calc(16em / 7);
+    block-size: calc(16em / 7);
+    padding: 0;
+    border: 0;
+    border-radius: calc(4em / 7);
+    background: transparent;
+    color: var(--ply-muted);
+    font: inherit;
+    cursor: pointer;
+
+    & > span {
+      display: grid;
+      place-items: center;
+    }
+
+    &:hover {
+      color: var(--ply-link);
+    }
+  }
+
+  .ply-character-count {
+    --character-count-value: 0;
+    --character-count-max: 0;
+    display: grid;
+
+    & > * + * {
+      margin-block-start: var(--ply-space-1);
+    }
+
+    & .ply-count-output {
+      color: var(--ply-muted);
+      font-size: 0.75rem;
+      line-height: calc(4 / 3);
+      text-align: end;
+      counter-reset: ply-count var(--character-count-value) ply-count-max var(--character-count-max);
+
+      &::before {
+        content: counter(ply-count) " / " counter(ply-count-max);
+      }
+    }
+
+    &:not([data-state="over"]) .ply-count-error {
+      display: none;
+    }
+  }
+
+  .ply-combobox {
+    position: relative;
+    min-inline-size: 0;
+    font-size: var(--ply-label);
+
+    & > .ply-input {
+      padding-inline-end: 3em;
+    }
+  }
+
+  @media (pointer: coarse) {
+    .ply-combobox-options > li {
+      display: grid;
+      align-items: center;
+      min-block-size: 2.75rem;
+    }
+  }
+
+  .ply-combobox-options {
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline: 0;
+    z-index: var(--ply-z-menu);
+    max-block-size: 16rem;
+    overflow: auto;
+    margin: 0;
+    margin-block-start: var(--ply-space-1);
+    padding-block: var(--ply-space-1);
+    padding-inline: var(--ply-space-1);
+    border: 1px solid var(--ply-input-border);
+    border-radius: var(--ply-space-2);
+    background: var(--ply-surface);
+    color: var(--ply-text);
+    font-size: var(--ply-label);
+    line-height: calc(10 / 7);
+    list-style: none;
+    box-shadow: var(--ply-shadow-menu);
+
+    & > li {
+      padding-block: var(--ply-space-1);
+      padding-inline: var(--ply-space-2);
+      border-radius: var(--ply-space-1);
+      cursor: pointer;
+    }
+
+    & > li[data-state="active"] {
+      background: var(--ply-link);
+      color: var(--ply-surface);
+    }
+
+    & > li[data-state="selected"] {
+      background: var(--ply-info-soft);
+      color: var(--ply-link);
+    }
+
+    & > li[data-state="disabled"] {
+      color: var(--ply-muted);
+      cursor: not-allowed;
+    }
+  }
+
+  .ply-field-group,
+  .ply-choice-group {
+    display: grid;
+    align-content: start;
+    min-inline-size: 0;
+    padding: 0;
+
+    & > legend {
+      padding: 0;
+      font-weight: 700;
+    }
+  }
+
+  .ply-field-group {
+    container: ply-field-group / inline-size;
+    border-inline: 0;
+    border-block-end: 0;
+    border-block-start: 1px solid var(--ply-border);
+
+    & > legend {
+      max-inline-size: 100%;
+      padding-inline-end: var(--ply-space-4);
+      font-size: 1.125rem;
+      line-height: calc(4 / 3);
+    }
+
+    & > * + * {
+      margin-block-start: var(--ply-space-4);
+    }
+  }
+
+  .ply-field-group-layout {
+    display: grid;
+    align-items: start;
+    gap: var(--ply-space-6);
+    min-inline-size: 0;
+
+    @container ply-field-group (inline-size >= 40rem) {
+      &:has(> .ply-field-group-description) {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+        column-gap: var(--ply-space-8);
+      }
+    }
+  }
+
+  .ply-field-group-description {
+    max-inline-size: 28em;
+    color: var(--ply-muted);
+    font-size: var(--ply-label);
+    line-height: calc(11 / 7);
+  }
+
+  .ply-field-group-fields {
+    display: grid;
+    align-content: start;
+    min-inline-size: 0;
+
+    & > * + * {
+      margin-block-start: var(--ply-space-6);
+    }
+  }
+
+  .ply-choice-group {
+    border: 0;
+
+    & > legend {
+      font-size: var(--ply-label);
+      line-height: calc(10 / 7);
+    }
+
+    & > * + * {
+      margin-block-start: var(--ply-space-2);
+    }
+  }
+}
+
+@layer components {
+  .ply-writing {
+    display: grid;
+    gap: var(--ply-space-6);
+    min-inline-size: 0;
+  }
+  .ply-writing-page {
+    display: grid;
+    gap: var(--ply-space-2);
+    min-inline-size: 0;
+  }
+  .ply-writing-label {
+    color: var(--ply-muted);
+    font-size: var(--ply-small);
+  }
+  .ply-input[data-kind="title"],
+  .ply-input[data-kind="body"] {
+    font-size: var(--ply-body);
+    padding-inline: 0;
+    border: 0;
+    border-block-end: 1px solid var(--ply-border);
+    border-radius: 0;
+    background: transparent;
+    &:focus {
+      border-block-end-color: var(--ply-link);
+    }
+  }
+  .ply-input[data-kind="title"] {
+    resize: none;
+    font-size: clamp(1.25rem, 3cqi, 2rem);
+    font-weight: 800;
+    line-height: 1.5;
+    padding-block: var(--ply-space-2) var(--ply-space-4);
+  }
+  .ply-input[data-kind="body"] {
+    line-height: 1.95;
+    resize: vertical;
+    min-block-size: 18rem;
+  }
+  .ply-writing-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--ply-space-2);
+    font-size: var(--ply-small);
+    color: var(--ply-muted);
+  }
+  .ply-reading {
+    display: grid;
+    align-content: start;
+    gap: var(--ply-space-6);
+    min-block-size: 25rem;
+    & > h2 {
+      font-size: clamp(1.25rem, 3cqi, 2rem);
+      font-weight: 800;
+      line-height: 1.5;
+    }
+  }
+  .ply-reading-body {
+    white-space: pre-wrap;
+    line-height: 1.95;
+  }
+}
+
+@layer components {
+  select.ply-input:not([multiple]):not([size]) {
+    appearance: none;
+    padding-inline-end: 2.5em;
+    background-image: url("../assets/caret-down.svg");
+    background-repeat: no-repeat;
+    background-size: 1em;
+    background-position: right 0.75em center;
+    &:dir(rtl) {
+      background-position: left 0.75em center;
+    }
+  }
+  .ply-input[type="file"] {
+    padding-block: var(--ply-space-2);
+    font-size: var(--ply-small);
+    &::file-selector-button {
+      border: 0;
+      border-inline-end: 1px solid var(--ply-border);
+      padding-block: var(--ply-space-1);
+      padding-inline: var(--ply-space-2) var(--ply-space-3);
+      margin-inline-end: var(--ply-space-3);
+      background: transparent;
+      color: var(--ply-link);
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-choice > input {
+      appearance: auto;
+    }
+    .ply-choice > input::before {
+      display: none;
+    }
+    select.ply-input:not([multiple]):not([size]) {
+      appearance: auto;
+      background-image: none;
+    }
+  }
+}
+
+@layer components {
+  .ply-writing-page {
+    align-content: start;
+    & > label:not(:first-child) {
+      margin-block-start: var(--ply-space-6);
+    }
+  }
+  .ply-input[data-kind="title"] {
+    box-shadow: none;
+    font-size: clamp(1.5rem, 3cqi, 1.875rem);
+    padding-block: var(--ply-space-1) var(--ply-space-3);
+  }
+  .ply-input[data-kind="body"] {
+    box-shadow: none;
+    min-block-size: 14rem;
+  }
+  .ply-reading {
+    min-block-size: 22rem;
+    animation: ply-reading-enter var(--ply-duration) ease;
+  }
+  .ply-review {
+    display: grid;
+    gap: var(--ply-space-4);
+    animation: ply-reading-enter var(--ply-duration) ease;
+  }
+  .ply-review-pair {
+    display: grid;
+    gap: var(--ply-space-6);
+    & > section {
+      display: grid;
+      align-content: start;
+      gap: var(--ply-space-4);
+      min-inline-size: 0;
+      border-block-start: 2px solid var(--ply-border);
+      padding-block-start: var(--ply-space-4);
+    }
+    & > section:last-child {
+      border-block-start-color: var(--ply-link);
+    }
+    & h2 {
+      font-size: var(--ply-small);
+      color: var(--ply-muted);
+      font-weight: 600;
+    }
+    & h3 {
+      font-size: 1.25rem;
+      margin: 0;
+    }
+    & p {
+      font-size: var(--ply-small);
+      color: var(--ply-muted);
+    }
+    & section > div {
+      white-space: pre-wrap;
+      line-height: 1.9;
+    }
+    @container ply-surface (inline-size >= 40rem) {
+      & {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  }
+  @keyframes ply-reading-enter {
+    from {
+      opacity: 0.5;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}

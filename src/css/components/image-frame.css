@@ -1,0 +1,34 @@
+@layer components {
+  .ply-image-frame {
+    display: grid;
+    place-items: center;
+    inline-size: min(100%, 8rem);
+    aspect-ratio: 5 / 7;
+    margin: 0;
+    border: 1px solid var(--ply-border);
+    border-radius: var(--ply-radius-control);
+    background: var(--ply-background);
+    &[data-shape="square"] {
+      aspect-ratio: 1;
+    }
+    &[data-shape="landscape"] {
+      aspect-ratio: 16 / 9;
+      inline-size: min(100%, 16rem);
+    }
+    & > img {
+      inline-size: 100%;
+      block-size: 100%;
+      min-block-size: 0;
+      object-fit: contain;
+    }
+    &[data-fit="cover"] > img {
+      object-fit: cover;
+    }
+    & > span {
+      color: var(--ply-muted);
+      font-size: var(--ply-small);
+      text-align: center;
+      padding-inline: var(--ply-space-2);
+    }
+  }
+}

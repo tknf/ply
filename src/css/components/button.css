@@ -1,0 +1,137 @@
+@layer components {
+  /* FilterBarへ直接渡された標準リンクにも、同じボタンの規則を適用する。 */
+  .ply-button,
+  :where(.ply-filter-bar > a) {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: start;
+    gap: calc(2em / 7);
+    /* アイコンと文言を内容幅で並べるためFlex。 */
+    min-block-size: var(--ply-button-size);
+    max-inline-size: 100%;
+    padding-block: 0;
+    padding-inline: 0.75em;
+    border: 1px solid var(--ply-link);
+    border-radius: calc(4em / 7);
+    background: var(--ply-surface);
+    color: var(--ply-link);
+    font-family: var(--ply-control-font-family);
+    font-size: var(--ply-button-font);
+    font-weight: 400;
+    line-height: calc(10 / 7);
+    text-align: center;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+
+    &[data-size="compact"] {
+      padding-inline: 0.5em;
+    }
+    &[data-size="large"] {
+      min-block-size: var(--ply-button-large);
+      padding-inline: 0.85em;
+      border-radius: 0.5em;
+      font-size: calc(var(--ply-button-font) * 8 / 7);
+      line-height: var(--ply-control-leading);
+    }
+    &[data-variant="primary"] {
+      background: var(--ply-link);
+      border-color: var(--ply-link);
+      color: var(--ply-surface);
+
+      &:hover:not(:disabled) {
+        background: var(--ply-button-hover);
+        border-color: var(--ply-button-hover);
+        box-shadow: none;
+      }
+
+      &:active:not(:disabled) {
+        background: var(--ply-button-active);
+        border-color: var(--ply-button-active);
+        box-shadow: none;
+      }
+    }
+
+    &[data-variant="danger"] {
+      border-color: var(--ply-danger);
+      color: var(--ply-danger);
+    }
+
+    &[data-variant="link"] {
+      background: transparent;
+      border-color: transparent;
+      padding-inline: calc(4em / 7);
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+
+    &:disabled {
+      border-color: var(--ply-control-border);
+      background: var(--ply-background);
+      color: var(--ply-muted);
+      cursor: not-allowed;
+    }
+
+    &[data-variant="link"]:disabled {
+      border-color: transparent;
+      background: transparent;
+      text-decoration: none;
+    }
+
+    &[data-icon-only="true"] {
+      min-inline-size: var(--ply-button-size);
+      padding-block: 0;
+      padding-inline: 0;
+      text-decoration: none;
+
+      &[data-size="large"] {
+        min-inline-size: var(--ply-button-large);
+      }
+    }
+
+    &[data-busy="true"] {
+      cursor: progress;
+    }
+  }
+}
+
+@layer components {
+  .ply-button,
+  :where(.ply-filter-bar > a) {
+    &[data-current="true"] {
+      background: var(--ply-link);
+      color: var(--ply-surface);
+    }
+  }
+  @media (forced-colors: active) {
+    :is(.ply-button, :where(.ply-filter-bar > a))[data-current="true"] {
+      forced-color-adjust: none;
+      background: Highlight;
+      border-color: Highlight;
+      color: HighlightText;
+    }
+  }
+  .ply-save-status {
+    font-size: var(--ply-small);
+    color: var(--ply-muted);
+    &[data-state="saved"] {
+      color: var(--ply-success);
+      animation: ply-saved var(--ply-duration) ease-out;
+    }
+    &[data-state="error"] {
+      color: var(--ply-danger);
+    }
+  }
+  @keyframes ply-saved {
+    from {
+      opacity: 0.4;
+      transform: translateY(2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

@@ -1,0 +1,82 @@
+@layer tokens {
+  :root {
+    --ply-gray-0: #ffffff;
+    --ply-gray-20: #f4f2f8;
+    --ply-gray-100: #e1e3e5;
+    --ply-gray-500: #7c8187;
+    --ply-gray-650: #4f5359;
+    --ply-gray-900: #28343b;
+    --ply-black: #253239;
+    --ply-blue: #235fa4;
+    --ply-blue-dark: #1d558c;
+    --ply-green: #1c6a47;
+    --ply-amber: #7a4e00;
+    --ply-red: #a8231b;
+    --ply-cream: #f8f5ed;
+    --ply-ice: #edf4fb;
+    --ply-mint: #edf5ef;
+    --ply-butter: #faedbf;
+    --ply-lilac: #eee6f5;
+    --ply-plum: #71508e;
+    --ply-gold: #8a631a;
+    --ply-soft: var(--ply-cream);
+    --ply-info-soft: var(--ply-ice);
+    --ply-success-soft: var(--ply-mint);
+    --ply-warning-soft: #fff6dc;
+    --ply-danger-soft: #fff0ed;
+    --ply-shadow-sheet: 0 3px 24px rgb(37 28 52 / 6%);
+    --ply-shadow-menu: 0 6px 20px rgb(37 28 52 / 12%);
+    --ply-space-1: 0.25rem;
+    --ply-space-2: 0.5rem;
+    --ply-space-3: 0.75rem;
+    --ply-space-4: 1rem;
+    --ply-space-6: 1.5rem;
+    --ply-space-8: 2rem;
+    --ply-space-12: 3rem;
+    --ply-space-18: 4.5rem;
+    --ply-background: var(--ply-gray-20);
+    --ply-surface: var(--ply-gray-0);
+    --ply-text: var(--ply-gray-900);
+    --ply-muted: var(--ply-gray-650);
+    --ply-border: var(--ply-gray-100);
+    --ply-control-border: var(--ply-gray-500);
+    --ply-input-border: color-mix(in srgb, var(--ply-text) 15%, transparent);
+    --ply-ink: var(--ply-black);
+    --ply-link: var(--ply-blue);
+    --ply-info: var(--ply-blue-dark);
+    --ply-success: var(--ply-green);
+    --ply-warning: var(--ply-amber);
+    --ply-danger: var(--ply-red);
+    --ply-font: "Hiragino Sans", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
+    /* 操作部品の行は欧文フォントを基準にし、和文は同じHiraginoへフォールバックする。 */
+    --ply-control-font-family: "Helvetica Neue", Arial, var(--ply-font);
+    --ply-body: 1rem;
+    --ply-label: 0.875rem;
+    --ply-small: 0.8125rem;
+    --ply-title: 2.125rem;
+    --ply-leading: 1.625;
+    --ply-radius-control: 6px;
+    --ply-radius-surface: 10px;
+    --ply-radius-pill: 999px;
+    --ply-duration: 150ms;
+    --ply-measure: 40rem;
+    --ply-page: 64rem;
+    --ply-control-size: 2.75rem;
+    --ply-control-compact: 2.25rem;
+    --ply-control-font: 0.875rem;
+    --ply-control-leading: 1.5;
+    --ply-control-weight: 600;
+    --ply-button-font: 0.875rem;
+    --ply-button-hover: #1b4a80;
+    --ply-button-active: #163d69;
+    --ply-button-size: calc(16em / 7);
+    --ply-button-large: 2.5em;
+    --ply-z-menu: 20;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --ply-duration: 0ms;
+    }
+  }
+}

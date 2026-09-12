@@ -1,0 +1,84 @@
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    background: var(--ply-background);
+    color: var(--ply-text);
+    font-family: var(--ply-font);
+    font-variant-numeric: tabular-nums;
+    font-size: var(--ply-body);
+    line-height: var(--ply-leading);
+    letter-spacing: 0.02em;
+    overflow-wrap: anywhere;
+  }
+
+  a {
+    color: var(--ply-link);
+    text-underline-offset: 0.2em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ply-ink);
+    outline-offset: 3px;
+  }
+}
+
+@layer utilities {
+  [hidden] {
+    display: none;
+  }
+}
+
+@layer base {
+  :where(
+    .ply-button,
+    .ply-filter-bar > a,
+    .ply-tab-list > button,
+    .ply-menu > li > button,
+    .ply-pagination > ul > li > a,
+    .ply-pagination > ul > li > span,
+    .ply-disclosure > summary
+  ) {
+    appearance: none;
+    box-sizing: border-box;
+    min-block-size: var(--ply-control-size);
+    max-inline-size: 100%;
+    font-size: var(--ply-control-font);
+    font-weight: var(--ply-control-weight);
+    line-height: var(--ply-control-leading);
+    transition: box-shadow var(--ply-duration) ease;
+  }
+  :where(
+      .ply-button,
+      .ply-filter-bar > a,
+      .ply-tab-list > button,
+      .ply-menu > li > button,
+      .ply-pagination > ul > li > a,
+      .ply-disclosure > summary
+    ):hover:not(:disabled) {
+    box-shadow: inset 0 0 0 100vmax rgb(35 95 164 / 7%);
+  }
+  :where(
+      .ply-button,
+      .ply-filter-bar > a,
+      .ply-tab-list > button,
+      .ply-menu > li > button,
+      .ply-pagination > ul > li > a,
+      .ply-disclosure > summary
+    ):active:not(:disabled) {
+    box-shadow: inset 0 0 0 100vmax rgb(35 95 164 / 14%);
+  }
+  :where(
+    .ply-button,
+    .ply-filter-bar > a,
+    .ply-tab-list > button,
+    .ply-menu > li > button,
+    .ply-pagination > ul > li > a,
+    .ply-disclosure > summary
+  ):focus-visible {
+    outline: 2px solid var(--ply-ink);
+    outline-offset: 3px;
+  }
+}

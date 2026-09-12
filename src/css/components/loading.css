@@ -1,0 +1,27 @@
+@layer components {
+  .ply-loading {
+    display: flex;
+    align-items: center;
+    gap: var(--ply-space-2);
+    font-size: var(--ply-label);
+    & > span {
+      inline-size: 1rem;
+      block-size: 1rem;
+      border: 2px solid var(--ply-border);
+      border-block-start-color: var(--ply-link);
+      border-radius: 50%;
+      animation: ply-loading-turn 1s linear infinite;
+      flex-shrink: 0;
+    }
+  }
+  @keyframes ply-loading-turn {
+    to {
+      rotate: 360deg;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ply-loading > span {
+      animation: none;
+    }
+  }
+}

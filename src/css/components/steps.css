@@ -1,0 +1,31 @@
+@layer components {
+  .ply-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ply-space-6);
+    padding: 0;
+    list-style: none;
+    & > li {
+      display: flex;
+      align-items: center;
+      gap: var(--ply-space-2);
+      font-size: var(--ply-label);
+    }
+    & small {
+      display: block;
+      color: var(--ply-muted);
+    }
+    & > li[data-state="current"] {
+      font-weight: 600;
+    }
+  }
+  .ply-step-number {
+    display: grid;
+    place-items: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    border: 1px solid var(--ply-control-border);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+}

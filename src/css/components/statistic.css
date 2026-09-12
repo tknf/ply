@@ -1,0 +1,26 @@
+@layer components {
+  .ply-statistic {
+    display: grid;
+    gap: var(--ply-space-2);
+    & > dt {
+      color: var(--ply-muted);
+      font-size: var(--ply-label);
+    }
+    & > dd {
+      font-size: 2rem;
+      line-height: 1.3;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    & small {
+      font-size: var(--ply-label);
+      margin-inline-start: var(--ply-space-1);
+      font-weight: 400;
+    }
+    & > .ply-statistic-note {
+      font-size: var(--ply-small);
+      font-weight: 400;
+      color: var(--ply-muted);
+    }
+  }
+}

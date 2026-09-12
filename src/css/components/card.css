@@ -1,0 +1,21 @@
+@layer components {
+  .ply-card {
+    display: grid;
+    align-content: start;
+    gap: var(--ply-space-3);
+    padding-block: var(--ply-space-4);
+    padding-inline: var(--ply-space-4);
+    border: 1px solid var(--ply-border);
+    border-radius: var(--ply-radius-control);
+    background: var(--ply-surface);
+    min-inline-size: 0;
+    & > h3 {
+      font-size: 1rem;
+    }
+    & > footer {
+      padding-block-start: var(--ply-space-3);
+      border-block-start: 1px solid var(--ply-border);
+      font-size: var(--ply-small);
+    }
+  }
+}

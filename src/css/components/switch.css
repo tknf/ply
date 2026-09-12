@@ -1,0 +1,86 @@
+@layer components {
+  .ply-switch {
+    display: grid;
+    grid-template-columns: calc(17em / 7) minmax(0, 1fr);
+    align-items: start;
+    column-gap: var(--ply-space-2);
+    min-inline-size: 0;
+    font-size: var(--ply-label);
+    line-height: calc(10 / 7);
+    cursor: pointer;
+
+    & > input {
+      appearance: none;
+      display: grid;
+      grid-template-columns: 0fr 1em 1fr;
+      align-items: center;
+      inline-size: calc(17em / 7);
+      block-size: calc(10em / 7);
+      border: 1px solid var(--ply-input-border);
+      border-radius: var(--ply-radius-pill);
+      background: var(--ply-border);
+      color: var(--ply-muted);
+      padding-block: calc(1em / 7);
+      padding-inline: calc(1em / 7);
+      margin: 0;
+      cursor: inherit;
+      transition: grid-template-columns var(--ply-duration) ease-in-out;
+    }
+
+    & > input::before {
+      content: "";
+      grid-column: 2;
+      inline-size: 1em;
+      block-size: 1em;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    & > input:checked {
+      grid-template-columns: 1fr 1em 0fr;
+      background: var(--ply-link);
+      border-color: var(--ply-link);
+      color: var(--ply-surface);
+    }
+
+    &:hover > input:not(:disabled) {
+      border-color: var(--ply-link);
+    }
+
+    & > input:focus-visible {
+      outline: 2px solid var(--ply-link);
+      outline-offset: 3px;
+    }
+
+    & > input:disabled {
+      background: var(--ply-background);
+      border-color: var(--ply-input-border);
+      color: var(--ply-control-border);
+    }
+
+    &:has(> input:disabled) {
+      color: var(--ply-muted);
+      cursor: not-allowed;
+    }
+
+    & > span {
+      min-inline-size: 0;
+    }
+
+    & > span > small {
+      display: block;
+      margin-block-start: var(--ply-space-1);
+      color: var(--ply-muted);
+      font-size: inherit;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ply-switch > input {
+      appearance: auto;
+    }
+    .ply-switch > input::before {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,49 @@
+@layer components {
+  .ply-dropdown {
+    position: relative;
+    display: grid;
+    justify-items: start;
+    & > .ply-menu {
+      position: absolute;
+      inset-block-start: 100%;
+      inset-inline-start: 0;
+      z-index: var(--ply-z-menu);
+      inline-size: max-content;
+      max-inline-size: min(20rem, 80vw);
+      max-block-size: min(24rem, 70vh);
+      overflow: auto;
+      overflow-wrap: anywhere;
+      margin: 0;
+      padding-block: var(--ply-space-2);
+      padding-inline: var(--ply-space-2);
+      border: 1px solid var(--ply-control-border);
+      border-radius: var(--ply-radius-surface);
+      background: var(--ply-surface);
+      list-style: none;
+      box-shadow: var(--ply-shadow-menu);
+      & > li > button {
+        inline-size: 100%;
+        min-block-size: var(--ply-control-size);
+        padding-block: var(--ply-space-2);
+        padding-inline: var(--ply-space-3);
+        border: 0;
+        background: transparent;
+        color: var(--ply-text);
+        text-align: start;
+        cursor: pointer;
+      }
+      & > li > button[data-state="active"] {
+        background: var(--ply-background);
+        text-decoration: underline;
+      }
+      & > li > button:disabled {
+        color: var(--ply-muted);
+        cursor: not-allowed;
+      }
+    }
+    &[data-align="end"] > .ply-menu {
+      inset-inline-start: auto;
+      inset-inline-end: 0;
+    }
+  }
+}

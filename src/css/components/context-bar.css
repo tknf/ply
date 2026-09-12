@@ -1,0 +1,53 @@
+@layer components {
+  .ply-context-bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    min-block-size: calc(var(--ply-control-size) + 2 * var(--ply-space-2) + 1px);
+    gap: var(--ply-space-3);
+    padding-block: var(--ply-space-2);
+    padding-inline: var(--ply-space-6);
+    border-block-end: 1px solid var(--ply-border);
+    font-size: var(--ply-small);
+    overflow-wrap: anywhere;
+    background: transparent;
+    border-start-start-radius: var(--ply-radius-surface);
+    border-start-end-radius: var(--ply-radius-surface);
+
+    /* パンくずは項目の自然幅を維持して折り返すためFlexを使う。 */
+    & > .ply-breadcrumb {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ply-space-2);
+      align-items: center;
+      list-style: none;
+      padding: 0;
+
+      & > li {
+        min-inline-size: 0;
+      }
+
+      & > li > a {
+        color: var(--ply-muted);
+      }
+
+      & > li > span {
+        font-weight: 600;
+      }
+    }
+
+    & > .ply-context-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: end;
+      align-items: center;
+      gap: var(--ply-space-2);
+      min-inline-size: 0;
+    }
+
+    & > .ply-context-actions > * {
+      min-inline-size: 0;
+      max-inline-size: 100%;
+    }
+  }
+}

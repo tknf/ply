@@ -1,0 +1,17 @@
+{
+  "pencil": "pencil-simple",
+  "search": "magnifying-glass",
+  "calendar": "calendar-blank",
+  "files": "folder-open",
+  "chart": "chart-bar",
+  "check": "check",
+  "layers": "stack",
+  "arrow": "arrow-right",
+  "eye": "eye",
+  "eye-slash": "eye-slash",
+  "compare": "arrows-left-right",
+  "caret": "caret-down",
+  "trash": "trash",
+  "x-circle": "x-circle",
+  "info": "info"
+}

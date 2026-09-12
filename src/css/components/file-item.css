@@ -1,0 +1,17 @@
+@layer components {
+  .ply-file-item {
+    display: grid;
+    gap: var(--ply-space-1);
+    min-inline-size: 0;
+    padding-block: var(--ply-space-3);
+    border-block-end: 1px solid var(--ply-border);
+    overflow-wrap: anywhere;
+    & > p + p {
+      color: var(--ply-muted);
+    }
+    &[data-state="error"] {
+      border-inline-start: 3px solid var(--ply-danger);
+      padding-inline-start: var(--ply-space-3);
+    }
+  }
+}

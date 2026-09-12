@@ -1,0 +1,13 @@
+@layer components {
+  .ply-disclosure {
+    border-block: 1px solid var(--ply-border);
+    & > summary {
+      padding-block: var(--ply-space-3);
+      color: var(--ply-link);
+      cursor: pointer;
+    }
+    & > div {
+      padding-block-end: var(--ply-space-4);
+    }
+  }
+}

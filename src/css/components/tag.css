@@ -1,0 +1,16 @@
+@layer components {
+  .ply-tag {
+    display: inline-flex;
+    align-items: center;
+    padding-block: var(--ply-space-1);
+    padding-inline: var(--ply-space-2);
+    border-radius: 4px;
+    border: 1px solid var(--ply-border);
+    font-size: var(--ply-small);
+    background: var(--ply-soft);
+    color: var(--ply-text);
+  }
+  a.ply-tag {
+    min-block-size: var(--ply-control-size);
+  }
+}

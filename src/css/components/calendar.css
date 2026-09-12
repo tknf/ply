@@ -1,0 +1,41 @@
+@layer components {
+  .ply-calendar-scroll {
+    overflow: auto;
+    min-inline-size: 0;
+  }
+  .ply-calendar {
+    inline-size: 100%;
+    min-inline-size: 35rem;
+    table-layout: fixed;
+    border-collapse: collapse;
+    & caption {
+      text-align: start;
+      padding-block-end: var(--ply-space-4);
+      font-weight: 600;
+    }
+    & th {
+      font-size: var(--ply-small);
+      padding-block: var(--ply-space-2);
+      color: var(--ply-muted);
+    }
+    & td {
+      vertical-align: top;
+      border: 1px solid var(--ply-border);
+      padding-block: var(--ply-space-2);
+      padding-inline: var(--ply-space-2);
+      block-size: 6rem;
+    }
+    & td[data-current="true"] {
+      background: var(--ply-info-soft);
+    }
+    & time {
+      font-size: var(--ply-small);
+      font-weight: 600;
+    }
+    & a {
+      display: block;
+      padding-block: var(--ply-space-2);
+      font-size: var(--ply-small);
+    }
+  }
+}

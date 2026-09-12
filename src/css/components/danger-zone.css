@@ -1,0 +1,12 @@
+@layer components {
+  .ply-danger-zone {
+    display: grid;
+    gap: var(--ply-space-4);
+    border-block-start: 1px solid var(--ply-border);
+    padding-block-start: var(--ply-space-8);
+    & > h2 {
+      color: var(--ply-danger);
+      font-size: 1.125rem;
+    }
+  }
+}

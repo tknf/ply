@@ -1,0 +1,35 @@
+@layer components {
+  .ply-board {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(16rem, 1fr);
+    gap: var(--ply-space-4);
+    overflow: auto;
+    padding-block-end: var(--ply-space-3);
+    min-inline-size: 0;
+    & > section {
+      display: grid;
+      align-content: start;
+      gap: var(--ply-space-3);
+      min-inline-size: 0;
+      padding-block: var(--ply-space-3);
+      padding-inline: var(--ply-space-3);
+      background: var(--ply-background);
+      border-radius: var(--ply-radius-control);
+    }
+    & h3 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--ply-space-2);
+      font-size: var(--ply-label);
+    }
+    & h3 > small {
+      font-weight: 400;
+    }
+    & > section > div {
+      display: grid;
+      gap: var(--ply-space-3);
+    }
+  }
+}

@@ -1,0 +1,18 @@
+@layer components {
+  .ply-breadcrumb-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ply-space-2);
+    list-style: none;
+    padding: 0;
+    font-size: var(--ply-label);
+    & > li {
+      display: flex;
+      gap: var(--ply-space-2);
+    }
+    & > li + li::before {
+      content: "/";
+      color: var(--ply-muted);
+    }
+  }
+}

@@ -1,0 +1,32 @@
+@layer components {
+  .ply-filter-bar {
+    /* 各リンクの自然幅で折り返すためFlex。 */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    gap: var(--ply-space-2);
+    min-inline-size: 0;
+
+    & > a {
+      min-inline-size: 0;
+
+      &:not([data-current="true"]) {
+        border-color: var(--ply-input-border);
+        color: var(--ply-text);
+      }
+      & > span {
+        min-inline-size: 0;
+      }
+      & > small {
+        flex: none;
+        font: inherit;
+        font-variant-numeric: tabular-nums;
+      }
+    }
+  }
+  @media (pointer: coarse) {
+    .ply-filter-bar > a {
+      min-block-size: 2.75rem;
+    }
+  }
+}

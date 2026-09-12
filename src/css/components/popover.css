@@ -1,0 +1,21 @@
+@layer components {
+  .ply-popover {
+    margin: 0;
+    inset-inline-start: 50%;
+    inset-block-start: 50%;
+    translate: -50% -50%;
+    inline-size: calc(100% - 2rem);
+    max-inline-size: min(28rem, calc(100% - 2rem));
+    padding-block: var(--ply-space-6);
+    padding-inline: var(--ply-space-6);
+    border: 1px solid var(--ply-control-border);
+    border-radius: var(--ply-radius-control);
+    background: var(--ply-surface);
+    color: var(--ply-text);
+    box-shadow: var(--ply-shadow-menu);
+    &:popover-open {
+      display: grid;
+      gap: var(--ply-space-4);
+    }
+  }
+}

@@ -1,0 +1,22 @@
+@layer components {
+  .ply-divider {
+    display: flex;
+    align-items: center;
+    gap: var(--ply-space-3);
+    border: 0;
+    border-block-start: 1px solid var(--ply-border);
+    margin: 0;
+    & > span {
+      font-size: var(--ply-small);
+      color: var(--ply-muted);
+    }
+    &:has(> span) {
+      border: 0;
+    }
+    &:has(> span)::after {
+      content: "";
+      flex: 1;
+      border-block-start: 1px solid var(--ply-border);
+    }
+  }
+}

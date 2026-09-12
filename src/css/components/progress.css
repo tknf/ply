@@ -1,0 +1,10 @@
+@layer components {
+  .ply-progress {
+    display: grid;
+    gap: var(--ply-space-2);
+    & > progress {
+      inline-size: 100%;
+      accent-color: var(--ply-link);
+    }
+  }
+}

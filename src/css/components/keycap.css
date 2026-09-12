@@ -1,0 +1,17 @@
+@layer components {
+  .ply-keycap {
+    display: inline-flex;
+    gap: var(--ply-space-1);
+    vertical-align: baseline;
+    & > kbd {
+      display: inline-block;
+      border: 1px solid var(--ply-control-border);
+      border-block-end-width: 2px;
+      border-radius: 4px;
+      padding-inline: var(--ply-space-1);
+      font-size: var(--ply-small);
+      font-family: inherit;
+      background: var(--ply-surface);
+    }
+  }
+}
