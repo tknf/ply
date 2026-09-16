@@ -256,7 +256,7 @@ test("カタログの全経路は認証なしでSSRできる", async () => {
 test("Toolbarの使用例は標準フォーム操作を持ち表示と掲載コードでIDを重複させない", async () => {
   const response = await app.request("http://localhost/components/toolbar");
   const result = await response.text();
-  const ids = [...result.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
+  const ids = [...result.matchAll(/(?<![-\w])id="([^"]+)"/g)].map((match) => match[1]);
   expect(new Set(ids).size).toBe(ids.length);
   expect(result).toContain('action="/search" method="get"');
   for (const prefix of ["hono-toolbar"]) {

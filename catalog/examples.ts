@@ -178,7 +178,7 @@ export const examples = [
     description: "作業の入口を、一覧や内容の見えるカードで示します。",
     html: '<ul class="ply-action-list"><li><a href="/example"><span class="title">記事を編集する</span><small class="description">内容と公開設定を変更します。</small></a></li></ul>',
     usage:
-      "移動する内容を動詞で示します。data-layout=gridで道具の入口を並べられます。accentはyellow・blue・green・violetで用途を区別し、状態色には使いません。カード内にボタンなど別の操作を入れません。データ行に操作が付く場合はDataListを使います。",
+      "移動する内容を動詞で示します。data-layout=gridで道具の入口を並べられます。accentはblue・green・amber・coralで用途を区別し、状態色には使いません。カード内にボタンなど別の操作を入れません。データ行に操作が付く場合はDataListを使います。",
   },
   {
     id: "empty-state",

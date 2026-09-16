@@ -61,10 +61,10 @@ AppShell、CommandMenu、SplitView、Section、Message、MessageListは現在の
 - 入力・ボタンの内側は部品自身が所有し、親は外側の配置だけを持つ。
 - Container queryは部品の利用可能幅で判断する。画面が広くても狭い配置なら折り返す。表・月カレンダーは必要な列の関係を保って領域内をスクロールする。
 
-[実画面の測定値](references/measurements-20260915.md)、[設計方針](design-system-direction.md)、[HTMLの移行](migration.md)、[今回の確認結果](component-verification-20260915.md)を併せて参照する。
+[実画面の測定値](references/measurements-20260915.md)、[設計方針](design-system-direction.md)、[HTMLの移行](migration.md)、[現在のカタログ検証記録](catalog-review-20260916.md)を併せて参照する。
 
-## 9月15日夜のフィードバックへの対応
+## 現在の追加確認
 
 全件の[余白と採用基準](spacing-audit.md)、[stimulus-uiの全38種類の対応状況](stimulus-ui-coverage.md)を追加した。Tableの選択・並べ替え、Boardの列間移動、ButtonGroup・DisclosureGroup・TagGroupも追加した。
 
-18枚の指摘、Disclosureと共有アイコンの追加指摘への変更と検証は[9月16日の対応記録](feedback-verification-20260916.md)に記載した。
+最新の修正内容と検証結果は[カタログと操作部品の再確認](catalog-review-20260916.md)へ集約する。
