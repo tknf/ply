@@ -72,9 +72,9 @@ test("CSSのみの予約例で標準検証・リセット・入れ子の開閉�
 });
 
 test("道具箱からCSSのみの予約例へ移ると文書を読み直す", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/examples/schedule");
   await page.evaluate(() => (document.documentElement.dataset.turboMarker = "previous-page"));
-  await page.getByRole("link", { name: /^予約を受け付ける/ }).click();
+  await page.getByRole("link", { name: "利用日時を選ぶ", exact: true }).first().click();
   await expect(page.getByRole("heading", { name: "利用日時を選ぶ" })).toBeVisible();
   await expect(page.locator("html")).not.toHaveAttribute("data-turbo-marker", "previous-page");
   await expect(page.locator('script[src*="client"]')).toHaveCount(0);

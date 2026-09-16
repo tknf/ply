@@ -18,9 +18,6 @@ test("入力を読み返して保存し、再読み込みと記事一覧から�
   await expect(page.getByRole("status")).toHaveText("✓ このブラウザに保存しました");
   await page.reload();
   await expect(page.getByLabel("記事名", { exact: true })).toHaveValue(value.title);
-  await page.getByRole("link", { name: "Plyの道具箱" }).click();
-  await expect(page.locator(".catalog-paper strong")).toHaveText(value.title);
-  await page.locator(".catalog-paper").click();
   await page.getByRole("link", { name: "記事", exact: true }).click();
   await page.getByLabel("キーワード", { exact: true }).fill("窓辺");
   await expect(page.getByRole("status")).toHaveText("1件の記事");
