@@ -2,6 +2,10 @@ export const componentGroups = [
   {
     name: "作業面と移動",
     ids: [
+      "app-shell",
+      "command-menu",
+      "split-view",
+      "section",
       "surface",
       "context-bar",
       "page-header",
@@ -44,6 +48,8 @@ export const componentGroups = [
     name: "内容と一覧",
     ids: [
       "card",
+      "message",
+      "message-list",
       "table",
       "value-list",
       "data-list",

@@ -1,5 +1,5 @@
 @layer components {
-  .ply-suggestion-note {
+  .ply-suggestion > .note {
     margin-block-start: var(--ply-space-2);
     font-size: var(--ply-label);
     line-height: calc(10 / 7);
@@ -11,19 +11,19 @@
   }
 
   .ply-suggestion {
-    & > .ply-combobox-options > li:hover:not([data-state="active"]) {
+    & > .options > li:hover:not([data-state="active"]) {
       background: var(--ply-info-soft);
       color: var(--ply-link);
     }
 
-    & > .ply-field-toggle:disabled {
+    & > .toggle:disabled {
       color: var(--ply-muted);
       cursor: not-allowed;
     }
   }
 
   @media (forced-colors: active) {
-    .ply-suggestion > .ply-combobox-options > li[data-state="active"] {
+    .ply-suggestion > .options > li[data-state="active"] {
       forced-color-adjust: none;
       background: Highlight;
       color: HighlightText;

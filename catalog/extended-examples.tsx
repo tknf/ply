@@ -215,7 +215,8 @@ export const extendedExamples = [
         <Tag label="仕事場の記事" href="/search?q=仕事場" />
       </div>
     ),
-    usage: "状態の表示にはBadge、分類にはTagを使います。リンクは十分な操作高を確保します。",
+    usage:
+      "分類を表す部品です。集合にはTagGroupを使い、横6px・縦4pxで折り返します。状態の表示はBadgeを使います。タグのリンクはhover時に下線を追加せず背景色で示します。TagGroupを使う場合はtag-group.cssも読み込んでください。",
   },
   {
     id: "statistic",
@@ -313,7 +314,7 @@ export const extendedExamples = [
       />
     ),
     usage:
-      "列を描画する部品です。ドラッグ操作は提供しません。移動はカード内のSelectやButtonで明示的に実装できます。",
+      "columnsのitemsへid・label・任意のcontentを渡し、movableでBoardControllerを接続します。持ち手をドラッグして列間移動と並べ替えができ、Space・矢印・Enterでも操作できます。Escape・外へのドロップで取り消します。board:beforemoveはキャンセル可能、board:moveはid・移動元/先の列IDと順番を通知します。disabledの項目と列へは移動できません。保存処理は利用アプリで接続します。",
   },
   {
     id: "error-summary",
@@ -372,7 +373,7 @@ export const extendedExamples = [
       </Popover>
     ),
     usage:
-      "標準Popover APIによる非モーダル表示です。外側クリックとEscapeで閉じます。必須確認はDialogを使います。",
+      "標準Popover APIによる非モーダル表示です。ボタンとパネルを明示的なCSSアンカーで結びます。PopoverControllerをpopoverとして登録すると、CSS未対応・位置合わせ失敗時の補正を行います。alignで始端/末端、sizeでcompact/default/wideを選べます。title・description・actions・iconOnly・disabledにも対応します。外側クリックとEscapeで閉じ、背景の通常操作は妨げません。必須確認はDialogを使います。",
   },
   {
     id: "code-block",
@@ -384,7 +385,8 @@ export const extendedExamples = [
         code={'<link rel="stylesheet" href="/ply/components/button.css">'}
       />
     ),
-    usage: "文字列をエスケープして表示します。コード実行や構文強調は行いません。",
+    usage:
+      "codeとlabelを渡します。tokensに改行を含むcontentとcolorの配列を渡すと色分けできます。例ではサーバー側のShikiを使いますが、ライブラリに整形器やハイライターの依存はありません。tokensの全文がcodeと異なるときは元のcodeを表示します。HTMLも必ず文字としてエスケープします。copyを付ける場合はClipboardControllerをclipboard、CodeBlockControllerをcode-blockとして登録してください。表示した全文をコピーし、成功・失敗を伝えます。長い行と長いコードはコード領域内でスクロールでき、JavaScriptがない場合も読めます。",
   },
   {
     id: "keycap",

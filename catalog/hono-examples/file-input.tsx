@@ -1,4 +1,4 @@
-import { Button, Field, FileInput, Input } from "../../src/hono";
+import { Disclosure, Button, Field, FileInput, Input } from "../../src/hono";
 
 export default () => (
   <form class="ply-stack" aria-label="ファイルの添付例">
@@ -13,8 +13,7 @@ export default () => (
       multiple
       help="PDFを複数選択できます。選び直すと選択内容を入れ替えます。"
     />
-    <details class="ply-disclosure">
-      <summary>1ファイル・必須・エラー・利用不可</summary>
+    <Disclosure summary="1ファイル・必須・エラー・利用不可">
       <div class="ply-stack">
         <FileInput
           id="hono-file-single"
@@ -46,7 +45,7 @@ export default () => (
           />
         </fieldset>
       </div>
-    </details>
+    </Disclosure>
     <Button type="reset">選択をリセット</Button>
   </form>
 );

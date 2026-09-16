@@ -1,13 +1,18 @@
 @layer components {
   .ply-toolbar {
     display: flex;
-    align-items: center;
+    align-items: start;
     flex-wrap: wrap;
     gap: var(--ply-space-2);
     min-inline-size: 0;
-    padding-block: var(--ply-space-2);
-    border-block: 1px solid var(--ply-border);
 
+    & > .start {
+      flex: 1 1 14rem;
+      max-inline-size: 24rem;
+    }
+    & > .end {
+      margin-inline-start: auto;
+    }
     & > * {
       min-inline-size: 0;
       max-inline-size: 100%;

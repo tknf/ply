@@ -40,18 +40,18 @@ export const Range = ({
     "data-mode": interval ? "interval" : "single",
   };
   const controls = (
-    <div class="ply-range-controls">
+    <div class="controls">
       {entries.map((entry) => (
-        <div class="ply-range-native">
+        <div class="native">
           {interval && (
-            <label class="ply-range-track-label" id={`${entry.id}-label`} for={entry.id}>
+            <label class="label" id={`${entry.id}-label`} for={entry.id}>
               {entry.label}
             </label>
           )}
           <input
             {...attributes}
             id={entry.id}
-            class="ply-range-input"
+            class="input"
             type="range"
             min={min}
             max={max}
@@ -66,7 +66,7 @@ export const Range = ({
     </div>
   );
   const limits = (
-    <div class="ply-range-limits" aria-hidden="true">
+    <div class="limits" aria-hidden="true">
       <span>{min}</span>
       <span>{max}</span>
     </div>
@@ -75,15 +75,15 @@ export const Range = ({
   if (interval) {
     return (
       <fieldset {...root} disabled={disabled} dir={attributes.dir}>
-        <legend class="ply-field-label" id={labelId}>
+        <legend class="label" id={labelId}>
           {label}
         </legend>
         {controls}
         {limits}
-        <div class="ply-range-values" hidden>
+        <div class="values" hidden>
           {entries.map((entry) => (
             <label class="ply-field" for={`${entry.id}-number`}>
-              <span class="ply-field-label" id={`${entry.id}-number-label`}>
+              <span class="label" id={`${entry.id}-number-label`}>
                 {entry.label}
               </span>
               <input
@@ -107,17 +107,11 @@ export const Range = ({
   }
   return (
     <div {...root} dir={attributes.dir}>
-      <div class="ply-range-heading">
-        <label class="ply-field-label" for={rangeId} id={labelId}>
+      <div class="heading">
+        <label class="label" for={rangeId} id={labelId}>
           {label}
         </label>
-        <output
-          class="ply-range-value"
-          for={rangeId}
-          data-range-unit={unit}
-          aria-live="off"
-          hidden
-        />
+        <output class="value" for={rangeId} data-range-unit={unit} aria-live="off" hidden />
       </div>
       {controls}
       {limits}

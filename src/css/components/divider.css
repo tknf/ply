@@ -3,19 +3,22 @@
     display: flex;
     align-items: center;
     gap: var(--ply-space-3);
+    margin: 0;
     border: 0;
     border-block-start: 1px solid var(--ply-border);
-    margin: 0;
     & > span {
-      font-size: var(--ply-small);
+      flex: 0 1 auto;
+      min-inline-size: 0;
       color: var(--ply-muted);
+      font-size: var(--ply-small);
+      line-height: var(--ply-small-leading);
     }
     &:has(> span) {
       border: 0;
     }
     &:has(> span)::after {
       content: "";
-      flex: 1;
+      flex: 1 0 2rem;
       border-block-start: 1px solid var(--ply-border);
     }
   }

@@ -39,15 +39,15 @@ export const InputGroup = ({
 
   return (
     <div class={classes("ply-input-group", className)} dir={attributes.dir}>
-      <div class="ply-input-group-control" data-size={size}>
+      <div class="control" data-size={size}>
         {hasPrefix && (
-          <span class="ply-input-affix" id={`${id}-prefix`}>
+          <span class="affix" id={`${id}-prefix`}>
             {prefix}
           </span>
         )}
         <Control {...attributes} id={id} data-size={size} aria-describedby={describedBy} />
         {hasSuffix && (
-          <span class="ply-input-affix" id={`${id}-suffix`}>
+          <span class="affix" id={`${id}-suffix`}>
             {suffix}
           </span>
         )}

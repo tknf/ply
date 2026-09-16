@@ -2,7 +2,7 @@ import { Comparison, ValueList } from "../../src/hono";
 
 export default () => (
   <div class="ply-stack">
-    <Comparison label="変更なし" changed={false} before={<p>標準</p>} after={<p>標準</p>} />
+    <Comparison label="公開範囲" changed={false} before={<p>標準</p>} after={<p>標準</p>} />
     <Comparison
       label="未登録からの追加"
       before={null}

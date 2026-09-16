@@ -1,13 +1,95 @@
 @layer components {
   .ply-disclosure {
-    border-block: 1px solid var(--ply-border);
+    min-inline-size: 0;
+    color: var(--ply-text);
+    font-size: var(--ply-label);
+    line-height: calc(11 / 7);
     & > summary {
-      padding-block: var(--ply-space-3);
-      color: var(--ply-link);
+      display: grid;
+      grid-template-columns: 1.5rem minmax(0, 1fr);
+      align-items: start;
+      gap: var(--ply-space-2);
+      padding-block: var(--ply-space-2);
+      padding-inline: 0;
+      border-radius: 6px;
+      font-family: var(--ply-control-font-family);
+      font-size: var(--ply-body);
+      font-weight: 400;
+      line-height: 1.5;
+      list-style: none;
       cursor: pointer;
+      &:focus-visible {
+        outline-offset: 2px;
+      }
+      &::-webkit-details-marker {
+        display: none;
+      }
+      & > .marker {
+        grid-column: 1;
+        grid-row: 1;
+        display: grid;
+        place-items: center;
+        inline-size: 1.5rem;
+        block-size: 1.5rem;
+        border: 1px solid var(--ply-border);
+        border-radius: 50%;
+        background: linear-gradient(var(--ply-surface), var(--ply-background));
+        box-shadow:
+          inset 0 1px 0 var(--ply-surface),
+          0 1px 1px rgb(36 57 70 / 5%);
+        color: var(--ply-muted);
+        & > .ply-icon {
+          font-size: 0.75rem;
+          rotate: -90deg;
+          transition: rotate var(--ply-duration) ease;
+        }
+      }
+      &:dir(rtl) > .marker > .ply-icon {
+        rotate: 90deg;
+      }
+      &:hover > .marker {
+        border-color: var(--ply-link);
+        color: var(--ply-link);
+      }
+      & > .label {
+        grid-column: 2;
+        grid-row: 1;
+        display: grid;
+        gap: 0.125rem;
+        min-inline-size: 0;
+        overflow-wrap: anywhere;
+        & > .description {
+          color: var(--ply-muted);
+          font-size: var(--ply-small);
+          line-height: var(--ply-small-leading);
+        }
+      }
+    }
+    &[open] > summary > .marker {
+      background: var(--ply-info-soft);
+      border-color: color-mix(in srgb, var(--ply-link) 25%, var(--ply-border));
+      color: var(--ply-link);
+      & > .ply-icon {
+        rotate: 0deg;
+      }
     }
     & > div {
-      padding-block-end: var(--ply-space-4);
+      display: grid;
+      gap: var(--ply-space-2);
+      min-inline-size: 0;
+      margin-inline-start: 0.75rem;
+      padding-block: 0 var(--ply-space-4);
+      padding-inline: calc(1.25rem - 1px) 0;
+      border-inline-start: 1px solid var(--ply-border);
+      overflow-wrap: anywhere;
+      & > p {
+        max-inline-size: 44em;
+      }
+    }
+  }
+  @media (pointer: coarse) {
+    .ply-disclosure > summary {
+      padding-block: 0.625rem;
     }
   }
 }

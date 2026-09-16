@@ -1,19 +1,68 @@
 @layer components {
   .ply-notice {
+    container: ply-notice / inline-size;
+    --ply-notice-accent: var(--ply-info);
     display: grid;
-    gap: var(--ply-space-2);
+    grid-template-columns: minmax(0, 1.5rem) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--ply-space-1) var(--ply-space-2);
+    min-inline-size: 0;
+    padding-block: var(--ply-space-3);
+    padding-inline: var(--ply-space-3);
+    border: 1px solid var(--ply-border);
+    border-radius: 10px;
+    background: var(--ply-surface);
     color: var(--ply-text);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
     overflow-wrap: anywhere;
+    & > .symbol {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      display: grid;
+      place-items: center;
+      inline-size: min(1.5rem, 100%);
+      block-size: 1.5rem;
+      border-radius: 8px;
+      color: var(--ply-notice-accent);
+      background: color-mix(in srgb, var(--ply-notice-accent) 8%, white);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / 75%);
+    }
+    & > .title {
+      grid-column: 2;
+      font-weight: 600;
+    }
+    & > .body {
+      grid-column: 2;
+      min-inline-size: 0;
+      & > * + * {
+        margin-block-start: var(--ply-space-2);
+      }
+      &:empty {
+        display: none;
+      }
+    }
     &[data-tone="success"] {
-      color: var(--ply-text);
+      --ply-notice-accent: var(--ply-success);
     }
-    &[data-tone="warning"],
-    &[data-tone="danger"] {
-      padding-inline-start: var(--ply-space-3);
-      border-inline-start: 2px solid var(--ply-warning);
+    &[data-tone="warning"] {
+      --ply-notice-accent: var(--ply-warning);
     }
     &[data-tone="danger"] {
-      border-inline-start-color: var(--ply-danger);
+      --ply-notice-accent: var(--ply-danger);
+    }
+    @container ply-notice (inline-size < 24rem) {
+      & > .symbol {
+        grid-row: 1;
+      }
+      & > .body {
+        grid-column: 1 / -1;
+      }
+    }
+    @container ply-notice (inline-size < 10rem) {
+      & > .title {
+        grid-column: 1 / -1;
+      }
     }
   }
 }

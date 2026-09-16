@@ -1,3 +1,7 @@
+import { TableDemoController } from "./controllers/table-demo";
+import { CommandDemoController } from "./controllers/command-demo";
+import { CodeExampleController } from "./controllers/code-example";
+import { InboxDemoController } from "./controllers/inbox-demo";
 import { ProjectDemoController } from "./controllers/project-demo";
 import { SettingsDemoController } from "./controllers/settings-demo";
 import { FilePreviewController } from "./controllers/file-preview";
@@ -8,6 +12,13 @@ import { FieldDemoController } from "./controllers/field-demo";
 import { Application } from "@hotwired/stimulus";
 import "@hotwired/turbo";
 import {
+  ClipboardController,
+  CodeBlockController,
+  CommandMenuController,
+  TableController,
+  TableSortController,
+  TableSelectController,
+  BoardController,
   CharacterCountController,
   CheckboxGroupController,
   ComboboxController,
@@ -19,6 +30,7 @@ import {
   FileInputController,
   NumberFieldController,
   PasswordFieldController,
+  PopoverController,
   RangeController,
   SuggestionController,
   TabsController,
@@ -26,6 +38,17 @@ import {
 } from "../src/controllers";
 
 const application = Application.start();
+application.register("clipboard", ClipboardController);
+application.register("code-block", CodeBlockController);
+application.register("board", BoardController);
+application.register("table-demo", TableDemoController);
+application.register("table", TableController);
+application.register("table-sort", TableSortController);
+application.register("table-select", TableSelectController);
+application.register("inbox-demo", InboxDemoController);
+application.register("command-menu", CommandMenuController);
+application.register("command-demo", CommandDemoController);
+application.register("code-example", CodeExampleController);
 application.register("character-count", CharacterCountController);
 application.register("checkbox-group", CheckboxGroupController);
 application.register("combobox", ComboboxController);
@@ -44,6 +67,7 @@ application.register("draft", DraftController);
 application.register("draft-summary", DraftSummaryController);
 application.register("article-search", ArticleSearchController);
 application.register("dialog", DialogController);
+application.register("popover", PopoverController);
 application.register("dropdown-menu", DropdownMenuController);
 application.register("file-drop", FileDropController);
 application.register("file-input", FileInputController);

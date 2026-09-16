@@ -1,49 +1,212 @@
 @layer components {
-  .ply-dropdown {
-    position: relative;
+  /* 親メニューより先にトップレイヤーへ載せ、背後の画面を覆う実要素。 */
+  .ply-dropdown-menu > .shield {
+    position: fixed;
+    inset-block: 0;
+    inset-inline: 0;
+    inline-size: auto;
+    block-size: auto;
+    max-inline-size: none;
+    max-block-size: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    outline: none;
+    &::backdrop {
+      background: transparent;
+      pointer-events: none;
+    }
+  }
+  .ply-dropdown-menu {
     display: grid;
     justify-items: start;
-    & > .ply-menu {
-      position: absolute;
-      inset-block-start: 100%;
-      inset-inline-start: 0;
-      z-index: var(--ply-z-menu);
-      inline-size: max-content;
-      max-inline-size: min(20rem, 80vw);
-      max-block-size: min(24rem, 70vh);
-      overflow: auto;
-      overflow-wrap: anywhere;
-      margin: 0;
-      padding-block: var(--ply-space-2);
-      padding-inline: var(--ply-space-2);
-      border: 1px solid var(--ply-control-border);
-      border-radius: var(--ply-radius-surface);
-      background: var(--ply-surface);
-      list-style: none;
-      box-shadow: var(--ply-shadow-menu);
-      & > li > button {
-        inline-size: 100%;
-        min-block-size: var(--ply-control-size);
-        padding-block: var(--ply-space-2);
-        padding-inline: var(--ply-space-3);
-        border: 0;
-        background: transparent;
-        color: var(--ply-text);
-        text-align: start;
-        cursor: pointer;
-      }
-      & > li > button[data-state="active"] {
-        background: var(--ply-background);
-        text-decoration: underline;
-      }
-      & > li > button:disabled {
-        color: var(--ply-muted);
-        cursor: not-allowed;
-      }
+    min-inline-size: 0;
+    &[data-align="end"] {
+      justify-items: end;
     }
-    &[data-align="end"] > .ply-menu {
-      inset-inline-start: auto;
-      inset-inline-end: 0;
+  }
+  .ply-menu {
+    position: fixed;
+    inset-block: 0 auto;
+    inset-inline: 0 auto;
+    z-index: var(--ply-z-menu);
+    inline-size: max-content;
+    min-inline-size: min(12rem, calc(100vw - 16px));
+    max-inline-size: min(20rem, calc(100vw - 16px));
+    max-block-size: min(24rem, calc(100dvh - 16px));
+    overflow: auto;
+    overscroll-behavior: contain;
+    overflow-wrap: anywhere;
+    margin: 0;
+    padding-block: var(--ply-space-1);
+    padding-inline: var(--ply-space-1);
+    border: 1px solid var(--ply-border);
+    border-radius: 10px;
+    background: var(--ply-surface);
+    color: var(--ply-text);
+    font-family: var(--ply-control-font-family);
+    font-size: var(--ply-label);
+    line-height: calc(10 / 7);
+    letter-spacing: 0;
+    list-style: none;
+    box-shadow: var(--ply-shadow-menu);
+    &::backdrop {
+      background: transparent;
+      pointer-events: none;
+    }
+    &:focus-visible {
+      outline: 2px solid var(--ply-link);
+      outline-offset: -2px;
+    }
+  }
+  .ply-menu[data-variant="group"] {
+    position: static;
+    inline-size: auto;
+    min-inline-size: 0;
+    max-inline-size: none;
+    max-block-size: none;
+    overflow: visible;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .ply-menu > li > .item.ply-button {
+    --ply-menu-row-size: var(--ply-button-size);
+    display: block;
+    inline-size: 100%;
+    /* 一行の高さから同量の上下余白を取る。複数行は上端を保って下へ伸ばす。 */
+    padding-block: calc((var(--ply-menu-row-size) - 10em / 7 - 2px) / 2);
+    padding-inline: var(--ply-space-2);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    text-align: start;
+    text-decoration: none;
+    box-shadow: none;
+    cursor: pointer;
+    transition: background-color var(--ply-duration) ease;
+    &:hover:not(:disabled, [data-disabled="true"]),
+    &[data-state="active"]:not(:disabled, [data-disabled="true"]) {
+      background: color-mix(in srgb, var(--ply-text) 6%, var(--ply-surface));
+      box-shadow: none;
+    }
+    &:active:not(:disabled, [data-disabled="true"]) {
+      background: color-mix(in srgb, var(--ply-text) 10%, var(--ply-surface));
+      box-shadow: none;
+    }
+    &:focus-visible {
+      outline: 2px solid var(--ply-link);
+      outline-offset: -2px;
+    }
+    &[data-tone="danger"] {
+      color: var(--ply-danger);
+    }
+    &:disabled,
+    &[data-disabled="true"] {
+      background: transparent;
+      border-color: transparent;
+      color: var(--ply-muted);
+      box-shadow: none;
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    &[data-checked="false"] > .content > .heading > .mark {
+      visibility: hidden;
+    }
+    &[data-checked="mixed"] > .content > .heading > .mark > .ply-icon {
+      display: none;
+    }
+    &[data-checked="mixed"] > .content > .heading > .mark > .mixed {
+      display: block;
+    }
+  }
+  .ply-menu > li > .item > .content > .heading > .text {
+    display: block;
+    flex: 1;
+    min-inline-size: 0;
+  }
+  .ply-menu > li > .item > .content {
+    display: grid;
+    gap: var(--ply-space-1);
+    inline-size: 100%;
+    min-inline-size: 0;
+    &[data-leading="true"] > .description {
+      padding-inline-start: calc(var(--ply-button-font) + var(--ply-space-2));
+    }
+  }
+  .ply-menu > li > .item > .content > .heading {
+    display: flex;
+    align-items: start;
+    gap: var(--ply-space-2);
+    min-inline-size: 0;
+    & > .ply-icon {
+      margin-block-start: calc((1lh - 1em) / 2);
+    }
+  }
+  .ply-menu > li > .item > .content > .description {
+    display: block;
+    color: var(--ply-muted);
+    font-size: var(--ply-small);
+    line-height: var(--ply-control-leading);
+  }
+  .ply-menu > li > .item > .content > .heading > .shortcut {
+    color: var(--ply-muted);
+    white-space: nowrap;
+  }
+  .ply-menu > li > .item > .content > .heading > .caret,
+  .ply-menu > li > .item > .content > .heading > .mark {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    inline-size: 1em;
+    block-size: 1lh;
+  }
+  .ply-menu > li > .item > .content > .heading > .caret {
+    & > .ply-icon {
+      transform: rotate(-90deg);
+    }
+    &:dir(rtl) > .ply-icon {
+      transform: rotate(90deg);
+    }
+  }
+  .ply-menu > li > .item > .content > .heading > .mark > .dot {
+    inline-size: 0.45em;
+    block-size: 0.45em;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .ply-menu > li > .item > .content > .heading > .mark > .mixed {
+    display: none;
+  }
+  .ply-menu > li > .label,
+  .ply-menu > .empty {
+    display: block;
+    padding-block: var(--ply-space-2);
+    padding-inline: var(--ply-space-2);
+    color: var(--ply-muted);
+    font-size: var(--ply-small);
+  }
+  .ply-menu > .separator {
+    margin-block-start: var(--ply-space-1);
+    padding-block-start: var(--ply-space-1);
+    border-block-start: 1px solid var(--ply-border);
+  }
+  @media (pointer: coarse) {
+    .ply-menu > li > .item.ply-button {
+      --ply-menu-row-size: 2.75rem;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-menu > li > .item.ply-button[data-state="active"] {
+      border-color: Highlight;
+    }
+    .ply-menu > li > .item.ply-button:disabled,
+    .ply-menu > li > .item.ply-button[data-disabled="true"] {
+      color: GrayText;
+      opacity: 1;
     }
   }
 }

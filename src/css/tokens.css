@@ -1,17 +1,58 @@
 @layer tokens {
+  /* 同じローカル書体の行メトリクスを揃える。字形や字幅、部品ごとの余白は変えない。 */
+  @font-face {
+    font-family: "Ply UI Latin";
+    src: local("HelveticaNeue");
+    font-weight: 400;
+    ascent-override: 89%;
+    descent-override: 11%;
+    line-gap-override: 0%;
+  }
+  @font-face {
+    font-family: "Ply UI Latin";
+    src: local("HelveticaNeue-Bold");
+    font-weight: 600 900;
+    ascent-override: 89%;
+    descent-override: 11%;
+    line-gap-override: 0%;
+  }
+  @font-face {
+    font-family: "Ply UI Japanese";
+    src: local("HiraginoSans-W3");
+    font-weight: 400;
+    ascent-override: 89%;
+    descent-override: 11%;
+    line-gap-override: 0%;
+  }
+  @font-face {
+    font-family: "Ply UI Japanese";
+    src: local("HiraginoSans-W6");
+    font-weight: 600 900;
+    ascent-override: 89%;
+    descent-override: 11%;
+    line-gap-override: 0%;
+  }
   :root {
     --ply-gray-0: #ffffff;
-    --ply-gray-20: #f4f2f8;
-    --ply-gray-100: #e1e3e5;
-    --ply-gray-500: #7c8187;
-    --ply-gray-650: #4f5359;
-    --ply-gray-900: #28343b;
-    --ply-black: #253239;
-    --ply-blue: #235fa4;
-    --ply-blue-dark: #1d558c;
+    --ply-gray-20: #f3f6f8;
+    --ply-gray-100: #d4dfe5;
+    --ply-gray-500: #758591;
+    --ply-gray-650: #435563;
+    --ply-gray-900: #243946;
+    --ply-black: #243946;
+    --ply-brand: #0b65c2;
+    --ply-cover: #e5f2fb;
+    --ply-mark: #ffe28a;
+    --ply-shadow-control: inset 0 1px 0 rgb(255 255 255 / 70%), 0 1px 2px rgb(36 57 70 / 12%);
+    --ply-shadow-control-pressed: inset 0 1px 2px rgb(36 57 70 / 16%);
+    --ply-shadow-input: inset 0 1px 2px rgb(36 57 70 / 6%);
+    --ply-blue: #0b65c2;
+    --ply-blue-dark: #085194;
     --ply-green: #1c6a47;
     --ply-amber: #7a4e00;
     --ply-red: #a8231b;
+    --ply-coral: #b54d36;
+    --ply-coral-dark: #9f4a38;
     --ply-cream: #f8f5ed;
     --ply-ice: #edf4fb;
     --ply-mint: #edf5ef;
@@ -24,8 +65,8 @@
     --ply-success-soft: var(--ply-mint);
     --ply-warning-soft: #fff6dc;
     --ply-danger-soft: #fff0ed;
-    --ply-shadow-sheet: 0 3px 24px rgb(37 28 52 / 6%);
-    --ply-shadow-menu: 0 6px 20px rgb(37 28 52 / 12%);
+    --ply-shadow-sheet: 0 1px 2px rgb(36 57 70 / 9%), 0 6px 18px rgb(36 57 70 / 4%);
+    --ply-shadow-menu: 0 6px 20px rgb(36 57 70 / 12%);
     --ply-space-1: 0.25rem;
     --ply-space-2: 0.5rem;
     --ply-space-3: 0.75rem;
@@ -40,35 +81,38 @@
     --ply-muted: var(--ply-gray-650);
     --ply-border: var(--ply-gray-100);
     --ply-control-border: var(--ply-gray-500);
-    --ply-input-border: color-mix(in srgb, var(--ply-text) 15%, transparent);
+    --ply-input-border: var(--ply-control-border);
     --ply-ink: var(--ply-black);
-    --ply-link: var(--ply-blue);
+    --ply-link: var(--ply-brand);
     --ply-info: var(--ply-blue-dark);
     --ply-success: var(--ply-green);
     --ply-warning: var(--ply-amber);
     --ply-danger: var(--ply-red);
     --ply-font: "Hiragino Sans", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
-    /* 操作部品の行は欧文フォントを基準にし、和文は同じHiraginoへフォールバックする。 */
-    --ply-control-font-family: "Helvetica Neue", Arial, var(--ply-font);
+    --ply-display-font: "Hiragino Maru Gothic ProN", ui-rounded, var(--ply-font);
+    --ply-control-font-family:
+      "Ply UI Latin", "Ply UI Japanese", "Helvetica Neue", Arial, var(--ply-font);
     --ply-body: 1rem;
     --ply-label: 0.875rem;
     --ply-small: 0.8125rem;
-    --ply-title: 2.125rem;
+    --ply-title: 1.75rem;
     --ply-leading: 1.625;
-    --ply-radius-control: 6px;
-    --ply-radius-surface: 10px;
+    --ply-label-leading: calc(10 / 7);
+    --ply-small-leading: calc(20 / 13);
+    --ply-radius-control: 8px;
+    --ply-radius-surface: 12px;
     --ply-radius-pill: 999px;
     --ply-duration: 150ms;
     --ply-measure: 40rem;
     --ply-page: 64rem;
-    --ply-control-size: 2.75rem;
+    --ply-control-size: 2.25rem;
     --ply-control-compact: 2.25rem;
     --ply-control-font: 0.875rem;
     --ply-control-leading: 1.5;
-    --ply-control-weight: 600;
+    --ply-control-weight: 400;
     --ply-button-font: 0.875rem;
-    --ply-button-hover: #1b4a80;
-    --ply-button-active: #163d69;
+    --ply-button-hover: color-mix(in srgb, var(--ply-link) 88%, var(--ply-ink));
+    --ply-button-active: color-mix(in srgb, var(--ply-link) 76%, var(--ply-ink));
     --ply-button-size: calc(16em / 7);
     --ply-button-large: 2.5em;
     --ply-z-menu: 20;

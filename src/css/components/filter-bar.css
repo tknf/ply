@@ -4,11 +4,12 @@
     display: flex;
     flex-wrap: wrap;
     align-items: start;
-    gap: var(--ply-space-2);
+    gap: var(--ply-space-1);
     min-inline-size: 0;
 
     & > a {
       min-inline-size: 0;
+      border-radius: var(--ply-radius-pill);
 
       &:not([data-current="true"]) {
         border-color: var(--ply-input-border);

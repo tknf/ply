@@ -1,10 +1,93 @@
 @layer components {
   .ply-empty-state {
+    container: ply-empty-state / inline-size;
     display: grid;
-    justify-items: center;
-    gap: var(--ply-space-3);
-    padding-block: var(--ply-space-12);
-    text-align: center;
+    grid-template-columns: minmax(0, 4rem) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--ply-space-2) var(--ply-space-4);
+    min-inline-size: 0;
+    inline-size: 100%;
+    max-inline-size: 40rem;
+    margin-inline: auto;
+    padding-block: var(--ply-space-6);
+    padding-inline: var(--ply-space-3);
     color: var(--ply-text);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+    overflow-wrap: anywhere;
+    & > .symbol {
+      grid-column: 1;
+      grid-row: 1 / span 3;
+      display: grid;
+      place-items: center;
+      position: relative;
+      isolation: isolate;
+      inline-size: min(3.5rem, 100%);
+      block-size: 4rem;
+      margin-block-start: var(--ply-space-1);
+      border: 1px solid var(--ply-border);
+      border-radius: 8px 16px 8px 8px;
+      background: linear-gradient(white, var(--ply-ice));
+      color: var(--ply-link);
+      font-size: 1.75rem;
+      box-shadow:
+        -4px 4px 0 var(--ply-cover),
+        -5px 5px 0 var(--ply-border);
+      &::after {
+        content: "";
+        position: absolute;
+        inset-block-start: -3px;
+        inset-inline-end: -3px;
+        inline-size: 0.625rem;
+        block-size: 0.625rem;
+        border: 2px solid var(--ply-surface);
+        border-radius: 50%;
+        background: var(--ply-mark);
+      }
+    }
+    & > .title {
+      grid-column: 2;
+      font-family: var(--ply-display-font);
+      font-size: 1.125rem;
+      font-weight: 600;
+      line-height: calc(4 / 3);
+    }
+    & > .body {
+      grid-column: 2;
+      min-inline-size: 0;
+      color: var(--ply-muted);
+      & > * + * {
+        margin-block-start: var(--ply-space-2);
+      }
+      &:empty {
+        display: none;
+      }
+    }
+    & > .actions {
+      grid-column: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ply-space-2);
+      margin-block-start: var(--ply-space-1);
+    }
+    &[data-kind="start"] > .symbol {
+      background: linear-gradient(white, var(--ply-warning-soft));
+    }
+    &[data-kind="complete"] > .symbol {
+      background: linear-gradient(white, var(--ply-success-soft));
+      color: var(--ply-success);
+      &::after {
+        background: var(--ply-success);
+      }
+    }
+    @container ply-empty-state (inline-size < 22rem) {
+      & > .symbol {
+        grid-column: 1 / -1;
+        grid-row: auto;
+      }
+      & > :is(.title, .body, .actions) {
+        grid-column: 1 / -1;
+      }
+    }
   }
 }

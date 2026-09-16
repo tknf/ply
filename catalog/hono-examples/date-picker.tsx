@@ -1,4 +1,4 @@
-import { Button, DatePicker, FieldGroup } from "../../src/hono";
+import { Disclosure, Button, DatePicker, FieldGroup } from "../../src/hono";
 
 export default () => (
   <form id="date-picker-examples" class="ply-stack" aria-label="日付の選択例">
@@ -72,8 +72,7 @@ export default () => (
       />
     </FieldGroup>
     <Button type="reset">初期値に戻す</Button>
-    <details class="ply-disclosure">
-      <summary>未入力・同日・境界・利用不可</summary>
+    <Disclosure summary="未入力・同日・境界・利用不可">
       <div class="ply-stack">
         <DatePicker label="未入力の日付" name="empty_date" />
         <DatePicker label="未入力の期間" mode="range" startName="empty_start" endName="empty_end" />
@@ -100,6 +99,6 @@ export default () => (
         <DatePicker label="利用不可の日付" name="disabled_date" value="2026-09-12" disabled />
         <DatePicker label="読み取り専用の日付" name="readonly_date" value="2026-09-12" readonly />
       </div>
-    </details>
+    </Disclosure>
   </form>
 );

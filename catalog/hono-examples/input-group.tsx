@@ -1,7 +1,7 @@
-import { Field, InputGroup, Icon } from "../../src/hono";
+import { Disclosure, Field, InputGroup, Icon } from "../../src/hono";
 
 export default () => (
-  <div class="ply-stack">
+  <div class="ply-split">
     <Field id="hono-group-price" label="料金（円）" help="100円単位で設定できます。">
       {(attributes) => (
         <InputGroup
@@ -54,8 +54,7 @@ export default () => (
         )}
       </Field>
     </form>
-    <details class="ply-disclosure">
-      <summary>エラー・閲覧専用・利用不可・大きい入力</summary>
+    <Disclosure summary="エラー・閲覧専用・利用不可・大きい入力">
       <div class="ply-stack">
         <Field
           id="hono-group-price-error"
@@ -102,6 +101,6 @@ export default () => (
           </Field>
         </form>
       </div>
-    </details>
+    </Disclosure>
   </div>
 );

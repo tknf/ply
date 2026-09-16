@@ -1,34 +1,53 @@
 @layer components {
   .ply-image-frame {
-    display: grid;
-    place-items: center;
     inline-size: min(100%, 8rem);
-    aspect-ratio: 5 / 7;
+    min-inline-size: 0;
     margin: 0;
-    border: 1px solid var(--ply-border);
-    border-radius: var(--ply-radius-control);
-    background: var(--ply-background);
-    &[data-shape="square"] {
+    & > .image {
+      position: relative;
+      display: grid;
+      place-items: center;
+      aspect-ratio: 5 / 7;
+      overflow: hidden;
+      border: 1px solid var(--ply-border);
+      border-radius: var(--ply-radius-control);
+      background: var(--ply-background);
+      & > img {
+        position: absolute;
+        inset-block: 0;
+        inset-inline: 0;
+        inline-size: 100%;
+        block-size: 100%;
+        min-block-size: 0;
+        object-fit: contain;
+      }
+      & > span {
+        padding-inline: var(--ply-space-2);
+        color: var(--ply-muted);
+        font-size: var(--ply-small);
+        line-height: var(--ply-small-leading);
+        text-align: center;
+        overflow-wrap: anywhere;
+      }
+    }
+    & > figcaption {
+      margin-block-start: var(--ply-space-1);
+      color: var(--ply-muted);
+      font-size: var(--ply-small);
+      line-height: var(--ply-small-leading);
+      overflow-wrap: anywhere;
+    }
+    &[data-shape="square"] > .image {
       aspect-ratio: 1;
     }
     &[data-shape="landscape"] {
-      aspect-ratio: 16 / 9;
       inline-size: min(100%, 16rem);
     }
-    & > img {
-      inline-size: 100%;
-      block-size: 100%;
-      min-block-size: 0;
-      object-fit: contain;
+    &[data-shape="landscape"] > .image {
+      aspect-ratio: 16 / 9;
     }
-    &[data-fit="cover"] > img {
+    &[data-fit="cover"] > .image > img {
       object-fit: cover;
-    }
-    & > span {
-      color: var(--ply-muted);
-      font-size: var(--ply-small);
-      text-align: center;
-      padding-inline: var(--ply-space-2);
     }
   }
 }

@@ -1,0 +1,33 @@
+@layer components {
+  .ply-split-view {
+    container: ply-split-view / inline-size;
+    min-inline-size: 0;
+    & > .panes {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--ply-space-4);
+      align-items: start;
+      & > :is(.primary, .secondary) {
+        min-inline-size: 0;
+      }
+      & > .secondary {
+        padding-block-start: var(--ply-space-6);
+        border-block-start: 1px solid var(--ply-border);
+      }
+    }
+    @container ply-split-view (inline-size >= 52rem) {
+      & > .panes {
+        grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.38fr);
+        & > .secondary {
+          padding-block-start: 0;
+          padding-inline-start: var(--ply-space-4);
+          border-block-start: 0;
+          border-inline-start: 1px solid var(--ply-border);
+        }
+      }
+      &[data-layout="reader"] > .panes {
+        grid-template-columns: minmax(18rem, 0.6fr) minmax(0, 1fr);
+      }
+    }
+  }
+}

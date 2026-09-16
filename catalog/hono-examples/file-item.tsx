@@ -1,13 +1,22 @@
-import { FileItem } from "../../src/hono";
-
+import { FileItem, ActionLink, Button } from "../../src/hono";
 export default () => (
-  <div class="ply-stack">
-    <FileItem name="登録済みの資料.pdf" description="PDF・2.4 MB" href="/files" />
-    <FileItem name="選択した資料.pdf" description="送信待ちです。" state="pending" />
+  <div>
     <FileItem
-      name="送信できなかった資料.pdf"
+      name="仕事場の案内.pdf"
+      description="PDF · 2.4 MB · 9月15日更新"
+      href="/files"
+      actions={<ActionLink href="/files">ファイルを確認する</ActionLink>}
+    />
+    <FileItem
+      name="秋の読書会のお知らせと参加される皆さまへの詳しいご案内_2026年9月版.pdf"
+      description="PDF · 1.8 MB"
+      state="pending"
+    />
+    <FileItem
+      name="project-2026-abcdefghijklmnopqrstuvwxyz0123456789.zip"
       description="接続を確認し、もう一度選択してください。"
       state="error"
+      actions={<Button disabled>再送信する</Button>}
     />
   </div>
 );

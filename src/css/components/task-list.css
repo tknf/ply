@@ -1,15 +1,93 @@
 @layer components {
   .ply-task-list {
-    display: grid;
-    list-style: none;
+    container: ply-task-list / inline-size;
+    min-inline-size: 0;
     padding: 0;
+    list-style: none;
     & > li {
-      padding-block: var(--ply-space-3);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) fit-content(40%);
+      align-items: center;
+      gap: var(--ply-space-3);
+      min-inline-size: 0;
       border-block-end: 1px solid var(--ply-border);
+      & > .end {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--ply-space-2);
+        padding-inline-end: var(--ply-space-2);
+        color: var(--ply-muted);
+        font-size: var(--ply-small);
+      }
+      & > .ply-choice {
+        grid-template-columns: 1.25rem minmax(0, 1fr);
+        padding-block: var(--ply-space-2);
+        padding-inline: var(--ply-space-2);
+        font-family: var(--ply-control-font-family);
+        font-size: var(--ply-label);
+        line-height: var(--ply-label-leading);
+        border-radius: var(--ply-radius-control);
+        transition: background-color var(--ply-duration) ease;
+        &:hover {
+          background: var(--ply-background);
+        }
+        &:has(> input:checked) {
+          color: var(--ply-muted);
+        }
+        & > input {
+          inline-size: 1.25rem;
+          block-size: 1.25rem;
+          margin-block-start: 0;
+          border-radius: 50%;
+          box-shadow: var(--ply-shadow-input);
+        }
+        & > input:checked {
+          background: var(--ply-success);
+          border-color: var(--ply-success);
+        }
+        & > input:checked::before {
+          animation: ply-check-arrive calc(var(--ply-duration) * 1.5) ease-out;
+        }
+        & > span {
+          min-inline-size: 0;
+          overflow-wrap: anywhere;
+        }
+        & > span > strong {
+          font-weight: 400;
+        }
+        & > input:checked + span > strong {
+          text-decoration: line-through;
+          text-decoration-thickness: 1px;
+          color: var(--ply-muted);
+        }
+      }
     }
-    & input:checked + span > strong {
-      text-decoration: line-through;
-      color: var(--ply-muted);
+  }
+  @container ply-task-list (inline-size < 26rem) {
+    .ply-task-list > li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+      & > .end {
+        padding-inline-start: 2.25rem;
+        padding-block-end: var(--ply-space-2);
+      }
+    }
+  }
+  @media (pointer: coarse) {
+    .ply-task-list > li > .ply-choice {
+      min-block-size: 2.75rem;
+    }
+  }
+  @keyframes ply-check-arrive {
+    0% {
+      transform: scale(0.6);
+    }
+    65% {
+      transform: scale(1.15);
+    }
+    100% {
+      transform: scale(1);
     }
   }
 }

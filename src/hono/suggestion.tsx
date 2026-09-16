@@ -37,7 +37,7 @@ export const Suggestion = ({
             data-suggestion-target="input"
           />
           <button
-            class="ply-field-toggle"
+            class="toggle"
             type="button"
             aria-label={`${label}の候補を開閉`}
             aria-haspopup="listbox"
@@ -48,7 +48,7 @@ export const Suggestion = ({
             <Icon name="caret" />
           </button>
           <ul
-            class="ply-combobox-options"
+            class="options"
             id={`${inputId}-listbox`}
             role="listbox"
             aria-label={`${label}の候補`}
@@ -67,7 +67,7 @@ export const Suggestion = ({
               </li>
             ))}
           </ul>
-          <p class="ply-suggestion-note" role="status" />
+          <p class="note" role="status" />
           <datalist id={`${inputId}-options`}>
             {candidates.map((option) => (
               <option value={option} />

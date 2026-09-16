@@ -1,4 +1,4 @@
-import { Button, Range } from "../../src/hono";
+import { Disclosure, Button, Range } from "../../src/hono";
 
 export default () => (
   <form class="ply-stack" aria-label="表示と予算の設定">
@@ -21,8 +21,7 @@ export default () => (
       step={500}
       value={[1000, 5000]}
     />
-    <details class="ply-disclosure">
-      <summary>最小・最大・小数・利用不可</summary>
+    <Disclosure summary="最小・最大・小数・利用不可">
       <div class="ply-stack">
         <Range label="音量（最小）" min={0} max={100} value={0} unit="%" />
         <Range label="画質（最大）" min={1} max={5} value={5} />
@@ -37,7 +36,7 @@ export default () => (
           disabled
         />
       </div>
-    </details>
+    </Disclosure>
     <Button type="reset">初期値に戻す</Button>
   </form>
 );

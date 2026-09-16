@@ -1,0 +1,182 @@
+import {
+  PageHeader,
+  Tabs,
+  MessageList,
+  Message,
+  Avatar,
+  Button,
+  ActionLink,
+  Icon,
+  Toolbar,
+  EmptyState,
+  Field,
+  Textarea,
+} from "../../src/hono";
+import { WorkspaceFrame } from "./workspace";
+
+const people = [
+  { name: "森 美咲", initials: "美", tone: "green" },
+  { name: "佐藤 健", initials: "健", tone: "blue" },
+  { name: "田中 遥", initials: "遥", tone: "coral" },
+] as const;
+const messages = [
+  {
+    id: "categories",
+    person: 0,
+    title: "カテゴリ案をまとめました",
+    preview: "5つのカテゴリに整理してみました。まずは実際の記事を入れて、試してみませんか。",
+    time: "10:24",
+    datetime: "2026-09-15T10:24:00+09:00",
+    body: [
+      "おはようございます。ヘルプセンターの記事を、5つのカテゴリに整理してみました。",
+      "「はじめての方へ」を入口にして、設定・使い方・お支払い・困ったとき、へ進める構成です。",
+      "まずはこの形で記事を入れて、実際に探しやすいか試してみたいです。",
+    ],
+  },
+  {
+    id: "meeting",
+    person: 1,
+    title: "来週の打ち合わせについて",
+    preview: "火曜日14時から、30分ほどお話しできればと思っています。",
+    time: "9:42",
+    datetime: "2026-09-15T09:42:00+09:00",
+    body: [
+      "新しいヘルプセンターの件、来週の火曜日14時から、30分ほどお話しできればと思っています。",
+      "先にカテゴリ案に目を通していただけると助かります。ご都合が悪ければ、別の日でも大丈夫です。",
+    ],
+  },
+  {
+    id: "review",
+    person: 2,
+    title: "公開前のチェックをお願いします",
+    preview: "リンク・スマートフォンでの表示・初めて使う方の確認。3つに絞りました。",
+    time: "8:15",
+    datetime: "2026-09-15T08:15:00+09:00",
+    body: [
+      "公開前に確認したいことを、3つに絞りました。リンク切れ、スマートフォンでの表示、初めて使う方の確認です。",
+      "気づいたことを返信で教えてください。修正できたものから、プロジェクトのチェックを進めていきましょう。",
+    ],
+  },
+] as const;
+const folders = [
+  {
+    id: "inbox",
+    label: "受信トレイ",
+    empty: "ひとまず、ひと区切り。",
+    description: "届いた連絡はすべて確認できました。",
+  },
+  {
+    id: "later",
+    label: "あとで",
+    empty: "あとで読む連絡はありません",
+    description: "今すぐ取りかかれない連絡を、ここに置いておけます。",
+  },
+  {
+    id: "done",
+    label: "確認済み",
+    empty: "確認済みの連絡はありません",
+    description: "確認を終えた連絡も、ここから読み返せます。",
+  },
+] as const;
+
+export const WorkspaceMail = ({ message }: { message?: string } = {}) => {
+  const selected = messages.find((item) => item.id === message);
+  return (
+    <WorkspaceFrame current="mail">
+      <div class="ply-stack" data-controller="inbox-demo" data-inbox-message={selected?.id}>
+        {selected ? (
+          <>
+            <Toolbar label="連絡を整理する">
+              <div class="start">
+                <ActionLink href="/review/mail" variant="link">
+                  ← 受信トレイ
+                </ActionLink>
+              </div>
+              <div class="end ply-cluster">
+                <Button data-inbox-folder="inbox" hidden>
+                  受信トレイに戻す
+                </Button>
+                <Button data-inbox-folder="later">
+                  <Icon name="calendar" />
+                  あとで読む
+                </Button>
+                <Button data-inbox-folder="done" variant="primary">
+                  <Icon name="check" />
+                  確認を終える
+                </Button>
+              </div>
+            </Toolbar>
+            <div class="ply-reading-pane">
+              <PageHeader title={selected.title} />
+              <Message
+                layout="document"
+                author={people[selected.person].name}
+                time={`今日 ${selected.time}`}
+                datetime={selected.datetime}
+                avatar={<Avatar {...people[selected.person]} size="small" />}
+              >
+                {selected.body.map((paragraph) => (
+                  <p>{paragraph}</p>
+                ))}
+              </Message>
+              <form class="ply-stack" data-space="small" data-inbox-draft>
+                <Field id="inbox-reply" label={`${people[selected.person].name}への返信の下書き`}>
+                  {(attributes) => (
+                    <Textarea {...attributes} name="reply" rows={4} placeholder="返信を書く…" />
+                  )}
+                </Field>
+                <Toolbar label="下書きの操作">
+                  <Button type="submit">下書きを保存</Button>
+                  <span class="ply-save-status" role="status" data-inbox-status />
+                </Toolbar>
+              </form>
+            </div>
+          </>
+        ) : (
+          <>
+            <PageHeader title="受信トレイ" />
+            <Tabs
+              id="inbox-folders"
+              label="連絡の状態"
+              items={folders.map((folder) => ({
+                value: folder.id,
+                label: folder.label,
+                count: folder.id === "inbox" ? messages.length : 0,
+                content: (
+                  <div class="ply-stack" data-space="small" data-inbox-folder-panel={folder.id}>
+                    <MessageList
+                      label={folder.label}
+                      items={
+                        folder.id === "inbox"
+                          ? messages.map((item) => ({
+                              id: item.id,
+                              sender: people[item.person].name,
+                              title: item.title,
+                              preview: item.preview,
+                              href: `/review/mail/${item.id}`,
+                              time: item.time,
+                              datetime: item.datetime,
+                              avatar: <Avatar {...people[item.person]} size="small" />,
+                              unread: true,
+                            }))
+                          : []
+                      }
+                    />
+                    <div data-inbox-empty hidden={folder.id === "inbox"}>
+                      <EmptyState
+                        kind={folder.id === "inbox" ? "complete" : "empty"}
+                        title={folder.empty}
+                      >
+                        <p>{folder.description}</p>
+                      </EmptyState>
+                    </div>
+                  </div>
+                ),
+              }))}
+            />
+          </>
+        )}
+      </div>
+    </WorkspaceFrame>
+  );
+};

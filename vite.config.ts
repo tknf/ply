@@ -1,8 +1,20 @@
 import { defineConfig } from "vite-plus";
-import devServer from "@hono/vite-dev-server";
+import devServer, { defaultOptions } from "@hono/vite-dev-server";
+import { controlTextPlugin } from "./scripts/control-text-plugin";
 
 export default defineConfig(({ mode }) => ({
-  plugins: mode === "client" ? [] : [devServer({ entry: "catalog/app.tsx", export: "app" })],
+  plugins: [
+    controlTextPlugin(),
+    ...(mode === "client"
+      ? []
+      : [
+          devServer({
+            entry: "catalog/app.tsx",
+            export: "app",
+            exclude: [...defaultOptions.exclude, /^\/src\/css\/assets\//],
+          }),
+        ]),
+  ],
   server: { host: "127.0.0.1", port: 5173, strictPort: true },
   build:
     mode === "client"

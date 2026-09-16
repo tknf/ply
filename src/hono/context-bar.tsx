@@ -1,9 +1,10 @@
 import type { PropsWithChildren } from "hono/jsx";
 import { classes, type ElementProps } from "./types";
+import { Breadcrumb, type BreadcrumbItem } from "./breadcrumb";
 
-export type BreadcrumbItem = { label: string; href?: string };
+export type { BreadcrumbItem } from "./breadcrumb";
 export type ContextBarProps = PropsWithChildren<
-  ElementProps<"nav"> & { items: readonly BreadcrumbItem[]; label?: string }
+  ElementProps<"div"> & { items: readonly BreadcrumbItem[]; label?: string }
 >;
 export const ContextBar = ({
   items,
@@ -12,19 +13,8 @@ export const ContextBar = ({
   label = "現在の位置と関連する操作",
   ...attributes
 }: ContextBarProps) => (
-  <nav {...attributes} class={classes("ply-context-bar", className)} aria-label={label}>
-    <ol class="ply-breadcrumb">
-      {items.map((item, index) => (
-        <li>
-          {index > 0 && <span aria-hidden="true">／ </span>}
-          {item.href && index < items.length - 1 ? (
-            <a href={item.href}>{item.label}</a>
-          ) : (
-            <span aria-current={index === items.length - 1 ? "page" : undefined}>{item.label}</span>
-          )}
-        </li>
-      ))}
-    </ol>
-    {children && <div class="ply-context-actions">{children}</div>}
-  </nav>
+  <div {...attributes} class={classes("ply-context-bar", className)}>
+    <Breadcrumb items={items} label={label} />
+    {children && <div class="actions">{children}</div>}
+  </div>
 );

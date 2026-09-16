@@ -1,30 +1,55 @@
 @layer components {
   .ply-timeline {
-    display: grid;
-    list-style: none;
+    container: ply-timeline / inline-size;
+    min-inline-size: 0;
     padding: 0;
+    padding-inline-start: var(--ply-space-2);
+    list-style: none;
+    color: var(--ply-text);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
     & > li {
+      position: relative;
       display: grid;
-      grid-template-columns: 6rem minmax(0, 1fr);
-      gap: var(--ply-space-4);
-      padding-block: var(--ply-space-4);
-      border-block-end: 1px solid var(--ply-border);
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--ply-space-1) var(--ply-space-4);
+      padding-block: var(--ply-space-3);
+      padding-inline-start: var(--ply-space-4);
+      border-inline-start: 1px solid var(--ply-border);
+      &::before {
+        content: "";
+        position: absolute;
+        inset-inline-start: calc(-0.25rem - 0.5px);
+        inset-block-start: 1.125rem;
+        inline-size: 0.5rem;
+        block-size: 0.5rem;
+        border: 2px solid var(--ply-link);
+        border-radius: 50%;
+        background: var(--ply-surface);
+      }
+      & > time {
+        color: var(--ply-muted);
+        font-size: var(--ply-small);
+        line-height: var(--ply-small-leading);
+        overflow-wrap: anywhere;
+      }
+      & > .body {
+        min-inline-size: 0;
+        overflow-wrap: anywhere;
+        & > .title {
+          font-size: var(--ply-label);
+          font-weight: 400;
+          line-height: var(--ply-label-leading);
+        }
+        & > * + * {
+          margin-block-start: var(--ply-space-1);
+        }
+      }
     }
-    & > li > div {
-      display: grid;
-      gap: var(--ply-space-2);
-    }
-    & time {
-      font-size: var(--ply-small);
-      color: var(--ply-muted);
-    }
-    & strong {
-      font-size: var(--ply-label);
-    }
-    @container (max-width: 28rem) {
+    @container ply-timeline (inline-size >= 28rem) {
       & > li {
-        grid-template-columns: 1fr;
-        gap: var(--ply-space-1);
+        grid-template-columns: 6.5rem minmax(0, 1fr);
+        align-items: baseline;
       }
     }
   }

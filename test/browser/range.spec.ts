@@ -125,7 +125,7 @@ test("つまみとバーを補間し動きを減らす設定では即座に反�
       await transition.ready;
       transition.currentTime = duration / 2;
       const value = Number(getComputedStyle(element).getPropertyValue(name));
-      for (const input of element.querySelectorAll(".ply-range-input")) {
+      for (const input of element.querySelectorAll(".input")) {
         const inherited = Number(getComputedStyle(input).getPropertyValue(name));
         if (Math.abs(inherited - value) > 0.001)
           throw new Error(`移動位置が継承されていません: ${value} / ${inherited}`);
@@ -231,7 +231,7 @@ test("JavaScriptなしでは独立した二本のトラックをクリックで�
     await end.click({ position: { x: endBox.width * 0.8, y: endBox.height / 2 } });
     expect(Number(await start.inputValue())).toBeGreaterThan(1000);
     expect(Number(await end.inputValue())).toBeGreaterThan(5000);
-    await expect(group.locator(".ply-range-values")).toBeHidden();
+    await expect(group.locator(".values")).toBeHidden();
   } finally {
     await context.close();
   }

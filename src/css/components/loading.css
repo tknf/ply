@@ -1,17 +1,26 @@
 @layer components {
   .ply-loading {
     display: flex;
-    align-items: center;
+    align-items: start;
     gap: var(--ply-space-2);
+    min-inline-size: 0;
+    color: var(--ply-muted);
     font-size: var(--ply-label);
-    & > span {
+    line-height: var(--ply-label-leading);
+    & > .indicator {
       inline-size: 1rem;
       block-size: 1rem;
+      margin-block-start: calc((1lh - 1rem) / 2);
+      flex: none;
       border: 2px solid var(--ply-border);
-      border-block-start-color: var(--ply-link);
+      border-block-start-color: currentColor;
+      border-inline-end-color: currentColor;
       border-radius: 50%;
-      animation: ply-loading-turn 1s linear infinite;
-      flex-shrink: 0;
+      animation: ply-loading-turn 800ms linear infinite;
+    }
+    & > .label {
+      min-inline-size: 0;
+      overflow-wrap: anywhere;
     }
   }
   @keyframes ply-loading-turn {
@@ -20,7 +29,7 @@
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .ply-loading > span {
+    .ply-loading > .indicator {
       animation: none;
     }
   }

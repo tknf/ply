@@ -1,13 +1,13 @@
 import { expect, test } from "@playwright/test";
 
-test("部品一覧は50種類を重複なく案内する", async ({ page }) => {
+test("部品一覧は56種類を重複なく案内する", async ({ page }) => {
   await page.goto("/components");
   const links = page.locator(".catalog-component-index a");
-  await expect(links).toHaveCount(50);
+  await expect(links).toHaveCount(56);
   const hrefs = await links.evaluateAll((elements) =>
     elements.map((element) => element.getAttribute("href")),
   );
-  expect(new Set(hrefs).size).toBe(50);
+  expect(new Set(hrefs).size).toBe(56);
 });
 
 test("案件で追加した仕事を移動しても名前と件数を保つ", async ({ page }) => {
@@ -128,9 +128,9 @@ test("追加した標準部品はJavaScript無効でも操作できる", async (
   await expect(example.getByRole("switch", { name: "週次のまとめ" })).not.toBeChecked();
   await page.goto("/components/popover");
   await example.getByRole("button", { name: "共有範囲", exact: true }).click();
-  await expect(example.locator(".ply-popover")).toBeVisible();
+  await expect(example.locator("#hono-popover")).toBeVisible();
   await page.keyboard.press("Escape");
-  await expect(example.locator(".ply-popover")).not.toBeVisible();
+  await expect(example.locator("#hono-popover")).not.toBeVisible();
   await page.goto("/examples/schedule");
   await page.getByRole("link", { name: "8月", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("8月の予定");

@@ -5,7 +5,7 @@ for (const width of [375, 768, 1280]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/reservation");
     const heading = await page.getByRole("heading", { name: "利用日時を選ぶ" }).boundingBox();
-    const fields = await page.locator(".ply-field-group-fields").boundingBox();
+    const fields = await page.locator(".fields").boundingBox();
     const date = await page.getByLabel("利用日（必須）", { exact: true }).boundingBox();
     const count = await page.getByLabel("人数（必須）", { exact: true }).boundingBox();
     if (!heading || !fields || !date || !count) throw new Error("フォームが描画されていません");

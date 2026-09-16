@@ -1,0 +1,7 @@
+@layer components {
+  .ply-disclosure-group {
+    display: grid;
+    gap: var(--ply-space-1);
+    min-inline-size: 0;
+  }
+}

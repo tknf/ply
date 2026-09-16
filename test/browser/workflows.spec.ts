@@ -86,7 +86,7 @@ test("Turbo遷移とDOM再接続後もイベントが重複しない", async ({ 
   await expect(page.getByRole("button", { name: "確認を開く" })).toBeVisible();
   await expect(page.locator("html")).toHaveAttribute("data-visit-marker", "retained");
   await page.evaluate(() => {
-    const root = document.querySelector(".ply-dialog-root");
+    const root = document.querySelector(".ply-dialog");
     if (!root || !root.parentElement) throw new Error("ダイアログなし");
     const parent = root.parentElement;
     root.addEventListener("dialog:open", () => {
@@ -99,7 +99,7 @@ test("Turbo遷移とDOM再接続後もイベントが重複しない", async ({ 
   const trigger = page.getByRole("button", { name: "確認を開く" });
   await trigger.click();
   await expect(page.getByRole("dialog")).toBeVisible();
-  await expect(page.locator(".ply-dialog-root").first()).toHaveAttribute("data-open-count", "1");
+  await expect(page.locator(".ply-dialog").first()).toHaveAttribute("data-open-count", "1");
   await page.keyboard.press("Escape");
   await expect(trigger).toBeFocused();
 });

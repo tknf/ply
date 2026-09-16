@@ -74,7 +74,8 @@ test.describe("タッチ操作", () => {
     const option = page.getByRole("option", { name: "営業部", exact: true });
     const bounds = await option.boundingBox();
     if (!bounds) throw new Error("候補が描画されていません");
-    expect(bounds.height).toBeGreaterThanOrEqual(44);
+    // Firefoxの矩形には0.00003px程度の浮動小数誤差がある。1pxの不足は許容しない。
+    expect(Math.round(bounds.height * 1000) / 1000).toBeGreaterThanOrEqual(44);
     await option.tap();
     await expect(input).toHaveValue("営業部");
     await expect(list).toBeHidden();

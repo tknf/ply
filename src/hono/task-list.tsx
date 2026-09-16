@@ -1,24 +1,36 @@
-export type TaskListProps = {
+import type { Child } from "hono/jsx";
+import { classes, type ElementProps } from "./types";
+
+export type TaskListProps = ElementProps<"ul"> & {
   label: string;
   items: readonly {
     name: string;
     label: string;
     checked?: boolean;
     disabled?: boolean;
-    detail?: string;
+    detail?: Child;
+    value?: string;
+    end?: Child;
   }[];
 };
-export const TaskList = ({ label, items }: TaskListProps) => (
-  <ul class="ply-task-list" aria-label={label}>
+export const TaskList = ({ label, items, class: className, ...attributes }: TaskListProps) => (
+  <ul {...attributes} class={classes("ply-task-list", className)} aria-label={label}>
     {items.map((item) => (
       <li>
         <label class="ply-choice">
-          <input type="checkbox" name={item.name} checked={item.checked} disabled={item.disabled} />
+          <input
+            type="checkbox"
+            name={item.name}
+            value={item.value}
+            checked={item.checked}
+            disabled={item.disabled}
+          />
           <span>
             <strong>{item.label}</strong>
-            {item.detail && <small>{item.detail}</small>}
+            {item.detail != null && item.detail !== false && <small>{item.detail}</small>}
           </span>
         </label>
+        {item.end != null && <div class="end">{item.end}</div>}
       </li>
     ))}
   </ul>

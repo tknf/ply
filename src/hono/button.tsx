@@ -1,6 +1,22 @@
 import type { PropsWithChildren } from "hono/jsx";
 import { classes, type ElementProps, type ButtonVariant } from "./types";
 
+export const ButtonGroup = ({
+  children,
+  label,
+  class: className,
+  ...attributes
+}: PropsWithChildren<ElementProps<"div"> & { label: string }>) => (
+  <div
+    {...attributes}
+    class={classes("ply-button-group", className)}
+    role="group"
+    aria-label={label}
+  >
+    {children}
+  </div>
+);
+
 export type ButtonProps = PropsWithChildren<
   ElementProps<"button"> & {
     variant?: ButtonVariant;

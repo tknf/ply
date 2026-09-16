@@ -1,6 +1,13 @@
 import type { Child } from "hono/jsx";
 
-export type TabItem = { value: string; label: string; content: Child; disabled?: boolean };
+export type TabItem = {
+  value: string;
+  label: string;
+  content: Child;
+  disabled?: boolean;
+  icon?: Child;
+  count?: number;
+};
 export const Tabs = ({
   id,
   label,
@@ -17,7 +24,7 @@ export const Tabs = ({
     items.find((item) => !item.disabled)?.value;
   return (
     <div class="ply-tabs" data-controller="tabs" data-tabs-value-value={active}>
-      <div class="ply-tab-list" role="tablist" aria-label={label} data-tabs-target="tablist">
+      <div class="list" role="tablist" aria-label={label} data-tabs-target="tablist">
         {items.map((item, index) => (
           <button
             id={`${id}-tab-${index}`}
@@ -31,14 +38,16 @@ export const Tabs = ({
             disabled={item.disabled}
             tabindex={item.value === active ? 0 : -1}
           >
+            {item.icon != null && item.icon !== false && <span class="icon">{item.icon}</span>}
             {item.label}
+            {item.count !== undefined && <span class="count">{item.count}</span>}
           </button>
         ))}
       </div>
       {items.map((item, index) => (
         <section
           id={`${id}-panel-${index}`}
-          class="ply-tab-panel"
+          class="panel"
           role="tabpanel"
           data-tabs-target="tabpanel"
           data-tabs-value={item.value}

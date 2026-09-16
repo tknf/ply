@@ -30,21 +30,20 @@ export const Field = ({ id, label, help, error, describedBy, status, children }:
   } satisfies ControlAttributes;
   return (
     <div class="ply-field">
-      <div class="ply-field-heading">
+      <div class="heading">
         <label for={id}>{label}</label>
         {status}
       </div>
       {children(attributes)}
       {(help || error) && (
-        <div class="ply-field-messages">
+        <div class="messages">
           {help && (
-            <p class="ply-field-help" id={`${id}-help`}>
-              <Icon name="info" />
+            <p class="help" id={`${id}-help`}>
               <span>{help}</span>
             </p>
           )}
           {error && (
-            <p class="ply-field-error" id={`${id}-error`}>
+            <p class="error" id={`${id}-error`}>
               <Icon name="x-circle" />
               <span>{error}</span>
             </p>
@@ -67,9 +66,9 @@ export const FieldGroup = ({
 }: FieldGroupProps) => (
   <fieldset {...attributes} class={classes("ply-field-group", className)}>
     <legend>{legend}</legend>
-    <div class="ply-field-group-layout">
-      {description && <p class="ply-field-group-description">{description}</p>}
-      <div class="ply-field-group-fields">{children}</div>
+    <div class="layout">
+      {description && <p class="description">{description}</p>}
+      <div class="fields">{children}</div>
     </div>
   </fieldset>
 );

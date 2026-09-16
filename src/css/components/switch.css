@@ -34,6 +34,7 @@
       block-size: 1em;
       border-radius: 50%;
       background: currentColor;
+      box-shadow: 0 1px 2px rgb(36 57 70 / 18%);
     }
 
     & > input:checked {
@@ -71,10 +72,16 @@
       display: block;
       margin-block-start: var(--ply-space-1);
       color: var(--ply-muted);
-      font-size: inherit;
+      font-size: var(--ply-small);
     }
   }
 
+  @media (pointer: coarse) {
+    .ply-switch {
+      min-block-size: 2.75rem;
+      padding-block: var(--ply-space-3);
+    }
+  }
   @media (forced-colors: active) {
     .ply-switch > input {
       appearance: auto;

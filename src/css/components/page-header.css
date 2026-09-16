@@ -1,84 +1,60 @@
 @layer components {
   .ply-page-header {
-    display: grid;
-    gap: var(--ply-space-2);
-    justify-items: start;
-    text-align: start;
-    overflow-wrap: anywhere;
-    & > h1 {
-      font-size: 1.5rem;
-      line-height: 1.3;
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      color: var(--ply-text);
-    }
-    & > p {
-      max-inline-size: var(--ply-measure);
-      font-size: var(--ply-label);
-      color: var(--ply-muted);
-    }
-    & > .ply-page-symbol {
+    container: ply-page-header / inline-size;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ply-space-3);
+    min-inline-size: 0;
+    & > .icon {
       display: grid;
       place-items: center;
-      inline-size: 1.75rem;
-      block-size: 1.75rem;
-      border-radius: var(--ply-radius-surface);
-      background: transparent;
-      color: var(--ply-muted);
+      flex: 0 0 auto;
+      inline-size: 2.5rem;
+      block-size: 2.5rem;
+      border-radius: 14px;
+      background: var(--ply-cover);
+      color: var(--ply-link);
       font-size: 1.5rem;
     }
-    &:has(> .ply-page-symbol) {
-      grid-template-columns: auto minmax(0, 1fr);
-      column-gap: var(--ply-space-3);
-      align-items: center;
-    }
-    &:not([data-align="center"]):has(> p) > .ply-page-symbol {
-      grid-row: auto;
-    }
-    &:has(> .ply-page-symbol) > p {
-      grid-column: 1 / -1;
-    }
-    &[data-align="center"] {
-      justify-items: center;
-      text-align: center;
-    }
-    &[data-align="center"]:has(> .ply-page-symbol) {
-      grid-template-columns: 1fr;
-    }
-    &[data-align="center"] > .ply-page-symbol {
-      grid-row: auto;
-    }
-    &[data-align="center"] > p {
-      grid-column: auto;
-    }
-    @container ply-surface (inline-size >= 45rem) {
-      & > h1 {
-        font-size: var(--ply-title);
-      }
-    }
-  }
-}
-
-@layer components {
-  .ply-page-header {
-    & > .ply-page-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--ply-space-2);
-      align-items: center;
+    & > .heading {
+      flex: 1 1 14rem;
       min-inline-size: 0;
     }
-    &:has(> .ply-page-actions) {
-      grid-template-columns: minmax(0, 1fr);
+    & > .heading > h1 {
+      font-family: var(--ply-display-font);
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: calc(4 / 3);
+      text-wrap: balance;
     }
-    @container ply-surface (inline-size >= 38rem) {
-      &:has(> .ply-page-actions):not(:has(> .ply-page-symbol)) {
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: center;
+    & > .heading > p {
+      max-inline-size: var(--ply-measure);
+      margin-block-start: var(--ply-space-1);
+      color: var(--ply-muted);
+      font-size: var(--ply-label);
+      line-height: var(--ply-label-leading);
+    }
+    & > .actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--ply-space-2);
+      min-inline-size: 0;
+    }
+    &[data-align="center"] {
+      flex-direction: column;
+      text-align: center;
+      & > .heading {
+        flex-basis: auto;
       }
-      &:not(:has(> .ply-page-symbol)) > .ply-page-actions {
-        grid-column: 2;
-        grid-row: 1 / span 2;
+      & > .actions {
+        justify-content: center;
+      }
+    }
+    @container ply-page-header (inline-size < 30rem) {
+      & > .actions {
+        flex-basis: 100%;
       }
     }
   }

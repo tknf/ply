@@ -40,12 +40,12 @@
         --ply-range-fill-end var(--ply-duration) ease-out;
     }
 
-    &:has(.ply-range-input:disabled) {
+    &:has(> .controls > .native > .input:disabled) {
       --ply-range-color: var(--ply-control-border);
       color: var(--ply-muted);
     }
 
-    & > .ply-range-controls {
+    & > .controls {
       margin-block-start: var(--ply-space-2);
     }
 
@@ -53,11 +53,11 @@
       --ply-range-fill-start: var(--slider-range-start);
       --ply-range-fill-end: calc(var(--slider-range-start) + var(--slider-range-span));
 
-      & > .ply-range-controls {
+      & > .controls {
         position: relative;
       }
 
-      & > .ply-range-controls::before {
+      & > .controls::before {
         content: "";
         position: absolute;
         inset-inline: calc(9em / 14);
@@ -72,32 +72,32 @@
         pointer-events: none;
       }
 
-      & .ply-range-native {
+      & > .controls > .native {
         grid-area: 1 / 1;
       }
 
-      & .ply-range-native:first-child {
+      & > .controls > .native:first-child {
         --ply-range-thumb-offset: calc(var(--ply-range-fill-start) - var(--slider-range-start));
       }
 
-      & .ply-range-native:last-child {
+      & > .controls > .native:last-child {
         --ply-range-thumb-offset: calc(
           var(--ply-range-fill-end) - var(--slider-range-start) - var(--slider-range-span)
         );
       }
 
-      & .ply-range-track-label {
+      & > .controls > .native > .label {
         display: none;
       }
 
-      & .ply-range-input {
+      & > .controls > .native > .input {
         background: none;
         pointer-events: none;
       }
     }
   }
 
-  .ply-range-heading {
+  .ply-range > .heading {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
@@ -105,19 +105,19 @@
     gap: var(--ply-space-2);
   }
 
-  .ply-range-value {
+  .ply-range > .heading > .value {
     flex-shrink: 0;
     margin-inline-start: auto;
     font-variant-numeric: tabular-nums;
   }
 
-  .ply-range-controls,
-  .ply-range-native {
+  .ply-range > .controls,
+  .ply-range > .controls > .native {
     display: grid;
     min-inline-size: 0;
   }
 
-  .ply-range-input {
+  .ply-range > .controls > .native > .input {
     appearance: none;
     position: relative;
     inline-size: 100%;
@@ -152,7 +152,8 @@
       block-size: calc(9em / 7);
       border: 2px solid var(--ply-range-color);
       border-radius: 50%;
-      background: var(--ply-surface);
+      background: linear-gradient(var(--ply-surface), var(--ply-background));
+      box-shadow: 0 1px 2px rgb(36 57 70 / 16%);
       pointer-events: auto;
       cursor: grab;
       /* ネイティブの位置を、バーと共通の補間位置へ寄せる。 */
@@ -165,7 +166,8 @@
       block-size: calc(9em / 7);
       border: 2px solid var(--ply-range-color);
       border-radius: 50%;
-      background: var(--ply-surface);
+      background: linear-gradient(var(--ply-surface), var(--ply-background));
+      box-shadow: 0 1px 2px rgb(36 57 70 / 16%);
       pointer-events: auto;
       cursor: grab;
       translate: calc(var(--ply-range-thumb-offset) * (100cqi - 9em / 7) * var(--ply-range-sign));
@@ -212,15 +214,15 @@
     }
   }
 
-  .ply-range-limits {
+  .ply-range > .limits {
     display: flex;
     justify-content: space-between;
     color: var(--ply-muted);
-    font-size: 0.75rem;
-    line-height: calc(4 / 3);
+    font-size: var(--ply-small);
+    line-height: var(--ply-small-leading);
   }
 
-  .ply-range-values {
+  .ply-range > .values {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 10rem));
     justify-content: space-between;
@@ -229,7 +231,7 @@
   }
 
   @container ply-range (inline-size < 18rem) {
-    .ply-range-values {
+    .ply-range > .values {
       grid-template-columns: minmax(0, 1fr);
     }
   }
@@ -244,8 +246,8 @@
       --ply-background: Canvas;
     }
 
-    .ply-range-controls,
-    .ply-range-input {
+    .ply-range > .controls,
+    .ply-range > .controls > .native > .input {
       forced-color-adjust: none;
     }
   }

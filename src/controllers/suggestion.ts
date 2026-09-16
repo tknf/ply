@@ -32,7 +32,7 @@ export class SuggestionController extends ComboboxController {
       this.element.addEventListener("compositionend", this.endComposition);
       this.element.addEventListener("combobox:change", this.selectSuggestion);
       this.suggestionForm?.addEventListener("reset", this.resetSuggestion);
-      const toggle = this.element.querySelector<HTMLButtonElement>(".ply-field-toggle");
+      const toggle = this.element.querySelector<HTMLButtonElement>(".toggle");
       if (toggle) toggle.hidden = false;
     };
     this.disconnect = () => {
@@ -63,7 +63,7 @@ export class SuggestionController extends ComboboxController {
         ])
           input.removeAttribute(attribute);
       }
-      const toggle = this.element.querySelector<HTMLButtonElement>(".ply-field-toggle");
+      const toggle = this.element.querySelector<HTMLButtonElement>(".toggle");
       if (toggle) toggle.hidden = true;
     };
   }
@@ -81,7 +81,7 @@ export class SuggestionController extends ComboboxController {
   };
 
   private setEmptyMessage = (empty: boolean) => {
-    const note = this.element.querySelector(".ply-suggestion-note");
+    const note = this.element.querySelector(".note");
     if (note)
       note.textContent = empty ? "一致する候補はありません。入力した内容をそのまま使えます。" : "";
   };
@@ -111,7 +111,7 @@ export class SuggestionController extends ComboboxController {
       this.filterSuggestion();
       return;
     }
-    const toggle = this.element.querySelector(".ply-field-toggle");
+    const toggle = this.element.querySelector(".toggle");
     if (event.target instanceof Node && toggle?.contains(event.target)) {
       const wasOpen = this.open;
       this.resetOptions();
@@ -133,7 +133,7 @@ export class SuggestionController extends ComboboxController {
   private keepInputFocus = (event: MouseEvent) => {
     if (event.button !== 0 || !this.editable()) return;
     const target = event.target;
-    const toggle = this.element.querySelector(".ply-field-toggle");
+    const toggle = this.element.querySelector(".toggle");
     if (
       target instanceof Node &&
       (toggle?.contains(target) || this.optionTargets.some((option) => option.contains(target)))

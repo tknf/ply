@@ -1,10 +1,58 @@
 @layer components {
   .ply-progress {
-    display: grid;
-    gap: var(--ply-space-2);
+    display: block;
+    min-inline-size: 0;
+    color: var(--ply-text);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+    & > .heading {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: baseline;
+      gap: var(--ply-space-1) var(--ply-space-3);
+      overflow-wrap: anywhere;
+      & > .value {
+        color: var(--ply-muted);
+        font-size: var(--ply-small);
+        font-variant-numeric: tabular-nums;
+      }
+    }
     & > progress {
+      display: block;
+      appearance: none;
       inline-size: 100%;
+      block-size: 0.375rem;
+      margin-block-start: var(--ply-space-2);
+      overflow: hidden;
+      border: 0;
+      border-radius: var(--ply-radius-pill);
+      background: var(--ply-border);
+      box-shadow: var(--ply-shadow-input);
       accent-color: var(--ply-link);
+      color: var(--ply-link);
+      &::-webkit-progress-bar {
+        background: var(--ply-border);
+        border-radius: inherit;
+      }
+      &::-webkit-progress-value {
+        background: linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--ply-link) 85%, white),
+          var(--ply-link)
+        );
+        border-radius: inherit;
+      }
+      &::-moz-progress-bar {
+        background: linear-gradient(
+          90deg,
+          color-mix(in srgb, var(--ply-link) 85%, white),
+          var(--ply-link)
+        );
+        border-radius: inherit;
+      }
+      &:indeterminate {
+        appearance: auto;
+      }
     }
   }
 }

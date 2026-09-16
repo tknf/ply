@@ -22,17 +22,17 @@ export const PasswordField = ({
   >
     <Input {...attributes} id={id} type="password" data-password-field-target="input" />
     <button
-      class="ply-field-toggle"
+      class="toggle"
       type="button"
       disabled={attributes.disabled}
       data-password-field-target="toggle"
       data-state="hidden"
       aria-controls={id}
     >
-      <span class="ply-password-show">
+      <span class="show">
         <Icon name="eye" />
       </span>
-      <span class="ply-password-hide">
+      <span class="hide">
         <Icon name="eye-slash" />
       </span>
     </button>

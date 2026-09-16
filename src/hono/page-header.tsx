@@ -18,9 +18,11 @@ export const PageHeader = ({
   ...attributes
 }: PageHeaderProps) => (
   <header {...attributes} class={classes("ply-page-header", className)} data-align={align}>
-    {icon && <span class="ply-page-symbol">{icon}</span>}
-    <h1>{title}</h1>
-    {description && <p>{description}</p>}
-    {actions && <div class="ply-page-actions">{actions}</div>}
+    {icon && <span class="icon">{icon}</span>}
+    <hgroup class="heading">
+      <h1>{title}</h1>
+      {description && <p>{description}</p>}
+    </hgroup>
+    {actions && <div class="actions">{actions}</div>}
   </header>
 );

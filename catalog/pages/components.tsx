@@ -32,13 +32,5 @@ export const Components = ({ components }: { components: readonly ComponentEntry
         </ul>
       </section>
     ))}
-    <section class="ply-stack">
-      <h2>組み合わせた事例</h2>
-      <div class="catalog-component-jump">
-        <a href="/examples/project">案件を進める</a>
-        <a href="/examples/settings">設定を変更する</a>
-        <a href="/examples/schedule">予定を確認する</a>
-      </div>
-    </section>
   </Surface>
 );

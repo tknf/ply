@@ -1,9 +1,9 @@
-import { FilterBar } from "../../src/hono";
+import { Disclosure, FilterBar } from "../../src/hono";
 
 export default () => (
   <div class="ply-stack">
     <div class="ply-stack" data-space="small">
-      <p class="ply-field-label">予定を月で絞り込む</p>
+      <p class="label">予定を月で絞り込む</p>
       <FilterBar
         label="表示する月"
         items={[
@@ -12,8 +12,7 @@ export default () => (
         ]}
       />
     </div>
-    <details class="ply-disclosure">
-      <summary>件数・0件・長い条件名</summary>
+    <Disclosure summary="件数・0件・長い条件名">
       <div class="ply-stack">
         <FilterBar
           label="記事の状態"
@@ -36,6 +35,6 @@ export default () => (
           ]}
         />
       </div>
-    </details>
+    </Disclosure>
   </div>
 );

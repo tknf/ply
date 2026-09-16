@@ -1,8 +1,232 @@
 @layer components {
-  .ply-field-label {
+  .ply-field {
+    display: grid;
+    align-content: start;
+    gap: 0.375rem;
+    min-inline-size: 0;
+    & > .heading {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--ply-space-2);
+    }
+    & > .heading > label,
+    & > .label {
+      font-size: var(--ply-label);
+      font-weight: 400;
+      line-height: var(--ply-label-leading);
+    }
+  }
+  :is(.ply-field, .ply-date-picker, .ply-character-count) > .messages {
+    & > * + * {
+      margin-block-start: var(--ply-space-1);
+    }
+    & > .help {
+      color: var(--ply-muted);
+      font-size: var(--ply-small);
+      line-height: var(--ply-small-leading);
+    }
+    & > .error {
+      display: grid;
+      grid-template-columns: 1em minmax(0, 1fr);
+      align-items: start;
+      gap: 0.375em;
+      color: var(--ply-danger);
+      font-size: var(--ply-label);
+      line-height: var(--ply-label-leading);
+    }
+    & > .error > .ply-icon {
+      inline-size: 1em;
+      block-size: 1em;
+      margin-block-start: calc(3em / 14);
+    }
+  }
+  .ply-password,
+  .ply-combobox {
+    position: relative;
+    min-inline-size: 0;
     font-size: var(--ply-label);
-    font-weight: 700;
-    line-height: calc(10 / 7);
+    & > .ply-input {
+      padding-inline-end: 2.5em;
+    }
+  }
+  .ply-password {
+    /* controllerが名前と操作を接続してから表示する。 */
+    &:not([data-state]) > .toggle {
+      display: none;
+    }
+    & > .toggle[data-state="hidden"] > .hide,
+    & > .toggle[data-state="visible"] > .show {
+      display: none;
+    }
+  }
+  :is(.ply-password, .ply-combobox, .ply-date-picker > .control) > .toggle {
+    appearance: none;
+    position: absolute;
+    inset-block-start: 1px;
+    inset-inline-end: 1px;
+    display: grid;
+    place-items: center;
+    inline-size: calc(16em / 7 - 2px);
+    block-size: calc(100% - 2px);
+    padding: 0;
+    border: 0;
+    border-radius: calc(var(--ply-radius-control) - 1px);
+    background: transparent;
+    color: var(--ply-muted);
+    font-family: var(--ply-control-font-family);
+    font-size: var(--ply-label);
+    font-weight: 400;
+    line-height: var(--ply-label-leading);
+    cursor: pointer;
+    & > span {
+      display: grid;
+      place-items: center;
+    }
+    &:focus-visible {
+      outline-offset: -2px;
+    }
+    &:hover:enabled {
+      color: var(--ply-link);
+      background: var(--ply-info-soft);
+    }
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+  .ply-character-count {
+    --character-count-value: 0;
+    --character-count-max: 0;
+    display: grid;
+    gap: var(--ply-space-1);
+    & > .messages > .count {
+      color: var(--ply-muted);
+      font-size: var(--ply-small);
+      line-height: var(--ply-small-leading);
+      text-align: end;
+      counter-reset: ply-count var(--character-count-value) ply-count-max var(--character-count-max);
+      &::before {
+        content: counter(ply-count) " / " counter(ply-count-max);
+      }
+    }
+    &:not([data-state="over"]) > .messages > .over-error {
+      display: none;
+    }
+  }
+  .ply-combobox > .options {
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline: 0;
+    z-index: var(--ply-z-menu);
+    max-block-size: 16rem;
+    overflow: auto;
+    overscroll-behavior: contain;
+    margin: 0;
+    margin-block-start: var(--ply-space-1);
+    padding-block: var(--ply-space-1);
+    padding-inline: var(--ply-space-1);
+    border: 1px solid var(--ply-border);
+    border-radius: 10px;
+    background: var(--ply-surface);
+    color: var(--ply-text);
+    box-shadow: var(--ply-shadow-menu);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+    list-style: none;
+    & > li {
+      min-block-size: 2rem;
+      padding-block: 0.375rem;
+      padding-inline: var(--ply-space-2);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    & > li[data-state="active"] {
+      background: var(--ply-cover);
+      color: var(--ply-text);
+      box-shadow: inset 2px 0 var(--ply-link);
+    }
+    & > li[data-state="selected"] {
+      background: var(--ply-info-soft);
+      color: var(--ply-link);
+    }
+    & > li[data-state="disabled"] {
+      color: var(--ply-muted);
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+  }
+  .ply-field-group,
+  .ply-choice-group {
+    display: grid;
+    align-content: start;
+    min-inline-size: 0;
+    padding: 0;
+    & > legend {
+      max-inline-size: 100%;
+      padding: 0;
+    }
+  }
+  .ply-field-group {
+    container: ply-field-group / inline-size;
+    border: 0;
+    border-block-start: 1px solid var(--ply-border);
+    & > legend {
+      padding-inline-end: var(--ply-space-3);
+      font-size: var(--ply-body);
+      font-weight: 600;
+      line-height: 1.5;
+    }
+    & > .layout {
+      display: grid;
+      align-items: start;
+      gap: var(--ply-space-4);
+      min-inline-size: 0;
+      margin-block-start: var(--ply-space-4);
+      & > .description {
+        max-inline-size: 32em;
+        color: var(--ply-muted);
+        font-size: var(--ply-label);
+        line-height: var(--ply-label-leading);
+      }
+      & > .fields {
+        display: grid;
+        align-content: start;
+        gap: var(--ply-space-4);
+        min-inline-size: 0;
+      }
+    }
+    @container ply-field-group (inline-size >= 40rem) {
+      & > .layout:has(> .description) {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+        gap: var(--ply-space-8);
+      }
+    }
+  }
+  .ply-choice-group {
+    border: 0;
+    & > legend {
+      font-size: var(--ply-label);
+      font-weight: 400;
+      line-height: var(--ply-label-leading);
+    }
+    & > * + * {
+      margin-block-start: var(--ply-space-2);
+    }
+    & > .list {
+      display: grid;
+      gap: var(--ply-space-2);
+      min-inline-size: 0;
+    }
+  }
+  @media (pointer: coarse) {
+    .ply-choice {
+      min-block-size: 2.75rem;
+      padding-block: var(--ply-space-3);
+    }
+    .ply-combobox > .options > li {
+      min-block-size: 2.75rem;
+      padding-block: var(--ply-space-3);
+    }
   }
   .ply-choice {
     display: grid;
@@ -22,7 +246,8 @@
       margin-block-start: calc(1em / 14);
       border: 1px solid var(--ply-input-border);
       border-radius: calc(3em / 14);
-      background: var(--ply-surface);
+      background: linear-gradient(var(--ply-surface), var(--ply-background));
+      box-shadow: inset 0 1px 0 var(--ply-surface);
       color: var(--ply-surface);
       cursor: inherit;
       transition:
@@ -30,10 +255,10 @@
         border-color var(--ply-duration) ease;
       &::before {
         content: "";
-        inline-size: 0.8rem;
-        block-size: 0.8rem;
+        inline-size: 0.875rem;
+        block-size: 0.875rem;
         background: currentColor;
-        clip-path: polygon(12% 45%, 38% 70%, 88% 16%, 100% 28%, 39% 94%, 0 57%);
+        mask: url("../assets/check.svg") center / contain no-repeat;
         transform: scale(0);
         transition: transform var(--ply-duration) ease;
       }
@@ -52,13 +277,13 @@
       &[type="radio"]::before {
         inline-size: 0.5rem;
         block-size: 0.5rem;
-        clip-path: none;
+        mask: none;
         border-radius: 50%;
       }
       &:indeterminate::before {
-        inline-size: 0.65rem;
+        inline-size: 0.5625rem;
         block-size: 2px;
-        clip-path: none;
+        mask: none;
       }
       &:disabled {
         background: var(--ply-background);
@@ -75,7 +300,7 @@
     }
     & > span > strong {
       display: block;
-      font-weight: 600;
+      font-weight: 400;
     }
     & > span > small {
       display: block;
@@ -98,70 +323,12 @@
     }
     &[data-kind="option"]:has(> input:checked) {
       border-color: var(--ply-link);
+      background: var(--ply-info-soft);
     }
     &[data-kind="option"]:has(> input:disabled) {
       background: var(--ply-background);
     }
   }
-  .ply-choice-list {
-    display: grid;
-    gap: var(--ply-space-2);
-    min-inline-size: 0;
-  }
-  .ply-field {
-    display: grid;
-    align-content: start;
-    min-inline-size: 0;
-
-    & > * + * {
-      margin-block-start: var(--ply-space-2);
-    }
-
-    /* 状態ラベルを内容幅で折り返すため、この見出し行のみFlex。 */
-    & > .ply-field-heading {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: var(--ply-space-2);
-
-      & > label {
-        font-size: var(--ply-label);
-        font-weight: 700;
-        line-height: calc(10 / 7);
-      }
-    }
-  }
-
-  .ply-field-messages {
-    & > * + * {
-      margin-block-start: var(--ply-space-1);
-    }
-
-    & > .ply-field-help,
-    & > .ply-field-error {
-      display: grid;
-      grid-template-columns: 1em minmax(0, 1fr);
-      align-items: start;
-      gap: 0.375em;
-      font-size: var(--ply-label);
-      line-height: calc(10 / 7);
-
-      & > .ply-icon {
-        inline-size: 1em;
-        block-size: 1em;
-        margin-block-start: calc(3em / 14);
-      }
-    }
-
-    & > .ply-field-help {
-      color: var(--ply-muted);
-    }
-
-    & > .ply-field-error {
-      color: var(--ply-danger);
-    }
-  }
-
   .ply-input {
     --ply-input-size: calc(16em / 7);
     --ply-input-border-size: 1px;
@@ -174,15 +341,20 @@
     border-radius: calc(4em / 7);
     background: var(--ply-surface);
     color: var(--ply-text);
+    box-shadow: var(--ply-shadow-input);
     font-family: var(--ply-control-font-family);
     font-size: var(--ply-label);
+    font-weight: 400;
     line-height: calc(10 / 7);
     transition:
       border-color var(--ply-duration) ease,
       box-shadow var(--ply-duration) ease;
+    &:hover:not(:disabled, [readonly], [data-invalid="true"]) {
+      border-color: var(--ply-muted);
+    }
     &:focus-visible {
       outline: 2px solid var(--ply-link);
-      outline-offset: 2px;
+      outline-offset: 0;
       border-color: var(--ply-link);
     }
     &[data-size="short"] {
@@ -214,9 +386,30 @@
       line-height: var(--ply-control-leading);
     }
   }
-
+  select.ply-input[data-variant="inline"] {
+    inline-size: auto;
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+    cursor: pointer;
+    &[data-invalid="true"] {
+      border-color: var(--ply-danger);
+    }
+    &:hover:not(:disabled, [data-invalid="true"]) {
+      border-color: var(--ply-input-border);
+      background: var(--ply-background);
+    }
+    &:focus-visible {
+      border-color: var(--ply-link);
+      background: var(--ply-surface);
+    }
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
   input.ply-input {
     block-size: var(--ply-input-size);
+    overflow: clip;
 
     /* 一行入力は内寸を行高に使い、上下paddingとの二重配置をなくす。 */
     &:where(:not([type="file"])) {
@@ -224,288 +417,19 @@
       line-height: calc(var(--ply-input-size) - 2 * var(--ply-input-border-size));
     }
   }
-
   textarea.ply-input {
     resize: vertical;
   }
-
-  .ply-password {
-    position: relative;
-    min-inline-size: 0;
-    font-size: var(--ply-label);
-
-    & > .ply-input {
-      padding-inline-end: 3em;
-    }
-
-    & > button[data-state="hidden"] .ply-password-hide,
-    & > button[data-state="visible"] .ply-password-show {
-      display: none;
-    }
-  }
-
-  .ply-field-toggle {
-    appearance: none;
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-end: 0;
-    display: grid;
-    place-items: center;
-    inline-size: calc(16em / 7);
-    block-size: calc(16em / 7);
-    padding: 0;
-    border: 0;
-    border-radius: calc(4em / 7);
-    background: transparent;
-    color: var(--ply-muted);
-    font: inherit;
-    cursor: pointer;
-
-    & > span {
-      display: grid;
-      place-items: center;
-    }
-
-    &:hover {
-      color: var(--ply-link);
-    }
-  }
-
-  .ply-character-count {
-    --character-count-value: 0;
-    --character-count-max: 0;
-    display: grid;
-
-    & > * + * {
-      margin-block-start: var(--ply-space-1);
-    }
-
-    & .ply-count-output {
-      color: var(--ply-muted);
-      font-size: 0.75rem;
-      line-height: calc(4 / 3);
-      text-align: end;
-      counter-reset: ply-count var(--character-count-value) ply-count-max var(--character-count-max);
-
-      &::before {
-        content: counter(ply-count) " / " counter(ply-count-max);
-      }
-    }
-
-    &:not([data-state="over"]) .ply-count-error {
-      display: none;
-    }
-  }
-
-  .ply-combobox {
-    position: relative;
-    min-inline-size: 0;
-    font-size: var(--ply-label);
-
-    & > .ply-input {
-      padding-inline-end: 3em;
-    }
-  }
-
-  @media (pointer: coarse) {
-    .ply-combobox-options > li {
-      display: grid;
-      align-items: center;
-      min-block-size: 2.75rem;
-    }
-  }
-
-  .ply-combobox-options {
-    position: absolute;
-    inset-block-start: 100%;
-    inset-inline: 0;
-    z-index: var(--ply-z-menu);
-    max-block-size: 16rem;
-    overflow: auto;
-    margin: 0;
-    margin-block-start: var(--ply-space-1);
-    padding-block: var(--ply-space-1);
-    padding-inline: var(--ply-space-1);
-    border: 1px solid var(--ply-input-border);
-    border-radius: var(--ply-space-2);
-    background: var(--ply-surface);
-    color: var(--ply-text);
-    font-size: var(--ply-label);
-    line-height: calc(10 / 7);
-    list-style: none;
-    box-shadow: var(--ply-shadow-menu);
-
-    & > li {
-      padding-block: var(--ply-space-1);
-      padding-inline: var(--ply-space-2);
-      border-radius: var(--ply-space-1);
-      cursor: pointer;
-    }
-
-    & > li[data-state="active"] {
-      background: var(--ply-link);
-      color: var(--ply-surface);
-    }
-
-    & > li[data-state="selected"] {
-      background: var(--ply-info-soft);
-      color: var(--ply-link);
-    }
-
-    & > li[data-state="disabled"] {
-      color: var(--ply-muted);
-      cursor: not-allowed;
-    }
-  }
-
-  .ply-field-group,
-  .ply-choice-group {
-    display: grid;
-    align-content: start;
-    min-inline-size: 0;
-    padding: 0;
-
-    & > legend {
-      padding: 0;
-      font-weight: 700;
-    }
-  }
-
-  .ply-field-group {
-    container: ply-field-group / inline-size;
-    border-inline: 0;
-    border-block-end: 0;
-    border-block-start: 1px solid var(--ply-border);
-
-    & > legend {
-      max-inline-size: 100%;
-      padding-inline-end: var(--ply-space-4);
-      font-size: 1.125rem;
-      line-height: calc(4 / 3);
-    }
-
-    & > * + * {
-      margin-block-start: var(--ply-space-4);
-    }
-  }
-
-  .ply-field-group-layout {
-    display: grid;
-    align-items: start;
-    gap: var(--ply-space-6);
-    min-inline-size: 0;
-
-    @container ply-field-group (inline-size >= 40rem) {
-      &:has(> .ply-field-group-description) {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-        column-gap: var(--ply-space-8);
-      }
-    }
-  }
-
-  .ply-field-group-description {
-    max-inline-size: 28em;
-    color: var(--ply-muted);
-    font-size: var(--ply-label);
-    line-height: calc(11 / 7);
-  }
-
-  .ply-field-group-fields {
-    display: grid;
-    align-content: start;
-    min-inline-size: 0;
-
-    & > * + * {
-      margin-block-start: var(--ply-space-6);
-    }
-  }
-
-  .ply-choice-group {
-    border: 0;
-
-    & > legend {
-      font-size: var(--ply-label);
-      line-height: calc(10 / 7);
-    }
-
-    & > * + * {
-      margin-block-start: var(--ply-space-2);
-    }
-  }
 }
-
-@layer components {
-  .ply-writing {
-    display: grid;
-    gap: var(--ply-space-6);
-    min-inline-size: 0;
-  }
-  .ply-writing-page {
-    display: grid;
-    gap: var(--ply-space-2);
-    min-inline-size: 0;
-  }
-  .ply-writing-label {
-    color: var(--ply-muted);
-    font-size: var(--ply-small);
-  }
-  .ply-input[data-kind="title"],
-  .ply-input[data-kind="body"] {
-    font-size: var(--ply-body);
-    padding-inline: 0;
-    border: 0;
-    border-block-end: 1px solid var(--ply-border);
-    border-radius: 0;
-    background: transparent;
-    &:focus {
-      border-block-end-color: var(--ply-link);
-    }
-  }
-  .ply-input[data-kind="title"] {
-    resize: none;
-    font-size: clamp(1.25rem, 3cqi, 2rem);
-    font-weight: 800;
-    line-height: 1.5;
-    padding-block: var(--ply-space-2) var(--ply-space-4);
-  }
-  .ply-input[data-kind="body"] {
-    line-height: 1.95;
-    resize: vertical;
-    min-block-size: 18rem;
-  }
-  .ply-writing-foot {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--ply-space-2);
-    font-size: var(--ply-small);
-    color: var(--ply-muted);
-  }
-  .ply-reading {
-    display: grid;
-    align-content: start;
-    gap: var(--ply-space-6);
-    min-block-size: 25rem;
-    & > h2 {
-      font-size: clamp(1.25rem, 3cqi, 2rem);
-      font-weight: 800;
-      line-height: 1.5;
-    }
-  }
-  .ply-reading-body {
-    white-space: pre-wrap;
-    line-height: 1.95;
-  }
-}
-
 @layer components {
   select.ply-input:not([multiple]):not([size]) {
     appearance: none;
+    overflow: clip;
+    text-overflow: ellipsis;
     padding-inline-end: 2.5em;
-    background-image: url("../assets/caret-down.svg");
+    background-image: url("../assets/caret.svg");
     background-repeat: no-repeat;
-    background-size: 1em;
+    background-size: calc(6em / 7);
     background-position: right 0.75em center;
     &:dir(rtl) {
       background-position: left 0.75em center;
@@ -542,73 +466,13 @@
 }
 
 @layer components {
-  .ply-writing-page {
-    align-content: start;
-    & > label:not(:first-child) {
-      margin-block-start: var(--ply-space-6);
+  @media (pointer: coarse) {
+    .ply-input {
+      --ply-input-size: 2.75rem;
     }
-  }
-  .ply-input[data-kind="title"] {
-    box-shadow: none;
-    font-size: clamp(1.5rem, 3cqi, 1.875rem);
-    padding-block: var(--ply-space-1) var(--ply-space-3);
-  }
-  .ply-input[data-kind="body"] {
-    box-shadow: none;
-    min-block-size: 14rem;
-  }
-  .ply-reading {
-    min-block-size: 22rem;
-    animation: ply-reading-enter var(--ply-duration) ease;
-  }
-  .ply-review {
-    display: grid;
-    gap: var(--ply-space-4);
-    animation: ply-reading-enter var(--ply-duration) ease;
-  }
-  .ply-review-pair {
-    display: grid;
-    gap: var(--ply-space-6);
-    & > section {
-      display: grid;
-      align-content: start;
-      gap: var(--ply-space-4);
-      min-inline-size: 0;
-      border-block-start: 2px solid var(--ply-border);
-      padding-block-start: var(--ply-space-4);
-    }
-    & > section:last-child {
-      border-block-start-color: var(--ply-link);
-    }
-    & h2 {
-      font-size: var(--ply-small);
-      color: var(--ply-muted);
-      font-weight: 600;
-    }
-    & h3 {
-      font-size: 1.25rem;
-      margin: 0;
-    }
-    & p {
-      font-size: var(--ply-small);
-      color: var(--ply-muted);
-    }
-    & section > div {
-      white-space: pre-wrap;
-      line-height: 1.9;
-    }
-    @container ply-surface (inline-size >= 40rem) {
-      & {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-  }
-  @keyframes ply-reading-enter {
-    from {
-      opacity: 0.5;
-    }
-    to {
-      opacity: 1;
+    :is(.ply-password, .ply-combobox, .ply-date-picker > .control) > .toggle {
+      inline-size: calc(2.75rem - 2px);
+      block-size: calc(100% - 2px);
     }
   }
 }

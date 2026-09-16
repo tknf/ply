@@ -12,7 +12,7 @@ export type CountedTextareaProps = ElementProps<"textarea"> & {
 export const CountedTextarea = ({
   id,
   limit,
-  unit = "characters",
+  unit = "文字",
   overflowMessage = "文字数の上限を超えています。",
   children,
   ...attributes
@@ -25,12 +25,12 @@ export const CountedTextarea = ({
     <Textarea {...attributes} id={id} data-character-count-target="field">
       {children}
     </Textarea>
-    <div class="ply-field-messages">
-      <p class="ply-count-output" id={`${id}-count`} data-character-count-target="counter">
+    <div class="messages">
+      <p class="count" id={`${id}-count`} data-character-count-target="counter">
         {" "}
         {unit}
       </p>
-      <p class="ply-field-error ply-count-error">
+      <p class="error over-error">
         <Icon name="x-circle" />
         <span>{overflowMessage}</span>
       </p>

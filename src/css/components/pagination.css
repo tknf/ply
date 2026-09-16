@@ -1,25 +1,49 @@
 @layer components {
   .ply-pagination {
+    font-family: var(--ply-control-font-family);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
     & > ul {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--ply-space-2);
-      list-style: none;
+      align-items: center;
+      gap: var(--ply-space-1);
       padding: 0;
+      list-style: none;
     }
     & > ul > li > :is(a, span) {
       display: inline-grid;
       place-items: center;
-      min-inline-size: var(--ply-control-size);
-      min-block-size: var(--ply-control-size);
-      padding-inline: var(--ply-space-3);
-      border: 1px solid var(--ply-border);
+      min-inline-size: 2rem;
+      min-block-size: 2rem;
+      padding-block: var(--ply-space-1);
+      padding-inline: var(--ply-space-2);
+      border: 1px solid transparent;
       border-radius: var(--ply-radius-control);
+      color: var(--ply-muted);
+      text-decoration: none;
+    }
+    & > ul > li > a {
+      color: var(--ply-text);
+      &:hover {
+        background: var(--ply-background);
+        box-shadow: none;
+      }
+      &:active {
+        background: var(--ply-cover);
+        box-shadow: none;
+      }
     }
     & > ul > li > [data-current="true"] {
-      color: var(--ply-surface);
-      background: var(--ply-ink);
-      border-color: var(--ply-ink);
+      color: var(--ply-link);
+      background: var(--ply-cover);
+      border-color: color-mix(in srgb, var(--ply-link) 20%, var(--ply-surface));
+    }
+    @media (pointer: coarse) {
+      & > ul > li > :is(a, span) {
+        min-inline-size: 2.75rem;
+        min-block-size: 2.75rem;
+      }
     }
   }
 }

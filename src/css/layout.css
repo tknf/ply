@@ -18,15 +18,6 @@
     }
   }
 
-  .ply-section {
-    display: grid;
-    gap: var(--ply-space-4);
-    min-inline-size: 0;
-    & > h2 {
-      font-size: 1.125rem;
-      font-weight: 700;
-    }
-  }
   .ply-container {
     inline-size: min(100% - var(--ply-space-8), var(--ply-page));
     justify-self: center;
@@ -38,6 +29,9 @@
     align-content: start;
     gap: var(--ply-space-6);
     min-inline-size: 0;
+    & > * {
+      min-inline-size: 0;
+    }
 
     &[data-space="large"] {
       gap: var(--ply-space-12);
@@ -53,7 +47,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--ply-space-3);
+    gap: var(--ply-space-2);
   }
 
   .ply-measure {
@@ -109,5 +103,28 @@
     gap: var(--ply-space-4);
     padding-block-start: var(--ply-space-4);
     border-block-start: 1px solid var(--ply-border);
+  }
+}
+
+@layer layout {
+  .ply-reading-pane {
+    display: grid;
+    gap: var(--ply-space-6);
+    inline-size: min(100%, 44rem);
+    min-inline-size: 0;
+    justify-self: center;
+  }
+}
+
+@layer utilities {
+  .ply-visually-hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
   }
 }

@@ -1,26 +1,38 @@
 @layer components {
   .ply-statistic {
-    display: grid;
-    gap: var(--ply-space-2);
+    container: ply-statistic / inline-size;
+    min-inline-size: 0;
+    color: var(--ply-text);
     & > dt {
       color: var(--ply-muted);
-      font-size: var(--ply-label);
-    }
-    & > dd {
-      font-size: 2rem;
-      line-height: 1.3;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-    }
-    & small {
-      font-size: var(--ply-label);
-      margin-inline-start: var(--ply-space-1);
-      font-weight: 400;
-    }
-    & > .ply-statistic-note {
       font-size: var(--ply-small);
-      font-weight: 400;
+      line-height: var(--ply-label-leading);
+    }
+    & > .value {
+      margin-block-start: var(--ply-space-2);
+      font-family: var(--ply-control-font-family);
+      font-size: 1.75rem;
+      font-weight: 600;
+      line-height: calc(8 / 7);
+      font-variant-numeric: tabular-nums;
+      overflow-wrap: anywhere;
+      & > small {
+        margin-inline-start: 0.35em;
+        font-size: var(--ply-label);
+        font-weight: 400;
+      }
+    }
+    & > .note {
+      margin-block-start: var(--ply-space-1);
       color: var(--ply-muted);
+      font-size: var(--ply-small);
+      line-height: var(--ply-small-leading);
+    }
+    @container ply-statistic (inline-size >= 18rem) {
+      & > .value {
+        font-size: 2rem;
+        line-height: 1.25;
+      }
     }
   }
 }

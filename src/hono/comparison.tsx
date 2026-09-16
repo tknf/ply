@@ -1,6 +1,7 @@
 import type { Child } from "hono/jsx";
+import { classes, type ElementProps } from "./types";
 
-export type ComparisonProps = {
+export type ComparisonProps = ElementProps<"section"> & {
   label: string;
   before: Child;
   after: Child;
@@ -15,20 +16,27 @@ export const Comparison = ({
   beforeLabel = "現在",
   afterLabel = "変更後",
   changed = true,
+  class: className,
+  ...attributes
 }: ComparisonProps) => (
-  <section class="ply-comparison" aria-label={label} data-changed={changed ? "true" : "false"}>
-    <h3>
+  <section
+    {...attributes}
+    class={classes("ply-comparison", className)}
+    aria-label={label}
+    data-changed={changed ? "true" : "false"}
+  >
+    <h3 class="title">
       {label}
-      {changed && <span>変更あり</span>}
+      <span class="state">{changed ? "変更あり" : "変更なし"}</span>
     </h3>
-    <div class="ply-comparison-pair">
-      <div>
+    <div class="pair">
+      <div class="before">
         <h4>{beforeLabel}</h4>
-        {before ?? <p>未登録</p>}
+        <div class="body">{before ?? <p>未登録</p>}</div>
       </div>
-      <div>
+      <div class="after">
         <h4>{afterLabel}</h4>
-        {after ?? <p>未登録</p>}
+        <div class="body">{after ?? <p>未登録</p>}</div>
       </div>
     </div>
   </section>

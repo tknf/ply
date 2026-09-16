@@ -1,0 +1,58 @@
+@layer components {
+  .ply-section {
+    --ply-section-accent: var(--ply-muted);
+    display: grid;
+    gap: var(--ply-space-2);
+    min-inline-size: 0;
+    &[data-tone="info"] {
+      --ply-section-accent: var(--ply-info);
+    }
+    &[data-tone="warning"] {
+      --ply-section-accent: var(--ply-warning);
+    }
+    &[data-tone="success"] {
+      --ply-section-accent: var(--ply-success);
+    }
+    &[data-tone="danger"] {
+      --ply-section-accent: var(--ply-danger);
+    }
+    & > .heading {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--ply-space-2);
+      min-block-size: 2rem;
+      & > h2 {
+        display: flex;
+        align-items: center;
+        gap: var(--ply-space-2);
+        font-size: var(--ply-label);
+        font-weight: 600;
+        line-height: var(--ply-label-leading);
+        &::before {
+          content: "";
+          inline-size: 0.5rem;
+          block-size: 0.5rem;
+          border-radius: 50%;
+          background: var(--ply-section-accent);
+        }
+      }
+      & > .count {
+        min-inline-size: 1.5rem;
+        padding-inline: 0;
+        border-radius: var(--ply-radius-pill);
+        background: transparent;
+        color: var(--ply-muted);
+        font-size: var(--ply-small);
+        text-align: center;
+      }
+      & > .actions {
+        margin-inline-start: auto;
+      }
+    }
+    & > h2 {
+      font-size: 1.125rem;
+      font-weight: 700;
+    }
+  }
+}

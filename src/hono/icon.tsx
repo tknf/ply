@@ -1,15 +1,23 @@
 import manifest from "../icon-manifest.json";
+import { classes } from "./types";
+
 export type IconName = keyof typeof manifest;
-/** 文言を補う装飾アイコン。同一オリジンに配置した共通スプライトを参照する。 */
+export type IconProps = {
+  name: IconName;
+  sprite?: string;
+  class?: string;
+  "data-size"?: "small";
+};
+/** 装飾アイコン。意味と操作名は隣の文言または操作部品のaria-labelで伝える。 */
 export const Icon = ({
   name,
   sprite = "/assets/ply-icons.svg",
-}: {
-  name: IconName;
-  sprite?: string;
-}) => (
+  class: className,
+  ...attributes
+}: IconProps) => (
   <svg
-    class="ply-icon"
+    {...attributes}
+    class={classes("ply-icon", className)}
     viewBox="0 0 256 256"
     fill="currentColor"
     aria-hidden="true"

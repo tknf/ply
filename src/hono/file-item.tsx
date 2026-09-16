@@ -1,12 +1,35 @@
-export type FileItemProps = {
+import type { Child } from "hono/jsx";
+import { Icon } from "./icon";
+import { classes, type ElementProps } from "./types";
+
+export type FileItemProps = ElementProps<"div"> & {
   name: string;
   description: string;
   href?: string;
   state?: "ready" | "pending" | "error";
+  actions?: Child;
 };
-export const FileItem = ({ name, description, href, state = "ready" }: FileItemProps) => (
-  <div class="ply-file-item" data-state={state}>
-    <p>{href ? <a href={href}>{name}</a> : <strong>{name}</strong>}</p>
-    <p>{description}</p>
+export const FileItem = ({
+  name,
+  description,
+  href,
+  state = "ready",
+  actions,
+  class: className,
+  ...attributes
+}: FileItemProps) => (
+  <div {...attributes} class={classes("ply-file-item", className)} data-state={state}>
+    <span class="icon">
+      <Icon name="file" />
+    </span>
+    <div class="body">
+      <p class="title">{href ? <a href={href}>{name}</a> : <strong>{name}</strong>}</p>
+      <p class="description">
+        {state === "pending" && <span class="state">待機中 · </span>}
+        {state === "error" && <span class="state">送信失敗 · </span>}
+        {description}
+      </p>
+    </div>
+    {actions != null && actions !== false && <div class="actions">{actions}</div>}
   </div>
 );

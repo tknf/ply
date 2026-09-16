@@ -253,18 +253,18 @@ test("カタログの全経路は認証なしでSSRできる", async () => {
   }
 });
 
-test("Toolbarの使用例は標準フォーム操作を持ち掲載箇所ごとにIDを分ける", async () => {
+test("Toolbarの使用例は標準フォーム操作を持ち表示と掲載コードでIDを重複させない", async () => {
   const response = await app.request("http://localhost/components/toolbar");
   const result = await response.text();
   const ids = [...result.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   expect(new Set(ids).size).toBe(ids.length);
   expect(result).toContain('action="/search" method="get"');
-  for (const prefix of ["sample-toolbar", "hono-toolbar"]) {
+  for (const prefix of ["hono-toolbar"]) {
     expect(result).toContain(`id="${prefix}-query"`);
     expect(result).toContain(`aria-describedby="${prefix}-help"`);
   }
-  expect(result.match(/<button[^>]*type="submit"[^>]*>検索する<\/button>/g)).toHaveLength(2);
-  expect(result.match(/<button[^>]*type="reset"[^>]*>初期値に戻す<\/button>/g)).toHaveLength(2);
+  expect(result.match(/<button[^>]*type="submit"[^>]*>検索する<\/button>/g)).toHaveLength(1);
+  expect(result.match(/<button[^>]*type="reset"[^>]*>初期値に戻す<\/button>/g)).toHaveLength(1);
 });
 
 test("標準HTML属性とStimulus属性を部品へ渡せる", async () => {
@@ -323,9 +323,11 @@ test("現在位置をリンクにせず最後の項目だけに指定する", as
 
 test("一覧の末尾に渡した0件を保持し条件付きの非表示は省く", async () => {
   expect(await render(<DataList items={[{ title: "件数", end: false }]} />)).not.toContain(
-    "<div></div>",
+    'class="end"',
   );
-  expect(await render(<DataList items={[{ title: "件数", end: 0 }]} />)).toContain("<div>0</div>");
+  expect(await render(<DataList items={[{ title: "件数", end: 0 }]} />)).toContain(
+    '<div class="end">0</div>',
+  );
 });
 
 test("タブの無効・不明な初期値は最初の有効項目へ戻す", async () => {
@@ -398,8 +400,8 @@ test("日付編集欄はカレンダーの上に終了日スイッチは下に�
       selection={{ kind: "single", start: "2026-09-14" }}
     />,
   );
-  const editors = result.indexOf('class="ply-date-picker-editors"');
-  const calendar = result.indexOf('class="ply-date-picker-grid"');
+  const editors = result.indexOf('class="editors"');
+  const calendar = result.indexOf('class="grid"');
   const options = result.indexOf('data-date-picker-target="rangeToggle"');
   expect(editors).toBeLessThan(calendar);
   expect(calendar).toBeLessThan(options);

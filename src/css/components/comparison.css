@@ -1,45 +1,65 @@
 @layer components {
   .ply-comparison {
-    display: grid;
-    gap: var(--ply-space-4);
     container: ply-comparison / inline-size;
-    & > h3 {
-      display: grid;
-      gap: var(--ply-space-2);
-      font-size: var(--ply-body);
+    min-inline-size: 0;
+    color: var(--ply-text);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+    overflow-wrap: anywhere;
+    & > .title {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--ply-space-1) var(--ply-space-2);
+      font-size: inherit;
+      font-weight: 600;
+      & > .state {
+        color: var(--ply-muted);
+        font-size: var(--ply-small);
+        font-weight: 400;
+      }
     }
-    & > h3 > span {
-      color: var(--ply-info);
-      font-size: var(--ply-small);
-      font-weight: 500;
-    }
-    & > .ply-comparison-pair {
+    & > .pair {
       display: grid;
-      gap: var(--ply-space-4);
-    }
-    & > .ply-comparison-pair > div {
-      display: grid;
-      align-content: start;
-      gap: var(--ply-space-3);
-      min-inline-size: 0;
-      padding-block: var(--ply-space-4);
-      padding-inline: var(--ply-space-4);
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+      margin-block-start: var(--ply-space-2);
       border: 1px solid var(--ply-border);
-      border-radius: var(--ply-radius-control);
-      overflow-wrap: anywhere;
+      border-radius: 8px;
+      background: var(--ply-surface);
+      & > :is(.before, .after) {
+        min-inline-size: 0;
+        padding-block: var(--ply-space-3);
+        padding-inline: var(--ply-space-3);
+        & > h4 {
+          margin: 0;
+          color: var(--ply-muted);
+          font-size: var(--ply-small);
+          font-weight: 400;
+          line-height: var(--ply-small-leading);
+        }
+        & > .body {
+          margin-block-start: var(--ply-space-1);
+          & > * + * {
+            margin-block-start: var(--ply-space-2);
+          }
+        }
+      }
+      & > .after {
+        border-block-start: 1px solid var(--ply-border);
+        border-inline-start: 0 solid var(--ply-border);
+      }
     }
-    & > .ply-comparison-pair > div > h4 {
-      margin: 0;
-      font-size: var(--ply-label);
-      color: var(--ply-muted);
-      font-weight: 500;
+    &[data-changed="true"] > .title > .state {
+      color: var(--ply-info);
     }
-    &[data-changed="true"] > .ply-comparison-pair > div:last-child {
-      border-inline-start: 3px solid var(--ply-info);
-    }
-    @container ply-comparison (inline-size >= 28rem) {
-      & > .ply-comparison-pair {
+    @container ply-comparison (inline-size >= 30rem) {
+      & > .pair {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        & > .after {
+          border-block-start: 0;
+          border-inline-start: 1px solid var(--ply-border);
+        }
       }
     }
   }

@@ -60,11 +60,11 @@ const sprite = await readFile("dist/icons.svg", "utf8");
 if (sprite !== (await readFile("dist/catalog/assets/ply-icons.svg", "utf8")))
   throw new Error("配布スプライトが不一致");
 await access("dist/PHOSPHOR-LICENSE");
-for (const path of [
-  "dist/css/assets/caret-down.svg",
-  "dist/catalog/src/css/assets/caret-down.svg",
-]) {
-  if ((await readFile(path, "utf8")) !== (await readFile("src/css/assets/caret-down.svg", "utf8")))
-    throw new Error("配布selectアイコンが不一致");
+const iconManifest = JSON.parse(await readFile("src/icon-manifest.json", "utf8"));
+for (const name of Object.keys(iconManifest)) {
+  const source = await readFile(`src/css/assets/${name}.svg`, "utf8");
+  for (const directory of ["dist/css/assets", "dist/catalog/src/css/assets"])
+    if ((await readFile(`${directory}/${name}.svg`, "utf8")) !== source)
+      throw new Error(`配布入力アイコンが不一致: ${name}`);
 }
-console.log("共通スプライト・selectアイコン・ライセンスの配布を確認しました。");
+console.log("共通スプライト・入力アイコン・ライセンスの配布を確認しました。");

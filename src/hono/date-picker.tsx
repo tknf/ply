@@ -104,10 +104,10 @@ export const DatePicker = (props: DatePickerProps) => {
       data-date-picker-max-bound-value={maxReference?.bound}
       data-date-picker-max-offset-value={maxReference?.offsetDays}
     >
-      <legend id={`${pickerId}-label`} class="ply-field-label">
+      <legend id={`${pickerId}-label`} class="label">
         {label}
       </legend>
-      <div class="ply-date-picker-control" data-date-picker-target="control" hidden>
+      <div class="control" data-date-picker-target="control" hidden>
         <Input
           id={`${pickerId}-input`}
           value={formatSelection(initial)}
@@ -123,7 +123,7 @@ export const DatePicker = (props: DatePickerProps) => {
           disabled
         />
         <button
-          class="ply-field-toggle"
+          class="toggle"
           type="button"
           popovertarget={`${pickerId}-calendar`}
           aria-label={`${label}のカレンダーを開く`}
@@ -134,7 +134,7 @@ export const DatePicker = (props: DatePickerProps) => {
           <Icon name="calendar" />
         </button>
       </div>
-      <div class="ply-date-picker-fallback" data-date-picker-target="fallback">
+      <div class="fallback" data-date-picker-target="fallback">
         <Field
           id={`${pickerId}-start`}
           label={mode === "single" ? label : "開始日"}
@@ -203,28 +203,27 @@ export const DatePicker = (props: DatePickerProps) => {
           />
         )}
       </div>
-      <div class="ply-field-messages">
+      <div class="messages">
         {help && (
-          <p class="ply-field-help" id={`${pickerId}-help`}>
-            <Icon name="info" />
+          <p class="help" id={`${pickerId}-help`}>
             <span>{help}</span>
           </p>
         )}
-        <p class="ply-field-error" id={`${pickerId}-error`} data-date-picker-target="error" hidden>
+        <p class="error" id={`${pickerId}-error`} data-date-picker-target="error" hidden>
           <Icon name="x-circle" />
           <span data-date-picker-target="errorText" />
         </p>
       </div>
       <div
         id={`${pickerId}-calendar`}
-        class="ply-date-picker-calendar"
+        class="panel"
         popover="auto"
         role="dialog"
         aria-label={`${label}を選択`}
         data-positioned="false"
         data-date-picker-target="panel"
       >
-        <div class="ply-date-picker-editors" data-date-picker-target="editors">
+        <div class="editors" data-date-picker-target="editors">
           <Input
             aria-label={mode === "single" ? "日付" : "開始日"}
             placeholder="YYYY/MM/DD"
@@ -245,15 +244,15 @@ export const DatePicker = (props: DatePickerProps) => {
         </div>
         <p
           id={`${pickerId}-editor-error`}
-          class="ply-date-picker-editor-error"
+          class="editor-error"
           data-date-picker-target="editorError"
           role="status"
           hidden
         />
-        <div class="ply-date-picker-month">
+        <div class="month">
           <strong id={`${pickerId}-month`} data-date-picker-target="month" aria-live="polite" />
           <button
-            class="ply-button ply-date-picker-button"
+            class="ply-button button"
             type="button"
             data-action="date-picker#currentMonth"
             data-date-picker-target="today"
@@ -261,7 +260,7 @@ export const DatePicker = (props: DatePickerProps) => {
             今日
           </button>
           <button
-            class="ply-button ply-date-picker-button ply-date-picker-previous"
+            class="ply-button button previous"
             type="button"
             data-icon-only="true"
             aria-label="前の月"
@@ -271,7 +270,7 @@ export const DatePicker = (props: DatePickerProps) => {
             <Icon name="caret" />
           </button>
           <button
-            class="ply-button ply-date-picker-button ply-date-picker-next"
+            class="ply-button button next"
             type="button"
             data-icon-only="true"
             aria-label="次の月"
@@ -281,8 +280,8 @@ export const DatePicker = (props: DatePickerProps) => {
             <Icon name="caret" />
           </button>
         </div>
-        <p class="ply-date-picker-selection" role="status" data-date-picker-target="selection" />
-        <table class="ply-date-picker-grid" role="grid" aria-labelledby={`${pickerId}-month`}>
+        <p class="selection" role="status" data-date-picker-target="selection" />
+        <table class="grid" role="grid" aria-labelledby={`${pickerId}-month`}>
           <thead>
             <tr>
               {["月", "火", "水", "木", "金", "土", "日"].map((day) => (
@@ -294,7 +293,7 @@ export const DatePicker = (props: DatePickerProps) => {
           </thead>
           <tbody data-date-picker-target="days" />
         </table>
-        <div class="ply-date-picker-calendar-actions">
+        <div class="actions">
           {mode === "flexible" && (
             <Switch
               id={`${pickerId}-range-toggle`}
@@ -303,11 +302,7 @@ export const DatePicker = (props: DatePickerProps) => {
               data-action="date-picker#toggleRange"
             />
           )}
-          <button
-            class="ply-button ply-date-picker-button"
-            type="button"
-            data-action="date-picker#clearSelection"
-          >
+          <button class="ply-button button" type="button" data-action="date-picker#clearSelection">
             <span>クリア</span>
           </button>
         </div>

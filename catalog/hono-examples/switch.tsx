@@ -1,8 +1,8 @@
-import { Button, Switch } from "../../src/hono";
+import { Disclosure, Button, Switch } from "../../src/hono";
 
 export default () => (
   <form class="ply-stack" aria-label="通知と表示の設定">
-    <div class="ply-choice-list">
+    <div class="list">
       <Switch
         id="hono-switch-digest"
         label="週次のまとめ"
@@ -13,12 +13,11 @@ export default () => (
       />
       <Switch id="hono-switch-completed" label="完了した仕事を表示" name="completed" value="show" />
     </div>
-    <details class="ply-disclosure">
-      <summary>利用不可・長いラベル</summary>
+    <Disclosure summary="利用不可・長いラベル">
       <div class="ply-stack">
         <fieldset class="ply-choice-group" disabled>
           <legend>管理者が管理している設定</legend>
-          <div class="ply-choice-list">
+          <div class="list">
             <Switch label="お知らせを受け取る" name="locked-news" checked />
             <Switch label="外部への共有を許可" name="locked-sharing" disabled />
           </div>
@@ -29,7 +28,7 @@ export default () => (
           name="all-projects"
         />
       </div>
-    </details>
+    </Disclosure>
     <Button type="reset">初期値に戻す</Button>
     <a href="/examples/settings">設定画面で保存・復元を試す</a>
   </form>

@@ -1,4 +1,5 @@
 import {
+  Disclosure,
   Field,
   Input,
   Textarea,
@@ -15,7 +16,7 @@ import {
 } from "../../src/hono";
 
 export default () => (
-  <div class="ply-stack">
+  <div class="ply-split">
     <Field id="hono-error" label="名前" help="一覧に表示します。" error="名前を入力してください。">
       {(attributes) => <Input {...attributes} required name="name" />}
     </Field>
@@ -40,8 +41,7 @@ export default () => (
         </Select>
       )}
     </Field>
-    <details class="ply-disclosure">
-      <summary>入力・選択のほかの状態</summary>
+    <Disclosure summary="入力・選択のほかの状態">
       <div class="ply-stack">
         <Field id="hono-description-error" label="説明（エラー）" error="説明を入力してください。">
           {(attributes) => <Textarea {...attributes} rows={3} required />}
@@ -77,7 +77,7 @@ export default () => (
           )}
         </Field>
       </div>
-    </details>
+    </Disclosure>
     <Field id="hono-counted-description" label="紹介文（文字数表示）">
       {(attributes) => <CountedTextarea {...attributes} rows={3} limit={40} />}
     </Field>
@@ -156,7 +156,7 @@ export default () => (
     </Field>
     <fieldset class="ply-choice-group">
       <legend>チェックの状態</legend>
-      <div class="ply-choice-list">
+      <div class="list">
         <Choice label="条件を確認しました" />
         <Choice label="メールで知らせる" checked />
         <Choice label="利用できない項目" disabled />
@@ -180,7 +180,7 @@ export default () => (
     </form>
     <fieldset class="ply-choice-group">
       <legend>連絡方法</legend>
-      <div class="ply-choice-list">
+      <div class="list">
         <Choice type="radio" name="contact" label="メール" value="email" checked />
         <Choice type="radio" name="contact" label="電話" value="phone" />
         <Choice type="radio" name="contact" label="郵送（利用不可）" value="post" disabled />
@@ -188,14 +188,14 @@ export default () => (
     </fieldset>
     <fieldset class="ply-choice-group" disabled>
       <legend>変更できない連絡方法</legend>
-      <div class="ply-choice-list">
+      <div class="list">
         <Choice type="radio" name="locked-contact" label="メール（固定）" checked />
         <Choice type="radio" name="locked-contact" label="電話（利用不可）" />
       </div>
     </fieldset>
     <fieldset class="ply-choice-group">
       <legend>利用場所</legend>
-      <div class="ply-choice-list">
+      <div class="list">
         <Choice
           type="radio"
           name="hono-choice"

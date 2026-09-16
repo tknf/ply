@@ -1,17 +1,68 @@
 @layer components {
   .ply-file-item {
+    container: ply-file-item / inline-size;
     display: grid;
-    gap: var(--ply-space-1);
+    grid-template-columns: 2rem minmax(0, 1fr);
+    align-items: center;
+    gap: var(--ply-space-2);
     min-inline-size: 0;
-    padding-block: var(--ply-space-3);
-    border-block-end: 1px solid var(--ply-border);
-    overflow-wrap: anywhere;
-    & > p + p {
-      color: var(--ply-muted);
+    padding-block: var(--ply-space-2);
+    color: var(--ply-text);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+    & > .icon {
+      display: grid;
+      place-items: center;
+      grid-column: 1;
+      block-size: 2.5rem;
+      border: 1px solid var(--ply-border);
+      border-radius: 4px 10px 4px 4px;
+      background: var(--ply-info-soft);
+      color: var(--ply-link);
     }
-    &[data-state="error"] {
-      border-inline-start: 3px solid var(--ply-danger);
-      padding-inline-start: var(--ply-space-3);
+    & > .body {
+      grid-column: 2;
+      min-inline-size: 0;
+      overflow-wrap: anywhere;
+      & > .title {
+        font-size: var(--ply-label);
+        font-weight: 400;
+        line-height: var(--ply-label-leading);
+        & > strong {
+          font-weight: inherit;
+        }
+        & > a {
+          color: var(--ply-text);
+          text-decoration: none;
+          &:hover {
+            color: var(--ply-link);
+            text-decoration: none;
+          }
+        }
+      }
+      & > .description {
+        margin-block-start: var(--ply-space-1);
+        color: var(--ply-muted);
+        font-size: var(--ply-small);
+        line-height: var(--ply-small-leading);
+      }
+    }
+    & > .actions {
+      grid-column: 2;
+      grid-row: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ply-space-2);
+      min-inline-size: 0;
+    }
+    @container ply-file-item (inline-size >= 26rem) {
+      & > .actions {
+        grid-column: 3;
+        grid-row: 1;
+      }
+    }
+    &[data-state="error"] > .body > .description > .state {
+      color: var(--ply-danger);
     }
   }
 }

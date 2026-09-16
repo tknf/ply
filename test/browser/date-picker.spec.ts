@@ -4,7 +4,7 @@ const picker = (page: Page, id: string) => {
   const root = page.locator(`#picker-${id}`);
   return {
     root,
-    field: root.locator(".ply-date-picker-control > input"),
+    field: root.locator(".control > input"),
     trigger: root.getByRole("button", { name: /のカレンダーを開く$/ }),
     panel: root.getByRole("dialog"),
   };
@@ -68,7 +68,7 @@ test("単日と期間の両端はホバー・押下中も選択色を保つ", as
       await expect(day).toHaveCSS("background-color", selected.background);
       await expect(day).toHaveCSS("color", selected.color);
       // 選択を確定せず、押下状態だけを解除する。
-      await current.panel.locator(".ply-date-picker-month").hover();
+      await current.panel.locator(".month").hover();
       await page.mouse.up();
     }
     await page.keyboard.press("Escape");
@@ -106,24 +106,22 @@ test("クリアは終了日と左右・行高を揃えて文字を中央に置�
     const button = flexible.panel.getByRole("button", { name, exact: true });
     await expect(button).toHaveCSS("text-decoration-line", "none");
   }
-  const rows = await flexible.panel
-    .locator(".ply-date-picker-calendar-actions > *")
-    .evaluateAll((elements) => {
-      return elements.map((element) => {
-        const label = element.querySelector(":scope > span");
-        if (!label) throw new Error("操作行のラベルがありません");
-        const box = element.getBoundingClientRect();
-        const text = label.getBoundingClientRect();
-        return {
-          left: box.left,
-          right: box.right,
-          height: box.height,
-          textOffset: text.top - box.top,
-          textHeight: text.height,
-          centered: Math.abs((text.left + text.right - box.left - box.right) / 2) < 0.5,
-        };
-      });
+  const rows = await flexible.panel.locator(".actions > *").evaluateAll((elements) => {
+    return elements.map((element) => {
+      const label = element.querySelector(":scope > span");
+      if (!label) throw new Error("操作行のラベルがありません");
+      const box = element.getBoundingClientRect();
+      const text = label.getBoundingClientRect();
+      return {
+        left: box.left,
+        right: box.right,
+        height: box.height,
+        textOffset: text.top - box.top,
+        textHeight: text.height,
+        centered: Math.abs((text.left + text.right - box.left - box.right) / 2) < 0.5,
+      };
     });
+  });
   expect(rows).toHaveLength(2);
   const [endDate, clear] = rows;
   if (!endDate || !clear) throw new Error("下部の操作行がありません");
@@ -368,7 +366,10 @@ test.describe("JavaScriptなし", () => {
     const flexible = picker(page, "flexible");
     await expect(flexible.root.getByRole("combobox", { name: "日付の形式" })).toHaveValue("single");
     await flexible.root.getByRole("combobox", { name: "日付の形式" }).selectOption("range");
-    await flexible.root.getByLabel("終了日", { exact: true }).fill("2026-09-15");
+    await flexible.root
+      .locator(".fallback")
+      .getByLabel("終了日", { exact: true })
+      .fill("2026-09-15");
     expect(await values(page)).toMatchObject({
       "schedule[kind]": "range",
       "schedule[start]": "2026-09-12",

@@ -1,0 +1,151 @@
+@layer components {
+  .ply-message-list {
+    container: ply-message-list / inline-size;
+    min-inline-size: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ply-text);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+    & > li {
+      min-inline-size: 0;
+      border-block-end: 1px solid var(--ply-border);
+      & > .row {
+        display: grid;
+        grid-template-columns: clamp(6rem, 18cqi, 12rem) minmax(0, 1fr) minmax(0, 8rem);
+        align-items: start;
+        gap: var(--ply-space-1) var(--ply-space-2);
+        min-inline-size: 0;
+        min-block-size: 3.5rem;
+        padding-block: var(--ply-space-2);
+        padding-inline: var(--ply-space-2);
+        color: inherit;
+        text-decoration: none;
+        &:is(a):hover {
+          background: var(--ply-background);
+        }
+        &:focus-visible {
+          outline-offset: -2px;
+          background: var(--ply-cover);
+        }
+        & > .avatar {
+          display: grid;
+          place-items: center;
+          min-block-size: 2rem;
+          color: var(--ply-muted);
+        }
+        & > .sender {
+          min-inline-size: 0;
+          overflow-wrap: anywhere;
+        }
+        & > .body {
+          min-inline-size: 0;
+          & > .title {
+            display: block;
+            font-weight: 400;
+            overflow-wrap: anywhere;
+            & > .count {
+              display: inline-block;
+              margin-inline-start: var(--ply-space-1);
+              color: var(--ply-muted);
+              font-size: var(--ply-small);
+              font-weight: 400;
+            }
+          }
+          & > .preview {
+            display: block;
+            overflow: hidden;
+            max-block-size: 2lh;
+            overflow-wrap: anywhere;
+            color: var(--ply-muted);
+            font-size: var(--ply-small);
+            line-height: var(--ply-small-leading);
+          }
+          & > .status {
+            display: block;
+            color: var(--ply-muted);
+            font-size: var(--ply-small);
+          }
+        }
+        & > .meta {
+          display: grid;
+          justify-items: end;
+          align-content: start;
+          gap: var(--ply-space-1);
+          max-inline-size: 10em;
+          text-align: end;
+          overflow-wrap: anywhere;
+          font-size: var(--ply-small);
+          color: var(--ply-muted);
+          & > .unread {
+            color: var(--ply-link);
+            inline-size: 6px;
+            block-size: 6px;
+            border-radius: 50%;
+            background: currentColor;
+          }
+          & > .attachment {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--ply-space-1);
+          }
+        }
+      }
+      &[data-unread="true"] {
+        background: color-mix(in srgb, var(--ply-cover) 24%, var(--ply-surface));
+      }
+      &[data-current="true"] {
+        background: var(--ply-info-soft);
+        outline: 1px solid var(--ply-border);
+        outline-offset: -1px;
+      }
+      &[data-unread="true"] > .row > .sender,
+      &[data-unread="true"] > .row > .body > .title {
+        font-weight: 600;
+      }
+      &[data-state="failed"] > .row > .body > .status {
+        color: var(--ply-danger);
+      }
+    }
+    &[data-avatars="true"] > li > .row {
+      grid-template-columns: 2rem clamp(6rem, 18cqi, 12rem) minmax(0, 1fr) minmax(0, 8rem);
+    }
+    &[data-preview-lines="1"] > li > .row > .body > .preview {
+      max-block-size: 1lh;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    & > .state {
+      padding-block: var(--ply-space-6);
+      padding-inline: var(--ply-space-3);
+      color: var(--ply-muted);
+    }
+    @container ply-message-list (inline-size < 36rem) {
+      & > li > .row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        & > .body {
+          grid-column: 1 / -1;
+        }
+        & > .meta {
+          grid-column: 2;
+          grid-row: 1;
+        }
+      }
+      &[data-avatars="true"] > li > .row {
+        grid-template-columns: 2rem minmax(0, 1fr) auto;
+        & > .avatar {
+          grid-row: 1 / span 2;
+        }
+        & > .sender {
+          grid-column: 2;
+        }
+        & > .body {
+          grid-column: 2 / -1;
+        }
+        & > .meta {
+          grid-column: 3;
+        }
+      }
+    }
+  }
+}

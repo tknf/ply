@@ -1,85 +1,73 @@
 @layer components {
   .ply-tabs {
+    container: ply-tabs / inline-size;
     display: grid;
-    gap: var(--ply-space-6);
-    & > .ply-tab-panel {
+    gap: var(--ply-space-4);
+    min-inline-size: 0;
+    & > .panel {
       min-inline-size: 0;
     }
-  }
-  :is(.ply-tab-list, .ply-mode-switch) {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: end;
-    gap: var(--ply-space-1);
-    box-shadow: inset 0 -1px var(--ply-border);
-    & > button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-block-size: var(--ply-control-size);
-      min-inline-size: 4.5rem;
-      max-inline-size: 100%;
-      padding-block: var(--ply-space-2);
-      padding-inline: 1.25rem;
-      border: 1px solid transparent;
-      border-block-end-color: var(--ply-border);
-      border-start-start-radius: var(--ply-radius-control);
-      border-start-end-radius: var(--ply-radius-control);
-      border-end-start-radius: 0;
-      border-end-end-radius: 0;
-      background: transparent;
-      color: var(--ply-muted);
-      font: inherit;
-      font-size: var(--ply-control-font);
-      font-weight: var(--ply-control-weight);
-      line-height: var(--ply-control-leading);
-      cursor: pointer;
-      box-shadow: none;
-      &:hover:enabled {
-        color: var(--ply-link);
-        text-decoration: underline;
-        text-underline-offset: 0.25em;
-        box-shadow: none;
-      }
-      &:active:enabled {
-        background: var(--ply-soft);
-      }
-      &:focus-visible {
-        outline-offset: -4px;
-      }
-      &:is([data-state="active"], [data-current="true"]) {
-        border-color: var(--ply-border);
-        border-block-end-color: var(--ply-surface);
-        background: var(--ply-surface);
-        color: var(--ply-text);
-        text-decoration: none;
-      }
-      &:disabled {
-        color: var(--ply-muted);
-        border-color: transparent;
-        border-block-end-color: var(--ply-border);
+    & > .list {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      gap: var(--ply-space-1);
+      box-shadow: inset 0 -1px var(--ply-border);
+      & > button {
+        appearance: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--ply-space-2);
+        min-inline-size: 0;
+        max-inline-size: 100%;
+        min-block-size: 2.25rem;
+        padding-block: 0.4375rem;
+        padding-inline: var(--ply-space-3);
+        border: 0;
+        border-block-end: 2px solid transparent;
+        border-radius: 6px 6px 0 0;
         background: transparent;
-        opacity: 0.5;
-        cursor: not-allowed;
+        color: var(--ply-muted);
+        font-family: var(--ply-control-font-family);
+        font-size: var(--ply-small);
+        font-weight: 400;
+        line-height: var(--ply-small-leading);
+        cursor: pointer;
+        & > .icon {
+          display: flex;
+        }
+        & > .count {
+          font-size: inherit;
+          color: var(--ply-muted);
+          font-variant-numeric: tabular-nums;
+        }
+        &:hover:enabled {
+          background: var(--ply-background);
+          color: var(--ply-text);
+        }
+        &:focus-visible {
+          outline-offset: -3px;
+        }
+        &[data-state="active"] {
+          border-block-end-color: var(--ply-link);
+          color: var(--ply-link);
+        }
+        &:disabled {
+          color: var(--ply-muted);
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
       }
     }
-  }
-  .ply-mode-switch > .ply-button {
-    padding-inline: 1.25rem;
-    border-end-start-radius: 0;
-    border-end-end-radius: 0;
-  }
-  .ply-mode-switch {
-    inline-size: max-content;
-    max-inline-size: 100%;
-    @container ply-surface (inline-size < 38rem) {
-      & {
-        display: grid;
-        inline-size: 100%;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-      & > .ply-button {
+    @container ply-tabs (inline-size < 24rem) {
+      & > .list > button {
         padding-inline: var(--ply-space-2);
+      }
+    }
+    @media (pointer: coarse) {
+      & > .list > button {
+        min-block-size: 2.75rem;
       }
     }
   }

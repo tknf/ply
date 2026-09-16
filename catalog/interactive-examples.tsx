@@ -3,6 +3,7 @@ import {
   DropdownMenu,
   Tabs,
   DangerZone,
+  ActionLink,
   FieldGroup,
   Field,
   Input,
@@ -20,7 +21,7 @@ export const interactiveExamples = [
       </span>
     ),
     usage:
-      "Phosphor boldの必要分を外部スプライトからuseで参照します。配布icons.svgを同一オリジンに配置し、spriteでURLを指定できます。装飾は読み上げを省き、用途を伝える文言を添えます。CSSのみでも同じSVG/useを利用できます。",
+      "Phosphor regularを全20種に共通で使います。標準は1em、小型は6em/7。名前によるサイズ・ウェイトの分岐はありません。配布icons.svgを同一オリジンに配置し、spriteでURLを指定できます。装飾は読み上げを省き、用途を伝える文言を添えます。CSSのみでも同じSVG/useを利用でき、CSS背景・mask用の単独SVGも同じ素材から生成します。",
   },
   {
     id: "dialog",
@@ -37,7 +38,7 @@ export const interactiveExamples = [
       </Dialog>
     ),
     usage:
-      "DialogControllerをdialogとして登録します。idは画面内で一意にします。Escapeで閉じ、トリガーへフォーカスを戻します。JavaScriptがない場合は通常ページにも確認内容を用意してください。",
+      "DialogControllerをdialogとして登録します。idは画面内で一意にします。見出し・本文・操作欄を分け、長文では本文をスクロールします。sizeはcompact/default/wide、closeLabelで閉じる操作の文言、actionsで追加操作を指定できます。初期フォーカスは見出しです。フォームではinitialFocusをcontentにし、必要な入力にautofocusを指定します。Escapeと閉じる操作で元のトリガーへ戻ります。保存・削除は利用側で処理してください。スマホのボトムシート化は後続の計画です。",
   },
   {
     id: "dropdown-menu",
@@ -54,7 +55,7 @@ export const interactiveExamples = [
       />
     ),
     usage:
-      "DropdownMenuControllerをdropdown-menuとして登録します。dropdown-menu:selectのdetail.valueを利用側で受け取ります。ここには移動リンクを置かず、リンクの集合にはContextBarやFilterBarを使います。",
+      "DropdownMenuControllerをdropdown-menuとして登録します。通常操作・リンク・区切り・見出し・チェック・単一選択・多段サブメニューに対応します。dropdown-menu:selectのdetail.value、checked、nameを利用側で受け取ります。beforeselectはpreventDefaultで取り消せます。上下矢印・Home/Endで項目移動、左右矢印で階層移動、Escapeで一段戻り、Tabで閉じます。チェックと単一選択は既定で開いたままです。idは画面内で一意、radioのnameは同じ階層の選択グループごとに指定します。ショートカットの補助表記はキー登録を行いません。",
   },
   {
     id: "tabs",
@@ -76,15 +77,20 @@ export const interactiveExamples = [
   {
     id: "danger-zone",
     name: "DangerZone",
-    description: "通常の保存と、影響のある操作を領域として分けます。",
+    description: "削除や公開の取り消しなど、影響のある操作を説明と一緒にまとめます。",
     render: () => (
-      <DangerZone>
-        <p>利用中の内容への影響を、ここで説明します。</p>
-        <a href="/review">確認画面へ進む</a>
-      </DangerZone>
+      <DangerZone
+        title="記事を削除する"
+        description="この記事と添付ファイルを削除します。削除した内容は元に戻せません。"
+        actions={
+          <ActionLink href="#hono-danger-zone" variant="danger">
+            削除の確認へ進む
+          </ActionLink>
+        }
+      />
     ),
     usage:
-      "表示する影響や人数は利用側から渡します。確認ダイアログと組み合わせる場合も、業務判断はアプリが行います。",
+      "titleで操作名、descriptionで影響、childrenで追加の説明やフォーム、actionsでButton・ActionLink・Dialogを渡します。通常の保存とは区切り線で分け、説明の下に操作を置きます。複数の操作は折り返します。DangerZone自体にcontroller登録は不要です。確認にDialogを使う場合はDialogControllerを登録してください。このHTML例のリンクは下の確認例へ移動します。削除処理・権限判定・状態の更新は利用側が行います。",
   },
   {
     id: "field-group",

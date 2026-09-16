@@ -1,25 +1,76 @@
 @layer components {
-  .ply-dialog {
-    inline-size: min(36rem, calc(100% - var(--ply-space-8)));
-    max-block-size: calc(100% - var(--ply-space-8));
+  .ply-dialog > .panel {
+    --ply-dialog-width: 32rem;
+    inline-size: min(var(--ply-dialog-width), calc(100% - var(--ply-space-8)));
+    max-inline-size: calc(100% - var(--ply-space-8));
+    max-block-size: calc(100dvh - var(--ply-space-8));
+    overflow: auto;
     padding: 0;
-    border: 1px solid var(--ply-control-border);
-    border-radius: var(--ply-radius-surface);
+    border: 1px solid var(--ply-border);
+    border-radius: 16px;
     color: var(--ply-text);
     background: var(--ply-surface);
-    /* native dialogの中央配置はUAに任せる。独自の外marginを設定しない。 */
-    &::backdrop {
-      background: rgb(0 0 0 / 40%);
-    }
-    & > .ply-dialog-body {
+    font-family: var(--ply-control-font-family);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+    box-shadow: var(--ply-shadow-menu);
+    /* 中央配置はnative dialogに任せ、本文だけをスクロールさせる。 */
+    &[open] {
       display: grid;
-      gap: var(--ply-space-6);
-      padding-block: var(--ply-space-6);
-      padding-inline: var(--ply-space-6);
-      overflow-wrap: anywhere;
+      grid-template-rows: auto minmax(0, 1fr) auto;
     }
-    & > .ply-dialog-body > h2 {
-      font-size: 1.25rem;
+    &[data-size="compact"] {
+      --ply-dialog-width: 26rem;
     }
+    &[data-size="wide"] {
+      --ply-dialog-width: 52rem;
+    }
+    &::backdrop {
+      background: rgb(36 57 70 / 24%);
+    }
+  }
+  .ply-dialog > .panel > .heading {
+    display: grid;
+    gap: var(--ply-space-2);
+    padding-block: var(--ply-space-6);
+    padding-inline: var(--ply-space-4);
+    overflow-wrap: anywhere;
+    & > h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      line-height: calc(4 / 3);
+      &:focus-visible {
+        outline-offset: 2px;
+      }
+    }
+    & > p {
+      color: var(--ply-muted);
+    }
+  }
+  .ply-dialog > .panel > .body {
+    display: grid;
+    align-content: start;
+    gap: var(--ply-space-3);
+    min-block-size: 0;
+    min-inline-size: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    overflow-wrap: anywhere;
+    padding-block: var(--ply-space-4);
+    padding-inline: var(--ply-space-4);
+    padding-block-start: 0;
+    &:empty {
+      display: none;
+    }
+  }
+  .ply-dialog > .panel > .actions {
+    grid-row: 3;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    gap: var(--ply-space-2);
+    padding-block: var(--ply-space-3);
+    padding-inline: var(--ply-space-4);
+    border-block-start: 1px solid var(--ply-border);
   }
 }

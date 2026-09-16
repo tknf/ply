@@ -8,7 +8,7 @@
     min-inline-size: 0;
     border: 1px dashed var(--ply-control-border);
     border-radius: calc(4em / 7);
-    background: var(--ply-surface);
+    background: color-mix(in srgb, var(--ply-background) 50%, var(--ply-surface));
     font-size: var(--ply-label);
     line-height: calc(10 / 7);
     transition:
@@ -30,7 +30,7 @@
       color: var(--ply-muted);
       outline: none;
     }
-    &:has(> .ply-input:disabled) > .ply-file-input-hint {
+    &:has(> .ply-input:disabled) > .hint {
       display: none;
     }
     /* 選択した名前は折り返せる一覧へ出し、標準入力との二重表示を避ける。 */
@@ -44,20 +44,25 @@
       border: 0;
       border-radius: 0;
       background: transparent;
+      box-shadow: none;
       font-size: inherit;
       line-height: calc(16em / 7);
 
       &::file-selector-button {
+        box-sizing: border-box;
+        max-inline-size: 100%;
         min-block-size: var(--ply-button-size);
-        padding-block: 0;
+        padding-block: calc((var(--ply-button-size) - 10em / 7 - 2px) / 2);
         padding-inline: 0.75em;
-        margin-inline-end: var(--ply-space-3);
-        border: 1px solid var(--ply-link);
+        margin-inline-end: var(--ply-space-2);
+        border: 1px solid var(--ply-control-border);
         border-radius: calc(4em / 7);
-        background: var(--ply-surface);
-        color: var(--ply-link);
+        background: linear-gradient(var(--ply-surface), var(--ply-background));
+        box-shadow: var(--ply-shadow-control);
+        color: var(--ply-text);
         font: inherit;
-        line-height: calc(16em / 7 - 2px);
+        line-height: calc(10 / 7);
+        white-space: normal;
         cursor: pointer;
         transition: background-color var(--ply-duration) ease;
       }
@@ -75,11 +80,11 @@
       }
     }
   }
-  .ply-file-input-hint {
+  .ply-file-input > .hint {
     color: var(--ply-muted);
     font-size: var(--ply-small);
   }
-  .ply-file-input-files {
+  .ply-file-input > .files {
     min-inline-size: 0;
     padding: 0;
     list-style: none;
@@ -101,7 +106,7 @@
       white-space: nowrap;
     }
   }
-  .ply-file-input-status {
+  .ply-file-input > .status {
     color: var(--ply-danger);
 
     &:not([data-invalid="true"]) {
@@ -118,7 +123,7 @@
     .ply-file-input > .ply-button {
       min-block-size: 2.75rem;
     }
-    .ply-file-input-hint {
+    .ply-file-input > .hint {
       display: none;
     }
   }

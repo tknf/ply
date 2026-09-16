@@ -9,7 +9,7 @@ export const reservationExample = html`
         <li><span aria-hidden="true">／ </span><span aria-current="page">予約</span></li>
       </ol>
     </nav>
-    <div class="ply-surface-body">
+    <div class="body">
       <header class="ply-page-header">
         <h1>利用日時を選ぶ</h1>
         <p>ミーティングルーム・集中作業室の利用受付です。</p>
@@ -17,12 +17,12 @@ export const reservationExample = html`
       <form action="/reservation" method="get" class="ply-form">
         <fieldset class="ply-field-group">
           <legend>日時と人数</legend>
-          <div class="ply-field-group-layout">
-            <p class="ply-field-group-description">日時と参加人数を指定します。</p>
-            <div class="ply-field-group-fields">
+          <div class="layout">
+            <p class="description">日時と参加人数を指定します。</p>
+            <div class="fields">
               <div class="ply-fields-inline">
                 <div class="ply-field">
-                  <div class="ply-field-heading">
+                  <div class="heading">
                     <label for="reservation-date">利用日（必須）</label>
                   </div>
                   <input
@@ -34,7 +34,7 @@ export const reservationExample = html`
                   />
                 </div>
                 <div class="ply-field">
-                  <div class="ply-field-heading">
+                  <div class="heading">
                     <label for="reservation-time">開始時刻（必須）</label>
                   </div>
                   <input
@@ -46,8 +46,8 @@ export const reservationExample = html`
                     step="1800"
                     aria-describedby="reservation-time-help"
                   />
-                  <div class="ply-field-messages">
-                    <p class="ply-field-help" id="reservation-time-help">
+                  <div class="messages">
+                    <p class="help" id="reservation-time-help">
                       <svg
                         class="ply-icon"
                         viewBox="0 0 256 256"
@@ -61,7 +61,7 @@ export const reservationExample = html`
                   </div>
                 </div>
                 <div class="ply-field">
-                  <div class="ply-field-heading">
+                  <div class="heading">
                     <label for="reservation-count">人数（必須）</label>
                   </div>
                   <input
@@ -75,8 +75,8 @@ export const reservationExample = html`
                     value="2"
                     aria-describedby="reservation-count-help"
                   />
-                  <div class="ply-field-messages">
-                    <p class="ply-field-help" id="reservation-count-help">
+                  <div class="messages">
+                    <p class="help" id="reservation-count-help">
                       <svg
                         class="ply-icon"
                         viewBox="0 0 256 256"
@@ -116,7 +116,18 @@ export const reservationExample = html`
           </div>
         </fieldset>
         <details class="ply-disclosure">
-          <summary>追加設備</summary>
+          <summary>
+            <span class="marker" aria-hidden="true"
+              ><svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-caret" /></svg></span
+            ><span class="label"><span class="title">追加設備</span></span>
+          </summary>
           <div>
             <fieldset class="ply-choice-group" disabled>
               <legend>受付停止中</legend>
@@ -125,13 +136,35 @@ export const reservationExample = html`
           </div>
         </details>
         <details class="ply-disclosure">
-          <summary>利用前の確認事項</summary>
+          <summary>
+            <span class="marker" aria-hidden="true"
+              ><svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-caret" /></svg></span
+            ><span class="label"><span class="title">利用前の確認事項</span></span>
+          </summary>
           <div class="ply-stack">
             <p>
               利用後は机と椅子を元に戻してください。時間の延長が必要な場合は、次の予約を確認してください。
             </p>
             <details class="ply-disclosure">
-              <summary>キャンセル条件の例</summary>
+              <summary>
+                <span class="marker" aria-hidden="true"
+                  ><svg
+                    class="ply-icon"
+                    viewBox="0 0 256 256"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <use href="/assets/ply-icons.svg#ply-caret" /></svg></span
+                ><span class="label"><span class="title">キャンセル条件の例</span></span>
+              </summary>
               <div>
                 <p>このサンプルでは予約は作成されないため、キャンセルの手続きは不要です。</p>
               </div>

@@ -26,6 +26,6 @@ export const Surface = ({
     data-tone={tone}
   >
     {context}
-    <div class="ply-surface-body">{children}</div>
+    <div class="body">{children}</div>
   </div>
 );

@@ -428,7 +428,7 @@ export class DatePickerController extends CalendarController {
         if (date.getUTCFullYear() < 1 || date.getUTCFullYear() > 9999) continue;
         const button = document.createElement("button");
         button.type = "button";
-        button.className = "ply-date-picker-day";
+        button.className = "day";
         button.dataset.datePickerTarget = "day";
         button.dataset.calendarValue = isoDate(date);
         button.textContent = String(date.getUTCDate());

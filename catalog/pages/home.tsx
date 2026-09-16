@@ -1,4 +1,4 @@
-import { Surface, ContextBar, PageHeader, ActionLink, Icon } from "../../src/hono";
+import { Surface, ContextBar, PageHeader, ActionLink, Icon, Disclosure } from "../../src/hono";
 export const Home = ({
   components,
 }: {
@@ -115,22 +115,19 @@ export const Home = ({
         </ActionLink>
       </section>
     </div>
-    <details class="ply-disclosure" id="components">
-      <summary>部品をひとつずつ見る · {components.length}種類</summary>
-      <div>
-        <p>CSS・HTMLとHonoの利用例です。</p>
-        <ul class="catalog-index">
-          {components.map((item) => (
-            <li>
-              <a href={`/components/${item.id}`}>
-                <strong>{item.name}</strong>
-                <span>{item.description}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </details>
+    <Disclosure id="components" summary={`部品をひとつずつ見る · ${components.length}種類`}>
+      <p>CSS・HTMLとHonoの利用例です。</p>
+      <ul class="catalog-index">
+        {components.map((item) => (
+          <li>
+            <a href={`/components/${item.id}`}>
+              <strong>{item.name}</strong>
+              <span>{item.description}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </Disclosure>
     <p class="catalog-footnote">Plyのデザインと操作を試すためのサンプルです。</p>
   </Surface>
 );

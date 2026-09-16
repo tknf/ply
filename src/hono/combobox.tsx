@@ -40,7 +40,7 @@ export const Combobox = ({
       data-action="click->combobox#show"
     />
     <button
-      class="ply-field-toggle"
+      class="toggle"
       type="button"
       aria-label={toggleLabel}
       aria-haspopup="listbox"
@@ -51,7 +51,7 @@ export const Combobox = ({
       <Icon name="caret" />
     </button>
     <ul
-      class="ply-combobox-options"
+      class="options"
       id={`${id}-options`}
       role="listbox"
       aria-label={listLabel}

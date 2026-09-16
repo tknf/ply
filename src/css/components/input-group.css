@@ -13,11 +13,11 @@
     }
   }
 
-  .ply-input-group-control {
+  .ply-input-group > .control {
     --ply-input-group-size: calc(16em / 7);
     display: flex;
     align-items: stretch;
-    column-gap: 0.375em;
+    column-gap: 0.375rem;
     flex: 1;
     min-inline-size: 0;
     min-block-size: var(--ply-input-group-size);
@@ -25,9 +25,11 @@
     border: 1px solid var(--ply-input-border);
     border-radius: calc(4em / 7);
     background: var(--ply-surface);
+    box-shadow: var(--ply-shadow-input);
     color: var(--ply-muted);
     font-family: var(--ply-control-font-family);
     font-size: var(--ply-label);
+    font-weight: 400;
     line-height: calc(10 / 7);
 
     & > .ply-input {
@@ -39,13 +41,18 @@
       border: 0;
       border-radius: inherit;
       background: transparent;
+      box-shadow: none;
       outline: none;
+      &:disabled,
+      &[readonly] {
+        background: transparent;
+      }
     }
 
     &:has(> .ply-input:focus-visible) {
       border-color: var(--ply-link);
       outline: 2px solid var(--ply-link);
-      outline-offset: 2px;
+      outline-offset: 0;
     }
 
     &:has(> .ply-input[data-invalid="true"]) {
@@ -65,7 +72,7 @@
     }
   }
 
-  .ply-input-affix {
+  .ply-input-group > .control > .affix {
     display: flex;
     align-items: center;
     flex: 0 1 auto;
@@ -75,22 +82,22 @@
   }
 
   @container ply-input-group (inline-size < 14rem) {
-    .ply-input-group-control {
+    .ply-input-group > .control {
       flex-basis: 100%;
 
-      &:has(> .ply-input-affix:first-child + .ply-input + .ply-input-affix) {
+      &:has(> .affix:first-child + .ply-input + .affix) {
         display: grid;
         grid-template-columns: minmax(0, 1fr);
 
-        & > .ply-input-affix {
+        & > .affix {
           max-inline-size: 100%;
         }
 
-        & > .ply-input-affix:first-child {
+        & > .affix:first-child {
           padding-block-start: calc(5em / 14);
         }
 
-        & > .ply-input-affix:last-child {
+        & > .affix:last-child {
           padding-block-end: calc(5em / 14);
         }
       }
@@ -98,6 +105,15 @@
 
     .ply-input-group > .ply-button {
       max-inline-size: 100%;
+    }
+  }
+}
+
+@layer components {
+  @media (pointer: coarse) {
+    .ply-input-group > .control,
+    .ply-input-group > .control[data-size="large"] {
+      --ply-input-group-size: 2.75rem;
     }
   }
 }

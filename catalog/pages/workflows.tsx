@@ -134,8 +134,7 @@ export const FilesExample = () => (
       <FileItem name="部屋の写真.jpg" description="2026年9月8日 · JPEG · 840 KB" />
       <FileItem name="料金表.pdf" description="2026年9月1日 · PDF · 180 KB" />
     </div>
-    <details class="ply-disclosure" data-file-preview-target="form">
-      <summary>利用案内を差し替える</summary>
+    <Disclosure summary="利用案内を差し替える" data-file-preview-target="form">
       <div class="ply-stack">
         <FileInput
           id="replacement-file"
@@ -159,18 +158,13 @@ export const FilesExample = () => (
           </Button>
         </div>
       </div>
-    </details>
+    </Disclosure>
     <Disclosure summary="ファイル選択について">
       <p>選択したファイルの名前とサイズを、この画面で確認できます。ファイルは送信されません。</p>
     </Disclosure>
-    <details class="ply-disclosure" data-file-preview-target="information">
-      <summary>ファイルの情報</summary>
-      <div>
-        <p>
-          登録済みの3件はサンプルです。差し替えはこの画面だけに反映し、再読み込みで元に戻ります。
-        </p>
-      </div>
-    </details>
+    <Disclosure summary="ファイルの情報" data-file-preview-target="information">
+      <p>登録済みの3件はサンプルです。差し替えはこの画面だけに反映し、再読み込みで元に戻ります。</p>
+    </Disclosure>
     <noscript>
       <p class="catalog-footnote">
         JavaScriptが無効でも「利用案内を差し替える」からファイルを選べます。表示への反映はJavaScriptが必要です。

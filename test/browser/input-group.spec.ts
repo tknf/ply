@@ -22,7 +22,7 @@ test("枠全体にフォーカスとエラーを反映して入力と操作を�
   await page.goto("/components/input-group");
   await page.getByText("エラー・閲覧専用・利用不可・大きい入力", { exact: true }).click();
   const error = page.getByRole("spinbutton", { name: "料金（入力エラー）", exact: true });
-  const frame = page.locator(".ply-input-group-control").filter({ has: error });
+  const frame = page.locator(".control").filter({ has: error });
   await error.focus();
   await error.press("Tab");
   await page.keyboard.press("Shift+Tab");
@@ -64,7 +64,7 @@ for (const width of [375, 1280]) {
     ] as const) {
       const input = page.getByRole("searchbox", { name, exact: true });
       const group = example.locator(".ply-input-group").filter({ has: input });
-      const control = await group.locator(".ply-input-group-control").boundingBox();
+      const control = await group.locator(".control").boundingBox();
       const button = await group.getByRole("button").boundingBox();
       if (!control || !button) throw new Error("入力とボタンが描画されていません");
       expect(control.height).toBeCloseTo(height, 1);

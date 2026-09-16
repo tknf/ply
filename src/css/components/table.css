@@ -1,46 +1,128 @@
 @layer components {
-  .ply-table-scroll {
+  .ply-table {
     min-inline-size: 0;
     overflow: auto;
-  }
-  .ply-table {
-    inline-size: 100%;
-    min-inline-size: 38rem;
-    border-collapse: collapse;
+    overscroll-behavior-inline: contain;
+    color: var(--ply-text);
     font-size: var(--ply-label);
-    & > caption {
-      text-align: start;
-      font-size: 1rem;
-      font-weight: 600;
-      padding-block-end: var(--ply-space-4);
+    line-height: var(--ply-label-leading);
+    &[data-sticky="true"] {
+      max-block-size: 28rem;
     }
-    & > :is(thead, tbody, tfoot) > tr > :is(th, td) {
-      padding-block: var(--ply-space-3);
+    &[data-sticky="true"] > table > thead > tr > th {
+      position: sticky;
+      inset-block-start: 0;
+      z-index: 1;
+      background: var(--ply-surface);
+      box-shadow: 0 1px var(--ply-border);
+    }
+    & > .selection-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--ply-space-2);
+      padding-block: var(--ply-space-2);
       padding-inline: var(--ply-space-3);
-      border-block-end: 1px solid var(--ply-border);
-      text-align: start;
-      vertical-align: baseline;
+      background: var(--ply-info-soft);
+      border-radius: 8px;
     }
-    & > thead > tr > th {
-      color: var(--ply-muted);
-      font-size: var(--ply-small);
-      font-weight: 500;
-      white-space: nowrap;
+    & > .selection-bar > .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ply-space-2);
     }
-    & > :is(thead, tbody, tfoot) > tr > [data-cell="numeric"] {
-      text-align: end;
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
-    & > :is(thead, tbody, tfoot) > tr > [data-cell="short"] {
-      white-space: nowrap;
-    }
-    & > :is(thead, tbody, tfoot) > tr > [data-cell="text"] {
-      overflow-wrap: anywhere;
-    }
-    & > tfoot > tr > :is(th, td) {
-      font-weight: 700;
-      border-block-end: 0;
+    & > table {
+      inline-size: 100%;
+      border-collapse: collapse;
+      & > caption {
+        padding-block-end: var(--ply-space-3);
+        text-align: start;
+        font-size: var(--ply-body);
+        font-weight: 600;
+        line-height: 1.5;
+      }
+      & > :is(thead, tbody, tfoot) > tr > :is(th, td) {
+        padding-block: var(--ply-space-2);
+        padding-inline: var(--ply-space-3);
+        border-block-end: 1px solid var(--ply-border);
+        text-align: start;
+        vertical-align: middle;
+        font-weight: 400;
+      }
+      & > thead > tr > th {
+        padding-block: var(--ply-space-1);
+        color: var(--ply-muted);
+        font-size: var(--ply-small);
+        line-height: var(--ply-small-leading);
+        border-block-end-color: var(--ply-border);
+        white-space: nowrap;
+      }
+      & > :is(thead, tbody, tfoot) > tr > [data-cell="numeric"] {
+        text-align: end;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      & > :is(thead, tbody, tfoot) > tr > [data-cell="short"] {
+        white-space: nowrap;
+      }
+      & > :is(thead, tbody, tfoot) > tr > [data-cell="text"] {
+        min-inline-size: 14em;
+        overflow-wrap: anywhere;
+      }
+      & > tbody > tr:hover {
+        background: color-mix(in srgb, var(--ply-background) 65%, var(--ply-surface));
+      }
+      & > tbody > tr:focus-within {
+        background: var(--ply-info-soft);
+      }
+      &[data-density="comfortable"] > tbody > tr > :is(th, td) {
+        padding-block: var(--ply-space-3);
+      }
+      & > thead > tr > th > .sort {
+        gap: var(--ply-space-1);
+        padding-inline: 0;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        box-shadow: none;
+        &:hover:enabled {
+          background: var(--ply-info-soft);
+          color: var(--ply-link);
+        }
+        & > .indicator {
+          inline-size: 1rem;
+          color: var(--ply-muted);
+        }
+      }
+      & > :is(thead, tbody) > tr > :is(th, td):has(> .ply-choice) {
+        inline-size: 2.75rem;
+        padding-inline: var(--ply-space-2);
+        vertical-align: middle;
+      }
+      & > :is(thead, tbody) > tr > :is(th, td) > .ply-choice {
+        display: flex;
+      }
+      & > tbody > tr[data-selected="true"] {
+        background: var(--ply-info-soft);
+      }
+      & > tbody > tr > .state {
+        padding-block: var(--ply-space-8);
+        text-align: center;
+      }
+      & > tbody > tr > :is(th, td) > a {
+        text-decoration: none;
+      }
+      & > tbody > tr > :is(th, td) > a:hover {
+        color: var(--ply-blue-dark);
+      }
+      & > thead > tr > [data-cell="numeric"] > .sort {
+        margin-inline-start: auto;
+      }
+      & > tfoot > tr > :is(th, td) {
+        font-weight: 600;
+        border-block-end: 0;
+      }
     }
   }
 }

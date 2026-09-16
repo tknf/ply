@@ -1,4 +1,4 @@
-import { Button, Field, Input, Suggestion } from "../../src/hono";
+import { Disclosure, Button, Field, Input, Suggestion } from "../../src/hono";
 
 export default () => (
   <form class="ply-stack" aria-label="記事の分類設定">
@@ -13,8 +13,7 @@ export default () => (
       placeholder="入力または候補から選択"
       help="入力すると候補を絞り込みます。候補にない分類もそのまま使えます。"
     />
-    <details class="ply-disclosure">
-      <summary>初期値・候補なし・エラー・利用不可</summary>
+    <Disclosure summary="初期値・候補なし・エラー・利用不可">
       <div class="ply-stack">
         <Suggestion label="初期値のある分類" options={["制作", "編集", "運営"]} value="編集" />
         <Suggestion label="新しい分類" options={[]} placeholder="分類を入力" />
@@ -44,7 +43,7 @@ export default () => (
           ]}
         />
       </div>
-    </details>
+    </Disclosure>
     <Button type="reset">初期値に戻す</Button>
   </form>
 );

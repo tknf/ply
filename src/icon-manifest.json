@@ -3,6 +3,7 @@
   "search": "magnifying-glass",
   "calendar": "calendar-blank",
   "files": "folder-open",
+  "file": "file",
   "chart": "chart-bar",
   "check": "check",
   "layers": "stack",
@@ -13,5 +14,9 @@
   "caret": "caret-down",
   "trash": "trash",
   "x-circle": "x-circle",
-  "info": "info"
+  "info": "info",
+  "mail": "envelope-simple",
+  "chat": "chat-circle",
+  "grid": "squares-four",
+  "grip": "dots-six-vertical"
 }

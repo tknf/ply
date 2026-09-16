@@ -2,6 +2,20 @@ import { expect, test } from "@playwright/test";
 
 const cases = [
   {
+    id: "code-block",
+    targets: [
+      {
+        selector: '[data-example="hono"] .ply-code-block code > span',
+        property: "color",
+        threshold: 4.5,
+      },
+    ],
+  },
+  {
+    id: "avatar",
+    targets: [{ selector: '[data-example="hono"] .ply-avatar', property: "color", threshold: 4.5 }],
+  },
+  {
     id: "surface",
     targets: [
       { selector: '[data-example="hono"] .ply-surface p', property: "color", threshold: 7 },
@@ -10,9 +24,17 @@ const cases = [
   {
     id: "action-list",
     targets: [
-      { selector: '[data-example="hono"] .ply-action-title', property: "color", threshold: 7 },
+      {
+        selector: '[data-example="hono"] .ply-action-list > li > a > .title',
+        property: "color",
+        threshold: 7,
+      },
       { selector: '[data-example="hono"] .ply-action-list small', property: "color", threshold: 7 },
-      { selector: '[data-example="hono"] .ply-action-preview p', property: "color", threshold: 7 },
+      {
+        selector: '[data-example="hono"] .ply-action-list > li > a > .preview p',
+        property: "color",
+        threshold: 7,
+      },
     ],
   },
   {
@@ -38,10 +60,9 @@ const cases = [
         property: "color",
         threshold: 7,
       },
-      { selector: '[data-example="hono"] .ply-input-affix', property: "color", threshold: 4.5 },
+      { selector: '[data-example="hono"] .affix', property: "color", threshold: 4.5 },
       {
-        selector:
-          '[data-example="hono"] .ply-input-group-control:has(> .ply-input[data-invalid="true"])',
+        selector: '[data-example="hono"] .control:has(> .ply-input[data-invalid="true"])',
         property: "border-inline-start-color",
         threshold: 3,
       },
@@ -61,8 +82,8 @@ const cases = [
       { selector: '[data-example="hono"] .ply-notice', property: "color", threshold: 7 },
       {
         selector:
-          '[data-example="hono"] .ply-notice:is([data-tone="warning"], [data-tone="danger"])',
-        property: "border-inline-start-color",
+          '[data-example="hono"] .ply-notice:is([data-tone="warning"], [data-tone="danger"]) > .symbol',
+        property: "color",
         threshold: 3,
       },
     ],
@@ -82,12 +103,12 @@ const cases = [
         threshold: 3,
       },
       {
-        selector: '[data-example="hono"] .ply-field-help, [data-example="hono"] .ply-field-error',
+        selector: '[data-example="hono"] .help, [data-example="hono"] .error',
         property: "color",
         threshold: 7,
       },
       {
-        selector: '[data-example="hono"] .ply-field-error > .ply-icon',
+        selector: '[data-example="hono"] .error > .ply-icon',
         property: "color",
         threshold: 3,
       },
@@ -97,7 +118,7 @@ const cases = [
     id: "image-frame",
     targets: [
       {
-        selector: '[data-example="hono"] .ply-image-frame > span',
+        selector: '[data-example="hono"] .ply-image-frame > .image > span',
         property: "color",
         threshold: 4.5,
       },
@@ -120,12 +141,27 @@ const cases = [
 for (const { id, targets } of cases)
   test(`${id}の変種を実際の背景でコントラスト測定する`, async ({ page }, testInfo) => {
     await page.goto(`/components/${id}`);
-    const measurements = await page.evaluate((targets) => {
+    const { measurements, calibration } = await page.evaluate(async (targets) => {
+      await document.fonts.ready;
+      // 初期CSSの適用中に発生する有限のtransitionを終えてから、表示色を測る。
+      await Promise.allSettled(
+        document
+          .getAnimations()
+          .filter((animation) => Number.isFinite(animation.effect?.getComputedTiming().endTime))
+          .map((animation) => animation.finished),
+      );
+      const canvas = document.createElement("canvas");
+      canvas.width = 1;
+      canvas.height = 1;
+      const context = canvas.getContext("2d");
+      if (!context) throw new Error("描画色の測定に失敗しました");
       const color = (value: string) => {
-        const numbers = value.match(/[\d.]+/g)?.map(Number);
-        if (!numbers || numbers.length < 3) throw new Error(`未対応の描画色: ${value}`);
-        const [r = 0, g = 0, b = 0, a = 1] = numbers;
-        return { r, g, b, a };
+        // color(srgb ...)の0〜1をrgb(...)の0〜255として読まない。
+        context.clearRect(0, 0, 1, 1);
+        context.fillStyle = value;
+        context.fillRect(0, 0, 1, 1);
+        const [r = 0, g = 0, b = 0, a = 0] = context.getImageData(0, 0, 1, 1).data;
+        return { r, g, b, a: a / 255 };
       };
       const composite = (front: ReturnType<typeof color>, back: ReturnType<typeof color>) => ({
         r: front.r * front.a + back.r * (1 - front.a),
@@ -140,41 +176,69 @@ for (const { id, targets } of cases)
         };
         return linear(value.r) * 0.2126 + linear(value.g) * 0.7152 + linear(value.b) * 0.0722;
       };
-      return targets.flatMap(({ selector, property, threshold }) => {
+      const measurements = targets.flatMap(({ selector, property, threshold }) => {
         const elements = Array.from(document.querySelectorAll(selector));
         if (!elements.length) throw new Error(`測定対象がありません: ${selector}`);
         return elements.map((element) => {
           const chain: Element[] = [];
           for (let current: Element | null = element; current; current = current.parentElement)
             chain.unshift(current);
-          let background = color("rgb(255 255 255)");
+          let backgrounds = [color("rgb(255 255 255)")];
           for (const ancestor of chain) {
             // 境界は外側、文字は要素自身の塗りを含む背景と比較する。
             if (property !== "color" && ancestor === element) continue;
-            background = composite(color(getComputedStyle(ancestor).backgroundColor), background);
+            const style = getComputedStyle(ancestor);
+            backgrounds = backgrounds.map((background) =>
+              composite(color(style.backgroundColor), background),
+            );
+            // 薄いグラデーションも無視せず、各色のうち最も弱いコントラストを採る。
+            const stops = style.backgroundImage.includes("gradient(")
+              ? style.backgroundImage.match(/(?:rgba?|color|oklch|oklab|lab|lch|hsla?)\([^)]*\)/g)
+              : null;
+            if (stops)
+              backgrounds = backgrounds.flatMap((background) =>
+                stops.map((stop) => composite(color(stop), background)),
+              );
           }
-          const foreground = composite(
-            color(getComputedStyle(element).getPropertyValue(property)),
-            background,
+          const foregroundColor = color(getComputedStyle(element).getPropertyValue(property));
+          const contrasts = backgrounds.map((background) => {
+            const foreground = composite(foregroundColor, background);
+            const first = luminance(foreground);
+            const second = luminance(background);
+            return {
+              ratio: (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05),
+              foreground,
+              background,
+            };
+          });
+          const weakest = contrasts.reduce((previous, current) =>
+            current.ratio < previous.ratio ? current : previous,
           );
-          const first = luminance(foreground);
-          const second = luminance(background);
           return {
             selector,
             label: element.textContent?.trim().slice(0, 60),
             property,
             threshold,
-            ratio: (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05),
-            foreground,
-            background,
+            ...weakest,
           };
         });
       });
+      return {
+        measurements,
+        calibration: [color("rgb(255, 255, 255)"), color("color(srgb 1 1 1)")],
+      };
     }, targets);
+    expect(calibration).toEqual([
+      { r: 255, g: 255, b: 255, a: 1 },
+      { r: 255, g: 255, b: 255, a: 1 },
+    ]);
     await testInfo.attach("contrast", {
       body: JSON.stringify(measurements, null, 2),
       contentType: "application/json",
     });
     for (const measurement of measurements)
-      expect(measurement.ratio, measurement.selector).toBeGreaterThanOrEqual(measurement.threshold);
+      expect(
+        measurement.ratio,
+        `${measurement.selector}: ${measurement.label}`,
+      ).toBeGreaterThanOrEqual(measurement.threshold);
   });

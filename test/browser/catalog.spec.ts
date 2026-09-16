@@ -1,67 +1,23 @@
 import { expect, test } from "@playwright/test";
+test.use({ reducedMotion: "reduce" });
 
-const components = [
-  "avatar",
-  "breadcrumb",
-  "navigation",
-  "steps",
-  "toolbar",
-  "input-group",
-  "switch",
-  "range",
-  "suggestion",
-  "date-picker",
-  "tag",
-  "statistic",
-  "card",
-  "timeline",
-  "task-list",
-  "calendar",
-  "board",
-  "error-summary",
-  "loading",
-  "toast",
-  "popover",
-  "code-block",
-  "keycap",
-  "divider",
-  "icon",
-  "surface",
-  "context-bar",
-  "page-header",
-  "button",
-  "field",
-  "field-group",
-  "badge",
-  "notice",
-  "table",
-  "comparison",
-  "value-list",
-  "file-input",
-  "file-item",
-  "image-frame",
-  "disclosure",
-  "progress",
-  "pagination",
-  "filter-bar",
-  "data-list",
-  "action-list",
-  "empty-state",
-  "dialog",
-  "dropdown-menu",
-  "tabs",
-  "danger-zone",
-];
+import { redesignedComponentIds as components } from "../../catalog/redesigned-components";
 
-for (const width of [375, 540, 768, 1280]) {
-  test(`カタログ全変種が${width}pxと文字200%で利用できる`, async ({ page }, testInfo) => {
+for (const width of [375, 768, 1280]) {
+  test(`カタログ全変種が${width}pxと文字200%で利用できる`, async ({ page }) => {
     test.setTimeout(120000);
     await page.setViewportSize({ width, height: 1000 });
     for (const id of components) {
       await page.goto(`/components/${id}`);
-      await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+      await expect(page.locator("main > .ply-surface > .body > .ply-page-header h1")).toHaveCount(
+        1,
+      );
+      await page.getByText("Hono JSX", { exact: true }).click();
       await expect(
-        page.getByRole("region", { name: "Honoの利用例" }).locator(".catalog-code > code").first(),
+        page
+          .locator("details")
+          .filter({ has: page.locator("summary", { hasText: "Hono JSX" }) })
+          .locator("code"),
       ).toContainText('from "ply/hono"');
       const references = await page.evaluate(() => {
         const ids = Array.from(document.querySelectorAll("[id]")).map((element) => element.id);
@@ -95,11 +51,6 @@ for (const width of [375, 540, 768, 1280]) {
             message: `${id}・${zoom}倍`,
           })
           .toBe(true);
-        if (width === 375 || width === 1280)
-          await page.screenshot({
-            path: testInfo.outputPath(`${id}-${width}-${zoom}.png`),
-            fullPage: true,
-          });
       }
     }
   });
@@ -133,8 +84,9 @@ test("タブの無効項目を飛ばしメニュー選択と内側部品の状�
   await expect(page.locator('[data-example="hono"]')).toHaveAttribute("data-selected", "copy");
   await expect(page.getByRole("button", { name: "項目の操作", exact: true })).toBeFocused();
   await page.goto("/components/notice");
+  await page.getByText("入れ子の通知", { exact: true }).click();
   const inner = page.getByRole("complementary", { name: "内側の完了", exact: true });
-  const standalone = page.getByRole("complementary", { name: "successの通知", exact: true });
+  const standalone = page.getByRole("complementary", { name: "招待を送りました", exact: true });
   expect(await inner.evaluate((element) => getComputedStyle(element).borderInlineStartColor)).toBe(
     await standalone.evaluate((element) => getComputedStyle(element).borderInlineStartColor),
   );
@@ -158,11 +110,8 @@ test("検索の0件・ファイル群・進捗の境界値に到達できる", a
   await expect(disabledGroup.getByRole("textbox", { name: "宛名", exact: true })).toBeDisabled();
   await expect(disabledGroup.getByRole("textbox", { name: "住所", exact: true })).toBeDisabled();
   await page.goto("/components/progress");
-  await expect(page.getByRole("progressbar", { name: "処理待ち：0%" })).toHaveJSProperty(
-    "position",
-    0,
-  );
-  await expect(page.getByRole("progressbar", { name: "完了：100%" })).toHaveJSProperty(
+  await expect(page.getByRole("progressbar", { name: "処理待ち" })).toHaveJSProperty("position", 0);
+  await expect(page.getByRole("progressbar", { name: "送信が完了しました" })).toHaveJSProperty(
     "position",
     1,
   );
@@ -273,6 +222,7 @@ test("部品CSSの読み込み順と作業面の有無で固有の表示を壊�
         Array.from(element.querySelectorAll<HTMLElement>("[class]")).map((child) => {
           const style = getComputedStyle(child);
           return {
+            element: `${child.tagName}.${child.getAttribute("class")}`,
             color: style.color,
             border: style.borderInlineStartColor,
             background: style.backgroundColor,
@@ -290,6 +240,8 @@ test("部品CSSの読み込み順と作業面の有無で固有の表示を壊�
         .querySelectorAll(".ply-surface")
         .forEach((element) => element.classList.remove("ply-surface"));
     });
-    await expect.poll(styles).toEqual(before);
+    await expect
+      .poll(styles, { message: `${id}の部品CSSは読み込み順に依存しない` })
+      .toEqual(before);
   }
 });

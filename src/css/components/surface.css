@@ -5,14 +5,14 @@
     background: var(--ply-surface);
     border: 1px solid var(--ply-border);
     border-radius: var(--ply-radius-surface);
-    box-shadow: var(--ply-shadow-sheet);
-
-    & > .ply-surface-body {
+    box-shadow: 0 1px 2px rgb(36 57 70 / 4%);
+    & > .body {
       display: grid;
-      gap: var(--ply-space-8);
+      align-content: start;
+      gap: var(--ply-space-6);
+      min-inline-size: 0;
       padding-block: var(--ply-space-6);
       padding-inline: var(--ply-space-6);
-      min-inline-size: 0;
     }
     &[data-tone="warm"] {
       background: var(--ply-soft);
@@ -21,27 +21,22 @@
       background: var(--ply-info-soft);
     }
     &[data-kind="panel"] {
-      box-shadow: none;
       border-color: transparent;
-    }
-    &[data-kind="panel"] > .ply-surface-body {
-      padding-block: var(--ply-space-6);
-      padding-inline: var(--ply-space-6);
-      gap: var(--ply-space-4);
-    }
-    @container ply-surface (inline-size >= 45rem) {
-      &:not([data-kind="panel"]) > .ply-surface-body {
-        padding-block: var(--ply-space-8);
-        padding-inline: var(--ply-space-8);
+      box-shadow: none;
+      & > .body {
+        padding-block: var(--ply-space-4);
+        padding-inline: var(--ply-space-4);
+        gap: var(--ply-space-4);
       }
     }
-  }
-}
-
-@layer components {
-  .ply-surface[data-layout="document"] > .ply-surface-body {
-    gap: var(--ply-space-6);
-    padding-inline: max(var(--ply-space-6), calc((100% - 48rem) / 2));
-    padding-block: var(--ply-space-8);
+    &[data-layout="document"] > .body {
+      padding-inline: max(var(--ply-space-4), calc((100% - 42rem) / 2));
+      padding-block: var(--ply-space-8);
+    }
+    @container ply-surface (inline-size < 30rem) {
+      & > .body {
+        padding-inline: var(--ply-space-4);
+      }
+    }
   }
 }

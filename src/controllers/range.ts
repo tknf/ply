@@ -72,7 +72,7 @@ export class RangeController extends SliderController {
       output.value = `${input.value}${output.dataset.rangeUnit ?? ""}`;
       output.hidden = false;
     }
-    const values = this.element.querySelector<HTMLElement>(".ply-range-values");
+    const values = this.element.querySelector<HTMLElement>(".values");
     if (values) values.hidden = false;
     for (const number of this.element.querySelectorAll<HTMLInputElement>(
       "input[data-range-bound]",

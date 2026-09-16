@@ -1,16 +1,51 @@
 @layer components {
   .ply-tag {
-    display: inline-flex;
-    align-items: center;
-    padding-block: var(--ply-space-1);
-    padding-inline: var(--ply-space-2);
-    border-radius: 4px;
+    display: inline-block;
+    inline-size: fit-content;
+    justify-self: start;
+    max-inline-size: 100%;
+    padding-block: 1px;
+    padding-inline: 0.5em;
     border: 1px solid var(--ply-border);
+    border-radius: 4px;
+    background: var(--ply-surface);
+    color: var(--ply-muted);
+    font-family: var(--ply-control-font-family);
     font-size: var(--ply-small);
-    background: var(--ply-soft);
-    color: var(--ply-text);
+    line-height: var(--ply-small-leading);
+    overflow-wrap: anywhere;
+    text-decoration: none;
+    &[data-accent="blue"] {
+      background: var(--ply-cover);
+      border-color: transparent;
+      color: var(--ply-blue-dark);
+    }
+    &[data-accent="green"] {
+      background: var(--ply-success-soft);
+      border-color: transparent;
+      color: var(--ply-green);
+    }
+    &[data-accent="amber"] {
+      background: var(--ply-butter);
+      border-color: transparent;
+      color: var(--ply-amber);
+    }
+    &[data-accent="coral"] {
+      background: var(--ply-danger-soft);
+      border-color: transparent;
+      color: var(--ply-coral-dark);
+    }
+    &:is(a) {
+      cursor: pointer;
+      &:hover {
+        background: var(--ply-info-soft);
+        text-decoration: none;
+      }
+    }
   }
-  a.ply-tag {
-    min-block-size: var(--ply-control-size);
+  @media (pointer: coarse) {
+    a.ply-tag {
+      padding-block: 11px;
+    }
   }
 }

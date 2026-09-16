@@ -34,11 +34,11 @@ export const FileInput = ({
             type="file"
             data-file-input-target="input"
           />
-          <p class="ply-file-input-hint" data-file-input-target="hint" hidden>
+          <p class="hint" data-file-input-target="hint" hidden>
             ここにファイルをドロップすることもできます。
           </p>
           <ul
-            class="ply-file-input-files"
+            class="files"
             aria-label={`${label}で選択したファイル`}
             role="list"
             data-file-input-target="files"
@@ -53,7 +53,7 @@ export const FileInput = ({
           >
             選択を解除
           </Button>
-          <p class="ply-file-input-status" role="status" data-file-input-target="status" />
+          <p class="status" role="status" data-file-input-target="status" />
         </div>
       )}
     </Field>

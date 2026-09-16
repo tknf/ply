@@ -30,7 +30,7 @@ export const CheckboxGroup = ({
     data-controller="checkbox-group"
   >
     <legend>{legend}</legend>
-    <div class="ply-choice-list">
+    <div class="list">
       <Choice label={allLabel} data-checkbox-group-target="all" />
       {options.map(({ value, label, description, disabled }) => (
         <Choice

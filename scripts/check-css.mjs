@@ -1,6 +1,8 @@
 import { readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
 import postcss from "postcss";
+import { controlTextErrors, controlMarkupErrors } from "./control-text.mjs";
+import { partNameErrors } from "./part-names.mjs";
 
 const filesUnder = async (directory) => {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -18,8 +20,13 @@ const references = [];
 const controlFontOwners = new Map([
   ["src/css/components/button.css", ".ply-button"],
   ["src/css/components/field.css", ".ply-input"],
-  ["src/css/components/input-group.css", ".ply-input-group-control"],
-  ["src/css/components/date-picker.css", ".ply-date-picker-calendar"],
+  ["src/css/components/input-group.css", ".ply-input-group > .control"],
+  ["src/css/components/date-picker.css", ".ply-date-picker > .panel"],
+  ["src/css/components/dropdown-menu.css", ".ply-menu"],
+  ["src/css/components/dialog.css", ".ply-dialog > .panel"],
+  ["src/css/components/popover.css", ".ply-popover > .panel"],
+  ["src/css/components/disclosure.css", "& > summary"],
+  ["src/css/components/tabs.css", "& > button"],
 ]);
 const cssFiles = [
   ...(await filesUnder("src/css")).filter((file) => file.endsWith(".css")),
@@ -29,6 +36,8 @@ const physical =
   /^(?:(?:min-|max-)?(?:width|height)|top|right|bottom|left|(?:margin|padding|border)-(?:top|right|bottom|left)(?:-.+)?|margin-block-(?:end|bottom))$/;
 for (const path of cssFiles) {
   const root = postcss.parse(await readFile(path, "utf8"), { from: path });
+  errors.push(...controlTextErrors(root, path));
+  errors.push(...partNameErrors(root, path));
   const controlSelector = controlFontOwners.get(path);
   let hasControlFont = !controlSelector;
   root.walkDecls((declaration) => {
@@ -85,6 +94,8 @@ for (const path of cssFiles) {
 }
 for (const [path, token] of references)
   if (!tokenDefinitions.has(token)) errors.push(`${path}: 未定義トークン ${token}`);
+for (const path of (await filesUnder("src/hono")).filter((file) => file.endsWith(".tsx")))
+  errors.push(...controlMarkupErrors(await readFile(path, "utf8"), path));
 if (errors.length) {
   console.error(errors.join("\n"));
   process.exitCode = 1;
