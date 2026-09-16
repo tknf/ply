@@ -1,0 +1,101 @@
+{
+  "source": "rollout-2026-09-15T16-09-59-01a0a3e6-b09f-70e0-a0b5-26509d15f12d.jsonl",
+  "images": [
+    {
+      "file": "command-menu.jpg",
+      "title": "Plyの新しいCommandMenuの実際の描画を確認",
+      "captured_at": "2026-09-15T12:36:26.666Z",
+      "source_line": 3788,
+      "sha256": "8757e3862827898296a2b38511e311df69a0f803e11eeca5906b80ebb3ba39cf",
+      "bytes": 25181
+    },
+    {
+      "file": "actions.jpg",
+      "title": "操作系8部品の描画をまとめて確認",
+      "captured_at": "2026-09-15T12:44:03.183Z",
+      "source_line": 3882,
+      "sha256": "521c01f52022f64080f8f2cddf08728acb4470b2824a4e3c509836964bac7de7",
+      "bytes": 365991
+    },
+    {
+      "file": "content.jpg",
+      "title": "内容・一覧系14部品の文字と情報の比率を確認",
+      "captured_at": "2026-09-15T12:44:26.698Z",
+      "source_line": 3889,
+      "sha256": "c829e32bcf06963940f6945e82de04a64a8309bee87e8c3209e99832bce66dd8",
+      "bytes": 378390
+    },
+    {
+      "file": "inputs.jpg",
+      "title": "入力系9分類とField配下のコントロールを確認",
+      "captured_at": "2026-09-15T12:47:41.376Z",
+      "source_line": 3932,
+      "sha256": "d8ecafac868f1754b9539f5b1010613d75faaff58303096caf93b049da334d9c",
+      "bytes": 557868
+    },
+    {
+      "file": "work.jpg",
+      "title": "TaskList・Timeline・Calendar・Board・Statisticを確認",
+      "captured_at": "2026-09-15T12:51:08.354Z",
+      "source_line": 3984,
+      "sha256": "cbf1f8bc6583764b5a0bc756d4208aab50fac6bfe764408bdae5541af52464b9",
+      "bytes": 145434
+    },
+    {
+      "file": "feedback.jpg",
+      "title": "状態・通知系7部品の見分けやすさを確認",
+      "captured_at": "2026-09-15T12:53:01.706Z",
+      "source_line": 4011,
+      "sha256": "a2c978bcc75716118d5d11ab47add8c575d1e794914f0f1c66f85fed759a4b72",
+      "bytes": 219232
+    },
+    {
+      "file": "surfaces.jpg",
+      "title": "中央の作業面と移動系13部品を確認",
+      "captured_at": "2026-09-15T12:53:52.067Z",
+      "source_line": 4031,
+      "sha256": "a3f1c82e288b008b16664fee60642a6aa85dc7276e4cad4bd3dd086f28e32ede",
+      "bytes": 167695
+    },
+    {
+      "file": "image-frame-loaded.jpg",
+      "title": "ImageFrameの読み込み後の描画を確認",
+      "captured_at": "2026-09-15T12:59:52.458Z",
+      "source_line": 4112,
+      "sha256": "5ee67d3d9580d0e1cc3e4cf88e4e2e1df2fd594c7be3fe1b04b039a17b756bc2",
+      "bytes": 42436
+    },
+    {
+      "file": "dialog-open.jpg",
+      "title": "Dialogの開いた状態の描画を確認",
+      "captured_at": "2026-09-15T13:07:09.300Z",
+      "source_line": 4204,
+      "sha256": "f5cd7b142406041151cfc96420eafbd611790b7a9beae8c63779d90f12ecfd58",
+      "bytes": 73519
+    },
+    {
+      "file": "date-picker-open.jpg",
+      "title": "DatePickerの日付・期間切り替えと文字位置を確認",
+      "captured_at": "2026-09-15T13:08:19.705Z",
+      "source_line": 4216,
+      "sha256": "ea63013ed1094f78476683620160fa82dc7807a36e98335e7f05e84335e44f1e",
+      "bytes": 61166
+    },
+    {
+      "file": "popover-open.jpg",
+      "title": "Popoverを開き対象との距離と操作欄を確認",
+      "captured_at": "2026-09-15T13:09:08.483Z",
+      "source_line": 4225,
+      "sha256": "9eddc1722d7895b3b5d37f963fbef68eeb8c4d012a9abf35355c2bd8c24d1957",
+      "bytes": 69248
+    },
+    {
+      "file": "dropdown-menu-open.jpg",
+      "title": "DropdownMenuの開いた状態の余白と上揃えを確認",
+      "captured_at": "2026-09-15T13:14:21.049Z",
+      "source_line": 4279,
+      "sha256": "a3ef591b59488383558dc24c7b6640dea6732cfc487cdc03fa776c363c8ed2db",
+      "bytes": 56454
+    }
+  ]
+}

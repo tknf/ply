@@ -1,10 +1,14 @@
 # Ply
 
-Plyは、業務アプリケーションを中心に、御社が開発する複数のアプリケーションで再利用するデザインシステムです。予約システム、売上管理、CMSなどの入力・確認・比較・操作を、一貫した品質で構成できることを目指します。
+Plyは、管理画面・業務システム・一般利用者向けのtoCサービスで再利用するデザインシステムです。BasecampやHEYのような個性と親しみやすさを持ち、用途をまたいでもできるだけ統一感のある画面を作れることを目指します。予約システム、売上管理、CMSなどの入力・確認・比較・操作を、共通の文字・余白・操作の作法で構成します。
+
+ButtonやInputなどの基本部品に加え、ToolbarやDangerZoneなど、特定の用途で情報と操作をまとめる部品も提供します。採用基準と使う範囲は[設計方針](docs/design-system-direction.md)を参照してください。
+
+メールクライアント、CRM、プロジェクト管理、ドキュメント管理、ファイナンシャルダッシュボード、チャットを具体的な適用先として評価します。受信・商談・会話などのデータモデルは利用アプリが持ち、Plyは情報の読み順・配置・操作を共通化します。[部品構成の見直し](docs/component-audit.md)に、全56分類とField配下の公開部品の判断、再構築した範囲と追加候補をまとめています。
 
 基盤はフレームワークに依存しないCSSとセマンティックHTMLです。同じHTML構造を出力するHono JSXのSSRコンポーネントと、必要なJavaScriptによる動作も提供します。
 
-本文はHiragino優先のシステムフォントを使います。Button・Input・InputGroup・DatePickerの操作部品は`--ply-control-font-family`を共有し、欧文をHelvetica Neue／Arial、和文をHiraginoで表示します。macOSのHiraginoに対するブラウザの行メトリクス補正が、操作部品の文字位置の基準になることを避けるためです。LINE Seed JPは採用せず、Hiraginoのない環境では端末のシステムフォントへフォールバックします。
+UIは行メトリクスを揃えたローカルのシステムフォントを使います。Button・Inputなどの操作部品も`--ply-control-font-family`を共有し、欧文をHelvetica Neue／Arial、和文をHiraginoで表示します。macOSのHiraginoに対するブラウザの行メトリクス補正が、操作部品の文字位置の基準になることを避けるためです。LINE Seed JPは採用せず、Hiraginoのない環境では端末のシステムフォントへフォールバックします。
 
 上付きの問題と対策、確認範囲、変更時の注意点は[操作部品の文字位置](docs/control-text-alignment.md)を参照してください。
 
@@ -21,40 +25,24 @@ vp run dev
 
 `http://127.0.0.1:5173`にカタログを表示します。ポート変更は`vp run dev --port 5178`。DB・認証・外部サービスは不要です。
 
-- `/`：記事・予約・売上・ファイルの道具箱と部品一覧
-- `/components`：50種類の部品を用途別に探す一覧
-- `/examples/project`：仕事の追加・状態移動を試せる案件管理
-- `/examples/settings`：設定の入力・保存・復元
-- `/examples/schedule`：月表示と予定一覧
-- `/components/button`等：実物、HTMLコード、型検査済みHonoコード、状態・変種と注意点
-- `/example`：第四版の編集画面（本文・読み返し・下書き保存）
-- `/search`・`/search/empty`：記事の絞り込みと0件のCMS例
-- `/reservation`：CSSと標準HTMLだけの予約条件フォーム（JavaScriptなし）
-- `/sales`：月を切り替えて集計と商品別内訳を確認する売上表
-- `/files`：ファイル一覧と、選択したファイルの名前・サイズの反映
-- `/review`：現在の入力と前回保存した記事の比較
+- `/`・`/components`：全56分類の部品一覧
+- `/components/button`等：実表示、同じ表示のHTML、Honoコード、使い方
+- `/review/components`：全コンポーネントをまとめた確認
+- `/review/components/group-0`〜`group-5`：用途ごとの確認
 
-架空のサンプルです。編集画面は、このブラウザのlocalStorageへ記事ごとの下書きを保存します。検索はサンプル6件と保存済み下書きに連動します。公開・予約・アップロードは行いません。保存・検索のデモcontrollerはcatalog内に置き、ライブラリに特定の保存方式を持ち込みません。
+[実画面の測定と保存資料](docs/references/measurements-20260915.md)、[全件の判断・変更](docs/component-audit.md)、[HTMLの移行](docs/migration.md)を併せて参照してください。
 
-ファイルの差し替えは選択した名前・サイズだけを現在の画面に反映し、再読み込みで元に戻ります。内容の読み取り・送信はしません。予約は標準入力検証まで、売上は固定の月別データを切り替える例です。
+[全コンポーネントの余白と採用基準](docs/spacing-audit.md)には、状態・メディア・コンテナ条件を含む宣言値を全件掲載しています。[stimulus-ui対応表](docs/stimulus-ui-coverage.md)は導入済み0.1.0の38controllerを照合したものです。現在の利用・継承は15種類で、全機能対応ではありません。
 
-## フォームと編集の操作
+[カタログと操作部品の再確認](docs/catalog-review-20260916.md)に、コード表示・コピー通知・CommandMenu・ContextBarの修正、全56部品の確認範囲と検証結果を記録しています。
 
-フォームは共有CSSでチェックボックス・ラジオの形と選択印を描画します。HTMLのinputは維持し、ラベルクリック・Space・ラジオの矢印移動・required・disabledは標準の挙動を使います。forced-colors時は端末の選択表示へ戻します。
+## フォームと操作
 
-`Choice`には任意の`description`と`kind="option"`を追加しました。説明付きの選択行を作る場合に使います。単純な同意チェックは既定のまま使えます。CSSのみの場合も`label.ply-choice > input + span`で同じ表示になります。`ply-form`は見出しから送信操作まで幅と左端を揃える配置、`data-size="short"`は人数などの短い入力に使います。
+Buttonは文字・縦配置・状態を、Fieldはラベル・補足・エラーと入力の関連付けを所有します。Choice・Select・数値・日付・時刻は標準HTMLの入力と送信を保ちます。候補選択、パスワード表示切替、文字数、全選択などは対応するcontrollerを登録します。
 
-`FileInput`は標準の`input type="file"`を使い、`name`・`multiple`・`accept`・`required`・`form`をそのまま渡します。`help`・`error`はFieldと同じ関連付けです。`FileInputController`を`file-input`として登録すると、Stimulus-uiのドロップ処理に、ファイル名とサイズの一覧・選択解除が加わります。選択し直すと既存の選択を置き換え、ドロップ・解除も標準の`input`/`change`を通知します。外部から選択をクリアした場合も、このイベントで表示を同期できます。JavaScriptなしでは標準のファイル選択を使います。`accept`は選択ダイアログの絞り込み指定で、ファイルの検証・送信・保存は利用アプリ側で行います。
+FileInputは標準ファイル選択と、必要に応じてファイル名一覧・ドロップ・選択解除を提供します。送信先や保存先を持ちません。CommandMenuは上部中央の全体移動、DropdownMenuは対象の操作、Dialogは判断、Popoverは近くの補足を担います。
 
-[編集画面](http://127.0.0.1:5179/example)で記事名・本文を書き、「読み返す」で内容を確認できます。Escで執筆へ戻ります。「下書きを保存」またはCmd/Ctrl+Sで保存します。保存後の変更は「保存時に戻す」で戻せ、その取り消しもできます。未保存で画面を離れるときだけ、破棄の確認を出します。
-
-[記事一覧](http://127.0.0.1:5179/search)はキーワードと状態で絞り込めます。保存した下書きも検索対象です。別のブラウザ・オリジンとは共有せず、サイトデータを消すと下書きも消えます。
-
-CSSだけでも入力・設定の開閉・読む面を利用できます。デモの保存・プレビュー切替はJavaScriptが必要で、無効時は保存操作を無効化します。静的カタログでの動的な検索にもJavaScriptが必要です。Hono開発サーバーではGET検索も処理します。
-
-`Input` / `Textarea`の`data-kind="title"` / `data-kind="body"`で文書向けの文字と境界にし、`ply-writing`、`ply-writing-page`、`ply-writing-foot`で構成します。`ply-reading`と`ply-reading-body`は読む面です。ラベルを必ず関連付け、モード切替・フォーカス・保存処理は利用側で実装します。実例は`catalog/pages/editor.tsx`を参照してください。
-
-`ply-save-status`は操作のそばの短い状態表示。`data-state="saved"|"error"`で結果を識別します。Noticeは本文中心の補足へ変更し、warning/dangerだけ境界を付けます。入力エラーはField、保存結果は操作付近で扱い、すべてをNoticeへ集約しません。
+業務データ・権限・通信・永続化は利用アプリが持ちます。旧来の組み合わせ例はcatalogに残っていますが、特定のアプリ機能をライブラリへ含めません。`ply-writing`や`ply-save-status`など旧編集デモのスタイルもcatalog内の実装です。
 
 ## ソースと配布
 
@@ -65,7 +53,7 @@ CSSだけでも入力・設定の開閉・読む面を利用できます。デ�
 | `src/controllers` | 利用するstimulus-ui controllerの公開入口 | `ply/controllers`   |
 | `catalog`         | Honoアプリ、利用例、カタログ専用ナビ     | 配布APIには含めない |
 
-`index.ts`は再exportのみです。Honoはブラウザ用コードをimportしません。controllersは自動起動・自動登録せず、上流を再実装しません。現在の接続先は`@tknf/stimulus-ui@0.1.0`、Stimulus 3.2.2です。
+`index.ts`は再exportのみです。Honoはブラウザ用コードをimportしません。controllersは自動起動・自動登録しません。上流の対応機能を利用・継承し、Ply固有の配置・操作契約は追加controllerが担当します。現在の接続先は`@tknf/stimulus-ui@0.1.0`、Stimulus 3.2.2です。
 
 ```sh
 vp run build
@@ -130,6 +118,12 @@ application.register("file-input", FileInputController);
 Rangeは`RangeController`を`range`として登録します。このcontrollerはStimulus-uiの`SliderController`を継承し、現在値の表示と範囲指定の数値入力を担当します。`value`・`start`・`end`の公開API、`slider:beforechange`・`slider:change`は上流の操作に対応します。数値入力の確定は標準の`change`で受け取れます。
 
 file-dropの通常選択は`change`、ドロップ受け取りは`file-drop:drop`を処理します。DropdownMenuは`dropdown-menu:select`を通知します。Turboはカタログで接続検証に使っていますが、ライブラリの必須依存ではありません。
+
+DropdownMenuはPlyの`DropdownMenuController`を`dropdown-menu`として登録します。通常操作に加え、`kind`で`link`・`separator`・`group`・`submenu`・`checkbox`・`radio`を指定できます。サブメニューと見出し付きグループは`items`を持ちます。`id`は画面内で一意にし、単一選択の`name`は同じメニュー階層内のグループを表します。項目の`icon`・`description`・`shortcut`、通常操作の`danger`、トリガーの`iconOnly`・`size`・`variant`・`disabled`・`busy`を指定できます。`shortcut`は表示専用です。
+
+選択イベントの`detail`には`value`・`kind`、チェック項目には`checked`、単一選択には`name`も入ります。`dropdown-menu:beforeselect`を`preventDefault()`すると選択を取り消せます。通常操作は選択後に閉じ、チェック・単一選択は開いたまま更新します。`closeOnSelect`で変更できます。リンクは標準のページ移動を行い、選択イベントは発行しません。状態の保存と実際の業務処理は利用側で行います。開閉時は`dropdown-menu:open`・`dropdown-menu:close`を通知します。
+
+上下矢印・Home/Endで有効項目へ移動し、左右矢印で階層を移動します（右から左では方向が反転）。Escapeは一段戻り、Tabは閉じて次の操作へ進みます。文字入力による項目名の先頭検索、マウスでのサブメニュー展開にも対応します。パネルはPopover APIのトップレイヤーへ表示し、画面端では開く方向と位置を調整します。背景とメニューの間に画面全体を覆う透明な実要素を置きます。このレイヤーをクリックするとメニューを閉じます。背後のボタンやリンクはクリック対象にならず、イベントを種類別にキャンセルする処理は使いません。空・全項目無効の場合もパネルにフォーカスして閉じられます。
 
 ## 検証
 
@@ -205,7 +199,7 @@ UIの参照元と今回の確認範囲は[DatePickerの設計メモ](docs/date-p
 
 ## 共通アイコン
 
-Phosphor Iconsのboldを必要分だけ外部SVGスプライトにしています。`vp run icons:build`で生成し、dev/buildでも自動実行します。配布される`ply/icons.svg`を同一オリジンの`/assets/ply-icons.svg`へ置いてください。配置先が異なる場合は`<Icon name="pencil" sprite="/static/icons.svg" />`で指定します。CSSのみでも同じ`svg/use`を使えます。ライセンスを含む[選定理由と配布方法](docs/icon-selection.md)を参照してください。
+Phosphor Iconsのregularを全20種に共通で使います。標準1em、小型6em/7とし、名前によるサイズ・ウェイトの分岐はありません。`vp run icons:build`でSVGスプライトとCSS用の単独SVGを同じ素材から生成します。配布される`ply/icons.svg`を同一オリジンの`/assets/ply-icons.svg`へ置いてください。配置先が異なる場合は`<Icon name="pencil" sprite="/static/icons.svg" />`で指定します。CSSのみでも同じ`svg/use`を使えます。ライセンスを含む[選定理由と配布方法](docs/icon-selection.md)を参照してください。
 
 第四版の確認は `/search` から記事を開き、「読み返す」「変更を確認」「下書きを保存」の順で操作できます。比較対象は同じ記事の前回保存（初回はサンプル初期内容）です。一覧へ戻ると検索条件を保持します。
 
@@ -215,6 +209,6 @@ Phosphor Iconsのboldを必要分だけ外部SVGスプライトにしていま�
 
 追加：Avatar、Breadcrumb、Navigation、Steps、Toolbar、InputGroup、Switch、Range、Suggestion、DatePicker、Tag、Statistic、Card、Timeline、TaskList、Calendar、Board、ErrorSummary、Loading、Toast、Popover、CodeBlock、Keycap、Divider。Fieldが持つInput・Textarea・Select・Choiceを別部品として重複加算していません。
 
-Switch・Range・DatePicker・TaskListは標準入力の送信、キーボード操作、disabledを利用します。Suggestionは自由入力に候補を添えます。`SuggestionController`を`suggestion`として登録すると、Stimulus-uiの候補選択に部分一致の絞り込み、標準input/changeイベントの通知、フォームのリセットが加わります。JavaScriptなしでは標準datalistを使います。Popover・ToastはHTML Popover API対応ブラウザを前提とし、追加controllerは不要です。旧ブラウザではDisclosure等を利用してください。Safari 16.5実機での対応を保証する追加ではありません。
+Switch・Range・DatePicker・TaskListは標準入力の送信、キーボード操作、disabledを利用します。Suggestionは自由入力に候補を添えます。`SuggestionController`を`suggestion`として登録すると、Stimulus-uiの候補選択に部分一致の絞り込み、標準input/changeイベントの通知、フォームのリセットが加わります。JavaScriptなしでは標準datalistを使います。Popover・ToastはHTML Popover API対応ブラウザを前提とします。Popoverの位置補正には`PopoverController`を`popover`へ登録します。Toastの基本開閉は追加controller不要です。
 
 Calendarの週データとBoardの列データは利用側で与えます。案件管理の追加・移動は現在の画面のみ、設定は`ply-demo-workspace-settings`キーでこのブラウザのlocalStorageへ保存します。デモcontrollerはcatalogに限定します。CSSだけの予約、記事の既存保存キー、上流stimulus-uiの公開入口は維持しています。

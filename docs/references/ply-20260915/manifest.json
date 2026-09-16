@@ -1,0 +1,46 @@
+[
+  {
+    "product": "ply",
+    "file": "docs/references/ply-20260915/ply-193324-01.jpg",
+    "caption": "投稿と返信を共通部品で表せているか確認する",
+    "captured_at": "2026-09-15T19:33:24.160000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2127,
+    "sha256": "21b8a5129a3a2ebe32446a7286a15afc5a6448e65a45194760691fad8e57f286",
+    "bytes": 62268,
+    "dimensions": null
+  },
+  {
+    "product": "ply",
+    "file": "docs/references/ply-20260915/ply-200726-01.jpg",
+    "caption": "受信行の文字・密度・余白を確認する",
+    "captured_at": "2026-09-15T20:07:26.905000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2524,
+    "sha256": "767496824f2b8abfd9b57bdcfaff4d35f666db12969ceb205bcf14294b033174",
+    "bytes": 50919,
+    "dimensions": null
+  },
+  {
+    "product": "ply",
+    "file": "docs/references/ply-20260915/ply-200812-01.jpg",
+    "caption": "検索パネルの表示と選びやすさを確認する",
+    "captured_at": "2026-09-15T20:08:12.127000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2536,
+    "sha256": "4a33d480afa5d89fbd1fa447e6c39fddc5a9eae97e8e3d166de61de380863201",
+    "bytes": 56220,
+    "dimensions": null
+  },
+  {
+    "product": "ply",
+    "file": "docs/references/ply-20260915/ply-202842-01.jpg",
+    "caption": "修正したタブ・カード・補助操作を実画面で確認する",
+    "captured_at": "2026-09-15T20:28:42.018000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2950,
+    "sha256": "1cf081a1b597c4aa35e3c98516f49b25485ec59a452398c2c979ee8ae6fb0656",
+    "bytes": 72638,
+    "dimensions": null
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "file": "before.png",
+    "title": "ユーザー提供の修正前画像",
+    "sha256": "b4bfdeed27481c6adc1248e25b6b5811491959830d3a5972bd32ea62aed5d970",
+    "bytes": 39337
+  },
+  {
+    "file": "after.jpg",
+    "title": "カタログ全ページ共通のコード見出しの修正後を記録",
+    "captured_at": "2026-09-15T22:18:09.853Z",
+    "source_record": 5759,
+    "sha256": "7c8d90b971e91446005f4eb80ab6864fb5bc99a484955b8783ffa2a1261fc5cd",
+    "bytes": 3134
+  }
+]

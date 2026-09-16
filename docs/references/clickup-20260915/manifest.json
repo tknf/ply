@@ -1,0 +1,178 @@
+[
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-192146-01.jpg",
+    "caption": "ClickUpの密度と視覚的な特徴を見る",
+    "captured_at": "2026-09-15T19:21:46.470000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 1958,
+    "sha256": "d1bb8471c7846f5517e1801541219fb61450d128935a888afef5f2e86259f6b5",
+    "bytes": 106646,
+    "dimensions": null
+  },
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-192241-01.jpg",
+    "caption": "ClickUpのリスト表示と操作のまとまりを見る",
+    "captured_at": "2026-09-15T19:22:41.670000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 1970,
+    "sha256": "5fca28d657a2b93889c7bf9413b4f6e408f494547b3448b8ff83bd981ade7910",
+    "bytes": 90677,
+    "dimensions": null
+  },
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-192303-01.jpg",
+    "caption": "ポップオーバーの形と項目の密度を確認する",
+    "captured_at": "2026-09-15T19:23:03.812000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 1977,
+    "sha256": "a5c6a79c7d09c1b7422333038a2170a4d17e9f3098f456275bd69e46e6d1153d",
+    "bytes": 94774,
+    "dimensions": null
+  },
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-194414-01.jpg",
+    "caption": "ClickUpの受信トレイを実画面で確認する",
+    "captured_at": "2026-09-15T19:44:14.459000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2262,
+    "sha256": "acf0172bf892486803c655411754488cb917efec1a655504b2a13bbd6f5a57b7",
+    "bytes": 95782,
+    "dimensions": null
+  },
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-194430-01.jpg",
+    "caption": "通知のある受信トレイで情報の並び方を確認する",
+    "captured_at": "2026-09-15T19:44:30.947000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2269,
+    "sha256": "6ba5b0dd13da0f4d238f0295b85126620c46aad7a8448311e43dba3f63b40e58",
+    "bytes": 86816,
+    "dimensions": null
+  },
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-194456-01.jpg",
+    "caption": "受信した通知から詳細へ進んだときの構造を確認する",
+    "captured_at": "2026-09-15T19:44:56.719000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2276,
+    "sha256": "2769649cbc629d0061e8f753b23d7ca2ef81ab25154646931babc99e1c43a26b",
+    "bytes": 82203,
+    "dimensions": null
+  },
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-194614-01.jpg",
+    "caption": "通知からタスク本体と返信欄へ進む",
+    "captured_at": "2026-09-15T19:46:14.574000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2287,
+    "sha256": "646892f49538dacf5dc393c4b06a514b59481e45903a41600e0c8a21d09e9e08",
+    "bytes": 73067,
+    "dimensions": null
+  },
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-194709-01.jpg",
+    "caption": "タスク作成パネルの表示状態を見る",
+    "captured_at": "2026-09-15T19:47:09.127000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2310,
+    "sha256": "bbc27ebbe4ee8efcfcb3bfe9c6288d90e75c81c0bbeca10f743aacffa80b361a",
+    "bytes": 81175,
+    "dimensions": null
+  },
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-194807-01.jpg",
+    "caption": "入力済みの作成画面と補助操作を確認する",
+    "captured_at": "2026-09-15T19:48:07.288000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2338,
+    "sha256": "a0763f5c005a9a4f238eb10ca0752afe68d2672b834294fbb802b37e7364e63e",
+    "bytes": 80026,
+    "dimensions": null
+  },
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-200013-01.jpg",
+    "caption": "状態変更後の一覧と反応を確認する",
+    "captured_at": "2026-09-15T20:00:13.526000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2439,
+    "sha256": "5aaefc92502e68e403a4615e9c61e3d08d61f61ecb103ba8734d9d104d381201",
+    "bytes": 93010,
+    "dimensions": null
+  },
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-201426-01.jpg",
+    "caption": "ClickUpのフィルターの構造と操作を調べる",
+    "captured_at": "2026-09-15T20:14:26.566000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2620,
+    "sha256": "52c36ec49f4cedfcbb75eb69784df51010fc81509ea38eef542634671853b40c",
+    "bytes": 98291,
+    "dimensions": null
+  },
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-201727-01.jpg",
+    "caption": "ClickUpの日付入力とカレンダーの細部を確認する",
+    "captured_at": "2026-09-15T20:17:27.043000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2695,
+    "sha256": "c112198ceddf290483601fea6b65441b6e1b6572c18a67e7a6e9fb30448e2838",
+    "bytes": 94790,
+    "dimensions": null
+  },
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-201814-01.jpg",
+    "caption": "ClickUpの担当者選択と検索の細部を確認する",
+    "captured_at": "2026-09-15T20:18:14.292000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2720,
+    "sha256": "66b5014fe5336f8fb3f7a0a693c86cd3332d9bc87e84d4484d8969ccc669d67f",
+    "bytes": 89019,
+    "dimensions": null
+  },
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-202056-01.jpg",
+    "caption": "入力中と閲覧中の枠・余白・補助操作を見比べる",
+    "captured_at": "2026-09-15T20:20:56.247000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2788,
+    "sha256": "3f6b88f95632c9d080cf1c1f5c4f34717804f5dd3030bc5f00b125a5e74f1707",
+    "bytes": 98138,
+    "dimensions": null
+  },
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-202232-01.jpg",
+    "caption": "検索候補の密度・補足情報・選択表示を確認する",
+    "captured_at": "2026-09-15T20:22:32.337000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2831,
+    "sha256": "24fcef5eacb328e6d0cd4aff42379f7318b8be2a17ddbc35ba8b427eedf5e210",
+    "bytes": 92575,
+    "dimensions": null
+  },
+  {
+    "product": "clickup",
+    "file": "docs/references/clickup-20260915/clickup-202719-01.jpg",
+    "caption": "ClickUpのボードのカード密度と状態表示を確認する",
+    "captured_at": "2026-09-15T20:27:19.485000+09:00",
+    "recovered_from": "この会話の既存画像データ",
+    "source_line": 2934,
+    "sha256": "ec8a6d750b406b243070b1c9983922e10091439380821c18f881cc9937798f25",
+    "bytes": 90806,
+    "dimensions": null
+  }
+]
