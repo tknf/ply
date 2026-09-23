@@ -27,6 +27,7 @@ import { SalesExample, FilesExample } from "./pages/workflows";
 import { extendedExamples } from "./extended-examples";
 import { Components } from "./pages/components";
 import { ProjectExample, SettingsExample, ScheduleExample } from "./pages/compositions";
+import { ContactExample } from "./pages/contact";
 const catalogExamples = [...examples, ...interactiveExamples, ...extendedExamples];
 const reviewComponentIds = redesignedComponentIds;
 
@@ -34,6 +35,7 @@ export const paths = [
   "/",
   "/components",
   "/examples/project",
+  "/examples/contact",
   "/examples/settings",
   "/examples/schedule",
   "/examples/schedule/august",
@@ -331,6 +333,15 @@ app.get("/examples/project", (c) =>
     html`<!doctype html>${(
         <Document title="案件管理の事例">
           <ProjectExample />
+        </Document>
+      )}`,
+  ),
+);
+app.get("/examples/contact", (c) =>
+  c.html(
+    html`<!doctype html>${(
+        <Document title="担当者への問い合わせ">
+          <ContactExample />
         </Document>
       )}`,
   ),
