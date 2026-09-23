@@ -2,7 +2,7 @@
 
 監査日：2026年9月21日
 対象：main / c42689c
-基準：AGENTS.md、HANDOFF.md、docs/full-audit-brief.md
+基準：AGENTS.md、[当時の監査指示書](20260921-full-audit-brief.md)、当時の引き継ぎメモ
 対象目録：[20260921-full-audit-inventory.md](20260921-full-audit-inventory.md)
 
 ## 総評
@@ -15,12 +15,12 @@
 
 ## 指摘一覧
 
-| ID | 重大度 | 状態 | 対象 | 判定 |
-| --- | --- | --- | --- | --- |
-| AUD-20260921-001 | P2 | 未解消 | カタログ内部リンク | examples/contactが生成経路に存在せず、3表示面から到達できない |
-| AUD-20260921-002 | P3 | 未解消 | 配布型生成 | vp run buildがCommonJS dts入力の警告を出す |
-| AUD-20260921-003 | P3 | 新規確認 | カタログ旧HTML断片 | 表示に使われない旧markupが現行例と並存する |
-| AUD-20260921-004 | P3 | 未解消 | SSR検査の境界 | pathsの200確認だけではページ内リンクの未解決を止められない |
+| ID               | 重大度 | 状態     | 対象               | 判定                                                          |
+| ---------------- | ------ | -------- | ------------------ | ------------------------------------------------------------- |
+| AUD-20260921-001 | P2     | 未解消   | カタログ内部リンク | examples/contactが生成経路に存在せず、3表示面から到達できない |
+| AUD-20260921-002 | P3     | 未解消   | 配布型生成         | vp run buildがCommonJS dts入力の警告を出す                    |
+| AUD-20260921-003 | P3     | 新規確認 | カタログ旧HTML断片 | 表示に使われない旧markupが現行例と並存する                    |
+| AUD-20260921-004 | P3     | 未解消   | SSR検査の境界      | pathsの200確認だけではページ内リンクの未解決を止められない    |
 
 P1の指摘はない。AUD-20260921-001は利用者が実際に踏む導線の断絶なので、examplesを整備するタイミングを待つ場合も保留理由を明示して管理する。
 
@@ -59,45 +59,45 @@ P1の指摘はない。AUD-20260921-001は利用者が実際に踏む導線の�
 
 ## 設計制約と横断判定
 
-| 観点 | 現行ソースで確認したこと | 判定 |
-| --- | --- | --- |
-| 中央構成 | AppShellは上部中央のcommandsと中央workspace。srcとcatalogにsidebar実装なし | ソース適合 |
-| Buttonの文字所有 | button.cssに操作用font、太さ、行高、最小高さ、上下paddingを集約。check:css成功 | 静的適合 |
-| DropdownMenu | 項目はply-button、display:block、contentのheadingはalign-items:start、1行時の上下paddingは対称式 | 静的適合 |
-| アイコン | manifest 20件、CSS用SVG 20件、スプライトと配布licenseをcheck:packageで照合 | 静的適合 |
-| CSSと理由 | 64 source CSS + catalog CSS、spacing rationale 65キー、570宣言、配置93箇所 | 静的照合済み |
-| controller | Ply公開23件、stimulus-ui 0.1.0の38契約との利用・native代替・未対応を対応表と照合 | 静的照合済み |
-| カタログ | 6分類、56 ID、56 Hono例、85生成ページ。IDの重複と例の欠落なし | 静的照合済み |
-| 実画面 | 現行セッションのChromium・Firefox・WebKit操作、字形、狭幅、200%拡大は未実施 | 未確認 |
+| 観点             | 現行ソースで確認したこと                                                                         | 判定         |
+| ---------------- | ------------------------------------------------------------------------------------------------ | ------------ |
+| 中央構成         | AppShellは上部中央のcommandsと中央workspace。srcとcatalogにsidebar実装なし                       | ソース適合   |
+| Buttonの文字所有 | button.cssに操作用font、太さ、行高、最小高さ、上下paddingを集約。check:css成功                   | 静的適合     |
+| DropdownMenu     | 項目はply-button、display:block、contentのheadingはalign-items:start、1行時の上下paddingは対称式 | 静的適合     |
+| アイコン         | manifest 20件、CSS用SVG 20件、スプライトと配布licenseをcheck:packageで照合                       | 静的適合     |
+| CSSと理由        | 64 source CSS + catalog CSS、spacing rationale 65キー、570宣言、配置93箇所                       | 静的照合済み |
+| controller       | Ply公開23件、stimulus-ui 0.1.0の38契約との利用・native代替・未対応を対応表と照合                 | 静的照合済み |
+| カタログ         | 6分類、56 ID、56 Hono例、85生成ページ。IDの重複と例の欠落なし                                    | 静的照合済み |
+| 実画面           | 現行セッションのChromium・Firefox・WebKit操作、字形、狭幅、200%拡大は未実施                      | 未確認       |
 
 デザイン不整合を0件と断定していない。ソース上の設計制約は確認できたが、文字の見た目、密度、クリック後のフォーカス、各状態の視覚的な統一は実画面で確認していない。
 
 ## 6種類の適用先
 
-| 適用先 | 現在の組み合わせ | 不足・境界 |
-| --- | --- | --- |
-| メール | MessageList、Message、Tabs、Field、Textarea、Toolbar、FileItem | Composer、宛先Picker、添付送信、送信失敗からの再送 |
-| CRM | ValueList、Timeline、Field、Disclosure、Badge | 顧客・担当者Picker、Property行の編集、権限状態 |
-| プロジェクト | Board、Card、TaskList、Table、Calendar、Badge | 一括操作、保存・同期、可変ペインは利用側または追加部品 |
-| 文書 | FileItem、DataList、ActionList、Comparison、ImageFrame、Disclosure | 文書編集、目次、版比較の専用導線 |
-| 財務 | Statistic、Table、Tabs、ValueList、Comparison | Chartの外枠・凡例・代替表。計算は利用側 |
-| チャット | Message、FileItem、Field、Textarea、ActionLink | Composer、メンション、添付、送信中・失敗からの復帰 |
+| 適用先       | 現在の組み合わせ                                                   | 不足・境界                                             |
+| ------------ | ------------------------------------------------------------------ | ------------------------------------------------------ |
+| メール       | MessageList、Message、Tabs、Field、Textarea、Toolbar、FileItem     | Composer、宛先Picker、添付送信、送信失敗からの再送     |
+| CRM          | ValueList、Timeline、Field、Disclosure、Badge                      | 顧客・担当者Picker、Property行の編集、権限状態         |
+| プロジェクト | Board、Card、TaskList、Table、Calendar、Badge                      | 一括操作、保存・同期、可変ペインは利用側または追加部品 |
+| 文書         | FileItem、DataList、ActionList、Comparison、ImageFrame、Disclosure | 文書編集、目次、版比較の専用導線                       |
+| 財務         | Statistic、Table、Tabs、ValueList、Comparison                      | Chartの外枠・凡例・代替表。計算は利用側                |
+| チャット     | Message、FileItem、Field、Textarea、ActionLink                     | Composer、メンション、添付、送信中・失敗からの復帰     |
 
 追加候補の優先順位は、Picker・Composer・編集できるProperty行を高、一括操作・Chartの外枠・Tooltipを中とする。既存部品のpropsを増やすこと自体は追加理由にしない。ActionListの改名は将来検討に留め、現行公開名を削除しない。
 
 ## 検証結果
 
-| Commandまたは確認 | 結果 |
-| --- | --- |
-| vp run check:css | 成功。65 CSSの規約とtoken参照 |
-| vp run check | 成功。340ファイルのformat、226ファイルのlint・型、CSS検査 |
-| vp run test | 成功。14ファイル、107件 |
-| vp run build | 成功。85ページ生成。ただしAUD-20260921-002の警告 |
-| vp run check:package | 成功。公開入口、型、CSS、56例、20アイコン、license |
-| vp run docs:spacing | 成功。65 CSS、570宣言、93箇所の配置。生成formatterの表整形差分は監査成果ではないため復元 |
-| 生成HTMLの内部リンク走査 | 85ページを走査。未解決は /examples/contact の1種類、3ページ |
-| vp run test:visual | 未確認。sandboxの127.0.0.1:5178起動がEPERM。権限付き再実行はAGENTS.md違反として拒否 |
-| git diff --check | 成功。監査報告追加後も再実行して成功 |
+| Commandまたは確認        | 結果                                                                                     |
+| ------------------------ | ---------------------------------------------------------------------------------------- |
+| vp run check:css         | 成功。65 CSSの規約とtoken参照                                                            |
+| vp run check             | 成功。340ファイルのformat、226ファイルのlint・型、CSS検査                                |
+| vp run test              | 成功。14ファイル、107件                                                                  |
+| vp run build             | 成功。85ページ生成。ただしAUD-20260921-002の警告                                         |
+| vp run check:package     | 成功。公開入口、型、CSS、56例、20アイコン、license                                       |
+| vp run docs:spacing      | 成功。65 CSS、570宣言、93箇所の配置。生成formatterの表整形差分は監査成果ではないため復元 |
+| 生成HTMLの内部リンク走査 | 85ページを走査。未解決は /examples/contact の1種類、3ページ                              |
+| vp run test:visual       | 未確認。sandboxの127.0.0.1:5178起動がEPERM。権限付き再実行はAGENTS.md違反として拒否      |
+| git diff --check         | 成功。監査報告追加後も再実行して成功                                                     |
 
 ## 未確認範囲
 
@@ -117,4 +117,4 @@ P1の指摘はない。AUD-20260921-001は利用者が実際に踏む導線の�
 4. icon-manifestのdts警告を解消するか、配布検査で安全性の境界を固定する。
 5. AGENTS.mdの制約を満たす明示許可が得られた場合だけ、現行HEADの表示・操作監査を再開する。
 
-監査実施時点では、上記の指摘を記録するためのdocsだけを追加し、製品コード・テスト・HANDOFF.md・docs/full-audit-brief.mdは変更していない。その後、このHANDOFF.mdだけを監査結果に合わせて整理した。
+監査実施時点では、上記の指摘を記録するためのdocsだけを追加し、製品コード・テスト・当時の引き継ぎメモ・監査指示書は変更していない。その後、引き継ぎメモだけを監査結果に合わせて整理した。

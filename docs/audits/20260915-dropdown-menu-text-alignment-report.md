@@ -12,11 +12,10 @@
 
 次の資料を照合した。
 
-- [以前の文字位置対策と注意事項](control-text-alignment.md)
-- [再開時の引き継ぎ](../HANDOFF.md)
+- [以前の文字位置対策と注意事項](../control-text-alignment.md)
 - 初期コミット`3332ed4`のDropdownMenu、共通CSS、検査スクリプト
 - この会話内の変更内容と、ユーザー提供画像`Snapzy_2026-09-15_11-57-05_988.png`
-- 現在の[DropdownMenuのマークアップ](../src/hono/dropdown-menu.tsx)、[CSS](../src/css/components/dropdown-menu.css)、[CSS検査](../scripts/check-css.mjs)
+- 現在の[DropdownMenuのマークアップ](../../src/hono/dropdown-menu.tsx)、[CSS](../../src/css/components/dropdown-menu.css)、[CSS検査](../../scripts/check-css.mjs)
 
 初期コミット、最初の1行修正、パターン拡充後の現行実装を区別して扱う。最初の1行修正は単独コミットではないため、その経緯の根拠は会話内の編集記録である。ユーザー提供画像と、その後の再発申告を、同一の描画版の証拠として扱わない。
 
@@ -37,7 +36,7 @@
 
 再開時のDropdownMenuはトリガーだけが`Button`で、メニュー項目は直接記述した`button`だった。
 
-項目のフォントは、[reset.css](../src/css/reset.css)の`font: inherit`を通して、[base.css](../src/css/base.css)の本文用フォントを継承する構造だった。共通Buttonに指定された`--ply-control-font-family`は、独自の項目ボタンには適用されない。
+項目のフォントは、[reset.css](../../src/css/reset.css)の`font: inherit`を通して、[base.css](../../src/css/base.css)の本文用フォントを継承する構造だった。共通Buttonに指定された`--ply-control-font-family`は、独自の項目ボタンには適用されない。
 
 したがって、「トリガーに共通Buttonを使っている」ことを、メニュー全体で対策を共有できている根拠にはできなかった。ここは再開時の実装から確認できる適用漏れである。
 

@@ -3,7 +3,7 @@
 監査日：2026年9月16日<br>
 監査開始時点：`bbcd1aef7c15aa9f89be9b43910c835188568399`（`main`）<br>
 先行修正push：`7507b1a`（`main`）<br>
-基準：`docs/full-audit-brief.md`、`AGENTS.md`
+基準：当時の全体監査指示書、`AGENTS.md`
 
 ## 総評
 
@@ -11,7 +11,7 @@
 
 今回の監査では実画面の操作確認も実施した。PlaywrightのChromium・Firefox・WebKitで627件を実行し、625件成功、2件は既知の検出限界によるスキップ、失敗0件だった。CommandMenu、DropdownMenu、Disclosure、ActionList、DatePicker、Table、Board、Dialog、Toast、Suggestion、Fieldはブラウザ上でも主要な開閉・選択・移動・フォーカス復帰を確認した。全56分類の狭幅・文字200%・CSS順序・コントラスト・RTL・forced-colors・reduced-motionは自動画面検査で確認した。
 
-一方、カタログ利用者が実際に踏むリンクと公開APIの説明には、P2の不整合が残る。旧検証記録の件数は汚染を招くため削除し、現行値を`catalog-review-20260916.md`と本報告へ集約した。`/examples/contact`の未定義リンクは、ユーザー判断どおりexamples整備時まで保留している。
+一方、カタログ利用者が実際に踏むリンクと公開APIの説明には、P2の不整合が残る。旧検証記録の件数は汚染を招くため削除し、当時の検証値を[カタログ再確認記録](20260916-catalog-review.md)と本報告へ集約した。`/examples/contact`の未定義リンクは、ユーザー判断どおりexamples整備時まで保留している。
 
 優先順は次のとおり。
 
@@ -67,7 +67,7 @@ P1の指摘はありません。AUD-004とAUD-005は現時点の利用者阻害�
 ### AUD-003：旧検証記録の削除（P2、解消）
 
 - 対象：旧件数と旧検証範囲を含む`docs/component-verification-20260915.md`と`docs/feedback-verification-20260916.md`
-- 対応：両記録を削除し、現行のテスト件数・余白件数・controller対応は`docs/catalog-review-20260916.md`、`docs/spacing-audit.md`、`docs/stimulus-ui-coverage.md`へ集約した。
+- 対応：両記録を削除し、当時のテスト件数・余白件数・controller対応は[カタログ再確認記録](20260916-catalog-review.md)、`docs/spacing-audit.md`、`docs/stimulus-ui-coverage.md`へ集約した。
 - 影響：過去の途中結果を参照できなくなるが、現行値と異なる件数や、現行受け入れと混同される検証記述が残らない。参照画像などの証拠資産は削除していない。
 
 ## 保守上の課題
@@ -156,4 +156,4 @@ P1の指摘はありません。AUD-004とAUD-005は現時点の利用者阻害�
 
 保存済みの[`ply-feedback-20260916`](../references/ply-feedback-20260916/README.md)、[`ply-library-20260915`](../references/ply-library-20260915/README.md)、[`feedback-20260915`](../references/feedback-20260915/manifest.json)、[`basecamp-20260915`](../references/basecamp-20260915/README.md)は代表状態と過去の証拠として参照した。既存画像・既存記録の確認を、現行セッションでの全状態の目視承認へ置き換えていない。文字位置についても、[`control-text-alignment.md`](../control-text-alignment.md)が記録するMac上の過去検証と、今回の未確認範囲を分けた。
 
-開始時からの既存変更`HANDOFF.md`と、ユーザーが置いた`docs/full-audit-brief.md`は保持している。監査後の修正と本報告の更新は、この後の監査コミットへ含める。
+開始時からの既存変更だった引き継ぎメモと、ユーザーが置いた監査指示書は保持している。監査後の修正と本報告の更新は、この後の監査コミットへ含める。

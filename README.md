@@ -34,8 +34,6 @@ vp run dev
 
 [全コンポーネントの余白と採用基準](docs/spacing-audit.md)には、状態・メディア・コンテナ条件を含む宣言値を全件掲載しています。[stimulus-ui対応表](docs/stimulus-ui-coverage.md)は導入済み0.1.0の38controllerを照合したものです。現在の利用・継承は15種類で、全機能対応ではありません。
 
-[カタログと操作部品の再確認](docs/catalog-review-20260916.md)に、コード表示・コピー通知・CommandMenu・ContextBarの修正、全56部品の確認範囲と検証結果を記録しています。
-
 ## フォームと操作
 
 Buttonは文字・縦配置・状態を、Fieldはラベル・補足・エラーと入力の関連付けを所有します。Choice・Select・数値・日付・時刻は標準HTMLの入力と送信を保ちます。候補選択、パスワード表示切替、文字数、全選択などは対応するcontrollerを登録します。

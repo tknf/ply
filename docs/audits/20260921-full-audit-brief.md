@@ -16,11 +16,11 @@ Plyを独立した立場で監査する。製作者の説明や既存テスト�
 
 ## 2. 開始時に確認すること
 
-- `AGENTS.md`、`HANDOFF.md`、`package.json`と実行するscriptの本体を読む。
+- `AGENTS.md`、`package.json`と実行するscriptの本体を読む。
 - ブランチ、HEAD、未コミット変更を記録する。実装の保存地点は `4f738c7`、その設計資料は `bbcd1ae`。監査は開始時の実際のHEADを対象とする。
-- 最初に[文字位置の規約](control-text-alignment.md)を読む。「文字が上付き」は既知の不具合名として扱う。
-- [設計方針](design-system-direction.md)、[前回の監査・検証記録](catalog-review-20260916.md)、[余白の全件説明](spacing-audit.md)、[移行資料](migration.md)を読む。**これらの記録自体の正確さも監査対象**。
-- 参照画像と実測は[参照資料の案内](references/measurements-20260915.md)から確認する。参照製品の値、Plyの採用値、現在の実装値を分ける。
+- 最初に[文字位置の規約](../control-text-alignment.md)を読む。「文字が上付き」は既知の不具合名として扱う。
+- [設計方針](../design-system-direction.md)、[前回の監査・検証記録](20260916-catalog-review.md)、[余白の全件説明](../spacing-audit.md)、[移行資料](../migration.md)を読む。**これらの記録自体の正確さも監査対象**。
+- 参照画像と実測は[参照資料の案内](../references/measurements-20260915.md)から確認する。参照製品の値、Plyの採用値、現在の実装値を分ける。
 - ブラウザ権限はセッション冒頭のユーザー指示を優先する。末尾の貼り付け用指示に、ローカルPlyの表示検証の許可範囲を含めている。
 - 前回の「OK」はその時点を保存してpushする区切り。全コンポーネント・全状態の品質承認とは扱わない。
 
@@ -154,7 +154,7 @@ Plyを独立した立場で監査する。製作者の説明や既存テスト�
 
 ```text
 /Users/mast1ff/work/oss/ply を全体監査してください。
-AGENTS.md、HANDOFF.md、docs/full-audit-brief.mdを読み、指示書に沿って進めてください。
+AGENTS.md、docs/audits/20260921-full-audit-brief.mdを読み、指示書に沿って進めてください。
 
 この監査に必要なローカルPlyの表示・操作検証に限り、ブラウザ操作とPlaywrightを許可します。
 外部参照画像はdocs/referencesに保存済みのものを使い、ClickUp・Basecamp・HEYを再撮影しないでください。

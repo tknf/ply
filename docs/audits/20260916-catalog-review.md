@@ -31,7 +31,7 @@
 | 仕事と予定   | TaskList、Timeline、Calendar、Board、Statistic                                                                                       | キーによる完了切替、予定の横スクロール、任意の内容を持つカードの列間移動と取消                     |
 | 状態と結果   | Badge、Notice、ErrorSummary、EmptyState、Progress、Loading、Toast                                                                    | 意味を持つ文言、0・不定・完了、入れ子の色、通知と操作の配置、動きを減らす設定                      |
 
-これは全アプリ機能の実装完了や、全状態の見た目の受け入れを意味しない。stimulus-uiの利用・継承は15/38種類で、未対応は[対応表](stimulus-ui-coverage.md)へ分けて記載している。
+これは全アプリ機能の実装完了や、全状態の見た目の受け入れを意味しない。stimulus-uiの利用・継承は15/38種類で、未対応は[対応表](../stimulus-ui-coverage.md)へ分けて記載している。
 
 ## 実画面と測定の区別
 
@@ -39,7 +39,7 @@
 
 全56部品を対象とする配置・参照の検証と、上記3部品の目視確認を区別する。Button・Inputの字形は、既存の14px／16px・タッチ44pxのピクセル検査を使用した。Windows・Android・iOS実機やスクリーンリーダーの実機確認は含まない。
 
-画像は[今回の保存先](references/command-code-context-20260916/README.md)へ原本のまま保存する。途中段階と失敗時の画像も区別して残す。外部サービスの再撮影は行っていない。
+画像は[今回の保存先](../references/command-code-context-20260916/README.md)へ原本のまま保存する。途中段階と失敗時の画像も区別して残す。外部サービスの再撮影は行っていない。
 
 ## 最終検証
 
@@ -55,8 +55,8 @@
 
 ## 実装資料
 
-- 全余白の値と採用理由：[余白の全件監査](spacing-audit.md)
-- APIとcontroller登録：[移行資料](migration.md)
+- 全余白の値と採用理由：[余白の全件監査](../spacing-audit.md)
+- APIとcontroller登録：[移行資料](../migration.md)
 - 整形器のAPI：[Prettier API](https://prettier.io/docs/api)
 - HTMLの文中空白：[Prettierの空白の扱い](https://prettier.io/docs/options#html-whitespace-sensitivity)
 - サーバーでの着色：[Shiki](https://shiki.style/guide/install)
