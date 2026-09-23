@@ -60,7 +60,7 @@ const sprite = await readFile("dist/icons.svg", "utf8");
 if (sprite !== (await readFile("dist/catalog/assets/ply-icons.svg", "utf8")))
   throw new Error("配布スプライトが不一致");
 await access("dist/PHOSPHOR-LICENSE");
-const iconManifest = JSON.parse(await readFile("src/icon-manifest.json", "utf8"));
+const iconManifest = JSON.parse(await readFile("src/internal/icon-manifest.json", "utf8"));
 for (const name of Object.keys(iconManifest)) {
   const source = await readFile(`src/css/assets/${name}.svg`, "utf8");
   for (const directory of ["dist/css/assets", "dist/catalog/src/css/assets"])

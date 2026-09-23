@@ -1,5 +1,5 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
-const manifest = JSON.parse(await readFile("src/icon-manifest.json", "utf8"));
+const manifest = JSON.parse(await readFile("src/internal/icon-manifest.json", "utf8"));
 const symbols = [];
 await mkdir("src/css/assets", { recursive: true });
 for (const [name, file] of Object.entries(manifest)) {
@@ -24,4 +24,13 @@ await mkdir("dist", { recursive: true });
 await writeFile("public/assets/ply-icons.svg", sprite);
 await writeFile("dist/icons.svg", sprite);
 await writeFile("dist/PHOSPHOR-LICENSE", license);
+const iconTypes = [
+  "// src/internal/icon-manifest.jsonからscripts/build-icons.mjsが生成します。",
+  "export type IconName =",
+  ...Object.keys(manifest).map(
+    (name, index, names) => `  | ${JSON.stringify(name)}${index === names.length - 1 ? ";" : ""}`,
+  ),
+  "",
+].join("\n");
+await writeFile("src/internal/icon-manifest-types.ts", iconTypes);
 console.log(`${symbols.length}個のPhosphorアイコンをスプライトにしました。`);

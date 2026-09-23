@@ -20,7 +20,7 @@ Checkbox・TaskListは同じregularのSVGを14pxのmaskとして使う。Select�
 
 ## 実装
 
-- `src/icon-manifest.json`で必要な20個を指定。`vp run icons:build`で公式SVGの形状を変更せずsymbol化し、同じ素材を`src/css/assets/<名前>.svg`へも出力する。すべて同じ生成経路を使う。
+- `src/internal/icon-manifest.json`で必要な20個を指定。`vp run icons:build`で公式SVGの形状を変更せずsymbol化し、同じ素材を`src/css/assets/<名前>.svg`へも出力する。すべて同じ生成経路を使う。
 - `Icon`は外部SVGの`<use>`を出力。各出現箇所にpathを埋め込まない。アイコン用のブラウザJavaScriptは不要。
 - `dist/icons.svg`を同一オリジンへ配置する。既定URLは`/assets/ply-icons.svg`。配置先を変える場合は`<Icon name="pencil" sprite="/static/icons.svg" />`。
 - 同じURLを参照するため共通リソースとしてキャッシュでき、HTMLの重複も減る。実際のキャッシュ期間は利用側のHTTPヘッダーで設定する。

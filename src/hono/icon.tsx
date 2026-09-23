@@ -1,7 +1,7 @@
-import manifest from "../icon-manifest.json";
+import type { IconName } from "../internal/icon-manifest-types";
 import { classes } from "./types";
 
-export type IconName = keyof typeof manifest;
+export type { IconName } from "../internal/icon-manifest-types";
 export type IconProps = {
   name: IconName;
   sprite?: string;

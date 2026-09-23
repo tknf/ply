@@ -1,0 +1,22 @@
+// src/internal/icon-manifest.jsonからscripts/build-icons.mjsが生成します。
+export type IconName =
+  | "pencil"
+  | "search"
+  | "calendar"
+  | "files"
+  | "file"
+  | "chart"
+  | "check"
+  | "layers"
+  | "arrow"
+  | "eye"
+  | "eye-slash"
+  | "compare"
+  | "caret"
+  | "trash"
+  | "x-circle"
+  | "info"
+  | "mail"
+  | "chat"
+  | "grid"
+  | "grip";
