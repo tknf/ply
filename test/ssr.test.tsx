@@ -21,6 +21,29 @@ const render = async (child: Child) => {
   return (await server.request("http://localhost/")).text();
 };
 
+type LinkTarget =
+  | { kind: "fragment" }
+  | { kind: "external" }
+  | { kind: "asset" }
+  | { kind: "route"; pathname: string };
+
+const classifyLinkTarget = (value: string, pagePath: string): LinkTarget => {
+  const destination = value.replaceAll("&amp;", "&").trim();
+  if (destination.startsWith("#")) return { kind: "fragment" };
+
+  const url = new URL(destination, `https://ply.invalid${pagePath}`);
+  if (url.origin !== "https://ply.invalid") return { kind: "external" };
+  if (
+    /^\/(?:assets|src\/css|catalog)\//.test(url.pathname) ||
+    /\.(?:css|ico|js|png|svg|webp|woff2?)$/i.test(url.pathname)
+  ) {
+    return { kind: "asset" };
+  }
+
+  const pathname = url.pathname === "/" ? "/" : url.pathname.replace(/\/+$/, "");
+  return { kind: "route", pathname };
+};
+
 const navigationItems = () =>
   [
     { label: "すべて", href: "/items", current: true, count: 0 },
@@ -245,12 +268,22 @@ test("同日の期間はサーバーが指定した種別を保持する", async
   expect(result).toContain('data-date-picker-mode-value="range"');
 });
 
-test("カタログの全経路は認証なしでSSRできる", async () => {
+test("カタログの全経路を生成でき内部routeへ到達できる", async () => {
+  const generatedRoutes = new Set(paths);
+  const unresolved = new Set<string>();
   for (const path of paths) {
     const response = await app.request(`http://localhost${path}`);
     expect(response.status).toBe(200);
-    expect(await response.text()).toContain("<!doctype html>");
+    const document = await response.text();
+    expect(document).toContain("<!doctype html>");
+    for (const [, target] of document.matchAll(/(?:^|\s)(?:href|action)="([^"]*)"/g)) {
+      const classified = classifyLinkTarget(target, path);
+      if (classified.kind === "route" && !generatedRoutes.has(classified.pathname)) {
+        unresolved.add(`${path} -> ${classified.pathname}`);
+      }
+    }
   }
+  expect([...unresolved]).toEqual([]);
 });
 
 test("Toolbarの使用例は標準フォーム操作を持ち表示と掲載コードでIDを重複させない", async () => {
