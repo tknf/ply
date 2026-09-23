@@ -1,5 +1,5 @@
 import { expect, test } from "vite-plus/test";
-import { formatFileSize } from "../src/file-size";
+import { formatFileSize } from "../src/internal/file-size";
 
 test.each([
   [0, "0 B"],

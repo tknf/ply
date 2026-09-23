@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
-import { formatFileSize } from "../../src/file-size";
+import { formatFileSize } from "../../src/internal/file-size";
 
 export class FilePreviewController extends Controller<HTMLElement> {
   private target = (name: string) => {

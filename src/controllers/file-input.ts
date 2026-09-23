@@ -1,5 +1,5 @@
 import { FileDropController } from "@tknf/stimulus-ui";
-import { formatFileSize } from "../file-size";
+import { formatFileSize } from "../internal/file-size";
 
 /** 上流のドロップ処理に、選択内容の表示・解除・標準入力への通知を加える。 */
 export class FileInputController extends FileDropController {

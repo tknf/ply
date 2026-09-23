@@ -5,7 +5,7 @@ import {
   selectCalendarDate,
   selectionWithEndDate,
   type DatePickerSelection,
-} from "../src/date-picker";
+} from "../src/internal/date-picker";
 
 const singleDate = (start = "2026-09-14"): DatePickerSelection => ({ kind: "single", start });
 const dateRange = (start = "2026-09-14", end = "2026-09-16"): DatePickerSelection => ({

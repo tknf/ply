@@ -1,12 +1,12 @@
 import { useId } from "hono/jsx";
-import type { DatePickerSelection, DatePickerBoundReference } from "../date-picker";
-import { formatSelection } from "../date-picker";
+import type { DatePickerSelection, DatePickerBoundReference } from "../internal/date-picker";
+import { formatSelection } from "../internal/date-picker";
 import { Field, Input, Select } from "./field";
 import { Icon } from "./icon";
 import { Switch } from "./switch";
 import { classes, type ElementProps } from "./types";
 
-export type { DatePickerSelection, DatePickerBoundReference } from "../date-picker";
+export type { DatePickerSelection, DatePickerBoundReference } from "../internal/date-picker";
 export type DatePickerProps = Omit<ElementProps<"fieldset">, "children" | "name"> & {
   label: string;
   min?: string;

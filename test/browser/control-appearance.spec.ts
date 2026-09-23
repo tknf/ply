@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import iconManifest from "../../src/icon-manifest.json" with { type: "json" };
+import iconManifest from "../../src/internal/icon-manifest.json" with { type: "json" };
 
 test("全アイコンのCSS用SVGを正しい形式で配信する", async ({ request }) => {
   const results = await Promise.all(

@@ -9,7 +9,7 @@ import {
   selectCalendarDate,
   selectionWithEndDate,
   type DatePickerSelection,
-} from "../date-picker";
+} from "../internal/date-picker";
 
 const shiftDays = (date: Date, days: number) => new Date(date.getTime() + days * 86400000);
 const monthStart = (date: Date) => shiftDays(date, 1 - date.getUTCDate());
