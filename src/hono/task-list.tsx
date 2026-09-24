@@ -1,4 +1,5 @@
 import type { Child } from "hono/jsx";
+import { Choice } from "./field";
 import { classes, type ElementProps } from "./types";
 
 export type TaskListProps = ElementProps<"ul"> & {
@@ -17,19 +18,14 @@ export const TaskList = ({ label, items, class: className, ...attributes }: Task
   <ul {...attributes} class={classes("ply-task-list", className)} aria-label={label}>
     {items.map((item) => (
       <li>
-        <label class="ply-choice">
-          <input
-            type="checkbox"
-            name={item.name}
-            value={item.value}
-            checked={item.checked}
-            disabled={item.disabled}
-          />
-          <span>
-            <strong>{item.label}</strong>
-            {item.detail != null && item.detail !== false && <small>{item.detail}</small>}
-          </span>
-        </label>
+        <Choice
+          name={item.name}
+          value={item.value}
+          checked={item.checked}
+          disabled={item.disabled}
+          label={item.label}
+          description={item.detail}
+        />
         {item.end != null && <div class="end">{item.end}</div>}
       </li>
     ))}

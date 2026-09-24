@@ -63,15 +63,15 @@
   :is(.ply-password, .ply-combobox, .ply-date-picker > .control) > .toggle {
     appearance: none;
     position: absolute;
-    inset-block-start: 1px;
-    inset-inline-end: 1px;
+    inset-block-start: 0.0625rem;
+    inset-inline-end: 0.0625rem;
     display: grid;
     place-items: center;
-    inline-size: calc(16em / 7 - 2px);
-    block-size: calc(100% - 2px);
+    inline-size: calc(16em / 7 - 0.125rem);
+    block-size: calc(100% - 0.125rem);
     padding: 0;
     border: 0;
-    border-radius: calc(var(--ply-radius-control) - 1px);
+    border-radius: calc(var(--ply-radius-control) - var(--ply-stroke-width));
     background: transparent;
     color: var(--ply-muted);
     font-family: var(--ply-control-font-family);
@@ -84,7 +84,7 @@
       place-items: center;
     }
     &:focus-visible {
-      outline-offset: -2px;
+      outline-offset: -0.125rem;
     }
     &:hover:enabled {
       color: var(--ply-link);
@@ -125,8 +125,8 @@
     margin-block-start: var(--ply-space-1);
     padding-block: var(--ply-space-1);
     padding-inline: var(--ply-space-1);
-    border: 1px solid var(--ply-border);
-    border-radius: 10px;
+    border: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: 0.625rem;
     background: var(--ply-surface);
     color: var(--ply-text);
     box-shadow: var(--ply-shadow-menu);
@@ -137,13 +137,16 @@
       min-block-size: 2rem;
       padding-block: 0.375rem;
       padding-inline: var(--ply-space-2);
-      border-radius: 6px;
+      border-radius: 0.375rem;
       cursor: pointer;
+    }
+    & > li:hover:not([data-state="disabled"]) {
+      background: var(--ply-background);
     }
     & > li[data-state="active"] {
       background: var(--ply-cover);
       color: var(--ply-text);
-      box-shadow: inset 2px 0 var(--ply-link);
+      box-shadow: inset 0.125rem 0 var(--ply-link);
     }
     & > li[data-state="selected"] {
       background: var(--ply-info-soft);
@@ -169,7 +172,7 @@
   .ply-field-group {
     container: ply-field-group / inline-size;
     border: 0;
-    border-block-start: 1px solid var(--ply-border);
+    border-block-start: var(--ply-stroke-width) solid var(--ply-border);
     & > legend {
       padding-inline-end: var(--ply-space-3);
       font-size: var(--ply-body);
@@ -244,10 +247,13 @@
       block-size: calc(9em / 7);
       margin: 0;
       margin-block-start: calc(1em / 14);
-      border: 1px solid var(--ply-input-border);
+      border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: calc(3em / 14);
-      background: linear-gradient(var(--ply-surface), var(--ply-background));
-      box-shadow: inset 0 1px 0 var(--ply-surface);
+      background: linear-gradient(
+        var(--ply-surface),
+        color-mix(in srgb, var(--ply-surface) 96%, var(--ply-ink))
+      );
+      box-shadow: var(--ply-shadow-hardware);
       color: var(--ply-surface);
       cursor: inherit;
       transition:
@@ -264,8 +270,9 @@
       }
       &:checked,
       &:indeterminate {
-        background: var(--ply-link);
+        background: var(--ply-fill-primary);
         border-color: var(--ply-link);
+        box-shadow: var(--ply-shadow-control-primary);
       }
       &:checked::before,
       &:indeterminate::before {
@@ -282,17 +289,17 @@
       }
       &:indeterminate::before {
         inline-size: 0.5625rem;
-        block-size: 2px;
+        block-size: 0.125rem;
         mask: none;
       }
       &:disabled {
         background: var(--ply-background);
-        border-color: var(--ply-input-border);
+        border-color: var(--ply-border);
         color: var(--ply-muted);
       }
       &:focus-visible {
-        outline: 2px solid var(--ply-link);
-        outline-offset: 3px;
+        outline: 0.125rem solid var(--ply-link);
+        outline-offset: 0.1875rem;
       }
     }
     & > span {
@@ -318,8 +325,16 @@
     &[data-kind="option"] {
       padding-block: var(--ply-space-3);
       padding-inline: var(--ply-space-4);
-      border: 1px solid var(--ply-input-border);
+      border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: calc(4em / 7);
+      background: var(--ply-surface) var(--ply-fill-raised);
+      box-shadow: var(--ply-shadow-control);
+      transition:
+        border-color var(--ply-duration) ease,
+        box-shadow var(--ply-duration) ease;
+    }
+    &[data-kind="option"]:hover:not(:has(> input:disabled)) {
+      box-shadow: var(--ply-shadow-control-hover);
     }
     &[data-kind="option"]:has(> input:checked) {
       border-color: var(--ply-link);
@@ -327,17 +342,18 @@
     }
     &[data-kind="option"]:has(> input:disabled) {
       background: var(--ply-background);
+      box-shadow: none;
     }
   }
   .ply-input {
     --ply-input-size: calc(16em / 7);
-    --ply-input-border-size: 1px;
+    --ply-input-border-size: var(--ply-stroke-width);
     inline-size: 100%;
     min-inline-size: 0;
     min-block-size: var(--ply-input-size);
     padding-block: calc(5em / 14);
     padding-inline: 0.75em;
-    border: var(--ply-input-border-size) solid var(--ply-input-border);
+    border: var(--ply-input-border-size) solid var(--ply-border);
     border-radius: calc(4em / 7);
     background: var(--ply-surface);
     color: var(--ply-text);
@@ -349,11 +365,8 @@
     transition:
       border-color var(--ply-duration) ease,
       box-shadow var(--ply-duration) ease;
-    &:hover:not(:disabled, [readonly], [data-invalid="true"]) {
-      border-color: var(--ply-muted);
-    }
     &:focus-visible {
-      outline: 2px solid var(--ply-link);
+      outline: 0.125rem solid var(--ply-link);
       outline-offset: 0;
       border-color: var(--ply-link);
     }
@@ -396,7 +409,7 @@
       border-color: var(--ply-danger);
     }
     &:hover:not(:disabled, [data-invalid="true"]) {
-      border-color: var(--ply-input-border);
+      border-color: var(--ply-border);
       background: var(--ply-background);
     }
     &:focus-visible {
@@ -440,7 +453,7 @@
     font-size: var(--ply-small);
     &::file-selector-button {
       border: 0;
-      border-inline-end: 1px solid var(--ply-border);
+      border-inline-end: var(--ply-stroke-width) solid var(--ply-border);
       padding-block: var(--ply-space-1);
       padding-inline: var(--ply-space-2) var(--ply-space-3);
       margin-inline-end: var(--ply-space-3);
@@ -470,9 +483,12 @@
     .ply-input {
       --ply-input-size: 2.75rem;
     }
+    .ply-input:not([type="file"]) {
+      font-size: max(1rem, var(--ply-label));
+    }
     :is(.ply-password, .ply-combobox, .ply-date-picker > .control) > .toggle {
-      inline-size: calc(2.75rem - 2px);
-      block-size: calc(100% - 2px);
+      inline-size: calc(2.75rem - 0.125rem);
+      block-size: calc(100% - 0.125rem);
     }
   }
 }

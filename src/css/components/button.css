@@ -13,13 +13,10 @@
     max-inline-size: 100%;
     padding-block: 0;
     padding-inline: 1em;
-    border: 1px solid var(--ply-control-border);
+    border: var(--ply-stroke-width) solid var(--ply-border);
     border-radius: var(--ply-radius-control);
     background: var(--ply-surface);
-    background-image: linear-gradient(
-      var(--ply-surface),
-      color-mix(in srgb, var(--ply-surface) 97%, var(--ply-ink))
-    );
+    background-image: var(--ply-fill-raised);
     color: var(--ply-text);
     font-family: var(--ply-control-font-family);
     font-size: var(--ply-button-font);
@@ -35,14 +32,12 @@
       border-color var(--ply-duration) ease,
       box-shadow var(--ply-duration) ease;
     &:focus-visible {
-      outline: 2px solid var(--ply-link);
-      outline-offset: 3px;
+      outline: 0.125rem solid var(--ply-link);
+      outline-offset: 0.1875rem;
     }
 
     &:hover:not(:disabled) {
-      box-shadow:
-        inset 0 1px 0 rgb(255 255 255 / 60%),
-        0 2px 3px rgb(36 57 70 / 13%);
+      box-shadow: var(--ply-shadow-control-hover);
     }
     &:active:not(:disabled) {
       box-shadow: var(--ply-shadow-control-pressed);
@@ -60,26 +55,16 @@
     &[data-variant="primary"],
     &[data-current="true"] {
       background: var(--ply-link);
-      background-image: linear-gradient(
-        color-mix(in srgb, var(--ply-link) 94%, white),
-        var(--ply-link)
-      );
+      background-image: var(--ply-fill-primary);
       border-color: var(--ply-link);
       color: var(--ply-surface);
-      box-shadow:
-        inset 0 1px 0 rgb(255 255 255 / 18%),
-        0 1px 2px rgb(36 57 70 / 18%);
+      box-shadow: var(--ply-shadow-control-primary);
 
       &:hover:not(:disabled) {
         background: var(--ply-button-hover);
-        background-image: linear-gradient(
-          color-mix(in srgb, var(--ply-button-hover) 94%, white),
-          var(--ply-button-hover)
-        );
+        background-image: var(--ply-fill-primary-hover);
         border-color: var(--ply-button-hover);
-        box-shadow:
-          inset 0 1px 0 rgb(255 255 255 / 18%),
-          0 2px 3px rgb(36 57 70 / 18%);
+        box-shadow: var(--ply-shadow-control-primary-hover);
       }
 
       &:active:not(:disabled) {
@@ -107,15 +92,15 @@
       }
     }
 
-    &:disabled {
-      border-color: var(--ply-control-border);
+    &:disabled:not([data-busy="true"]) {
+      border-color: var(--ply-border);
       background: var(--ply-background);
       color: var(--ply-muted);
       cursor: not-allowed;
       box-shadow: none;
     }
 
-    &[data-variant="link"]:disabled {
+    &[data-variant="link"]:disabled:not([data-busy="true"]) {
       border-color: transparent;
       background: transparent;
       text-decoration: none;
@@ -152,12 +137,11 @@
     }
   }
   @media (pointer: coarse) {
-    .ply-button[data-icon-only="true"],
-    .ply-button[data-icon-only="true"][data-size="large"] {
+    .ply-button[data-icon-only="true"]:not([data-size="tag"]) {
       min-inline-size: 2.75rem;
     }
-    .ply-button,
-    .ply-button[data-size="large"] {
+    /* タグ内のアイコン専用操作は小さなチップの高さを維持する。 */
+    .ply-button:not([data-size="tag"][data-icon-only="true"]) {
       min-block-size: 2.75rem;
     }
   }

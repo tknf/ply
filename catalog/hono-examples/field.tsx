@@ -154,6 +154,19 @@ export default () => (
         />
       )}
     </Field>
+    <Field id="hono-combobox-readonly" label="確定済みの担当部署">
+      {(attributes) => (
+        <Combobox
+          {...attributes}
+          readonly
+          value="編集部"
+          options={[
+            { value: "編集部", label: "編集部" },
+            { value: "営業部", label: "営業部" },
+          ]}
+        />
+      )}
+    </Field>
     <fieldset class="ply-choice-group">
       <legend>チェックの状態</legend>
       <div class="list">
@@ -178,6 +191,17 @@ export default () => (
       />
       <Button type="reset">選択を戻す</Button>
     </form>
+    <CheckboxGroup legend="項目がない設定" name="empty-options" options={[]} />
+    <CheckboxGroup
+      legend="重複した候補の整理"
+      name="unique-options"
+      options={[
+        { value: "notice", label: "お知らせ" },
+        { value: "notice", label: "重複したお知らせ" },
+        { value: "", label: "空の値" },
+        { value: "digest", label: "週次まとめ" },
+      ]}
+    />
     <fieldset class="ply-choice-group">
       <legend>連絡方法</legend>
       <div class="list">

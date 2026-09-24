@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import { getProgressState } from "../../src/internal/progress";
 export class ProjectDemoController extends Controller<HTMLElement> {
   connect = () => {
     const button = this.element.querySelector('button[type="submit"]');
@@ -27,12 +28,18 @@ export class ProjectDemoController extends Controller<HTMLElement> {
     const completed = checks.filter((input) => input.checked).length;
     const progress = this.element.querySelector('[data-project-demo-target="progress"] progress');
     if (progress instanceof HTMLProgressElement) {
-      progress.max = checks.length;
-      progress.value = completed;
-      const percentage = `${Math.round((completed / Math.max(1, checks.length)) * 100)}%`;
-      progress.textContent = percentage;
-      const label = progress.closest(".ply-progress")?.querySelector(".value");
-      if (label) label.textContent = percentage;
+      const state = getProgressState(completed, checks.length);
+      const percentageLabel = state.label ?? "0%";
+      progress.max = state.limit;
+      progress.value = state.current ?? 0;
+      progress.textContent = percentageLabel;
+      const presentation = progress.closest(".ply-progress");
+      const label = presentation?.querySelector(".value");
+      if (label) label.textContent = percentageLabel;
+      const track = presentation?.querySelector<HTMLElement>(".track");
+      if (track) track.dataset.state = state.complete ? "complete" : "determinate";
+      const fill = track?.querySelector<HTMLElement>(".fill");
+      if (fill && state.percentage !== undefined) fill.style.inlineSize = `${state.percentage}%`;
     }
   };
   private refresh = (message: string) => {

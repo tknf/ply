@@ -24,13 +24,14 @@
       grid-template-columns: minmax(0, 1fr);
       gap: 0;
       margin-block-start: var(--ply-space-2);
-      border: 1px solid var(--ply-border);
-      border-radius: 8px;
-      background: var(--ply-surface);
+      border: var(--ply-stroke-width) solid var(--ply-border);
+      border-radius: var(--ply-radius-control);
+      background: var(--ply-fill-raised);
+      box-shadow: var(--ply-shadow-surface);
       & > :is(.before, .after) {
         min-inline-size: 0;
         padding-block: var(--ply-space-3);
-        padding-inline: var(--ply-space-3);
+        padding-inline: var(--ply-space-4);
         & > h4 {
           margin: 0;
           color: var(--ply-muted);
@@ -46,7 +47,7 @@
         }
       }
       & > .after {
-        border-block-start: 1px solid var(--ply-border);
+        border-block-start: var(--ply-stroke-width) solid var(--ply-border);
         border-inline-start: 0 solid var(--ply-border);
       }
     }
@@ -58,9 +59,15 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
         & > .after {
           border-block-start: 0;
-          border-inline-start: 1px solid var(--ply-border);
+          border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
         }
       }
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-comparison > .pair {
+      background: Canvas;
+      box-shadow: none;
     }
   }
 }

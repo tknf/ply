@@ -8,6 +8,7 @@ export default () => (
       </Card>
       <Card title="秋の読書会" href="/reservation" footer={<span>9月25日 18:00 · あと4席</span>}>
         <p>最近読んだ本を一冊持ち寄って、小さな感想を交換する会です。</p>
+        <Badge tone="success">受付中</Badge>
       </Card>
     </div>
     <Disclosure summary="複数段落・内側の操作・長い見出し">

@@ -151,14 +151,31 @@ export default () => (
         </Table>
       </Disclosure>
       <Disclosure summary="0件・読み込み中・読み込み失敗">
-        <Table caption="検索結果" state="empty" columnCount={5} />
-        <Table caption="読み込み中の一覧" state="loading" columnCount={5} />
-        <Table
-          caption="読み込みに失敗した一覧"
-          state="error"
-          columnCount={5}
-          stateContent={<p>一覧を読み込めませんでした。ページを再読み込みしてください。</p>}
-        />
+        {(["empty", "loading", "error"] as const).map((state) => (
+          <Table
+            caption={
+              state === "empty"
+                ? "検索結果"
+                : state === "loading"
+                  ? "読み込み中の一覧"
+                  : "読み込みに失敗した一覧"
+            }
+            state={state}
+            stateContent={
+              state === "error" ? (
+                <p>一覧を読み込めませんでした。ページを再読み込みしてください。</p>
+              ) : undefined
+            }
+          >
+            <thead>
+              <tr>
+                <th scope="col">記事名</th>
+                <th scope="col">更新日時</th>
+                <th scope="col">状態</th>
+              </tr>
+            </thead>
+          </Table>
+        ))}
       </Disclosure>
       <Disclosure summary="無効な行・数値の欠損・負の値・密度">
         <Table caption="増減の確認" sort="local" selectable density="comfortable">

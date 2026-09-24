@@ -1,0 +1,27 @@
+@layer components {
+  .ply-tag-input {
+    display: grid;
+    gap: var(--ply-space-1);
+    min-inline-size: 0;
+  }
+
+  .ply-tag-input > .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ply-space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ply-tag-input > .chips[hidden],
+  .ply-tag-input > .note[hidden] {
+    display: none;
+  }
+
+  .ply-tag-input > .note {
+    color: var(--ply-danger);
+    font-size: var(--ply-small);
+    line-height: var(--ply-small-leading);
+  }
+}

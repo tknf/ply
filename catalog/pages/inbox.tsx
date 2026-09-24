@@ -88,19 +88,19 @@ export const WorkspaceMail = ({ message }: { message?: string } = {}) => {
           <>
             <Toolbar label="連絡を整理する">
               <div class="start">
-                <ActionLink href="/review/mail" variant="link">
+                <ActionLink href="/review/mail" variant="link" data-toolbar-target="control">
                   ← 受信トレイ
                 </ActionLink>
               </div>
               <div class="end ply-cluster">
-                <Button data-inbox-folder="inbox" hidden>
+                <Button data-inbox-folder="inbox" hidden disabled data-toolbar-target="control">
                   受信トレイに戻す
                 </Button>
-                <Button data-inbox-folder="later">
+                <Button data-inbox-folder="later" data-toolbar-target="control">
                   <Icon name="calendar" />
                   あとで読む
                 </Button>
-                <Button data-inbox-folder="done" variant="primary">
+                <Button data-inbox-folder="done" variant="primary" data-toolbar-target="control">
                   <Icon name="check" />
                   確認を終える
                 </Button>
@@ -126,7 +126,9 @@ export const WorkspaceMail = ({ message }: { message?: string } = {}) => {
                   )}
                 </Field>
                 <Toolbar label="下書きの操作">
-                  <Button type="submit">下書きを保存</Button>
+                  <Button type="submit" data-toolbar-target="control">
+                    下書きを保存
+                  </Button>
                   <span class="ply-save-status" role="status" data-inbox-status />
                 </Toolbar>
               </form>

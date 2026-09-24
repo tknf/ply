@@ -1,32 +1,28 @@
 @layer components {
   .ply-task-list {
     container: ply-task-list / inline-size;
-    min-inline-size: 0;
-    padding: 0;
-    list-style: none;
     & > li {
       display: grid;
       grid-template-columns: minmax(0, 1fr) fit-content(40%);
       align-items: center;
       gap: var(--ply-space-3);
       min-inline-size: 0;
-      border-block-end: 1px solid var(--ply-border);
+      & + li {
+        border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+      }
       & > .end {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         gap: var(--ply-space-2);
-        padding-inline-end: var(--ply-space-2);
+        padding-inline-end: var(--ply-space-3);
         color: var(--ply-muted);
         font-size: var(--ply-small);
       }
       & > .ply-choice {
         grid-template-columns: 1.25rem minmax(0, 1fr);
         padding-block: var(--ply-space-2);
-        padding-inline: var(--ply-space-2);
-        font-family: var(--ply-control-font-family);
-        font-size: var(--ply-label);
-        line-height: var(--ply-label-leading);
+        padding-inline: var(--ply-space-3);
         border-radius: var(--ply-radius-control);
         transition: background-color var(--ply-duration) ease;
         &:hover {
@@ -34,17 +30,6 @@
         }
         &:has(> input:checked) {
           color: var(--ply-muted);
-        }
-        & > input {
-          inline-size: 1.25rem;
-          block-size: 1.25rem;
-          margin-block-start: 0;
-          border-radius: 50%;
-          box-shadow: var(--ply-shadow-input);
-        }
-        & > input:checked {
-          background: var(--ply-success);
-          border-color: var(--ply-success);
         }
         & > input:checked::before {
           animation: ply-check-arrive calc(var(--ply-duration) * 1.5) ease-out;
@@ -58,7 +43,7 @@
         }
         & > input:checked + span > strong {
           text-decoration: line-through;
-          text-decoration-thickness: 1px;
+          text-decoration-thickness: 0.0625rem;
           color: var(--ply-muted);
         }
       }
@@ -77,6 +62,11 @@
   @media (pointer: coarse) {
     .ply-task-list > li > .ply-choice {
       min-block-size: 2.75rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ply-task-list > li > .ply-choice > input:checked::before {
+      animation: none;
     }
   }
   @keyframes ply-check-arrive {

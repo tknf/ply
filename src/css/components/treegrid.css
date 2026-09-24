@@ -1,0 +1,57 @@
+@layer components {
+  .ply-treegrid {
+    --ply-treegrid-depth: 0;
+  }
+
+  .ply-treegrid > table > tbody > tr > th > .node {
+    display: flex;
+    align-items: center;
+    gap: var(--ply-space-1);
+    min-inline-size: 0;
+    padding-inline-start: calc(var(--ply-treegrid-depth) * var(--ply-space-3));
+    & > .toggle {
+      flex: none;
+      padding-inline: 0;
+      & > .ply-icon {
+        transition: rotate var(--ply-duration) ease;
+      }
+    }
+    & > .spacer {
+      flex: none;
+      inline-size: var(--ply-button-size);
+    }
+    & > :is(.label, a) {
+      min-inline-size: 0;
+      overflow-wrap: anywhere;
+    }
+    & > a {
+      color: var(--ply-link);
+      text-decoration: none;
+    }
+    & > a:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .ply-treegrid > table > tbody > tr[data-state="collapsed"] > th .toggle > .ply-icon {
+    rotate: -90deg;
+  }
+
+  .ply-treegrid:dir(rtl) > table > tbody > tr[data-state="collapsed"] > th .toggle > .ply-icon {
+    rotate: 90deg;
+  }
+
+  .ply-treegrid > table > tbody > tr[data-selected="true"] {
+    background: var(--ply-info-soft);
+  }
+
+  .ply-treegrid > table > tbody > tr[data-disabled="true"] > th .label {
+    color: var(--ply-muted);
+  }
+
+  .ply-treegrid > table > tbody > tr > :is(th, td):focus-visible {
+    position: relative;
+    outline: 0.125rem solid var(--ply-link);
+    outline-offset: -0.125rem;
+  }
+}

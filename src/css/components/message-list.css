@@ -1,15 +1,14 @@
 @layer components {
   .ply-message-list {
     container: ply-message-list / inline-size;
-    min-inline-size: 0;
-    padding: 0;
-    list-style: none;
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     & > li {
       min-inline-size: 0;
-      border-block-end: 1px solid var(--ply-border);
+      & + li {
+        border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+      }
       & > .row {
         display: grid;
         grid-template-columns: clamp(6rem, 18cqi, 12rem) minmax(0, 1fr) minmax(0, 8rem);
@@ -18,15 +17,19 @@
         min-inline-size: 0;
         min-block-size: 3.5rem;
         padding-block: var(--ply-space-2);
-        padding-inline: var(--ply-space-2);
+        padding-inline: var(--ply-space-4);
         color: inherit;
         text-decoration: none;
         &:is(a):hover {
-          background: var(--ply-background);
+          background: linear-gradient(var(--ply-surface), var(--ply-background));
         }
         &:focus-visible {
-          outline-offset: -2px;
+          outline: 0.125rem solid var(--ply-link);
+          outline-offset: -0.125rem;
           background: var(--ply-cover);
+        }
+        &:is(a):active {
+          box-shadow: var(--ply-shadow-control-pressed);
         }
         & > .avatar {
           display: grid;
@@ -78,9 +81,10 @@
           font-size: var(--ply-small);
           color: var(--ply-muted);
           & > .unread {
+            display: block;
             color: var(--ply-link);
-            inline-size: 6px;
-            block-size: 6px;
+            inline-size: 0.375rem;
+            block-size: 0.375rem;
             border-radius: 50%;
             background: currentColor;
           }
@@ -92,12 +96,17 @@
         }
       }
       &[data-unread="true"] {
-        background: color-mix(in srgb, var(--ply-cover) 24%, var(--ply-surface));
+        background: linear-gradient(
+          var(--ply-surface),
+          color-mix(in srgb, var(--ply-cover) 28%, var(--ply-surface))
+        );
       }
       &[data-current="true"] {
-        background: var(--ply-info-soft);
-        outline: 1px solid var(--ply-border);
-        outline-offset: -1px;
+        background: linear-gradient(var(--ply-surface), var(--ply-info-soft));
+        box-shadow: inset 0.125rem 0 var(--ply-link);
+        &:dir(rtl) {
+          box-shadow: inset -0.125rem 0 var(--ply-link);
+        }
       }
       &[data-unread="true"] > .row > .sender,
       &[data-unread="true"] > .row > .body > .title {

@@ -1,0 +1,147 @@
+@layer components {
+  .ply-overlay {
+    --ply-overlay-close-size: calc(var(--ply-label) * 16 / 7);
+    --ply-overlay-title-line: calc(var(--ply-label) * 10 / 7);
+    --ply-overlay-inset-inline: 1.25rem;
+    border: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: var(--ply-radius-surface);
+    background: var(--ply-fill-raised);
+    color: var(--ply-text);
+    font-family: var(--ply-control-font-family);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+    box-shadow: var(--ply-shadow-menu);
+    overflow-wrap: anywhere;
+    & > .heading {
+      display: grid;
+      gap: var(--ply-space-1);
+      min-inline-size: 0;
+      padding-block-start: 0.625rem;
+      padding-inline: var(--ply-overlay-inset-inline);
+      & > .heading-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
+        gap: var(--ply-space-2);
+        min-inline-size: 0;
+        & > :is(h2, h3, strong, .message) {
+          display: block;
+          min-inline-size: 0;
+          padding-block-start: calc(
+            (var(--ply-overlay-close-size) - var(--ply-overlay-title-line)) / 2
+          );
+        }
+        & > :is(h2, h3, strong) {
+          font-size: var(--ply-label);
+          font-weight: 600;
+          line-height: var(--ply-overlay-title-line);
+        }
+        & > .close {
+          display: flex;
+          & > .ply-button {
+            color: var(--ply-muted);
+            &:hover:enabled {
+              background: var(--ply-background);
+              color: var(--ply-text);
+            }
+          }
+        }
+      }
+      & > p {
+        color: var(--ply-muted);
+      }
+    }
+    & > .body {
+      display: grid;
+      align-content: start;
+      gap: var(--ply-space-2);
+      min-inline-size: 0;
+      padding-block: var(--ply-space-1) 0.875rem;
+      padding-inline: var(--ply-overlay-inset-inline);
+      overflow-wrap: anywhere;
+      &:empty {
+        display: none;
+      }
+    }
+    &:has(> .body:empty) > .heading,
+    &:not(:has(> .body)) > .heading {
+      padding-block-end: var(--ply-space-2);
+    }
+    & > .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: end;
+      gap: var(--ply-space-2);
+      min-inline-size: 0;
+      padding-block: var(--ply-space-1) 0.875rem;
+      padding-inline: var(--ply-overlay-inset-inline);
+    }
+  }
+  .ply-overlay[data-placement="anchor"] {
+    --ply-overlay-anchor: auto;
+    --ply-overlay-width: 20rem;
+    position: fixed;
+    position-anchor: var(--ply-overlay-anchor);
+    inset-block: auto;
+    inset-inline: auto;
+    inset-inline-start: 50%;
+    inset-block-start: 50%;
+    translate: -50% -50%;
+    inline-size: min(var(--ply-overlay-width), calc(100vw - 1rem));
+    max-inline-size: calc(100vw - 1rem);
+    max-block-size: calc(100dvh - 1rem);
+    overflow: auto;
+    margin: 0;
+    padding: 0;
+    &[data-size="compact"] {
+      --ply-overlay-width: 16rem;
+    }
+    &[data-size="wide"] {
+      --ply-overlay-width: 28rem;
+    }
+    &:popover-open {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+    }
+    & > .body {
+      min-block-size: 0;
+      overflow: auto;
+      overscroll-behavior: contain;
+    }
+    & > .actions {
+      grid-row: 3;
+    }
+  }
+  @supports (inset-block-start: anchor(end)) and (position-try-fallbacks: flip-block) {
+    .ply-overlay[data-placement="anchor"] {
+      translate: none;
+      inset-block-start: calc(anchor(end) + var(--ply-space-1));
+      inset-inline-start: anchor(start);
+      position-try-fallbacks:
+        flip-block,
+        flip-inline,
+        flip-block flip-inline,
+        --ply-overlay-fit,
+        --ply-overlay-fit flip-block;
+      &[data-align="end"] {
+        inset-inline-start: auto;
+        inset-inline-end: anchor(end);
+      }
+    }
+    @position-try --ply-overlay-fit {
+      inset-inline-start: 0.5rem;
+      inset-inline-end: auto;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-overlay {
+      background: Canvas;
+      box-shadow: none;
+    }
+  }
+  @media (pointer: coarse) {
+    .ply-overlay {
+      --ply-overlay-close-size: 2.75rem;
+    }
+  }
+}

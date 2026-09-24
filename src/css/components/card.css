@@ -1,23 +1,25 @@
 @layer components {
   .ply-card {
     container: ply-card / inline-size;
+    display: flex;
+    flex-direction: column;
     min-inline-size: 0;
-    padding-block: var(--ply-space-4);
+    padding-block: var(--ply-space-3);
     padding-inline: var(--ply-space-4);
-    border: 1px solid var(--ply-border);
-    border-radius: 10px;
-    background: var(--ply-surface);
+    border: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: var(--ply-radius-surface);
+    background: var(--ply-fill-raised);
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     overflow-wrap: anywhere;
-    box-shadow: 0 1px 2px rgb(36 57 70 / 6%);
+    box-shadow: var(--ply-shadow-surface);
     transition:
       border-color var(--ply-duration) ease,
       box-shadow var(--ply-duration) ease;
     &:has(> .title > a:hover) {
-      border-color: var(--ply-link);
-      box-shadow: 0 2px 4px rgb(36 57 70 / 8%);
+      border-color: color-mix(in srgb, var(--ply-link) 32%, var(--ply-border));
+      box-shadow: var(--ply-shadow-control-hover);
     }
     & > .preview {
       overflow: hidden;
@@ -67,7 +69,8 @@
       align-items: center;
       justify-content: start;
       gap: var(--ply-space-2);
-      margin-block-start: var(--ply-space-4);
+      margin-block-start: auto;
+      padding-block-start: var(--ply-space-4);
       color: var(--ply-muted);
       font-size: var(--ply-small);
       line-height: var(--ply-small-leading);
@@ -79,16 +82,22 @@
         max-inline-size: calc(100% - 3rem);
       }
     }
+    &:has(> .meta) {
+      padding-block-end: 0.625rem;
+    }
     &[data-density="compact"] {
-      padding-block: var(--ply-space-3);
+      padding-block: var(--ply-space-2);
       padding-inline: var(--ply-space-3);
+      &:has(> .meta) {
+        padding-block-end: 0.375rem;
+      }
       & > .title {
         font-size: var(--ply-label);
         font-weight: 400;
         line-height: var(--ply-label-leading);
       }
       & > .meta {
-        margin-block-start: var(--ply-space-3);
+        padding-block-start: var(--ply-space-3);
       }
     }
     &[data-state="complete"] {
@@ -98,9 +107,20 @@
       animation: ply-card-arrive calc(var(--ply-duration) * 3) ease-out;
     }
   }
+  @media (forced-colors: active) {
+    .ply-card {
+      background: Canvas;
+      box-shadow: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ply-card[data-state="new"] {
+      animation: none;
+    }
+  }
   @keyframes ply-card-arrive {
     from {
-      outline: 3px solid var(--ply-mark);
+      outline: 0.1875rem solid var(--ply-mark);
     }
     to {
       outline: 0 solid transparent;

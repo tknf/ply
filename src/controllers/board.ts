@@ -63,6 +63,7 @@ export class BoardController extends Controller<HTMLElement> {
   };
   refresh = () => {
     for (const column of this.columns()) {
+      if (!column.querySelector(':scope > .items[role="list"]')) continue;
       const count = column.querySelector(":scope > .title > small");
       if (count) count.textContent = String(this.items(column).length);
       for (const item of this.items(column)) {
@@ -81,6 +82,7 @@ export class BoardController extends Controller<HTMLElement> {
     this.mode = mode;
     this.snapshot = this.columns().map((column) => ({ column, items: this.items(column) }));
     item.dataset.moving = "true";
+    if (mode === "pointer") document.documentElement.dataset.plyBoardDragging = "true";
     handle.focus({ preventScroll: true });
     this.say((item.dataset.boardLabel ?? "項目") + "を持ち上げました。");
     return item;
@@ -117,6 +119,7 @@ export class BoardController extends Controller<HTMLElement> {
   private finish = (commit: boolean) => {
     const item = this.item,
       origin = this.origin;
+    const wasPointer = this.mode === "pointer";
     const destination = item ? this.locate(item) : null;
     let accepted = commit;
     if (item && origin && destination && commit) {
@@ -151,6 +154,7 @@ export class BoardController extends Controller<HTMLElement> {
     this.item = null;
     this.origin = null;
     this.mode = null;
+    if (wasPointer) delete document.documentElement.dataset.plyBoardDragging;
     this.pointer = null;
     this.snapshot = [];
     this.refresh();
@@ -176,6 +180,10 @@ export class BoardController extends Controller<HTMLElement> {
     pointer.y = event.clientY;
     if (!this.item && Math.hypot(pointer.x - pointer.startX, pointer.y - pointer.startY) >= 6) {
       const item = this.begin(pointer.handle, "pointer");
+      if (!item) {
+        this.pointer = null;
+        return;
+      }
       this.ghost = document.createElement("div");
       this.ghost.className = "drag-preview";
       this.ghost.setAttribute("aria-hidden", "true");
@@ -265,12 +273,12 @@ export class BoardController extends Controller<HTMLElement> {
       );
       this.place(location.column, items[index] ?? null);
     } else {
-      const columns = this.columns().filter((column) => column.dataset.dropDisabled !== "true");
+      const columns = this.columns();
       const direction = getComputedStyle(this.element).direction === "rtl" ? -1 : 1;
-      const next =
-        columns[
-          columns.indexOf(location.column) + (event.key === "ArrowRight" ? direction : -direction)
-        ];
+      const step = event.key === "ArrowRight" ? direction : -direction;
+      let index = columns.indexOf(location.column) + step;
+      while (columns[index]?.dataset.dropDisabled === "true") index += step;
+      const next = columns[index];
       if (next) this.place(next, this.items(next)[location.index] ?? null);
     }
   };

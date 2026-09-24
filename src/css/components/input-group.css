@@ -22,7 +22,7 @@
     min-inline-size: 0;
     min-block-size: var(--ply-input-group-size);
     padding-inline: 0.75em;
-    border: 1px solid var(--ply-input-border);
+    border: var(--ply-stroke-width) solid var(--ply-border);
     border-radius: calc(4em / 7);
     background: var(--ply-surface);
     box-shadow: var(--ply-shadow-input);
@@ -33,8 +33,8 @@
     line-height: calc(10 / 7);
 
     & > .ply-input {
-      --ply-input-size: calc(var(--ply-input-group-size) - 2px);
-      --ply-input-border-size: 0px;
+      --ply-input-size: calc(var(--ply-input-group-size) - 0.125rem);
+      --ply-input-border-size: 0;
       flex: 1;
       min-block-size: 0;
       padding: 0;
@@ -51,7 +51,7 @@
 
     &:has(> .ply-input:focus-visible) {
       border-color: var(--ply-link);
-      outline: 2px solid var(--ply-link);
+      outline: 0.125rem solid var(--ply-link);
       outline-offset: 0;
     }
 

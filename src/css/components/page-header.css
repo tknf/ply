@@ -12,7 +12,7 @@
       flex: 0 0 auto;
       inline-size: 2.5rem;
       block-size: 2.5rem;
-      border-radius: 14px;
+      border-radius: 0.875rem;
       background: var(--ply-cover);
       color: var(--ply-link);
       font-size: 1.5rem;
@@ -22,8 +22,8 @@
       min-inline-size: 0;
     }
     & > .heading > h1 {
-      font-family: var(--ply-display-font);
-      font-size: 1.5rem;
+      font-family: var(--ply-control-font-family);
+      font-size: var(--ply-title);
       font-weight: 700;
       line-height: calc(4 / 3);
       text-wrap: balance;

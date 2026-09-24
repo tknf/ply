@@ -1,20 +1,13 @@
 @layer components {
   .ply-dialog > .panel {
     --ply-dialog-width: 32rem;
+    --ply-overlay-title-line: calc(var(--ply-body) * 1.5);
     inline-size: min(var(--ply-dialog-width), calc(100% - var(--ply-space-8)));
     max-inline-size: calc(100% - var(--ply-space-8));
     max-block-size: calc(100dvh - var(--ply-space-8));
     overflow: auto;
     padding: 0;
-    border: 1px solid var(--ply-border);
-    border-radius: 16px;
-    color: var(--ply-text);
-    background: var(--ply-surface);
     font-family: var(--ply-control-font-family);
-    font-size: var(--ply-label);
-    line-height: var(--ply-label-leading);
-    box-shadow: var(--ply-shadow-menu);
-    /* 中央配置はnative dialogに任せ、本文だけをスクロールさせる。 */
     &[open] {
       display: grid;
       grid-template-rows: auto minmax(0, 1fr) auto;
@@ -29,48 +22,31 @@
       background: rgb(36 57 70 / 24%);
     }
   }
-  .ply-dialog > .panel > .heading {
-    display: grid;
-    gap: var(--ply-space-2);
-    padding-block: var(--ply-space-6);
-    padding-inline: var(--ply-space-4);
-    overflow-wrap: anywhere;
-    & > h2 {
-      font-size: 1.125rem;
-      font-weight: 600;
-      line-height: calc(4 / 3);
-      &:focus-visible {
-        outline-offset: 2px;
-      }
-    }
-    & > p {
-      color: var(--ply-muted);
+  .ply-dialog > .panel > .heading > .heading-row > h2 {
+    font-size: var(--ply-body);
+    &:focus-visible {
+      outline-offset: 0.125rem;
     }
   }
   .ply-dialog > .panel > .body {
-    display: grid;
-    align-content: start;
-    gap: var(--ply-space-3);
     min-block-size: 0;
-    min-inline-size: 0;
     overflow: auto;
     overscroll-behavior: contain;
-    overflow-wrap: anywhere;
-    padding-block: var(--ply-space-4);
-    padding-inline: var(--ply-space-4);
-    padding-block-start: 0;
-    &:empty {
-      display: none;
-    }
   }
   .ply-dialog > .panel > .actions {
     grid-row: 3;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: end;
-    gap: var(--ply-space-2);
-    padding-block: var(--ply-space-3);
-    padding-inline: var(--ply-space-4);
-    border-block-start: 1px solid var(--ply-border);
+  }
+  @media (max-width: 40rem) and (pointer: coarse) {
+    .ply-dialog > .panel {
+      inline-size: 100%;
+      max-inline-size: 100%;
+      max-block-size: 90dvh;
+      margin: 0;
+      margin-inline: auto;
+      margin-block-start: auto;
+      padding-block-end: env(safe-area-inset-bottom);
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+    }
   }
 }

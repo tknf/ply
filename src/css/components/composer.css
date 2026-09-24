@@ -1,0 +1,59 @@
+@layer components {
+  .ply-composer {
+    container: ply-composer / inline-size;
+    display: grid;
+    gap: var(--ply-space-2);
+    min-inline-size: 0;
+    padding-block: var(--ply-space-4) var(--ply-space-3);
+    padding-inline: var(--ply-space-5);
+    border: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: var(--ply-radius-control);
+    background: var(--ply-fill-raised);
+    box-shadow: var(--ply-shadow-surface);
+  }
+
+  .ply-composer > .ply-field > .ply-input {
+    min-block-size: 5rem;
+    resize: vertical;
+  }
+
+  .ply-composer > .attachments {
+    display: grid;
+    gap: var(--ply-space-2);
+    min-inline-size: 0;
+    padding-block-start: var(--ply-space-2);
+    border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+  }
+
+  .ply-composer > .footer {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    flex-wrap: wrap;
+    gap: var(--ply-space-2);
+  }
+
+  .ply-composer > .footer > .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ply-space-2);
+    margin-inline-end: auto;
+  }
+
+  @container ply-composer (inline-size < 26rem) {
+    .ply-composer > .footer {
+      justify-content: start;
+    }
+
+    .ply-composer > .footer > .actions {
+      inline-size: 100%;
+      margin-inline-end: 0;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-composer {
+      background: Canvas;
+      box-shadow: none;
+    }
+  }
+}

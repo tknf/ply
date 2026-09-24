@@ -1,7 +1,7 @@
 @layer components {
   .ply-statistic {
-    container: ply-statistic / inline-size;
     min-inline-size: 0;
+    max-inline-size: 100%;
     color: var(--ply-text);
     & > dt {
       color: var(--ply-muted);
@@ -11,7 +11,7 @@
     & > .value {
       margin-block-start: var(--ply-space-2);
       font-family: var(--ply-control-font-family);
-      font-size: 1.75rem;
+      font-size: var(--ply-title);
       font-weight: 600;
       line-height: calc(8 / 7);
       font-variant-numeric: tabular-nums;
@@ -27,12 +27,6 @@
       color: var(--ply-muted);
       font-size: var(--ply-small);
       line-height: var(--ply-small-leading);
-    }
-    @container ply-statistic (inline-size >= 18rem) {
-      & > .value {
-        font-size: 2rem;
-        line-height: 1.25;
-      }
     }
   }
 }

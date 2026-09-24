@@ -8,10 +8,22 @@ test("文字数controllerが入力数と上限超過を表示する", async ({ p
   await expect(counter).toHaveCSS("--character-count-value", "41");
   await expect(counter).toHaveAttribute("data-state", "over");
   await expect(page.getByText("文字数の上限を超えています。", { exact: true })).toBeVisible();
-  await expect(input).toHaveAttribute("aria-describedby", "hono-counted-description-count");
+  await expect(input).toHaveAttribute(
+    "aria-describedby",
+    "hono-counted-description-count hono-counted-description-over-error",
+  );
+  await expect(input).toHaveAttribute("aria-invalid", "true");
+  expect(
+    await input.evaluate((field) => field instanceof HTMLTextAreaElement && field.checkValidity()),
+  ).toBe(false);
   await input.fill("紹介文");
   await expect(counter).toHaveCSS("--character-count-value", "3");
   await expect(page.getByText("文字数の上限を超えています。", { exact: true })).toBeHidden();
+  await expect(input).toHaveAttribute("aria-describedby", "hono-counted-description-count");
+  await expect(input).not.toHaveAttribute("aria-invalid", "true");
+  expect(
+    await input.evaluate((field) => field instanceof HTMLTextAreaElement && field.checkValidity()),
+  ).toBe(true);
 });
 
 test("パスワードcontrollerで表示と非表示を切り替える", async ({ page }) => {
@@ -59,6 +71,17 @@ test("候補選択controllerを矢印・Enter・Escapeで操作できる", async
   await input.press("Escape");
   await expect(input).toHaveAttribute("aria-expanded", "false");
   await expect(input).toBeFocused();
+});
+
+test("閲覧専用の候補選択はキーと開閉操作で値を変えない", async ({ page }) => {
+  await page.goto("/components/field");
+  const input = page.getByRole("combobox", { name: "確定済みの担当部署", exact: true });
+  await expect(input).not.toBeEditable();
+  await expect(page.getByRole("button", { name: "候補を開閉", exact: true })).toBeDisabled();
+  await input.press("ArrowDown");
+  await input.press("Enter");
+  await expect(input).toHaveValue("編集部");
+  await expect(input).toHaveAttribute("aria-expanded", "false");
 });
 
 test.describe("タッチ操作", () => {

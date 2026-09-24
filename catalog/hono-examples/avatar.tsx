@@ -25,5 +25,9 @@ export default () => (
       <Avatar name="プロフィール" initials="編" size="large" tone="green" />
       <span>プロフィール</span>
     </div>
+    <div class="catalog-person">
+      <Avatar name="山本 彩" initials="山" src="/assets/sample-avatar.svg" />
+      <span>画像の読み込み状態</span>
+    </div>
   </div>
 );

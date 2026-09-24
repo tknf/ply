@@ -20,7 +20,7 @@ export const ButtonGroup = ({
 export type ButtonProps = PropsWithChildren<
   ElementProps<"button"> & {
     variant?: ButtonVariant;
-    size?: "default" | "compact" | "large";
+    size?: "default" | "compact" | "large" | "tag";
     busy?: boolean;
     busyLabel?: string;
   }

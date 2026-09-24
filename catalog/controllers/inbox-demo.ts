@@ -35,8 +35,10 @@ export class InboxDemoController extends Controller<HTMLElement> {
       if (textarea instanceof HTMLTextAreaElement) textarea.value = entry.draft;
       for (const button of this.element.querySelectorAll<HTMLButtonElement>(
         "button[data-inbox-folder]",
-      ))
+      )) {
         button.hidden = button.dataset.inboxFolder === entry.folder;
+        button.disabled = button.hidden;
+      }
     } else this.refresh();
   };
   disconnect = () => {

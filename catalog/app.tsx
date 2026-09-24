@@ -359,7 +359,12 @@ app.get("/examples/schedule", (c) =>
   c.html(
     html`<!doctype html>${(
         <Document title="予定の事例">
-          <ScheduleExample />
+          <ScheduleExample
+            year={c.req.query("year")}
+            month={c.req.query("month")}
+            view={c.req.query("view")}
+            week={c.req.query("week")}
+          />
         </Document>
       )}`,
   ),
@@ -368,7 +373,7 @@ app.get("/examples/schedule/august", (c) =>
   c.html(
     html`<!doctype html>${(
         <Document title="予定の事例">
-          <ScheduleExample month={8} />
+          <ScheduleExample month="8" />
         </Document>
       )}`,
   ),

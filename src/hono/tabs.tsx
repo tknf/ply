@@ -22,6 +22,13 @@ export const Tabs = ({
   const active =
     items.find((item) => item.value === selected && !item.disabled)?.value ??
     items.find((item) => !item.disabled)?.value;
+  if (active === undefined) {
+    return (
+      <div class="ply-tabs">
+        <p>利用可能な項目はありません。</p>
+      </div>
+    );
+  }
   return (
     <div class="ply-tabs" data-controller="tabs" data-tabs-value-value={active}>
       <div class="list" role="tablist" aria-label={label} data-tabs-target="tablist">

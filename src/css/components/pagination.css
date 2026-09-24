@@ -18,32 +18,42 @@
       min-block-size: 2rem;
       padding-block: var(--ply-space-1);
       padding-inline: var(--ply-space-2);
-      border: 1px solid transparent;
-      border-radius: var(--ply-radius-control);
+      border: var(--ply-stroke-width) solid transparent;
+      border-radius: var(--ply-radius-pill);
       color: var(--ply-muted);
       text-decoration: none;
     }
     & > ul > li > a {
+      border-color: var(--ply-border);
+      background: var(--ply-fill-raised);
       color: var(--ply-text);
+      box-shadow: var(--ply-shadow-control);
       &:hover {
-        background: var(--ply-background);
-        box-shadow: none;
+        border-color: var(--ply-link);
+        box-shadow: var(--ply-shadow-control-hover);
       }
       &:active {
-        background: var(--ply-cover);
-        box-shadow: none;
+        box-shadow: var(--ply-shadow-control-pressed);
       }
     }
     & > ul > li > [data-current="true"] {
-      color: var(--ply-link);
-      background: var(--ply-cover);
-      border-color: color-mix(in srgb, var(--ply-link) 20%, var(--ply-surface));
+      color: var(--ply-surface);
+      background: var(--ply-fill-primary);
+      border-color: var(--ply-link);
+      box-shadow: var(--ply-shadow-control-primary);
     }
     @media (pointer: coarse) {
       & > ul > li > :is(a, span) {
         min-inline-size: 2.75rem;
         min-block-size: 2.75rem;
       }
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-pagination > ul > li > :is(a, [data-current="true"]) {
+      background: Canvas;
+      color: CanvasText;
+      box-shadow: none;
     }
   }
 }

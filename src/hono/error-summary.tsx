@@ -1,7 +1,7 @@
 import { classes, type ElementProps } from "./types";
-import { Icon } from "./icon";
+import { Notice } from "./notice";
 
-export type ErrorSummaryProps = ElementProps<"section"> & {
+export type ErrorSummaryProps = ElementProps<"aside"> & {
   title?: string;
   errors: readonly { label: string; href: string }[];
 };
@@ -12,16 +12,14 @@ export const ErrorSummary = ({
   ...attributes
 }: ErrorSummaryProps) =>
   errors.length === 0 ? null : (
-    <section
+    <Notice
       {...attributes}
       class={classes("ply-error-summary", className)}
+      tone="danger"
+      label={title}
+      heading
       tabindex={-1}
-      aria-label={title}
     >
-      <span class="symbol" aria-hidden="true">
-        <Icon name="x-circle" />
-      </span>
-      <h2 class="title">{title}</h2>
       <ul>
         {errors.map((error, index) => (
           <li>
@@ -34,5 +32,5 @@ export const ErrorSummary = ({
           </li>
         ))}
       </ul>
-    </section>
+    </Notice>
   );

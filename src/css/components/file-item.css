@@ -15,10 +15,11 @@
       place-items: center;
       grid-column: 1;
       block-size: 2.5rem;
-      border: 1px solid var(--ply-border);
-      border-radius: 4px 10px 4px 4px;
-      background: var(--ply-info-soft);
+      border: var(--ply-stroke-width) solid var(--ply-border);
+      border-radius: 0.25rem 0.625rem 0.25rem 0.25rem;
+      background: linear-gradient(var(--ply-surface), var(--ply-info-soft));
       color: var(--ply-link);
+      box-shadow: var(--ply-shadow-chip);
     }
     & > .body {
       grid-column: 2;
@@ -56,6 +57,7 @@
       min-inline-size: 0;
     }
     @container ply-file-item (inline-size >= 26rem) {
+      grid-template-columns: 2rem minmax(0, 1fr) auto;
       & > .actions {
         grid-column: 3;
         grid-row: 1;
@@ -63,6 +65,12 @@
     }
     &[data-state="error"] > .body > .description > .state {
       color: var(--ply-danger);
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-file-item > .icon {
+      background: Canvas;
+      box-shadow: none;
     }
   }
 }

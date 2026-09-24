@@ -1,51 +1,95 @@
 @layer components {
   .ply-tag {
+    --ply-tag-fill: var(--ply-surface);
     display: inline-block;
     inline-size: fit-content;
     justify-self: start;
     max-inline-size: 100%;
-    padding-block: 1px;
+    padding-block: 0.125rem;
     padding-inline: 0.5em;
-    border: 1px solid var(--ply-border);
-    border-radius: 4px;
-    background: var(--ply-surface);
+    border: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: 0.375rem;
+    background: linear-gradient(
+      color-mix(in srgb, var(--ply-tag-fill) 70%, var(--ply-surface)),
+      var(--ply-tag-fill)
+    );
     color: var(--ply-muted);
     font-family: var(--ply-control-font-family);
     font-size: var(--ply-small);
     line-height: var(--ply-small-leading);
     overflow-wrap: anywhere;
     text-decoration: none;
+    box-shadow: var(--ply-shadow-chip);
     &[data-accent="blue"] {
-      background: var(--ply-cover);
-      border-color: transparent;
+      --ply-tag-fill: var(--ply-cover);
       color: var(--ply-blue-dark);
     }
     &[data-accent="green"] {
-      background: var(--ply-success-soft);
-      border-color: transparent;
+      --ply-tag-fill: var(--ply-success-soft);
       color: var(--ply-green);
     }
     &[data-accent="amber"] {
-      background: var(--ply-butter);
-      border-color: transparent;
+      --ply-tag-fill: var(--ply-butter);
       color: var(--ply-amber);
     }
     &[data-accent="coral"] {
-      background: var(--ply-danger-soft);
-      border-color: transparent;
+      --ply-tag-fill: var(--ply-danger-soft);
       color: var(--ply-coral-dark);
     }
     &:is(a) {
       cursor: pointer;
       &:hover {
-        background: var(--ply-info-soft);
+        border-color: var(--ply-link);
         text-decoration: none;
+      }
+      &:active {
+        box-shadow: var(--ply-shadow-control-pressed);
+      }
+      &:focus-visible {
+        outline: 0.125rem solid var(--ply-link);
+        outline-offset: 0.125rem;
       }
     }
   }
-  @media (pointer: coarse) {
-    a.ply-tag {
-      padding-block: 11px;
+  .ply-tag.removable {
+    --ply-button-size: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    min-inline-size: 0;
+    padding-inline-end: 0.125rem;
+    & > .remove {
+      flex: none;
+      border: 0;
+      border-radius: 0.25rem;
+      background: transparent;
+      color: var(--ply-muted);
+      box-shadow: none;
+      &:hover:enabled {
+        background: color-mix(in srgb, currentColor 9%, transparent);
+        color: var(--ply-text);
+        box-shadow: none;
+      }
+      &:active:enabled {
+        box-shadow: none;
+      }
+      &:disabled {
+        opacity: 0.45;
+      }
+      &::before {
+        content: "";
+        display: block;
+        inline-size: 0.75em;
+        block-size: 0.75em;
+        background: currentColor;
+        mask: url("../assets/x.svg") center / contain no-repeat;
+      }
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-tag {
+      background: Canvas;
+      box-shadow: none;
     }
   }
 }

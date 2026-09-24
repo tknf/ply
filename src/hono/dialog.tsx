@@ -1,6 +1,7 @@
 import type { Child, PropsWithChildren } from "hono/jsx";
 import { Button } from "./button";
 import type { ButtonVariant } from "./types";
+import { OverlayClose, OverlayContent } from "./overlay-content";
 
 export type DialogProps = PropsWithChildren<{
   id: string;
@@ -43,7 +44,7 @@ export const Dialog = ({
     </Button>
     <dialog
       id={id}
-      class="panel"
+      class="panel ply-overlay"
       closedby="any"
       data-dialog-target="dialog"
       data-state="closed"
@@ -51,22 +52,31 @@ export const Dialog = ({
       aria-labelledby={`${id}-title`}
       aria-describedby={description ? `${id}-description` : undefined}
     >
-      <header class="heading">
-        <h2
-          id={`${id}-title`}
-          data-dialog-target="title"
-          tabindex={-1}
-          autofocus={initialFocus === "title"}
-        >
-          {title}
-        </h2>
-        {description && <p id={`${id}-description`}>{description}</p>}
-      </header>
-      <div class="body">{children}</div>
-      <footer class="actions">
-        <Button data-dialog-target="close">{closeLabel}</Button>
-        {actions}
-      </footer>
+      <OverlayContent
+        title={
+          <h2
+            id={`${id}-title`}
+            data-dialog-target="title"
+            tabindex={-1}
+            autofocus={initialFocus === "title"}
+          >
+            {title}
+          </h2>
+        }
+        description={description && <p id={`${id}-description`}>{description}</p>}
+        close={<OverlayClose label={closeLabel} data-dialog-target="close" />}
+        actions={
+          actions != null &&
+          actions !== false && (
+            <>
+              <Button data-dialog-target="close">{closeLabel}</Button>
+              {actions}
+            </>
+          )
+        }
+      >
+        {children}
+      </OverlayContent>
     </dialog>
   </div>
 );

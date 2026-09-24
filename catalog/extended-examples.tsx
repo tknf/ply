@@ -1,4 +1,6 @@
 import {
+  Button,
+  ActionLink,
   Avatar,
   Breadcrumb,
   Navigation,
@@ -22,6 +24,16 @@ import {
   Loading,
   Toast,
   Popover,
+  Tooltip,
+  EditableProperty,
+  Composer,
+  Picker,
+  TagInput,
+  Tree,
+  TableOfContents,
+  ChartFrame,
+  HoverCard,
+  ToggleGroup,
   CodeBlock,
   Keycap,
   Divider,
@@ -129,7 +141,7 @@ export const extendedExamples = [
     description: "対象に対する複数の操作をまとめる",
     render: () => <ToolbarExample id="sample-toolbar" />,
     usage:
-      "実行する操作をまとめる配置部品です。表示条件と選択状態を持つFilterBarとは役割が異なります。既存のButton・ActionLinkなどをchildrenに渡し、CSSはbutton.cssとtoolbar.cssを併用します。通常のTab移動を保つrole=groupの操作群で、controllerは不要です。フォームの送信・リセットはButtonのtypeで指定します。狭い配置では項目が折り返します。id・class・dir・data属性もルートへ渡せます。",
+      "実行する操作をまとめる配置部品です。FilterBarは現在の絞り込み条件を示すnav、Toolbarは送信・リセット・移動をまとめるrole=toolbarです。両方の操作は同じピル形を使います。Button・ActionLinkなどの操作にdata-toolbar-target=controlを付けると、全体が一つのTab停止点になり、左右矢印とHome/Endで操作を移動できます。フォームの送信・リセットはButtonのtypeで指定します。狭い配置では項目が折り返します。",
   },
   {
     id: "input-group",
@@ -143,7 +155,7 @@ export const extendedExamples = [
       </Field>
     ),
     usage:
-      "prefix・suffixで接頭辞や単位、actionで操作の文言とButtonの属性を渡します。入力欄・操作ボタン・読み上げの関連付けはInputGroupが生成します。通常は32px、size=largeは40pxで入力とボタンを揃えます。単位はラベルにも含め、値には混ぜません。type=numberはNumberFieldControllerをnumber-fieldとして一度登録すると、PageUp・PageDownと境界状態に対応します。検索例は実際に記事の検索結果へ移動します。",
+      "prefix・suffixで接頭辞や単位、actionで操作の文言とButtonの属性を渡します。入力欄・操作ボタン・読み上げの関連付けはInputGroupが生成します。通常は2rem、size=largeは2.5remで入力とボタンを揃えます。単位はラベルにも含め、値には混ぜません。type=numberはNumberFieldControllerをnumber-fieldとして一度登録すると、PageUp・PageDownと境界状態に対応します。検索例は実際に記事の検索結果へ移動します。",
   },
   {
     id: "switch",
@@ -216,7 +228,7 @@ export const extendedExamples = [
       </div>
     ),
     usage:
-      "分類を表す部品です。集合にはTagGroupを使い、横6px・縦4pxで折り返します。状態の表示はBadgeを使います。タグのリンクはhover時に下線を追加せず背景色で示します。TagGroupを使う場合はtag-group.cssも読み込んでください。",
+      "分類を表す小さな部品です。集合にはTagGroupを使い、横0.5em・縦0.125remの余白で折り返します。状態の表示はBadgeを使います。リンクはhover時に枠色で操作可能なことを示します。TagGroupを使う場合はtag-group.cssも読み込んでください。",
   },
   {
     id: "statistic",
@@ -282,22 +294,34 @@ export const extendedExamples = [
   {
     id: "calendar",
     name: "Calendar",
-    description: "日付と予定を月単位で見渡す",
+    description: "月・週・年を行き来し、日付と予定を探す",
     render: () => (
       <Calendar
-        label="2026年9月・第2週"
+        label="2026年9月・第4週"
+        view="week"
+        previous={{ label: "前週", href: "/examples/schedule?view=week&week=2" }}
+        today={{ label: "今日", href: "/examples/schedule?view=week&week=3" }}
+        next={{ label: "翌週", href: "/examples/schedule?view=week&week=4" }}
+        views={[
+          { label: "月", href: "/examples/schedule" },
+          { label: "週", href: "/examples/schedule?view=week&week=3", current: true },
+          { label: "年", href: "/examples/schedule?view=year" },
+          { label: "一覧", href: "/examples/schedule?view=agenda" },
+        ]}
+        actions={<ActionLink href="/reservation">予定を追加</ActionLink>}
+        selection={{ mode: "single", value: "2026-09-24" }}
         weeks={[
-          [7, 8, 9, 10, 11, 12, 13].map((day) => ({
+          [21, 22, 23, 24, 25, 26, 27].map((day) => ({
             day,
             date: `2026-09-${day.toString().padStart(2, "0")}`,
-            current: day === 10,
-            events: day === 10 ? [{ label: "編集会議", href: "/reservation" }] : [],
+            current: day === 24,
+            events: day === 25 ? [{ label: "案内公開の確認", href: "/examples/project" }] : [],
           })),
         ]}
       />
     ),
     usage:
-      "月曜始まり・1週7セル。月の計算、祝日、予定の取得は利用側で行います。狭幅は領域内でスクロールします。",
+      "月・週・年と日付順の一覧、前後期間と今日への移動に対応します。年表示は月への入口、一覧は日付ごとのDataListです。selectionを渡すと既存CalendarControllerで単一日・範囲を選択し、calendar:changeを受け取れます。月の計算と予定の取得は利用側で行います。",
   },
   {
     id: "board",
@@ -345,7 +369,7 @@ export const extendedExamples = [
     description: "待っている処理を言葉で示す",
     render: () => <Loading label="ファイル一覧を読み込み中…" />,
     usage:
-      "処理中だけ配置します。完了後は結果に置換し、割合が分からない処理に架空の進捗を付けません。",
+      "短い取得はinline、領域全体の待機はregion、送信操作はButtonのbusyを使います。作業量が未確定の継続処理にはvalueなしのProgressを使い、架空の進捗を付けません。完了後は結果に置換します。",
   },
   {
     id: "toast",
@@ -357,10 +381,16 @@ export const extendedExamples = [
           結果表示を試す
         </button>
         <Toast id="sample-toast">表示を更新しました。</Toast>
+        <button type="button" class="ply-button" popovertarget="sample-toast-timed">
+          時間で閉じる通知
+        </button>
+        <Toast id="sample-toast-timed" duration={5000}>
+          操作が完了しました。
+        </Toast>
       </div>
     ),
     usage:
-      "HTML Popover APIを使います。自動消去しません。重要なエラーは入力付近やErrorSummaryに残します。",
+      "ToastControllerをtoastとして登録します。初期値は保持し、durationを指定すると時間で閉じます。重要なエラーは入力付近やErrorSummaryに残します。",
   },
   {
     id: "popover",
@@ -376,6 +406,204 @@ export const extendedExamples = [
       "標準Popover APIによる非モーダル表示です。ボタンとパネルを明示的なCSSアンカーで結びます。PopoverControllerをpopoverとして登録すると、CSS未対応・位置合わせ失敗時の補正を行います。alignで始端/末端、sizeでcompact/default/wideを選べます。title・description・actions・iconOnly・disabledにも対応します。外側クリックとEscapeで閉じ、背景の通常操作は妨げません。必須確認はDialogを使います。",
   },
   {
+    id: "tooltip",
+    name: "Tooltip",
+    description: "操作に添える短い補足を、hoverとfocusで示す",
+    render: () => (
+      <Tooltip
+        id="sample-tooltip"
+        text="公開後も共有範囲を変更できます。"
+        trigger={(attributes) => (
+          <Button {...attributes} type="button">
+            共有範囲
+          </Button>
+        )}
+      />
+    ),
+    usage:
+      "triggerが受け取る属性をButtonやActionLinkへ渡します。TooltipControllerをtooltipとして登録するとhover・focusで表示し、Escapeで閉じます。textは短い非対話的な補足に限ります。操作や必須の説明にはPopoverまたは画面上の文を使います。idは画面内で一意にします。",
+  },
+  {
+    id: "editable-property",
+    name: "EditableProperty",
+    description: "値をその場所で編集し、確定と取消を揃える",
+    render: () => (
+      <EditableProperty id="sample-property" label="担当者" name="assignee" value="田中 遥" />
+    ),
+    usage:
+      "EditableControllerをeditable、EditablePropertyControllerをeditable-propertyとして登録します。確定時のeditable:commitで保存処理を行い、必要ならeditable:beforecommitを取り消します。JavaScriptなしでは通常の入力欄として表示されます。",
+  },
+  {
+    id: "composer",
+    name: "Composer",
+    description: "本文・添付・送信操作を一つの入力面にまとめる",
+    render: () => (
+      <Composer
+        id="sample-composer"
+        label="メッセージ"
+        name="body"
+        action="/examples/contact"
+        method="get"
+        placeholder="メッセージを書く"
+        submitLabel="送信する"
+        required
+      />
+    ),
+    usage:
+      "標準form・Textarea・Buttonを使います。actionとmethodを利用側で指定し、attachmentsへFileInputや選択済みファイルを渡せます。busyは送信ボタンの重複操作を止め、errorは本文に関連付けます。送信・下書き保存は利用側が実装します。",
+  },
+  {
+    id: "picker",
+    name: "Picker",
+    description: "検索して候補から値を選ぶ",
+    render: () => (
+      <Picker
+        id="sample-picker"
+        label="担当者"
+        name="assignee"
+        options={[
+          { value: "tanaka", label: "田中 遥" },
+          { value: "sato", label: "佐藤 健" },
+          { value: "suzuki", label: "鈴木 美咲" },
+        ]}
+        value="tanaka"
+      />
+    ),
+    usage:
+      "ComboboxControllerをcombobox、PickerControllerをpickerとして登録します。検索欄は送信せず、選択値を標準selectが送信します。multipleの選択表示と解除操作はTagのテンプレートを使います。JavaScriptなしでは標準selectを使えます。候補はoptionsへ渡し、非同期取得後はPickerController.replaceOptions()で更新できます。取得処理は利用側が担当します。tag.cssも読み込んでください。",
+  },
+  {
+    id: "tag-input",
+    name: "TagInput",
+    description: "自由入力したタグを追加・解除する",
+    render: () => (
+      <TagInput
+        id="sample-tag-input"
+        label="キーワード"
+        name="keywords"
+        values={["案内", "公開"]}
+        help="入力後にEnterで追加します。"
+      />
+    ),
+    usage:
+      "TagInputControllerをtag-input、TagFieldControllerをtag-fieldとして登録します。選択表示と解除操作はTagのテンプレートを使います。Enterで追加、Backspaceと矢印キーでタグを移動・解除できます。送信値はJavaScriptの有無にかかわらずカンマ区切りです。カンマを含むタグは扱いません。tag.cssも読み込んでください。",
+  },
+  {
+    id: "tree",
+    name: "Tree",
+    description: "中央の作業面で階層を開閉・選択する",
+    render: () => (
+      <Tree
+        label="資料"
+        items={[
+          { value: "guide", label: "案内", children: [{ value: "start", label: "はじめに" }] },
+          { value: "rules", label: "運用規約" },
+        ]}
+        expanded={["guide"]}
+      />
+    ),
+    usage:
+      "TreeControllerをtree、TreePresentationControllerをtree-presentationとして登録します。親項目の開閉、矢印キー・Home・End・文字入力による移動、Enterによる選択を使えます。選択はtree:changeで利用側が受け取り、画面全体の移動にはCommandMenuを使います。空のitemsは状態文を表示し、重複するvalueは全階層を通じて最初の項目だけ残します。",
+  },
+  {
+    id: "table-of-contents",
+    name: "TableOfContents",
+    description: "長い資料の見出しへ移動し、現在地を示す",
+    render: () => (
+      <TableOfContents
+        label="この資料の目次"
+        sections={[
+          {
+            id: "toc-purpose",
+            title: "この資料の目的",
+            level: 3,
+            content: <p>公開前の確認事項をまとめます。</p>,
+          },
+          { id: "toc-check", title: "内容の確認", content: <p>本文とリンク先を読み返します。</p> },
+          { id: "toc-file", title: "添付ファイル", level: 3, content: <p>最新版か確認します。</p> },
+          { id: "toc-scope", title: "共有範囲", level: 3, content: <p>閲覧対象を確認します。</p> },
+          { id: "toc-final", title: "最終確認", content: <p>修正後に公開します。</p> },
+        ]}
+      />
+    ),
+    usage:
+      "長い資料の本文冒頭に置く番号付きの目次です。sectionsで見出しと本文を渡し、level=3で小見出しを一段下げます。最初の項目がlevel=3でも、親見出しのない0.1にはせず見出し2として表示します。通常のページ内リンクとして動き、TableOfContentsControllerをtable-of-contentsとして登録するとスクロール位置に応じて現在地を示します。各idはページ内で一意にします。",
+  },
+  {
+    id: "chart-frame",
+    name: "ChartFrame",
+    description: "集計の図と数値表を一緒に読む",
+    render: () => (
+      <ChartFrame
+        title="月別売上"
+        description="4月から6月まで"
+        tableLabel="月別売上の数値"
+        graphic={
+          <svg viewBox="0 0 300 100" width="300" height="100">
+            <rect x="20" y="45" width="55" height="45" fill="var(--ply-link)" />
+            <rect x="120" y="30" width="55" height="60" fill="var(--ply-link)" />
+            <rect x="220" y="15" width="55" height="75" fill="var(--ply-link)" />
+          </svg>
+        }
+        table={
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">月</th>
+                <th scope="col">売上</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">4月</th>
+                <td>45万円</td>
+              </tr>
+              <tr>
+                <th scope="row">5月</th>
+                <td>60万円</td>
+              </tr>
+              <tr>
+                <th scope="row">6月</th>
+                <td>75万円</td>
+              </tr>
+            </tbody>
+          </table>
+        }
+      />
+    ),
+    usage:
+      "graphicには利用側で描いた図、tableには同じ値の表を渡します。図は読み上げ対象から外し、数値表は見出しから開いて確認できます。広い集計図にはsize=wideを指定します。descriptionには図の要点を書きます。描画ライブラリや集計処理は含みません。",
+  },
+  {
+    id: "hover-card",
+    name: "HoverCard",
+    description: "対象の概要と関連操作を近くに表示する",
+    render: () => (
+      <HoverCard id="sample-hover-card" label="案件の概要">
+        <p>担当者と確認日をまとめて見られます。</p>
+      </HoverCard>
+    ),
+    usage:
+      "HoverCardControllerをhover-cardとして登録します。hover・focusでプレビューを開き、Escapeや見出し横の閉じる操作で戻します。本文構造はPopover・Dialogと共通です。関連操作がある場合だけactionsを渡します。hrefを指定すると移動リンクと明示的なプレビューボタンを並べます。短い非対話的な補足にはTooltipを使います。",
+  },
+  {
+    id: "toggle-group",
+    name: "ToggleGroup",
+    description: "関連する状態を一つまたは複数切り替える",
+    render: () => (
+      <ToggleGroup
+        label="表示密度"
+        items={[
+          { value: "comfortable", label: "標準" },
+          { value: "compact", label: "コンパクト" },
+        ]}
+        selected={["comfortable"]}
+      />
+    ),
+    usage:
+      "ToggleGroupControllerをtoggle-groupとして登録します。単一・複数選択と矢印キー移動に対応し、変更はtoggle-group:changeで利用側へ渡します。URLで一覧を切り替える用途にはFilterBarを使います。",
+  },
+  {
     id: "code-block",
     name: "CodeBlock",
     description: "設定や短いコードを改行を保って読む",
@@ -386,7 +614,7 @@ export const extendedExamples = [
       />
     ),
     usage:
-      "codeとlabelを渡します。tokensに改行を含むcontentとcolorの配列を渡すと色分けできます。例ではサーバー側のShikiを使いますが、ライブラリに整形器やハイライターの依存はありません。tokensの全文がcodeと異なるときは元のcodeを表示します。HTMLも必ず文字としてエスケープします。copyを付ける場合はClipboardControllerをclipboard、CodeBlockControllerをcode-blockとして登録してください。表示した全文をコピーし、成功・失敗を伝えます。長い行と長いコードはコード領域内でスクロールでき、JavaScriptがない場合も読めます。",
+      "codeとlabelを渡します。tokensに改行を含むcontentとcolorの配列を渡すと色分けできます。例ではサーバー側のShikiを使いますが、ライブラリに整形器やハイライターの依存はありません。tokensの全文がcodeと異なるときは元のcodeを表示します。HTMLも必ず文字としてエスケープします。copyを付ける場合はClipboardControllerをclipboard、CodeBlockControllerをcode-block、ToastControllerをtoastとして登録してください。表示した全文をコピーし、成功・失敗を伝えます。長い行と長いコードはコード領域内でスクロールでき、JavaScriptがない場合も読めます。",
   },
   {
     id: "keycap",

@@ -8,29 +8,128 @@
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     & > .indicator {
+      display: flex;
+      position: relative;
+      align-items: center;
+      justify-content: center;
+      gap: 0.125rem;
       inline-size: 1rem;
       block-size: 1rem;
       margin-block-start: calc((1lh - 1rem) / 2);
       flex: none;
-      border: 2px solid var(--ply-border);
-      border-block-start-color: currentColor;
-      border-inline-end-color: currentColor;
-      border-radius: 50%;
-      animation: ply-loading-turn 800ms linear infinite;
     }
     & > .label {
       min-inline-size: 0;
       overflow-wrap: anywhere;
     }
+    &[data-layout="region"] {
+      padding-block: 0.6875rem 0.625rem;
+      padding-inline: 0.9375rem;
+      border: var(--ply-stroke-width) solid var(--ply-border);
+      border-radius: var(--ply-radius-surface);
+      background: var(--ply-fill-raised);
+      box-shadow: var(--ply-shadow-surface);
+    }
+    &[data-variant="orbit"] > .indicator {
+      border: 0.125rem solid var(--ply-border);
+      border-radius: 50%;
+      animation: ply-loading-orbit 900ms linear infinite;
+      &::after {
+        content: "";
+        position: absolute;
+        inset-block-start: -0.1875rem;
+        inset-inline-start: calc(50% - 0.1875rem);
+        inline-size: 0.375rem;
+        block-size: 0.375rem;
+        border-radius: 50%;
+        background: var(--ply-link);
+      }
+    }
+    &[data-variant="wave"] > .indicator > i {
+      inline-size: 0.1875rem;
+      block-size: 0.5rem;
+      border-radius: var(--ply-radius-pill);
+      background: var(--ply-link);
+      animation: ply-loading-wave 850ms ease-in-out infinite alternate;
+      &:nth-child(2) {
+        animation-delay: 140ms;
+      }
+      &:nth-child(3) {
+        animation-delay: 280ms;
+      }
+    }
+    &[data-variant="halo"] > .indicator {
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0.0625rem;
+        border: var(--ply-stroke-width) solid
+          color-mix(in srgb, var(--ply-link) 30%, var(--ply-border));
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--ply-link) 8%, var(--ply-surface));
+        box-shadow: inset 0 0.0625rem 0 rgb(255 255 255 / 72%);
+        animation: ply-loading-breathe 1.8s ease-in-out infinite;
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        inset: calc(50% - 0.15625rem);
+        border-radius: 50%;
+        background: var(--ply-link);
+        box-shadow: 0 0.0625rem 0.125rem rgb(36 57 70 / 12%);
+      }
+    }
   }
-  @keyframes ply-loading-turn {
+  @keyframes ply-loading-orbit {
     to {
       rotate: 360deg;
     }
   }
+  @keyframes ply-loading-wave {
+    from {
+      scale: 1 0.5;
+      opacity: 0.55;
+    }
+    to {
+      scale: 1 1.25;
+      opacity: 1;
+    }
+  }
+  @keyframes ply-loading-breathe {
+    0%,
+    100% {
+      scale: 0.78;
+      opacity: 0.62;
+    }
+    50% {
+      scale: 1.08;
+      opacity: 1;
+    }
+  }
   @media (prefers-reduced-motion: reduce) {
-    .ply-loading > .indicator {
+    .ply-loading[data-variant="orbit"] > .indicator,
+    .ply-loading[data-variant="wave"] > .indicator > i,
+    .ply-loading[data-variant="halo"] > .indicator::before {
       animation: none;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-loading[data-layout="region"] {
+      background: Canvas;
+      box-shadow: none;
+    }
+    .ply-loading[data-variant="orbit"] > .indicator {
+      border-color: CanvasText;
+    }
+    .ply-loading[data-variant="orbit"] > .indicator::after,
+    .ply-loading[data-variant="wave"] > .indicator > i,
+    .ply-loading[data-variant="halo"] > .indicator::after {
+      background: CanvasText;
+    }
+    .ply-loading[data-variant="halo"] > .indicator::before {
+      border-color: CanvasText;
+      background: Canvas;
+      box-shadow: none;
     }
   }
 }

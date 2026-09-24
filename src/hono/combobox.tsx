@@ -46,7 +46,7 @@ export const Combobox = ({
       aria-haspopup="listbox"
       aria-controls={`${id}-options`}
       data-action="click->combobox#toggle"
-      disabled={attributes.disabled}
+      disabled={attributes.disabled || attributes.readonly}
     >
       <Icon name="caret" />
     </button>

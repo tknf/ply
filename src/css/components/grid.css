@@ -1,0 +1,101 @@
+@layer components {
+  .ply-grid {
+    min-inline-size: 0;
+    overflow: auto;
+    overscroll-behavior-inline: contain;
+    color: var(--ply-text);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+
+    & > .table {
+      inline-size: max-content;
+      min-inline-size: 100%;
+      border: var(--ply-stroke-width) solid var(--ply-border);
+      border-spacing: 0;
+      border-radius: var(--ply-radius-surface);
+      background: var(--ply-surface);
+      box-shadow: var(--ply-shadow-surface);
+
+      & > caption {
+        padding-block-end: var(--ply-space-3);
+        text-align: start;
+        font-size: var(--ply-body);
+        font-weight: 600;
+        line-height: 1.5;
+      }
+
+      & > :is(thead, tbody) > tr > :is(th, td) {
+        min-inline-size: 7.5rem;
+        padding-block: 0.625rem;
+        padding-inline: 0.875rem;
+        border-block-end: var(--ply-stroke-width) solid var(--ply-border);
+        text-align: start;
+        vertical-align: middle;
+        overflow-wrap: anywhere;
+      }
+
+      & > :is(thead, tbody) > tr > :is(th, td):not(:last-child) {
+        border-inline-end: var(--ply-stroke-width) solid var(--ply-border);
+      }
+
+      & > thead > tr > th {
+        padding-block: var(--ply-space-2);
+        background: var(--ply-fill-raised);
+        color: var(--ply-muted);
+        font-size: var(--ply-small);
+        font-weight: 600;
+        line-height: var(--ply-small-leading);
+        white-space: nowrap;
+      }
+
+      & > tbody > tr > th {
+        position: sticky;
+        inset-inline-start: 0;
+        z-index: 1;
+        min-inline-size: 6.5rem;
+        background: var(--ply-fill-raised);
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      & > tbody > tr:last-child > :is(th, td) {
+        border-block-end: 0;
+      }
+
+      & > tbody > tr:hover > td:not([data-disabled="true"]) {
+        background: color-mix(in srgb, var(--ply-info-soft) 40%, var(--ply-surface));
+      }
+
+      & > tbody > tr > td[data-disabled="true"] {
+        background: var(--ply-background);
+        color: var(--ply-muted);
+      }
+
+      & > :is(thead, tbody) > tr > :is(th, td):focus-visible {
+        position: relative;
+        z-index: 2;
+        outline: 0.125rem solid var(--ply-link);
+        outline-offset: -0.1875rem;
+        background: var(--ply-info-soft);
+      }
+    }
+
+    & > .empty {
+      margin-block-start: var(--ply-space-2);
+      padding-block: var(--ply-space-3);
+      padding-inline: var(--ply-space-4);
+      border: var(--ply-stroke-width) solid var(--ply-border);
+      border-radius: var(--ply-radius-surface);
+      background: var(--ply-fill-raised);
+      color: var(--ply-muted);
+      box-shadow: var(--ply-shadow-surface);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ply-grid > :is(.table, .empty) {
+      background: Canvas;
+      box-shadow: none;
+    }
+  }
+}

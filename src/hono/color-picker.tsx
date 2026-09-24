@@ -1,0 +1,184 @@
+import { useId } from "hono/jsx";
+import { Button } from "./button";
+import { Field } from "./field";
+import { Icon } from "./icon";
+import { Tag } from "./tag";
+import { classes } from "./types";
+
+export type ColorPickerValue = {
+  colorSpace: "srgb" | "display-p3";
+  hue: number;
+  saturation: number;
+  brightness: number;
+  alpha: number;
+};
+
+export type ColorPickerProps = {
+  id?: string;
+  class?: string;
+  label: string;
+  name: string;
+  value?: ColorPickerValue;
+  help?: string;
+  error?: string;
+  disabled?: boolean;
+  form?: string;
+  step?: number;
+  hueStep?: number;
+};
+
+const defaultValue = {
+  colorSpace: "srgb",
+  hue: 215,
+  saturation: 68,
+  brightness: 84,
+  alpha: 1,
+} satisfies ColorPickerValue;
+
+const bounded = (value: number, maximum: number, fallback: number) =>
+  Number.isFinite(value) ? Math.max(0, Math.min(maximum, value)) : fallback;
+
+const colorComponents = (value: ColorPickerValue) => {
+  const hue = (value.hue % 360) / 60;
+  const saturation = value.saturation / 100;
+  const brightness = value.brightness / 100;
+  return ([5, 3, 1] as const).map((offset) => {
+    const position = (offset + hue) % 6;
+    return brightness * (1 - saturation * Math.max(0, Math.min(position, 4 - position, 1)));
+  });
+};
+
+/** 標準rangeがフォーム値を保持し、上流のcolor-pickerが操作面と値を同期する。 */
+export const ColorPicker = ({
+  id,
+  class: className,
+  label,
+  name,
+  value = defaultValue,
+  help,
+  error,
+  disabled,
+  form,
+  step = 1,
+  hueStep = 1,
+}: ColorPickerProps) => {
+  const generatedId = useId();
+  const pickerId = id ?? `ply-color-picker-${generatedId}`;
+  const current: ColorPickerValue = {
+    colorSpace: value.colorSpace === "display-p3" ? "display-p3" : "srgb",
+    hue: bounded(value.hue, 360, defaultValue.hue),
+    saturation: bounded(value.saturation, 100, defaultValue.saturation),
+    brightness: bounded(value.brightness, 100, defaultValue.brightness),
+    alpha: bounded(value.alpha, 1, defaultValue.alpha),
+  };
+  const rgb = colorComponents(current).join(" ");
+  const hueColor = colorComponents({
+    ...current,
+    saturation: 100,
+    brightness: 100,
+    alpha: 1,
+  }).join(" ");
+  const channels = [
+    { key: "hue", label: "色相", max: 360, end: "360°", value: current.hue },
+    { key: "saturation", label: "彩度", max: 100, end: "100%", value: current.saturation },
+    { key: "brightness", label: "明度", max: 100, end: "100%", value: current.brightness },
+    { key: "alpha", label: "不透明度", max: 1, end: "100%", value: current.alpha },
+  ] as const;
+  const description = [help && `${pickerId}-help`, error && `${pickerId}-error`]
+    .filter(Boolean)
+    .join(" ");
+
+  return (
+    <fieldset
+      id={pickerId}
+      class={classes("ply-field ply-color-picker", className)}
+      role="group"
+      aria-labelledby={`${pickerId}-label`}
+      aria-describedby={description || undefined}
+      aria-invalid={error ? "true" : undefined}
+      disabled={disabled}
+      data-controller="color-picker"
+      data-color-picker-value-value={JSON.stringify(current)}
+      data-color-picker-step-value={Number.isFinite(step) && step > 0 && step <= 100 ? step : 1}
+      data-color-picker-hue-step-value={
+        Number.isFinite(hueStep) && hueStep > 0 && hueStep <= 360 ? hueStep : 1
+      }
+      style={`--color-picker-hue: ${current.hue}; --color-picker-saturation: ${current.saturation / 100}; --color-picker-brightness: ${current.brightness / 100}; --color-picker-alpha: ${current.alpha}; --color-picker-color: color(${current.colorSpace} ${rgb} / ${current.alpha}); --color-picker-hue-color: color(${current.colorSpace} ${hueColor} / 1); --color-picker-fallback: color(srgb ${rgb} / ${current.alpha})`}
+    >
+      <legend id={`${pickerId}-label`}>{label}</legend>
+      <div class="editor">
+        <div class="visual">
+          <Button
+            class="area"
+            aria-label={`${label}の彩度と明度`}
+            aria-controls={`${pickerId}-saturation ${pickerId}-brightness`}
+            aria-describedby={`${pickerId}-instructions`}
+            data-color-picker-target="area"
+            data-icon-only="true"
+            disabled={disabled}
+          >
+            <span class="cursor" aria-hidden="true" />
+          </Button>
+          <div class="preview">
+            <span class="swatch" aria-hidden="true" />
+            <span class="preview-label">選択中の色</span>
+            <Tag label={current.colorSpace === "srgb" ? "sRGB" : "Display P3"} />
+          </div>
+        </div>
+        <div class="channels">
+          {channels.map((channel) => (
+            <Field id={`${pickerId}-${channel.key}`} label={channel.label}>
+              {(attributes) => (
+                <div class="ply-range" data-channel={channel.key}>
+                  <div class="controls">
+                    <div class="native">
+                      <input
+                        {...attributes}
+                        class="input"
+                        type="range"
+                        name={`${name}[${channel.key}]`}
+                        form={form}
+                        min="0"
+                        max={channel.max}
+                        step="any"
+                        value={channel.value}
+                        data-color-picker-target={`${channel.key}Control`}
+                      />
+                    </div>
+                  </div>
+                  <div class="limits" aria-hidden="true">
+                    <span>0</span>
+                    <span>{channel.end}</span>
+                  </div>
+                </div>
+              )}
+            </Field>
+          ))}
+        </div>
+      </div>
+      <input type="hidden" name={`${name}[colorSpace]`} form={form} value={current.colorSpace} />
+      <p
+        id={`${pickerId}-instructions`}
+        class="ply-visually-hidden"
+        data-color-picker-target="instructions"
+      >
+        色の面は左右で彩度、上下で明度を調整します。矢印キーでも操作できます。各スライダーからも調整できます。
+      </p>
+      {(help || error) && (
+        <div class="messages">
+          {help && (
+            <p class="help" id={`${pickerId}-help`}>
+              {help}
+            </p>
+          )}
+          {error && (
+            <p class="error" id={`${pickerId}-error`}>
+              <Icon name="x-circle" />
+              <span>{error}</span>
+            </p>
+          )}
+        </div>
+      )}
+    </fieldset>
+  );
+};

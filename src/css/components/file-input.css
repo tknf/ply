@@ -4,9 +4,9 @@
     display: grid;
     gap: var(--ply-space-2);
     padding-block: var(--ply-space-3);
-    padding-inline: var(--ply-space-3);
+    padding-inline: var(--ply-space-4);
     min-inline-size: 0;
-    border: 1px dashed var(--ply-control-border);
+    border: var(--ply-stroke-width) dashed var(--ply-border);
     border-radius: calc(4em / 7);
     background: color-mix(in srgb, var(--ply-background) 50%, var(--ply-surface));
     font-size: var(--ply-label);
@@ -18,14 +18,14 @@
     &[data-state="dragover"] {
       border-color: var(--ply-link);
       background: var(--ply-info-soft);
-      outline: 2px solid var(--ply-link);
-      outline-offset: 2px;
+      outline: 0.125rem solid var(--ply-link);
+      outline-offset: 0.125rem;
     }
     &:has(> .ply-input[data-invalid="true"]) {
       border-color: var(--ply-danger);
     }
     &:has(> .ply-input:disabled) {
-      border-color: var(--ply-input-border);
+      border-color: var(--ply-border);
       background: var(--ply-background);
       color: var(--ply-muted);
       outline: none;
@@ -52,10 +52,10 @@
         box-sizing: border-box;
         max-inline-size: 100%;
         min-block-size: var(--ply-button-size);
-        padding-block: calc((var(--ply-button-size) - 10em / 7 - 2px) / 2);
+        padding-block: calc((var(--ply-button-size) - 10em / 7 - 0.125rem) / 2);
         padding-inline: 0.75em;
         margin-inline-end: var(--ply-space-2);
-        border: 1px solid var(--ply-control-border);
+        border: var(--ply-stroke-width) solid var(--ply-border);
         border-radius: calc(4em / 7);
         background: linear-gradient(var(--ply-surface), var(--ply-background));
         box-shadow: var(--ply-shadow-control);
@@ -73,7 +73,7 @@
         background: color-mix(in srgb, var(--ply-link) 14%, var(--ply-surface));
       }
       &:disabled::file-selector-button {
-        border-color: var(--ply-input-border);
+        border-color: var(--ply-border);
         background: var(--ply-background);
         color: var(--ply-muted);
         cursor: not-allowed;
@@ -95,7 +95,7 @@
       align-items: start;
       gap: var(--ply-space-3);
       padding-block: var(--ply-space-2);
-      border-block-start: 1px solid var(--ply-border);
+      border-block-start: var(--ply-stroke-width) solid var(--ply-border);
     }
     & > li > span {
       overflow-wrap: anywhere;
@@ -111,8 +111,8 @@
 
     &:not([data-invalid="true"]) {
       position: absolute;
-      inline-size: 1px;
-      block-size: 1px;
+      inline-size: 0.0625rem;
+      block-size: 0.0625rem;
       overflow: hidden;
       clip-path: inset(50%);
       white-space: nowrap;

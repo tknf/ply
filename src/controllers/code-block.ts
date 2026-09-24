@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import { ToastController } from "@tknf/stimulus-ui";
 
 /** コピー自体はstimulus-uiに任せ、利用可否と結果の表示を受け持つ。 */
 export class CodeBlockController extends Controller<HTMLElement> {
@@ -24,9 +25,20 @@ export class CodeBlockController extends Controller<HTMLElement> {
     if (this.timer !== null) window.clearTimeout(this.timer);
     this.timer = null;
   };
+  private toast = () => {
+    if (!this.notification) return null;
+    const controller = this.application.getControllerForElementAndIdentifier(
+      this.notification,
+      "toast",
+    );
+    return controller instanceof ToastController ? controller : null;
+  };
   private hide = () => {
     this.clearTimer();
-    if (this.notification?.matches(":popover-open")) this.notification.hidePopover();
+    if (!this.notification?.matches(":popover-open")) return;
+    const toast = this.toast();
+    if (toast) toast.hide();
+    else this.notification.hidePopover();
   };
   private toggled = (event: Event) => {
     if (!(event instanceof ToggleEvent) || event.newState !== "closed") return;
@@ -64,13 +76,21 @@ export class CodeBlockController extends Controller<HTMLElement> {
     this.clearTimer();
     for (const other of document.querySelectorAll<HTMLElement>(
       ".ply-code-block > .ply-toast:popover-open",
-    ))
-      if (other !== this.notification) other.hidePopover();
+    )) {
+      if (other === this.notification) continue;
+      const controller = this.application.getControllerForElementAndIdentifier(other, "toast");
+      if (controller instanceof ToastController) controller.hide();
+      else other.hidePopover();
+    }
     const label = this.element.querySelector("figcaption > .label")?.textContent ?? "コード";
     status.textContent = detail.ok
       ? `${label}をコピーしました`
       : "コピーできませんでした。コードを選択してコピーしてください。";
-    if (!this.notification.matches(":popover-open")) this.notification.showPopover();
+    if (!this.notification.matches(":popover-open")) {
+      const toast = this.toast();
+      if (toast) toast.show();
+      else this.notification.showPopover();
+    }
     if (detail.ok) this.scheduleHide();
   };
 }

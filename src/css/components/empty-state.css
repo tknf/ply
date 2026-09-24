@@ -9,7 +9,7 @@
     inline-size: 100%;
     max-inline-size: 40rem;
     margin-inline: auto;
-    padding-block: var(--ply-space-6);
+    padding-block: var(--ply-space-6) var(--ply-space-5);
     padding-inline: var(--ply-space-3);
     color: var(--ply-text);
     font-size: var(--ply-label);
@@ -25,30 +25,30 @@
       inline-size: min(3.5rem, 100%);
       block-size: 4rem;
       margin-block-start: var(--ply-space-1);
-      border: 1px solid var(--ply-border);
-      border-radius: 8px 16px 8px 8px;
+      border: var(--ply-stroke-width) solid var(--ply-border);
+      border-radius: 0.5rem 1rem 0.5rem 0.5rem;
       background: linear-gradient(white, var(--ply-ice));
       color: var(--ply-link);
       font-size: 1.75rem;
       box-shadow:
-        -4px 4px 0 var(--ply-cover),
-        -5px 5px 0 var(--ply-border);
+        -0.25rem 0.25rem 0 var(--ply-cover),
+        -0.3125rem 0.3125rem 0 var(--ply-border);
       &::after {
         content: "";
         position: absolute;
-        inset-block-start: -3px;
-        inset-inline-end: -3px;
+        inset-block-start: -0.1875rem;
+        inset-inline-end: -0.1875rem;
         inline-size: 0.625rem;
         block-size: 0.625rem;
-        border: 2px solid var(--ply-surface);
+        border: 0.125rem solid var(--ply-surface);
         border-radius: 50%;
         background: var(--ply-mark);
       }
     }
     & > .title {
       grid-column: 2;
-      font-family: var(--ply-display-font);
-      font-size: 1.125rem;
+      font-family: var(--ply-control-font-family);
+      font-size: var(--ply-section-title);
       font-weight: 600;
       line-height: calc(4 / 3);
     }

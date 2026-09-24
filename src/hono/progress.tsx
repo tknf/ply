@@ -1,4 +1,5 @@
 import { classes, type ElementProps } from "./types";
+import { getProgressState } from "../internal/progress";
 
 export type ProgressProps = ElementProps<"label"> & { label: string; value?: number; max?: number };
 export const Progress = ({
@@ -8,23 +9,37 @@ export const Progress = ({
   class: className,
   ...attributes
 }: ProgressProps) => {
-  // native progressの範囲に揃え、表示文言とブラウザの値を一致させる。
-  const limit = Number.isFinite(max) && max > 0 ? max : 1;
-  const current =
-    value !== undefined && Number.isFinite(value) ? Math.min(limit, Math.max(0, value)) : undefined;
-  const percentage = current === undefined ? undefined : Math.round((current / limit) * 100);
+  const {
+    limit,
+    current,
+    percentage,
+    complete,
+    label: percentageLabel,
+  } = getProgressState(value, max);
   return (
     <label {...attributes} class={classes("ply-progress", className)}>
       <span class="heading">
         <span>{label}</span>
-        {percentage !== undefined && (
+        {percentageLabel !== undefined && (
           <span class="value" aria-hidden="true">
-            {percentage}%
+            {percentageLabel}
           </span>
         )}
       </span>
-      <progress value={current} max={limit}>
-        {percentage === undefined ? "処理中" : `${percentage}%`}
+      <span
+        class="track"
+        data-state={
+          percentage === undefined ? "indeterminate" : complete ? "complete" : "determinate"
+        }
+        aria-hidden="true"
+      >
+        <span
+          class="fill"
+          style={percentage === undefined ? undefined : `inline-size: ${percentage}%`}
+        />
+      </span>
+      <progress class="ply-visually-hidden" value={current} max={limit}>
+        {percentageLabel ?? "処理中"}
       </progress>
     </label>
   );

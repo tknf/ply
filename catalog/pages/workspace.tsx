@@ -13,7 +13,6 @@ import {
   Card,
   TaskList,
   Tabs,
-  Toolbar,
   InputGroup,
   Progress,
   Dialog,
@@ -265,7 +264,7 @@ export const WorkspaceProject = () => (
             icon: <Icon name="grid" />,
             content: (
               <>
-                <Toolbar label="ボードの絞り込み">
+                <div class="ply-toolbar" role="group" aria-label="ボードの絞り込み">
                   <div class="start">
                     <InputGroup
                       id="workspace-search"
@@ -284,7 +283,7 @@ export const WorkspaceProject = () => (
                       <Badge tone="info">9月30日公開</Badge>
                     </div>
                   </div>
-                </Toolbar>
+                </div>
                 <ProjectBoard />
                 <p class="ply-save-status" role="status" data-project-demo-target="filterStatus" />
                 <p class="ply-save-status" role="status" data-project-demo-target="status" />

@@ -1,6 +1,7 @@
 import type { Child, PropsWithChildren } from "hono/jsx";
 import { Button, type ButtonProps } from "./button";
 import { Icon, type IconName } from "./icon";
+import { OverlayClose, OverlayContent, overlayAnchorName } from "./overlay-content";
 
 export type PopoverProps = PropsWithChildren<{
   id: string;
@@ -35,11 +36,7 @@ export const Popover = ({
   dir,
   children,
 }: PopoverProps) => {
-  // 任意のHTML idを、一意で安全なCSSの識別子へ変換する。
-  const anchor = `--ply-popover-${id
-    .split("")
-    .map((character) => character.charCodeAt(0).toString(16))
-    .join("-")}`;
+  const anchor = overlayAnchorName("popover", id);
   return (
     <div class="ply-popover" data-controller="popover" data-align={align} dir={dir}>
       <Button
@@ -59,8 +56,9 @@ export const Popover = ({
       <div
         id={id}
         popover="auto"
-        class="panel"
-        style={`position-anchor: ${anchor}`}
+        class="panel ply-overlay"
+        data-placement="anchor"
+        style={`--ply-overlay-anchor: ${anchor}`}
         data-popover-target="panel"
         data-align={align}
         data-size={size}
@@ -68,19 +66,18 @@ export const Popover = ({
         aria-labelledby={`${id}-title`}
         aria-describedby={description ? `${id}-description` : undefined}
       >
-        <header class="heading">
-          <h3 id={`${id}-title`} tabindex={-1} autofocus>
-            {title}
-          </h3>
-          {description && <p id={`${id}-description`}>{description}</p>}
-        </header>
-        <div class="body">{children}</div>
-        <footer class="actions">
-          <Button popovertarget={id} popovertargetaction="hide">
-            {closeLabel}
-          </Button>
-          {actions}
-        </footer>
+        <OverlayContent
+          title={
+            <h3 id={`${id}-title`} tabindex={-1} autofocus>
+              {title}
+            </h3>
+          }
+          description={description && <p id={`${id}-description`}>{description}</p>}
+          close={<OverlayClose label={closeLabel} popovertarget={id} popovertargetaction="hide" />}
+          actions={actions}
+        >
+          {children}
+        </OverlayContent>
       </div>
     </div>
   );

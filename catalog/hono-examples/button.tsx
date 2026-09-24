@@ -27,6 +27,9 @@ export default () => (
       <Button busy busyLabel="保存中…">
         保存する
       </Button>
+      <Button variant="primary" busy busyLabel="公開中…">
+        公開する
+      </Button>
       <ActionLink href="/reservation" variant="link">
         予約例へ移動
       </ActionLink>

@@ -1,0 +1,38 @@
+@layer components {
+  .ply-tooltip {
+    display: inline-flex;
+    max-inline-size: 100%;
+  }
+  .ply-tooltip > .content {
+    position: fixed;
+    inset-block: auto 1rem;
+    inset-inline: auto;
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    inline-size: max-content;
+    max-inline-size: min(20rem, calc(100vw - 1rem));
+    margin: 0;
+    padding-block: var(--ply-space-2);
+    padding-inline: var(--ply-space-3);
+    font-size: var(--ply-small);
+    line-height: var(--ply-small-leading);
+  }
+  @supports (inset-block-start: anchor(end)) and (position-try-fallbacks: flip-block) {
+    .ply-tooltip > .content {
+      inset-block: auto;
+      inset-inline: auto;
+      inset-block-start: calc(anchor(end) + var(--ply-space-1));
+      inset-inline-start: anchor(center);
+      translate: -50% 0;
+      position-try-fallbacks:
+        flip-block,
+        flip-inline,
+        flip-block flip-inline;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-tooltip > .content {
+      border-color: CanvasText;
+    }
+  }
+}

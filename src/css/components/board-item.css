@@ -6,11 +6,11 @@
     gap: var(--ply-space-1);
     min-inline-size: 0;
     padding-block: var(--ply-space-2);
-    padding-inline: var(--ply-space-2);
-    border: 1px solid var(--ply-border);
-    border-radius: 10px;
-    background: var(--ply-surface);
-    box-shadow: 0 1px 2px rgb(36 57 70 / 5%);
+    padding-inline: var(--ply-space-4);
+    border: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: var(--ply-radius-control);
+    background: var(--ply-fill-raised);
+    box-shadow: var(--ply-shadow-surface);
     & > .body {
       min-inline-size: 0;
       padding-block: 0.375rem;
@@ -28,19 +28,32 @@
     & > .ply-button.handle {
       color: var(--ply-muted);
       touch-action: none;
-      cursor: grab;
+      &:not(:disabled) {
+        cursor: grab;
+      }
+      &:not(:disabled):active {
+        cursor: grabbing;
+      }
+      &:disabled {
+        cursor: not-allowed;
+      }
     }
     &[data-moving="true"] {
-      outline: 2px solid var(--ply-link);
+      outline: 0.125rem solid var(--ply-link);
       box-shadow: var(--ply-shadow-menu);
     }
-    &[data-moving="true"] > .handle {
+    &[data-moving="true"] > .ply-button.handle:not(:disabled) {
       cursor: grabbing;
     }
   }
-  @media (pointer: coarse) {
-    .ply-board-item > .body {
-      padding-block: var(--ply-space-3);
+  :root[data-ply-board-dragging="true"],
+  :root[data-ply-board-dragging="true"] :is(.ply-button, *, *::before, *::after) {
+    cursor: grabbing;
+  }
+  @media (forced-colors: active) {
+    .ply-board-item {
+      background: Canvas;
+      box-shadow: none;
     }
   }
 }

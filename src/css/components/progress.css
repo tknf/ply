@@ -17,41 +17,54 @@
         font-variant-numeric: tabular-nums;
       }
     }
-    & > progress {
+    & > .track {
       display: block;
-      appearance: none;
-      inline-size: 100%;
-      block-size: 0.375rem;
+      position: relative;
+      block-size: 0.5rem;
       margin-block-start: var(--ply-space-2);
       overflow: hidden;
-      border: 0;
+      border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: var(--ply-radius-pill);
-      background: var(--ply-border);
+      background: var(--ply-background);
       box-shadow: var(--ply-shadow-input);
-      accent-color: var(--ply-link);
-      color: var(--ply-link);
-      &::-webkit-progress-bar {
-        background: var(--ply-border);
+      & > .fill {
+        display: block;
+        block-size: 100%;
         border-radius: inherit;
-      }
-      &::-webkit-progress-value {
         background: linear-gradient(
           90deg,
-          color-mix(in srgb, var(--ply-link) 85%, white),
+          color-mix(in srgb, var(--ply-link) 80%, white),
           var(--ply-link)
         );
-        border-radius: inherit;
+        box-shadow: inset 0 0.0625rem 0 rgb(255 255 255 / 28%);
+        transition: inline-size var(--ply-duration) ease-out;
       }
-      &::-moz-progress-bar {
-        background: linear-gradient(
-          90deg,
-          color-mix(in srgb, var(--ply-link) 85%, white),
-          var(--ply-link)
-        );
-        border-radius: inherit;
+      &[data-state="indeterminate"] > .fill {
+        inline-size: 35%;
+        animation: ply-progress-travel 1.6s ease-in-out infinite alternate;
       }
-      &:indeterminate {
-        appearance: auto;
+    }
+  }
+  @keyframes ply-progress-travel {
+    from {
+      translate: -100% 0;
+    }
+    to {
+      translate: 285% 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ply-progress > .track[data-state="indeterminate"] > .fill {
+      animation: none;
+      translate: 90% 0;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-progress > .track {
+      border-color: CanvasText;
+      background: Canvas;
+      & > .fill {
+        background: Highlight;
       }
     }
   }

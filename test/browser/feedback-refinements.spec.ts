@@ -238,9 +238,13 @@ test("Boardはポインターで空の列へドロップできる", async ({ pag
   await page.mouse.move(source.x + source.width / 2, source.y + source.height / 2);
   await page.mouse.down();
   await page.mouse.move(target.x + target.width / 2, target.y + 70, { steps: 12 });
+  await expect(page.locator("html")).toHaveAttribute("data-ply-board-dragging", "true");
+  await expect(item.getByRole("button")).toHaveCSS("cursor", "grabbing");
   await expect(column.locator('[data-board-id="guide"]')).toBeVisible();
   await page.mouse.up();
+  await expect(page.locator("html")).not.toHaveAttribute("data-ply-board-dragging");
   await expect(item).not.toHaveAttribute("data-moving", "true");
+  await expect(item.getByRole("button")).toHaveCSS("cursor", "grab");
   await expect(column.locator(".title > small")).toHaveText("1");
   await expect(board.locator(".drag-preview")).toHaveCount(0);
 });

@@ -202,7 +202,7 @@ export class DraftController extends Controller<HTMLElement> {
     for (const name of ["title", "body"]) {
       const field = this.field(name);
       if (!(field instanceof HTMLTextAreaElement)) continue;
-      field.style.blockSize = "0px";
+      field.style.blockSize = "0";
       field.style.blockSize = `${field.scrollHeight + 2}px`;
     }
   };

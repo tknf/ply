@@ -1,0 +1,57 @@
+@layer components {
+  .ply-picker {
+    display: grid;
+    gap: var(--ply-space-1);
+    min-inline-size: 0;
+  }
+
+  .ply-picker > .label {
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+  }
+
+  .ply-picker > .ply-input {
+    inline-size: 100%;
+    padding-inline-end: 1em;
+  }
+
+  .ply-picker > .ply-input[hidden],
+  .ply-picker > .values[hidden],
+  .ply-picker > .note[hidden] {
+    display: none;
+  }
+
+  .ply-picker > .values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ply-space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ply-picker > .note,
+  .ply-picker > .messages > .help {
+    color: var(--ply-muted);
+    font-size: var(--ply-small);
+    line-height: var(--ply-small-leading);
+  }
+
+  .ply-picker:has(> .search[data-invalid="true"]) > .note {
+    color: var(--ply-danger);
+  }
+
+  .ply-picker > .messages > .error {
+    display: flex;
+    align-items: start;
+    gap: var(--ply-space-1);
+    color: var(--ply-danger);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+  }
+
+  .ply-picker > .messages > .error > .ply-icon {
+    flex: none;
+    margin-block-start: calc(3em / 14);
+  }
+}

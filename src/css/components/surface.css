@@ -2,41 +2,43 @@
   .ply-surface {
     container: ply-surface / inline-size;
     min-inline-size: 0;
-    background: var(--ply-surface);
-    border: 1px solid var(--ply-border);
+    background: var(--ply-fill-raised);
+    border: var(--ply-stroke-width) solid var(--ply-border);
     border-radius: var(--ply-radius-surface);
-    box-shadow: 0 1px 2px rgb(36 57 70 / 4%);
+    box-shadow: var(--ply-shadow-surface);
     & > .body {
       display: grid;
       align-content: start;
-      gap: var(--ply-space-6);
+      gap: var(--ply-space-4);
       min-inline-size: 0;
-      padding-block: var(--ply-space-6);
-      padding-inline: var(--ply-space-6);
+      padding-block: var(--ply-space-4) var(--ply-space-3);
+      padding-inline: var(--ply-space-5);
+      overflow-wrap: anywhere;
+      &:empty {
+        display: none;
+      }
+    }
+    &:has(> .body:empty) > .ply-context-bar {
+      border-block-end: 0;
     }
     &[data-tone="warm"] {
-      background: var(--ply-soft);
+      background: linear-gradient(var(--ply-surface), var(--ply-soft));
     }
     &[data-tone="cool"] {
-      background: var(--ply-info-soft);
+      background: linear-gradient(var(--ply-surface), var(--ply-info-soft));
     }
     &[data-kind="panel"] {
-      border-color: transparent;
-      box-shadow: none;
-      & > .body {
-        padding-block: var(--ply-space-4);
-        padding-inline: var(--ply-space-4);
-        gap: var(--ply-space-4);
-      }
+      border-radius: var(--ply-radius-control);
+      box-shadow: var(--ply-shadow-control);
     }
     &[data-layout="document"] > .body {
-      padding-inline: max(var(--ply-space-4), calc((100% - 42rem) / 2));
-      padding-block: var(--ply-space-8);
+      padding-inline: max(var(--ply-space-5), calc((100% - 42rem) / 2));
     }
-    @container ply-surface (inline-size < 30rem) {
-      & > .body {
-        padding-inline: var(--ply-space-4);
-      }
+  }
+  @media (forced-colors: active) {
+    :is(.ply-surface, .ply-surface[data-kind="panel"]) {
+      background: Canvas;
+      box-shadow: none;
     }
   }
 }

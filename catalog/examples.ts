@@ -26,7 +26,7 @@ export const examples = [
     name: "SplitView",
     description: "一覧と本文、作業と補足を並べる。",
     usage:
-      "primary・secondaryをDOMの読み順で配置します。layout=readerは一覧を狭く、inspectorは補足を狭くします。52rem未満では縦に積みます。",
+      "primary・secondaryをDOMの読み順で配置します。layout=readerは一覧を狭く、inspectorは補足を狭くします。resizableを指定し、SplitterControllerをsplitterとして登録すると、境界のドラッグ・キー操作とrange入力で幅を変更できます。52rem未満では縦に積みます。",
   },
   {
     id: "section",
@@ -40,14 +40,14 @@ export const examples = [
     name: "Message",
     description: "人・時刻・本文を同じ読み順で伝える。",
     usage:
-      "author・time・datetimeを指定し、avatar・actions・repliesは任意です。layout=documentはメール等の本文を16px／28px、投稿者の下の全幅で読みます。既定はconversationです。本文は任意のHTMLを受け取ります。送信・既読・返信のデータ処理は利用側が持ちます。",
+      "author・time・datetimeを指定し、avatar・actions・repliesは任意です。layout=documentはメール等の本文を1rem／1.75rem、投稿者の下の全幅で読みます。既定はconversationです。本文は任意のHTMLを受け取ります。送信・既読・返信のデータ処理は利用側が持ちます。",
   },
   {
     id: "surface",
     name: "Surface",
     description: "中央の白い作業面。外側の配置は親のContainerが持ちます。",
     usage:
-      "ContextBarはply-surface-bodyの前に置きます。狭い配置では内側の余白が縮みます。data-kind=panelは補助面、data-tone=warm・coolで設定やプレビューの面を区別します。",
+      "ContextBarはcontextに渡し、本文には一律の余白を設けます。documentレイアウトでは本文幅を制限します。kind=panelは補助面、tone=warm・coolで設定やプレビューの面を区別します。",
   },
   {
     id: "context-bar",
@@ -68,7 +68,7 @@ export const examples = [
     name: "Button",
     description: "操作の主従、無効、処理中を表します。",
     usage:
-      "通常・compactは文字0.875rem・行高20/14、largeは文字1rem・行高1.5です。画面幅で文字サイズは変わりません。通常・compactの高さは文字の16/7倍、largeは文字の2.5倍です。左右余白は通常1em・compact0.5em・large1.1em。文字14px時の通常の高さは32px相当です。上のHono例は通常・compact・largeの順です。data-variantはprimary・secondary・danger・link。Iconは文字の前後に配置でき、components/icon.cssと共通SVGスプライトも読み込みます。アイコンだけの操作はdata-icon-only=trueで正方形にし、aria-labelで操作名を付けます。titleはマウス向けの補助で、aria-labelの代わりにはしません。処理中はアイコンを含む内容を処理中文言に置き換えます。data-busy=true、disabled、aria-busy=trueを併記します。移動にはhrefを持つaを使います。",
+      "通常・compactは文字0.875rem・行高20/14、largeは文字1rem・行高1.5です。画面幅で文字サイズは変わりません。通常・compactの高さは文字の16/7倍、largeは文字の2.5倍です。左右余白は通常1em・compact0.5em・large1.1em。通常の高さは約2remです。上のHono例は通常・compact・largeの順です。data-variantはprimary・secondary・danger・link。Iconは文字の前後に配置でき、components/icon.cssと共通SVGスプライトも読み込みます。アイコンだけの操作はdata-icon-only=trueで正方形にし、aria-labelで操作名を付けます。titleはマウス向けの補助で、aria-labelの代わりにはしません。処理中はアイコンを含む内容を処理中文言に置き換えます。data-busy=true、disabled、aria-busy=trueを併記します。移動にはhrefを持つaを使います。",
   },
   {
     id: "field",
@@ -96,7 +96,21 @@ export const examples = [
     name: "Table",
     description: "数値・短い状態・長文を列の役割に合わせて表示します。",
     usage:
-      '標準tableの構造に、sort="local"の並べ替え、selectableの選択欄、stickyHeaderを追加できます。TableSortはthを出力し、TableSelectionはセル内へ配置します。数値・日付はdata-sort-valueで表示と分け、空の値は末尾に保ちます。選択値は通常のフォームとtable:selectionchangeで受け取り、selectionActionsへ一括操作を置けます。sort="manual"はtable:sortを通知し、サーバー側の並べ替えへ接続します。stateはready/loading/empty/error。TableControllerをtable、TableSortControllerをtable-sort、TableSelectControllerをtable-selectへ登録してください。',
+      '標準tableの構造に、sort="local"の並べ替え、selectableの選択欄、stickyHeaderを追加できます。TableSortはthを出力し、TableSelectionはセル内へ配置します。数値・日付はdata-sort-valueで表示と分け、空の値は末尾に保ちます。選択値は通常のフォームとtable:selectionchangeで受け取り、selectionActionsへ一括操作を置けます。sort="manual"はtable:sortを通知し、サーバー側の並べ替えへ接続します。stateはready/loading/empty/errorで、状態表示中もtheadを保ち、本文行だけを隠します。TableControllerをtable、TableSortControllerをtable-sort、TableSelectControllerをtable-selectへ登録してください。',
+  },
+  {
+    id: "grid",
+    name: "Grid",
+    description: "行と列を保ったまま、二方向にセルを読む作業面です。",
+    usage:
+      "等列数のtableを使い、GridControllerをgridとして登録すると矢印・Home・End・PageUp・PageDownでセル間を移動できます。値の選択や更新は含めず、必要な場合は既存の操作部品をセル内で使用します。空状態ではControllerを起動しません。",
+  },
+  {
+    id: "treegrid",
+    name: "Treegrid",
+    description: "階層を持つ行を、列の対応を保って確認します。",
+    usage:
+      "TreegridControllerをtreegridへ登録します。項目のvalueは全階層で一意にし、childrenで深さを渡します。行の開閉と二方向のキー移動は上流Controllerが扱い、ready/loading/empty/errorでは表の見出しを保ったまま状態を示します。",
   },
   {
     id: "comparison",
@@ -125,18 +139,39 @@ export const examples = [
       "portraitは5:7・幅上限8rem。squareは1:1、landscapeは16:9・16rem。containは全体表示、coverは切り抜きです。",
   },
   {
+    id: "image-cropper",
+    name: "ImageCropper",
+    description: "画像の切り抜き範囲を、画像面と数値の両方から調整します。",
+    usage:
+      "元画像の実寸とsrcを渡し、ImageCropperControllerをimage-cropperへ登録します。範囲の移動とサイズ変更、5本のnative rangeを同じ値へ同期します。画像なし・無効状態も表示し、切り抜いた画像の生成や保存は利用側が行います。",
+  },
+  {
+    id: "color-picker",
+    name: "ColorPicker",
+    description: "色相・彩度・明度・不透明度を、見本を確認しながら選びます。",
+    usage:
+      "ColorPickerControllerをcolor-pickerへ登録します。色の面とnative rangeでHSVA値を調整し、フォームには各値を送信します。色見本だけに頼らず、操作名とスライダー位置でも伝えます。無効・説明・エラー状態にも対応します。",
+  },
+  {
+    id: "carousel",
+    name: "Carousel",
+    description: "関連する内容を一枚ずつ読み、前後へ移動します。",
+    usage:
+      "Cardの内容をslideとして渡します。2件以上でCarouselControllerを登録すると前後移動が循環し、任意のintervalは利用者が再生を選んだ場合だけ動きます。1件では操作を表示せず、0件では空状態を示します。",
+  },
+  {
     id: "disclosure",
     name: "Disclosure",
     description: "補足を標準HTMLで開閉します。",
     usage:
-      "標準details/summaryで開閉します。見出しは16px/24px、本文は14px/22px。24pxの開閉マークから8px空け、見出し・説明・本文の左端を揃えます。開いた本文の縦線で所属を示し、DisclosureGroupでは項目を4px間隔で並べます。一つだけ開く場合は同じnameを指定してください。controllerの登録は不要です。CSSはdisclosure.cssと、集合を使う場合のdisclosure-group.css。",
+      "標準details/summaryで開閉します。見出しは1rem/1.5rem、本文は0.875rem/1.375rem。1.5remの開閉マークから0.5rem空け、見出し・説明・本文の左端を揃えます。開いた本文の縦線で所属を示し、DisclosureGroupでは項目を0.25rem間隔で並べます。一つだけ開く場合は同じnameを指定してください。controllerの登録は不要です。CSSはdisclosure.cssと、集合を使う場合のdisclosure-group.css。",
   },
   {
     id: "progress",
     name: "Progress",
     description: "確定または不確定の進行状況です。",
     usage:
-      "進捗不明ならvalueを省略します。表示値を経過時間から捏造しません。Honoのvalueは0〜maxに収め、有限でない値は未確定にします。maxの初期値は100、不正なmaxはnativeと同じ1です。割合はvalueとmaxから自動表示します。labelには処理名を指定します。",
+      "進捗不明ならvalueを省略します。表示値を経過時間から捏造しません。Honoのvalueは0〜maxに収め、有限でない値は未確定にします。maxの初期値は100、不正なmaxはnativeと同じ1です。棒は実際の割合で描き、表示は0.1%単位で切り捨てます。完了前に100%とは表示しません。labelには処理名を指定します。",
   },
   {
     id: "pagination",

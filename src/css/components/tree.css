@@ -1,0 +1,89 @@
+@layer components {
+  .ply-tree,
+  .ply-tree ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ply-tree {
+    display: grid;
+    gap: var(--ply-space-1);
+    min-inline-size: 0;
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+    &:focus-visible {
+      outline: 0.125rem solid var(--ply-link);
+      outline-offset: 0.125rem;
+    }
+    &[data-empty="true"] {
+      padding-block: var(--ply-space-2);
+      padding-inline: var(--ply-space-4);
+      color: var(--ply-muted);
+    }
+  }
+
+  .ply-tree li > .row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: var(--ply-space-1);
+    min-inline-size: 0;
+    border-radius: var(--ply-radius-control);
+    & > :is(a, .label) {
+      min-inline-size: 0;
+      padding-block: 0.375rem;
+      color: var(--ply-text);
+      overflow-wrap: anywhere;
+    }
+    & > a {
+      text-decoration: none;
+    }
+    & > a:hover {
+      text-decoration: underline;
+    }
+    & > .spacer {
+      inline-size: var(--ply-button-size);
+    }
+    & > .toggle {
+      padding-inline: 0;
+      & > .ply-icon {
+        transition: rotate var(--ply-duration) ease;
+      }
+    }
+  }
+
+  .ply-tree li:not([data-state]) > .row > .toggle {
+    visibility: hidden;
+  }
+
+  .ply-tree li[data-expanded="false"] > .row > .toggle > .ply-icon {
+    rotate: -90deg;
+  }
+
+  .ply-tree:dir(rtl) li[data-expanded="false"] > .row > .toggle > .ply-icon {
+    rotate: 90deg;
+  }
+
+  .ply-tree li[data-expanded="false"] > ul {
+    display: none;
+  }
+
+  .ply-tree li[data-state="selected"] > .row,
+  .ply-tree li[data-state="active"] > .row {
+    background: var(--ply-info-soft);
+  }
+
+  .ply-tree li[data-state="disabled"] > .row {
+    color: var(--ply-muted);
+    opacity: 0.6;
+  }
+
+  .ply-tree li > ul {
+    display: grid;
+    gap: var(--ply-space-1);
+    margin-inline-start: var(--ply-space-3);
+    padding-inline-start: var(--ply-space-2);
+    border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
+  }
+}

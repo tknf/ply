@@ -5,9 +5,15 @@ export type ToolbarProps = PropsWithChildren<
   Omit<ElementProps<"div">, "role" | "aria-label"> & { label: string }
 >;
 
-/** Button・ActionLinkなどの配置を担う。各操作は標準のTab順序を保つ。 */
+/** 関連する操作を一つのTab停止点にまとめる。操作にはdata-toolbar-target="control"を付ける。 */
 export const Toolbar = ({ label, children, class: className, ...attributes }: ToolbarProps) => (
-  <div {...attributes} class={classes("ply-toolbar", className)} role="group" aria-label={label}>
+  <div
+    {...attributes}
+    class={classes("ply-toolbar", className)}
+    role="toolbar"
+    aria-label={label}
+    data-controller={classes("toolbar", attributes["data-controller"])}
+  >
     {children}
   </div>
 );

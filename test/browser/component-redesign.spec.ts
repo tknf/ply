@@ -2,7 +2,9 @@ import { expect, test } from "@playwright/test";
 import { redesignedComponentIds } from "../../catalog/redesigned-components";
 
 for (const width of [375, 1280]) {
-  test(`全56部品が${width}pxで収まり参照先と表示を保つ`, async ({ page }) => {
+  test(`全${redesignedComponentIds.length}部品が${width}pxで収まり参照先と表示を保つ`, async ({
+    page,
+  }) => {
     test.setTimeout(120000);
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/review/components");
@@ -133,11 +135,11 @@ test("画像の内在サイズにかかわらず指定比率を守り小さな�
 test("月カレンダーは狭幅でも日付の列を保ちキーボードでスクロールできる", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 800 });
   await page.goto("/components/calendar");
-  const region = page.locator('[data-example="hono"] .ply-calendar').first();
-  await region.focus();
-  await expect(region).toBeFocused();
+  const viewport = page.locator('[data-example="hono"] .ply-calendar > .viewport').first();
+  await viewport.focus();
+  await expect(viewport).toBeFocused();
   await page.keyboard.press("ArrowRight", { delay: 100 });
-  await expect.poll(() => region.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+  await expect.poll(() => viewport.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
 });
 
 test("Boardは広い画面内でも部品幅に応じて横スクロールから縦の棚へ変わる", async ({ page }) => {

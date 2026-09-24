@@ -21,7 +21,6 @@
       flex-wrap: wrap;
       align-items: center;
       gap: var(--ply-space-2);
-      min-block-size: 2rem;
       & > h2 {
         display: flex;
         align-items: center;
@@ -51,7 +50,7 @@
       }
     }
     & > h2 {
-      font-size: 1.125rem;
+      font-size: var(--ply-section-title);
       font-weight: 700;
     }
   }

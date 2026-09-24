@@ -12,7 +12,7 @@
       border-radius: var(--ply-radius-pill);
 
       &:not([data-current="true"]) {
-        border-color: var(--ply-input-border);
+        border-color: var(--ply-border);
         color: var(--ply-text);
       }
       & > span {

@@ -4,8 +4,12 @@
     grid-template-columns: minmax(0, 1fr);
     gap: var(--ply-space-3);
     min-inline-size: 0;
-    border-block-start: 1px solid var(--ply-border);
-    padding-block-start: var(--ply-space-4);
+    padding-block: var(--ply-space-4) var(--ply-space-3);
+    padding-inline: var(--ply-space-5);
+    border: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: var(--ply-radius-surface);
+    background: var(--ply-fill-raised);
+    box-shadow: var(--ply-shadow-surface);
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
@@ -46,6 +50,12 @@
     }
     &:empty {
       display: none;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-danger-zone {
+      background: Canvas;
+      box-shadow: none;
     }
   }
 }

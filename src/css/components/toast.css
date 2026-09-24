@@ -10,38 +10,9 @@
     overflow: auto;
     margin: 0;
     margin-inline: auto;
-    padding-block: var(--ply-space-3);
-    padding-inline: var(--ply-space-3);
-    border: 1px solid var(--ply-border);
-    border-radius: 12px;
-    box-shadow: var(--ply-shadow-menu);
-    background: var(--ply-surface);
-    color: var(--ply-text);
-    font-size: var(--ply-label);
-    line-height: var(--ply-label-leading);
-    & > .message {
-      grid-column: 1;
-      align-self: center;
-      min-inline-size: 0;
-      overflow-wrap: anywhere;
-    }
-    & > .actions {
-      grid-column: 1;
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--ply-space-2);
-      min-inline-size: 0;
-    }
-    & > .close {
-      grid-column: 2;
-      grid-row: 1;
-      align-self: start;
-    }
+    padding: 0;
     &:popover-open {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: start;
-      gap: var(--ply-space-2) var(--ply-space-3);
     }
   }
 }

@@ -3,7 +3,7 @@
     display: flex;
     align-items: start;
     flex-wrap: wrap;
-    gap: var(--ply-space-2);
+    gap: var(--ply-space-1);
     min-inline-size: 0;
 
     & > .start {
@@ -16,6 +16,10 @@
     & > * {
       min-inline-size: 0;
       max-inline-size: 100%;
+    }
+    & > .ply-button,
+    & > :is(.start, .end) > .ply-button {
+      border-radius: var(--ply-radius-pill);
     }
   }
 }

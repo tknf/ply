@@ -1,7 +1,9 @@
 @layer components {
   .ply-action-list {
     display: grid;
+    gap: var(--ply-space-1);
     min-inline-size: 0;
+    margin: 0;
     padding: 0;
     list-style: none;
     color: var(--ply-text);
@@ -9,20 +11,20 @@
     line-height: var(--ply-label-leading);
     & > li {
       min-inline-size: 0;
-      & + li {
-        border-block-start: 1px solid var(--ply-border);
-      }
       & > a {
         display: grid;
-        grid-template-columns: 1.25rem minmax(0, 1fr) 1rem;
+        grid-template-columns: 1.5rem minmax(0, 1fr) 1rem;
         align-content: start;
         align-items: start;
         gap: 0.125rem var(--ply-space-2);
         block-size: 100%;
         min-inline-size: 0;
-        padding-block: var(--ply-space-3);
-        padding-inline: var(--ply-space-2);
-        border-radius: 8px;
+        padding-block: var(--ply-space-2);
+        padding-inline: var(--ply-space-4);
+        border: var(--ply-stroke-width) solid var(--ply-border);
+        border-radius: var(--ply-radius-control);
+        background: var(--ply-fill-raised);
+        box-shadow: var(--ply-shadow-control);
         text-decoration: none;
         color: inherit;
         overflow-wrap: anywhere;
@@ -39,7 +41,18 @@
         & > .icon {
           grid-column: 1;
           grid-row: 1;
+          display: grid;
+          place-items: center;
+          inline-size: 1.5rem;
+          block-size: 1.5rem;
+          border: var(--ply-stroke-width) solid var(--ply-border);
+          border-radius: 50%;
+          background: linear-gradient(var(--ply-surface), var(--ply-background));
           color: var(--ply-link);
+          box-shadow: inset 0 0.0625rem 0 var(--ply-surface);
+          & > .ply-icon {
+            font-size: 0.875rem;
+          }
         }
         & > .arrow {
           grid-column: 3;
@@ -55,11 +68,24 @@
             margin-block-start: var(--ply-space-1);
           }
         }
+        &:not(:has(> .icon)) {
+          grid-template-columns: minmax(0, 1fr) 1rem;
+          & > :is(.title, .description, .preview) {
+            grid-column: 1;
+          }
+          & > .arrow {
+            grid-column: 2;
+          }
+        }
         &:hover {
-          background: var(--ply-background);
+          box-shadow: var(--ply-shadow-control-hover);
+        }
+        &:active {
+          box-shadow: var(--ply-shadow-control-pressed);
         }
         &:focus-visible {
-          outline-offset: -2px;
+          outline: 0.125rem solid var(--ply-link);
+          outline-offset: 0.125rem;
         }
         &[data-accent="amber"] > .icon {
           color: var(--ply-amber);
@@ -76,25 +102,22 @@
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
       gap: var(--ply-space-3);
       & > li {
-        border: 0;
         & > a {
-          padding-block: var(--ply-space-3);
-          padding-inline: var(--ply-space-3);
-          border: 1px solid var(--ply-border);
-          border-radius: 10px;
-          background: var(--ply-surface);
-          box-shadow: 0 1px 2px rgb(36 57 70 / 4%);
-          &:hover {
-            background: var(--ply-background);
-            border-color: var(--ply-control-border);
-          }
           & > .preview {
+            grid-column: 2 / -1;
+          }
+          &:not(:has(> .icon)) > .preview {
             grid-column: 1 / -1;
-            padding-block-start: var(--ply-space-2);
-            border-block-start: 1px solid var(--ply-border);
           }
         }
       }
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-action-list > li > a,
+    .ply-action-list > li > a > .icon {
+      background: Canvas;
+      box-shadow: none;
     }
   }
 }

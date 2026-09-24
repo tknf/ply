@@ -14,9 +14,9 @@
     background: color-mix(in srgb, var(--ply-badge-ink) 9%, var(--ply-surface));
     background-image: linear-gradient(rgb(255 255 255 / 35%), transparent);
     box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 75%),
-      inset 0 -1px 0 color-mix(in srgb, var(--ply-badge-ink) 12%, transparent),
-      0 1px 1px rgb(36 57 70 / 6%);
+      inset 0 0.0625rem 0 rgb(255 255 255 / 75%),
+      inset 0 -0.0625rem 0 color-mix(in srgb, var(--ply-badge-ink) 12%, transparent),
+      0 0.0625rem 0.0625rem rgb(36 57 70 / 6%);
     color: var(--ply-badge-ink);
     font-family: var(--ply-control-font-family);
     font-size: var(--ply-small);
@@ -28,7 +28,7 @@
       inline-size: 0.4em;
       block-size: 0.4em;
       margin-block-start: calc((1lh - 0.4em) / 2);
-      border: 1px solid currentColor;
+      border: var(--ply-stroke-width) solid currentColor;
       border-radius: 50%;
       background: currentColor;
     }

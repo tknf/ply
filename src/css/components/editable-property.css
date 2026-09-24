@@ -1,0 +1,72 @@
+@layer components {
+  .ply-editable-property {
+    display: grid;
+    gap: var(--ply-space-1);
+    min-inline-size: 0;
+  }
+
+  .ply-editable-property > .label {
+    color: var(--ply-muted);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+  }
+
+  .ply-editable-property > .preview {
+    display: flex;
+    align-items: center;
+    gap: var(--ply-space-2);
+    min-inline-size: 0;
+    inline-size: min(100%, 28rem);
+    padding-block: 0.125rem;
+    padding-inline: var(--ply-space-2) 0.125rem;
+    border: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: var(--ply-radius-control);
+    background: var(--ply-fill-raised);
+    box-shadow: var(--ply-shadow-control);
+  }
+
+  .ply-editable-property > .preview[hidden],
+  .ply-editable-property > .editor[hidden] {
+    display: none;
+  }
+
+  .ply-editable-property > .preview > .value {
+    flex: 1;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+  }
+
+  .ply-editable-property > .preview > .edit {
+    flex: none;
+  }
+
+  .ply-editable-property > .editor {
+    display: grid;
+    justify-items: start;
+    gap: var(--ply-space-2);
+    min-inline-size: 0;
+    inline-size: min(100%, 28rem);
+  }
+
+  .ply-editable-property > .editor > .ply-input {
+    inline-size: 100%;
+  }
+
+  .ply-editable-property > .editor > .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ply-space-2);
+  }
+
+  .ply-editable-property:not([data-state]) > .editor > .actions {
+    display: none;
+  }
+  @media (forced-colors: active) {
+    .ply-editable-property > .preview {
+      background: Canvas;
+      box-shadow: none;
+    }
+  }
+}

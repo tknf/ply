@@ -30,7 +30,7 @@ export const CountedTextarea = ({
         {" "}
         {unit}
       </p>
-      <p class="error over-error">
+      <p class="error over-error" id={`${id}-over-error`}>
         <Icon name="x-circle" />
         <span>{overflowMessage}</span>
       </p>

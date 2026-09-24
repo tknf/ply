@@ -23,27 +23,39 @@ export const CheckboxGroup = ({
   allLabel = "すべて選択",
   class: className,
   ...attributes
-}: CheckboxGroupProps) => (
-  <fieldset
-    {...attributes}
-    class={classes("ply-choice-group", className)}
-    data-controller="checkbox-group"
-  >
-    <legend>{legend}</legend>
-    <div class="list">
-      <Choice label={allLabel} data-checkbox-group-target="all" />
-      {options.map(({ value, label, description, disabled }) => (
-        <Choice
-          name={name}
-          value={value}
-          label={label}
-          description={description}
-          disabled={disabled}
-          checked={selected.includes(value)}
-          data-checkbox-group-target="item"
-          data-checkbox-group-value={value}
-        />
-      ))}
-    </div>
-  </fieldset>
-);
+}: CheckboxGroupProps) => {
+  const seen = new Set<string>();
+  const choices = options.filter(({ value }) => {
+    if (!value.trim() || seen.has(value)) return false;
+    seen.add(value);
+    return true;
+  });
+  return (
+    <fieldset
+      {...attributes}
+      class={classes("ply-choice-group", className)}
+      data-controller={choices.length ? "checkbox-group" : undefined}
+    >
+      <legend>{legend}</legend>
+      {choices.length ? (
+        <div class="list">
+          <Choice label={allLabel} data-checkbox-group-target="all" />
+          {choices.map(({ value, label, description, disabled }) => (
+            <Choice
+              name={name}
+              value={value}
+              label={label}
+              description={description}
+              disabled={disabled}
+              checked={selected.includes(value)}
+              data-checkbox-group-target="item"
+              data-checkbox-group-value={value}
+            />
+          ))}
+        </div>
+      ) : (
+        <p>選択肢はありません。</p>
+      )}
+    </fieldset>
+  );
+};

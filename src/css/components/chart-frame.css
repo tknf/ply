@@ -1,0 +1,106 @@
+@layer components {
+  .ply-chart-frame {
+    display: grid;
+    gap: var(--ply-space-2);
+    min-inline-size: 0;
+    max-inline-size: 36rem;
+    margin: 0;
+    &[data-size="wide"] {
+      max-inline-size: none;
+    }
+  }
+
+  .ply-chart-frame > figcaption {
+    display: grid;
+    gap: var(--ply-space-1);
+    overflow-wrap: anywhere;
+    & > strong {
+      font-size: var(--ply-label);
+      line-height: var(--ply-label-leading);
+      font-weight: 600;
+    }
+    & > span {
+      color: var(--ply-muted);
+      font-size: var(--ply-small);
+      line-height: var(--ply-small-leading);
+    }
+  }
+
+  .ply-chart-frame > .graphic {
+    min-inline-size: 0;
+    padding-block: var(--ply-space-3) var(--ply-space-2);
+    padding-inline: var(--ply-space-4);
+    overflow: auto;
+    border: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: var(--ply-radius-control);
+    background: linear-gradient(
+      var(--ply-surface),
+      color-mix(in srgb, var(--ply-surface) 96%, var(--ply-ink))
+    );
+    box-shadow: var(--ply-shadow-surface);
+    & > svg {
+      display: block;
+      max-inline-size: 100%;
+      block-size: auto;
+      margin-inline: auto;
+    }
+  }
+
+  .ply-chart-frame > .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ply-space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ply-muted);
+    font-size: var(--ply-small);
+    line-height: var(--ply-small-leading);
+    & > li {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ply-space-1);
+    }
+    & > li > .mark {
+      inline-size: 0.5rem;
+      block-size: 0.5rem;
+      border-radius: 0.125rem;
+      background: var(--ply-link);
+      box-shadow: inset 0 0.0625rem 0 rgb(255 255 255 / 35%);
+    }
+    & > li[data-tone="green"] > .mark {
+      background: var(--ply-success);
+    }
+    & > li[data-tone="amber"] > .mark {
+      background: var(--ply-warning);
+    }
+    & > li[data-tone="coral"] > .mark {
+      background: var(--ply-coral);
+    }
+  }
+
+  .ply-chart-frame > .data {
+    min-inline-size: 0;
+    border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+    & > summary {
+      inline-size: fit-content;
+      padding-block: var(--ply-space-2);
+      color: var(--ply-link);
+      font-family: var(--ply-control-font-family);
+      font-size: var(--ply-small);
+      line-height: var(--ply-small-leading);
+      cursor: pointer;
+      &:focus-visible {
+        outline: 0.125rem solid var(--ply-link);
+        outline-offset: 0.125rem;
+      }
+    }
+  }
+
+  .ply-chart-frame > .source {
+    margin: 0;
+    color: var(--ply-muted);
+    font-size: var(--ply-small);
+    line-height: var(--ply-small-leading);
+  }
+}

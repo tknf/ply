@@ -85,7 +85,7 @@ export const Select = ({ class: className, ...attributes }: ElementProps<"select
 
 export type ChoiceProps = ElementProps<"input"> & {
   label: string;
-  description?: string;
+  description?: Child;
   kind?: "plain" | "option";
   type?: "checkbox" | "radio";
 };
@@ -100,14 +100,8 @@ export const Choice = ({
   <label class="ply-choice" data-kind={kind}>
     <input {...attributes} type={type} class={className} />
     <span>
-      {description ? (
-        <>
-          <strong>{label}</strong>
-          <small>{description}</small>
-        </>
-      ) : (
-        label
-      )}
+      <strong>{label}</strong>
+      {description != null && description !== false && <small>{description}</small>}
     </span>
   </label>
 );

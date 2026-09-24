@@ -75,7 +75,7 @@
     justify-content: space-between;
     gap: var(--ply-space-3);
     padding-block: 0;
-    box-shadow: inset 0 -1px var(--ply-border);
+    box-shadow: inset 0 -0.0625rem var(--ply-border);
     @container ply-surface (inline-size < 38rem) {
       & > .ply-save-status {
         order: -1;
@@ -102,7 +102,7 @@
     display: grid;
     gap: var(--ply-space-4);
     padding-block-start: var(--ply-space-4);
-    border-block-start: 1px solid var(--ply-border);
+    border-block-start: 0.0625rem solid var(--ply-border);
   }
 }
 
@@ -119,8 +119,8 @@
 @layer utilities {
   .ply-visually-hidden {
     position: absolute;
-    inline-size: 1px;
-    block-size: 1px;
+    inline-size: 0.0625rem;
+    block-size: 0.0625rem;
     padding: 0;
     overflow: hidden;
     clip-path: inset(50%);

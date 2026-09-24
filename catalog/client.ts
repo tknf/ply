@@ -19,6 +19,12 @@ import {
   TableSortController,
   TableSelectController,
   BoardController,
+  CalendarController,
+  CarouselController,
+  ColorPickerController,
+  ImageCropperController,
+  GridController,
+  TreegridController,
   CharacterCountController,
   CheckboxGroupController,
   ComboboxController,
@@ -34,6 +40,21 @@ import {
   RangeController,
   SuggestionController,
   TabsController,
+  TooltipController,
+  ToolbarController,
+  ToastController,
+  EditableController,
+  EditablePropertyController,
+  PickerController,
+  TagFieldController,
+  TagInputController,
+  SplitterController,
+  TreeController,
+  TreePresentationController,
+  TableOfContentsController,
+  AvatarController,
+  HoverCardController,
+  ToggleGroupController,
   TimeFieldController,
 } from "../src/controllers";
 
@@ -41,6 +62,12 @@ const application = Application.start();
 application.register("clipboard", ClipboardController);
 application.register("code-block", CodeBlockController);
 application.register("board", BoardController);
+application.register("calendar", CalendarController);
+application.register("carousel", CarouselController);
+application.register("color-picker", ColorPickerController);
+application.register("image-cropper", ImageCropperController);
+application.register("grid", GridController);
+application.register("treegrid", TreegridController);
 application.register("table-demo", TableDemoController);
 application.register("table", TableController);
 application.register("table-sort", TableSortController);
@@ -72,6 +99,21 @@ application.register("dropdown-menu", DropdownMenuController);
 application.register("file-drop", FileDropController);
 application.register("file-input", FileInputController);
 application.register("tabs", TabsController);
+application.register("tooltip", TooltipController);
+application.register("toolbar", ToolbarController);
+application.register("toast", ToastController);
+application.register("editable", EditableController);
+application.register("editable-property", EditablePropertyController);
+application.register("picker", PickerController);
+application.register("tag-input", TagInputController);
+application.register("tag-field", TagFieldController);
+application.register("splitter", SplitterController);
+application.register("tree", TreeController);
+application.register("tree-presentation", TreePresentationController);
+application.register("table-of-contents", TableOfContentsController);
+application.register("avatar", AvatarController);
+application.register("hover-card", HoverCardController);
+application.register("toggle-group", ToggleGroupController);
 
 // 開発時の更新でApplicationとイベント登録を重複させない。
 if (import.meta.hot) import.meta.hot.dispose(() => application.stop());

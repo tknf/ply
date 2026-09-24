@@ -19,13 +19,29 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--ply-ink);
-    outline-offset: 3px;
+    outline: 0.125rem solid var(--ply-ink);
+    outline-offset: 0.1875rem;
   }
 }
 
 @layer utilities {
   [hidden] {
     display: none;
+  }
+
+  /* 単独操作リンクの当たり判定だけを広げ、行高と文字位置を保つ。 */
+  :where(
+    .ply-card > .title > a,
+    .ply-table > table > tbody > tr > :is(th, td) > a:only-child,
+    .ply-data-list > li > .body > a.title,
+    .ply-file-item > .body > .title > a
+  ) {
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      inset-block: -0.375rem;
+      inset-inline: -0.25rem;
+    }
   }
 }

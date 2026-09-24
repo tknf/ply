@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 
-test("Buttonは画面幅で文字サイズを変えず文字拡大に寸法が追従する", async ({ page }, testInfo) => {
+test("Buttonは画面幅で文字サイズが緩やかに変わり文字拡大に寸法が追従する", async ({
+  page,
+}, testInfo) => {
   const sizes: number[] = [];
   for (const width of [375, 960, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
@@ -53,7 +55,8 @@ test("Buttonは画面幅で文字サイズを変えず文字拡大に寸法が�
   const [small, medium, large] = sizes;
   if (small === undefined || medium === undefined || large === undefined)
     throw new Error("各幅の測定値がありません");
-  expect(small).toBe(14);
-  expect(medium).toBe(small);
-  expect(large).toBe(small);
+  expect(small).toBeGreaterThanOrEqual(13.5);
+  expect(small).toBeLessThan(medium);
+  expect(medium).toBeLessThan(large);
+  expect(large).toBeCloseTo(14, 2);
 });

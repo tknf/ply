@@ -7,40 +7,62 @@ export default ({ id = "hono-toolbar" }: { id?: string } = {}) => (
         {(attributes) => <Input {...attributes} name="q" value="案内" />}
       </Field>
       <Toolbar id={`${id}-search`} label="検索の操作" aria-describedby={`${id}-help`}>
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="primary" data-toolbar-target="control">
           検索する
         </Button>
-        <Button type="reset">初期値に戻す</Button>
-        <ActionLink href="/search">記事一覧</ActionLink>
+        <Button type="reset" data-toolbar-target="control">
+          初期値に戻す
+        </Button>
+        <ActionLink href="/search" data-toolbar-target="control">
+          記事一覧
+        </ActionLink>
       </Toolbar>
       <p id={`${id}-help`}>検索結果へ移動します。リセットはキーワードを「案内」に戻します。</p>
     </form>
     <Disclosure summary="移動リンク・利用できない操作との組み合わせ">
       <Toolbar label="記事の操作">
-        <ActionLink href="/example">編集</ActionLink>
-        <ActionLink href="/review">比較</ActionLink>
-        <Button disabled>変更なし</Button>
+        <ActionLink href="/example" data-toolbar-target="control">
+          編集
+        </ActionLink>
+        <ActionLink href="/review" data-toolbar-target="control">
+          比較
+        </ActionLink>
+        <Button disabled data-toolbar-target="control">
+          変更なし
+        </Button>
       </Toolbar>
     </Disclosure>
     <Disclosure summary="長いラベル・サイズ違い・右から左の配置">
       <div class="ply-stack">
         <Toolbar label="公開前の確認">
-          <ActionLink href="/review">公開前に文章と設定の変更内容を確認する</ActionLink>
-          <ActionLink href="/example">編集画面へ戻って内容を修正する</ActionLink>
+          <ActionLink href="/review" data-toolbar-target="control">
+            公開前に文章と設定の変更内容を確認する
+          </ActionLink>
+          <ActionLink href="/example" data-toolbar-target="control">
+            編集画面へ戻って内容を修正する
+          </ActionLink>
         </Toolbar>
         <Toolbar label="サイズ違いの操作">
-          <ActionLink href="/example" size="compact">
+          <ActionLink href="/example" size="compact" data-toolbar-target="control">
             編集
           </ActionLink>
-          <ActionLink href="/review">比較</ActionLink>
-          <ActionLink href="/search" size="large">
+          <ActionLink href="/review" data-toolbar-target="control">
+            比較
+          </ActionLink>
+          <ActionLink href="/search" size="large" data-toolbar-target="control">
             記事一覧
           </ActionLink>
         </Toolbar>
         <Toolbar label="右から左に並ぶ操作" dir="rtl">
-          <ActionLink href="/example">編集</ActionLink>
-          <ActionLink href="/review">比較</ActionLink>
-          <Button disabled>変更なし</Button>
+          <ActionLink href="/example" data-toolbar-target="control">
+            編集
+          </ActionLink>
+          <ActionLink href="/review" data-toolbar-target="control">
+            比較
+          </ActionLink>
+          <Button disabled data-toolbar-target="control">
+            変更なし
+          </Button>
         </Toolbar>
       </div>
     </Disclosure>

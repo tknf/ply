@@ -44,7 +44,7 @@ export const Board = ({
       {columns.map((column, index) => (
         <section
           data-column-id={column.id ?? String(index)}
-          data-drop-disabled={column.disabled ? "true" : undefined}
+          data-drop-disabled={column.disabled || !column.items ? "true" : undefined}
           data-current={column.current ? "true" : undefined}
           data-tone={column.tone ?? "neutral"}
         >
@@ -84,7 +84,14 @@ export const Board = ({
                 ))
               : column.content}
           </div>
-          <div class="empty">{column.empty ?? "ここへ移動できます"}</div>
+          <div class="empty">
+            {column.empty ??
+              (movable
+                ? column.disabled || !column.items
+                  ? "この列には移動できません"
+                  : "ここへ移動できます"
+                : "項目はありません")}
+          </div>
         </section>
       ))}
       {movable && (

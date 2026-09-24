@@ -16,6 +16,8 @@ const filesUnder = async (directory) => {
 const errors = [];
 const tokenDefinitions = new Set();
 const references = [];
+let checkedSurfacePadding = false;
+let checkedSectionHeading = false;
 // 文字位置に影響する書体の基準は、操作部品で共通のトークンを使う。
 const controlFontOwners = new Map([
   ["src/css/components/button.css", ".ply-button"],
@@ -32,6 +34,11 @@ const cssFiles = [
   ...(await filesUnder("src/css")).filter((file) => file.endsWith(".css")),
   "catalog/catalog.css",
 ];
+const stylesheetList = await readFile("src/hono/stylesheets.ts", "utf8");
+for (const path of cssFiles.filter((file) => file.startsWith("src/css/"))) {
+  if (!stylesheetList.includes(`"${path.slice("src/css/".length)}"`))
+    errors.push(`${path}: stylesheets.tsから読み込まれていません`);
+}
 const physical =
   /^(?:(?:min-|max-)?(?:width|height)|top|right|bottom|left|(?:margin|padding|border)-(?:top|right|bottom|left)(?:-.+)?|margin-block-(?:end|bottom))$/;
 for (const path of cssFiles) {
@@ -42,6 +49,15 @@ for (const path of cssFiles) {
   let hasControlFont = !controlSelector;
   root.walkDecls((declaration) => {
     const { prop, value } = declaration;
+    if (path.startsWith("src/css/") && /(?:^|[^a-z])\d*\.?\d+px\b/i.test(value))
+      errors.push(`${path}: CSSの寸法にpxを使用しない`);
+    if (
+      path.startsWith("src/css/components/") &&
+      prop.startsWith("border") &&
+      !prop.includes("radius") &&
+      /(?:^|\s)(?:1px|0\.0625rem)(?=\s|$)/.test(value)
+    )
+      errors.push(`${path}: 共通の枠線幅は--ply-stroke-widthを使用する`);
     if (prop.startsWith("--")) tokenDefinitions.add(prop);
     for (const match of value.matchAll(/var\((--[\w-]+)/g)) references.push([path, match[1]]);
     if (
@@ -61,6 +77,48 @@ for (const path of cssFiles) {
       errors.push(`${path}: レイヤー順はlayers.cssのみ`);
   });
   root.walkRules((rule) => {
+    if (
+      path === "src/css/components/surface.css" &&
+      rule.selector === "& > .body" &&
+      rule.parent?.selector === ".ply-surface"
+    ) {
+      checkedSurfacePadding = true;
+      const padding = Object.fromEntries(
+        rule.nodes
+          .filter((node) => node.type === "decl" && node.prop.startsWith("padding-"))
+          .map((node) => [node.prop, node.value]),
+      );
+      const block = [...(padding["padding-block"] ?? "").matchAll(/--ply-space-(\d+)/g)].map(
+        (match) => Number(match[1]),
+      );
+      const inline = [...(padding["padding-inline"] ?? "").matchAll(/--ply-space-(\d+)/g)].map(
+        (match) => Number(match[1]),
+      );
+      if (
+        block.length !== 2 ||
+        inline.length !== 1 ||
+        inline[0] <= Math.max(...block) ||
+        block[0] < block[1]
+      )
+        errors.push(
+          `${path}: Surfaceはカードとして左右の余白を上下より広くし、下余白を上より広くしない`,
+        );
+    }
+    if (
+      path === "src/css/components/section.css" &&
+      rule.selector === "& > .heading" &&
+      rule.parent?.selector === ".ply-section"
+    ) {
+      checkedSectionHeading = true;
+      if (
+        rule.nodes.some(
+          (node) =>
+            node.type === "decl" &&
+            ["block-size", "min-block-size", "height", "min-height"].includes(node.prop),
+        )
+      )
+        errors.push(`${path}: Section見出しの固定高さは禁止`);
+    }
     if (controlSelector && rule.selectors.includes(controlSelector)) {
       hasControlFont ||= rule.nodes.some(
         (node) =>
@@ -92,6 +150,8 @@ for (const path of cssFiles) {
   if (!hasControlFont)
     errors.push(`${path}: ${controlSelector}は共通の--ply-control-font-familyを使用する`);
 }
+if (!checkedSurfacePadding) errors.push("Surfaceのカード余白規則が見つかりません");
+if (!checkedSectionHeading) errors.push("Sectionの見出し規則が見つかりません");
 for (const [path, token] of references)
   if (!tokenDefinitions.has(token)) errors.push(`${path}: 未定義トークン ${token}`);
 for (const path of (await filesUnder("src/hono")).filter((file) => file.endsWith(".tsx")))

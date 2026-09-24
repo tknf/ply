@@ -11,7 +11,6 @@ export type TableProps = PropsWithChildren<
     selectionActions?: Child;
     stickyHeader?: boolean;
     state?: "ready" | "loading" | "empty" | "error";
-    columnCount?: number;
     stateContent?: Child;
   }
 >;
@@ -24,7 +23,6 @@ export const Table = ({
   selectionActions,
   stickyHeader = false,
   state = "ready",
-  columnCount = 1,
   stateContent,
   class: className,
   ...attributes
@@ -63,23 +61,18 @@ export const Table = ({
       aria-busy={state === "loading" ? "true" : undefined}
     >
       <caption>{caption}</caption>
-      {state === "ready" ? (
-        children
-      ) : (
-        <tbody>
-          <tr>
-            <td colspan={Math.max(1, columnCount)} class="state">
-              {stateContent ??
-                (state === "loading"
-                  ? "読み込んでいます…"
-                  : state === "error"
-                    ? "一覧を読み込めませんでした。"
-                    : "表示する項目はありません。")}
-            </td>
-          </tr>
-        </tbody>
-      )}
+      {children}
     </table>
+    {state !== "ready" && (
+      <div class="state" role="status">
+        {stateContent ??
+          (state === "loading"
+            ? "読み込んでいます…"
+            : state === "error"
+              ? "一覧を読み込めませんでした。"
+              : "表示する項目はありません。")}
+      </div>
+    )}
     {(sort || selectable) && (
       <p class="ply-visually-hidden" data-table-announcement role="status" />
     )}

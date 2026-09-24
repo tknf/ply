@@ -30,7 +30,7 @@
       margin: 0;
       margin-inline: auto;
       padding: 0;
-      border: 1px solid var(--ply-border);
+      border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: var(--ply-space-4);
       background: var(--ply-surface);
       color: var(--ply-text);
@@ -38,9 +38,7 @@
       font-size: var(--ply-body);
       line-height: 1.5;
       letter-spacing: normal;
-      box-shadow:
-        0 2px 4px rgb(36 57 70 / 8%),
-        0 12px 28px -8px rgb(36 57 70 / 24%);
+      box-shadow: var(--ply-shadow-menu);
       &:popover-open {
         display: block;
       }
@@ -88,8 +86,8 @@
             justify-content: center;
             gap: 0.375rem;
             min-block-size: 4.625rem;
-            padding-block: var(--ply-space-3);
-            padding-inline: var(--ply-space-1);
+            padding-block: var(--ply-space-2);
+            padding-inline: var(--ply-space-4);
             border-radius: var(--ply-radius-control);
             background: color-mix(in srgb, var(--ply-text) 4%, var(--ply-surface));
             color: var(--ply-text);
@@ -102,7 +100,7 @@
               background: color-mix(in srgb, var(--ply-command-accent) 12%, var(--ply-surface));
             }
             &:focus-visible {
-              outline-offset: -2px;
+              outline-offset: -0.125rem;
             }
             & > .icon {
               display: flex;
@@ -133,7 +131,7 @@
           padding-inline: var(--ply-space-3);
           & + .group {
             margin-block-start: var(--ply-space-3);
-            border-block-start: 1px solid var(--ply-border);
+            border-block-start: var(--ply-stroke-width) solid var(--ply-border);
           }
           & > h2 {
             font-size: var(--ply-label);
@@ -208,7 +206,7 @@
                   background: var(--ply-background);
                 }
                 &:focus-visible {
-                  outline-offset: -2px;
+                  outline-offset: -0.125rem;
                 }
               }
               & > .command {
@@ -238,7 +236,7 @@
         gap: var(--ply-space-2) var(--ply-space-4);
         padding-block: var(--ply-space-2);
         padding-inline: var(--ply-space-3);
-        border-block-start: 1px solid var(--ply-border);
+        border-block-start: var(--ply-stroke-width) solid var(--ply-border);
         color: var(--ply-muted);
         font-size: var(--ply-small);
         line-height: var(--ply-small-leading);

@@ -97,10 +97,10 @@ export default () => (
         ]}
       >
         <Toolbar label="連絡を移動">
-          <ActionLink href="/review/mail/categories" size="compact">
+          <ActionLink href="/review/mail/categories" size="compact" data-toolbar-target="control">
             前へ
           </ActionLink>
-          <ActionLink href="/review/mail/review" size="compact">
+          <ActionLink href="/review/mail/review" size="compact" data-toolbar-target="control">
             次へ
           </ActionLink>
         </Toolbar>

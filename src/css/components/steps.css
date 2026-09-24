@@ -18,7 +18,7 @@
       place-items: center;
       inline-size: 1.5rem;
       block-size: 1.5rem;
-      border: 1px solid var(--ply-control-border);
+      border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: 50%;
       color: var(--ply-muted);
       font-size: var(--ply-small);
@@ -39,7 +39,7 @@
       background: var(--ply-link);
       color: var(--ply-surface);
       border-color: var(--ply-link);
-      box-shadow: 0 0 0 3px var(--ply-info-soft);
+      box-shadow: 0 0 0 0.1875rem var(--ply-info-soft);
     }
     & > li[data-state="current"] > span:last-child {
       font-weight: 600;

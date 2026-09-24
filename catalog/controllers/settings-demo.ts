@@ -1,14 +1,19 @@
 import { Controller } from "@hotwired/stimulus";
+import { ToastController } from "@tknf/stimulus-ui";
 const key = "ply-demo-workspace-settings";
 export class SettingsDemoController extends Controller<HTMLFormElement> {
+  private toast = () => {
+    const element = this.element.querySelector<HTMLElement>(".ply-toast");
+    if (!element) return null;
+    const controller = this.application.getControllerForElementAndIdentifier(element, "toast");
+    return controller instanceof ToastController ? controller : null;
+  };
   private status = (message: string) => {
     const target = this.element.querySelector('[data-settings-demo-target="status"]');
     if (target) target.textContent = message;
   };
   private hideToast = () => {
-    const toast = this.element.querySelector(".ply-toast");
-    if (toast instanceof HTMLElement && typeof toast.hidePopover === "function")
-      toast.hidePopover();
+    this.toast()?.hide();
   };
   connect = () => {
     const button = this.element.querySelector('button[type="submit"]');
@@ -45,9 +50,7 @@ export class SettingsDemoController extends Controller<HTMLFormElement> {
       return;
     }
     this.status("設定をこのブラウザに保存しました。");
-    const toast = this.element.querySelector(".ply-toast");
-    if (toast instanceof HTMLElement && typeof toast.showPopover === "function")
-      toast.showPopover();
+    this.toast()?.show();
   };
   reset = () => {
     this.status("初期値に戻しました。保存すると次回にも反映します。");

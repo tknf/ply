@@ -20,7 +20,7 @@
     & > .ply-dropdown-menu:not(:first-child) > .ply-button {
       border-start-start-radius: 0;
       border-end-start-radius: 0;
-      margin-inline-start: -1px;
+      margin-inline-start: -0.0625rem;
     }
     & > .ply-button:focus-visible,
     & > .ply-dropdown-menu > .ply-button:focus-visible {

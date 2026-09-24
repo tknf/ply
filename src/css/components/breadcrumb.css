@@ -27,8 +27,15 @@
       overflow-wrap: anywhere;
     }
     & > ol > li > a {
+      position: relative;
       color: var(--ply-muted);
       text-decoration: none;
+      &::before {
+        content: "";
+        position: absolute;
+        inset-block: -0.5rem;
+        inset-inline: -0.25rem;
+      }
       &:hover {
         color: var(--ply-link);
         text-decoration: none;

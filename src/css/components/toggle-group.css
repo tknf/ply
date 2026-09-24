@@ -1,0 +1,18 @@
+@layer components {
+  .ply-toggle-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    gap: var(--ply-space-1);
+    min-inline-size: 0;
+    &[data-orientation="vertical"] {
+      flex-direction: column;
+    }
+    & > .ply-button[data-state="on"] {
+      border-color: var(--ply-link);
+      background: linear-gradient(var(--ply-surface), var(--ply-info-soft));
+      color: var(--ply-link);
+      box-shadow: var(--ply-shadow-control);
+    }
+  }
+}

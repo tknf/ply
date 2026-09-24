@@ -12,20 +12,19 @@ import {
   Suggestion,
   DatePicker,
   Button,
+  ActionLink,
   TaskList,
   Board,
   Card,
   Avatar,
   Tag,
-  Statistic,
   Timeline,
   Calendar,
   Popover,
   Toast,
   Toolbar,
-  FilterBar,
-  type CalendarDay,
 } from "../../src/hono";
+import { makeCalendarWeeks, scheduleUrl } from "../calendar-data";
 const ExampleContext = ({ label }: { label: string }) => (
   <ContextBar items={[{ label: "部品一覧", href: "/components" }, { label }]} />
 );
@@ -241,10 +240,10 @@ export const SettingsExample = () => (
           />
         </FieldGroup>
         <Toolbar label="設定の保存">
-          <Button type="submit" variant="primary" disabled>
+          <Button type="submit" variant="primary" disabled data-toolbar-target="control">
             設定を保存
           </Button>
-          <Button type="reset" variant="link">
+          <Button type="reset" variant="link" data-toolbar-target="control">
             初期値に戻す
           </Button>
         </Toolbar>
@@ -262,72 +261,117 @@ export const SettingsExample = () => (
     </CompositionNote>
   </Surface>
 );
-const makeWeeks = (month: number): (CalendarDay | null)[][] => {
-  const year = 2026;
-  const first = (new Date(Date.UTC(year, month - 1, 1)).getUTCDay() + 6) % 7;
-  const count = new Date(Date.UTC(year, month, 0)).getUTCDate();
-  return Array.from({ length: Math.ceil((first + count) / 7) }, (_, week) =>
-    Array.from({ length: 7 }, (_, weekday) => {
-      const day = week * 7 + weekday - first + 1;
-      if (day < 1 || day > count) return null;
-      return {
-        day,
-        date: `2026-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`,
-        current: month === 9 && day === 10,
-        events:
-          day === 15
-            ? [{ label: "編集会議 10:00", href: "/reservation" }]
-            : day === 25
-              ? [{ label: "案内公開の確認", href: "/examples/project" }]
-              : [],
-      };
-    }),
+const monthOffset = (year: number, month: number, offset: number) => {
+  const date = new Date(Date.UTC(year, month - 1 + offset, 1));
+  return { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1 };
+};
+
+const integerIn = (raw: string | undefined, fallback: number, min: number, max: number) => {
+  const value = Number(raw);
+  return Number.isInteger(value) && value >= min && value <= max ? value : fallback;
+};
+
+export const ScheduleExample = ({
+  year: rawYear,
+  month: rawMonth,
+  view: rawView,
+  week: rawWeek,
+}: {
+  year?: string;
+  month?: string;
+  view?: string;
+  week?: string;
+}) => {
+  const year = integerIn(rawYear, 2026, 1900, 2100);
+  const month = integerIn(rawMonth, 9, 1, 12);
+  const view = rawView === "week" || rawView === "year" || rawView === "agenda" ? rawView : "month";
+  const weeks = makeCalendarWeeks(year, month);
+  const week = integerIn(rawWeek, 3, 0, weeks.length - 1);
+  const previousMonth = monthOffset(year, month, -1);
+  const nextMonth = monthOffset(year, month, 1);
+  const offsetWeek = (offset: number) => {
+    const start = weeks[week]?.[0];
+    if (!start) return { year, month, week };
+    const date = new Date(`${start.date}T00:00:00Z`);
+    date.setUTCDate(date.getUTCDate() + offset * 7);
+    const target = date.toISOString().slice(0, 10);
+    const targetYear = date.getUTCFullYear();
+    const targetMonth = date.getUTCMonth() + 1;
+    const targetWeek = makeCalendarWeeks(targetYear, targetMonth).findIndex(
+      (candidate) => candidate[0]?.date === target,
+    );
+    return { year: targetYear, month: targetMonth, week: Math.max(0, targetWeek) };
+  };
+  const previousWeek = offsetWeek(-1);
+  const nextWeek = offsetWeek(1);
+  const previous =
+    view === "week"
+      ? previousWeek
+      : view === "year"
+        ? { year: year - 1, month, week }
+        : { ...previousMonth, week: 0 };
+  const next =
+    view === "week"
+      ? nextWeek
+      : view === "year"
+        ? { year: year + 1, month, week }
+        : { ...nextMonth, week: 0 };
+  const shownWeeks = view === "week" ? weeks.slice(week, week + 1) : weeks;
+  const weekStart = shownWeeks[0]?.[0]?.date;
+  const weekEnd = shownWeeks[0]?.[6]?.date;
+  const formatWeekDate = (date: string, includeYear: boolean) => {
+    const value = new Date(`${date}T00:00:00Z`);
+    return `${includeYear ? `${value.getUTCFullYear()}年` : ""}${value.getUTCMonth() + 1}月${value.getUTCDate()}日`;
+  };
+  const label =
+    view === "year"
+      ? `${year}年`
+      : view === "week"
+        ? weekStart && weekEnd
+          ? `${formatWeekDate(weekStart, true)}〜${formatWeekDate(weekEnd, weekStart.slice(0, 4) !== weekEnd.slice(0, 4))}`
+          : `${year}年${month}月`
+        : `${year}年${month}月`;
+  const calendarProps = {
+    label,
+    previous: {
+      label: view === "week" ? "前週" : view === "year" ? "前年" : "前月",
+      href: scheduleUrl(previous.year, previous.month, view, previous.week),
+    },
+    today: {
+      label: "今日",
+      href: scheduleUrl(2026, 9, view, view === "week" ? 3 : 0),
+    },
+    next: {
+      label: view === "week" ? "翌週" : view === "year" ? "翌年" : "翌月",
+      href: scheduleUrl(next.year, next.month, view, next.week),
+    },
+    views: [
+      { label: "月", href: scheduleUrl(year, month, "month", week), current: view === "month" },
+      { label: "週", href: scheduleUrl(year, month, "week", week), current: view === "week" },
+      { label: "年", href: scheduleUrl(year, month, "year", week), current: view === "year" },
+      { label: "一覧", href: scheduleUrl(year, month, "agenda", week), current: view === "agenda" },
+    ],
+    actions: <ActionLink href="/reservation">利用日時を選ぶ</ActionLink>,
+  };
+  const months = Array.from({ length: 12 }, (_, index) => ({
+    label: `${index + 1}月`,
+    href: scheduleUrl(year, index + 1, "month", 0),
+    weeks: makeCalendarWeeks(year, index + 1),
+  }));
+  return (
+    <Surface
+      class={view === "year" ? "catalog-schedule-year" : undefined}
+      context={<ExampleContext label="予定の事例" />}
+    >
+      <PageHeader title="予定" description="月・週・年・一覧を切り替え、期間を移動できます。" />
+      {view === "year" ? (
+        <Calendar {...calendarProps} view="year" months={months} />
+      ) : (
+        <Calendar {...calendarProps} view={view} weeks={shownWeeks} />
+      )}
+      <CompositionNote>
+        Calendar・FilterBar・Tag・DataList・ActionLink・PageHeader・ContextBar
+      </CompositionNote>
+    </Surface>
   );
 };
-export const ScheduleExample = ({ month = 9 }: { month?: number }) => (
-  <Surface context={<ExampleContext label="予定の事例" />}>
-    <PageHeader
-      title={`${month}月の予定`}
-      description="2026年 · 制作チーム"
-      actions={
-        <a class="ply-button" href="/reservation">
-          利用日時を選ぶ
-        </a>
-      }
-    />
-    <FilterBar
-      label="表示する月"
-      items={[
-        { label: "8月", href: "/examples/schedule/august", current: month === 8 },
-        { label: "9月", href: "/examples/schedule", current: month === 9 },
-      ]}
-    />
-    <Calendar label={`2026年${month}月`} weeks={makeWeeks(month)} />
-    <section class="ply-stack">
-      <h2>今月の予定を一覧で読む</h2>
-      <Timeline
-        label="今月の予定"
-        items={[
-          {
-            datetime: `2026-${String(month).padStart(2, "0")}-15T10:00:00+09:00`,
-            time: `${month}月15日 10:00`,
-            title: "編集会議",
-            content: <a href="/reservation">利用日時を選ぶ</a>,
-          },
-          {
-            datetime: `2026-${String(month).padStart(2, "0")}-25`,
-            time: `${month}月25日`,
-            title: "案内公開の確認",
-            content: <a href="/examples/project">案件を開く</a>,
-          },
-        ]}
-      />
-    </section>
-    <div class="ply-cluster">
-      <Statistic label="今月の予定" value="2" unit="件" />
-    </div>
-    <CompositionNote>
-      Calendar・FilterBar・Timeline・Statistic・PageHeader・ContextBar
-    </CompositionNote>
-  </Surface>
-);

@@ -1,0 +1,269 @@
+@layer components {
+  .ply-color-picker {
+    --color-picker-hue: 215;
+    --color-picker-saturation: 0.68;
+    --color-picker-brightness: 0.84;
+    --color-picker-alpha: 1;
+    --color-picker-color: var(--ply-link);
+    --color-picker-hue-color: var(--ply-link);
+    --color-picker-fallback: var(--ply-link);
+    container: ply-color-picker / inline-size;
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    & > legend {
+      max-inline-size: 100%;
+      padding: 0;
+      font-size: var(--ply-label);
+      line-height: var(--ply-label-leading);
+    }
+
+    & > .editor {
+      display: grid;
+      align-items: start;
+      gap: 1.125rem;
+      min-inline-size: 0;
+      padding-block: 0.875rem 0.75rem;
+      padding-inline: 1.125rem;
+      border: var(--ply-stroke-width) solid var(--ply-border);
+      border-radius: var(--ply-radius-surface);
+      background: var(--ply-fill-raised);
+      box-shadow: var(--ply-shadow-surface);
+    }
+
+    & > .editor > .visual,
+    & > .editor > .channels {
+      min-inline-size: 0;
+    }
+
+    & > .editor > .visual > .area {
+      position: relative;
+      display: block;
+      inline-size: 100%;
+      max-inline-size: none;
+      min-block-size: 0;
+      aspect-ratio: 8 / 5;
+      overflow: hidden;
+      padding: 0;
+      border-radius: calc(var(--ply-radius-surface) - 0.1875rem);
+      background:
+        linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent),
+        var(--color-picker-hue-color, var(--ply-link));
+      box-shadow: var(--ply-shadow-input), var(--ply-shadow-control);
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    &:not([data-state]) > .editor > .visual > .area {
+      display: none;
+    }
+
+    & > .editor > .visual > .area > .cursor {
+      position: absolute;
+      inset-inline-start: calc(var(--color-picker-saturation, 0.68) * 100%);
+      inset-block-start: calc((1 - var(--color-picker-brightness, 0.84)) * 100%);
+      inline-size: 0.875rem;
+      block-size: 0.875rem;
+      border: 0.125rem solid white;
+      border-radius: 50%;
+      background: transparent;
+      box-shadow:
+        0 0 0 0.0625rem rgb(36 57 70 / 45%),
+        0 0.0625rem 0.1875rem rgb(36 57 70 / 18%);
+      translate: -50% -50%;
+      pointer-events: none;
+    }
+
+    & > .editor > .visual > .preview {
+      display: grid;
+      grid-template-columns: 1.625rem minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 0.5625rem;
+      min-inline-size: 0;
+      margin-block-start: 0.625rem;
+      color: var(--ply-muted);
+      font-size: var(--ply-small);
+      line-height: var(--ply-small-leading);
+    }
+
+    & > .editor > .visual > .preview > .swatch {
+      position: relative;
+      inline-size: 1.625rem;
+      block-size: 1.625rem;
+      overflow: hidden;
+      border: var(--ply-stroke-width) solid var(--ply-border);
+      border-radius: 0.375rem;
+      background: repeating-conic-gradient(var(--ply-border) 0 25%, white 0 50%) 0 0 / 0.5rem 0.5rem;
+      box-shadow: var(--ply-shadow-chip);
+    }
+
+    & > .editor > .visual > .preview > .swatch::after {
+      position: absolute;
+      inset: 0;
+      background: var(--color-picker-fallback, var(--ply-link));
+      background: var(--color-picker-color, var(--ply-link));
+      content: "";
+    }
+
+    & > .editor > .visual > .preview > .preview-label {
+      min-inline-size: 0;
+      overflow-wrap: anywhere;
+    }
+
+    & > .editor > .channels {
+      display: grid;
+      gap: 0.625rem;
+    }
+
+    & > .editor > .channels > .ply-field {
+      gap: 0.125rem;
+    }
+
+    & > .editor > .channels > .ply-field > .ply-range > .controls {
+      margin-block-start: 0;
+    }
+
+    & > .editor > .channels > .ply-field > .ply-range[data-channel="hue"] {
+      --ply-range-color: var(--color-picker-hue-color, var(--ply-link));
+      --slider-value: calc(var(--color-picker-hue, 215) / 360);
+    }
+
+    & > .editor > .channels > .ply-field > .ply-range[data-channel="saturation"] {
+      --ply-range-color: var(--color-picker-hue-color, var(--ply-link));
+      --slider-value: var(--color-picker-saturation, 0.68);
+    }
+
+    & > .editor > .channels > .ply-field > .ply-range[data-channel="brightness"] {
+      --ply-range-color: var(--color-picker-hue-color, var(--ply-link));
+      --slider-value: var(--color-picker-brightness, 0.84);
+    }
+
+    & > .editor > .channels > .ply-field > .ply-range[data-channel="alpha"] {
+      --ply-range-color: var(--color-picker-hue-color, var(--ply-link));
+      --slider-value: var(--color-picker-alpha, 1);
+    }
+
+    & > .editor > .channels > .ply-field > .ply-range > .controls > .native > .input {
+      background: linear-gradient(var(--ply-range-color), var(--ply-range-color)) center /
+        calc(100% - 9em / 7) calc(2em / 7) no-repeat;
+    }
+
+    &
+      > .editor
+      > .channels
+      > .ply-field
+      > .ply-range[data-channel="hue"]
+      > .controls
+      > .native
+      > .input {
+      background: linear-gradient(to right, #f33, #fc3, #59c966, #35bdc8, #487edc, #c05bc4, #f33)
+        center / calc(100% - 9em / 7) calc(2em / 7) no-repeat;
+    }
+
+    &
+      > .editor
+      > .channels
+      > .ply-field
+      > .ply-range[data-channel="saturation"]
+      > .controls
+      > .native
+      > .input {
+      background: linear-gradient(to right, white, var(--color-picker-hue-color, var(--ply-link)))
+        center / calc(100% - 9em / 7) calc(2em / 7) no-repeat;
+    }
+
+    &
+      > .editor
+      > .channels
+      > .ply-field
+      > .ply-range[data-channel="brightness"]
+      > .controls
+      > .native
+      > .input {
+      background: linear-gradient(to right, black, var(--color-picker-hue-color, var(--ply-link)))
+        center / calc(100% - 9em / 7) calc(2em / 7) no-repeat;
+    }
+
+    &
+      > .editor
+      > .channels
+      > .ply-field
+      > .ply-range[data-channel="alpha"]
+      > .controls
+      > .native
+      > .input {
+      background:
+        linear-gradient(to right, transparent, var(--color-picker-hue-color, var(--ply-link)))
+          center / calc(100% - 9em / 7) calc(2em / 7) no-repeat,
+        repeating-conic-gradient(var(--ply-border) 0 25%, white 0 50%) center / calc(100% - 9em / 7)
+          calc(2em / 7) no-repeat;
+    }
+
+    &:disabled > .editor {
+      background: var(--ply-background);
+      box-shadow: none;
+    }
+
+    &:disabled > .editor > .visual {
+      opacity: 0.55;
+    }
+
+    &:disabled > .editor > .visual > .area {
+      cursor: not-allowed;
+    }
+  }
+
+  @container ply-color-picker (inline-size >= 28rem) {
+    .ply-color-picker > .editor > .channels {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 1.125rem;
+    }
+  }
+
+  @container ply-color-picker (inline-size < 20rem) {
+    .ply-color-picker > .editor > .visual > .preview {
+      grid-template-columns: 1.625rem minmax(0, 1fr);
+    }
+
+    .ply-color-picker > .editor > .visual > .preview > .ply-tag {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @container ply-color-picker (inline-size >= 38rem) {
+    .ply-color-picker > .editor {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 1.375rem;
+    }
+
+    .ply-color-picker > .editor > .channels {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ply-color-picker > .editor > .visual > .area {
+      background: Canvas;
+      box-shadow: none;
+    }
+
+    .ply-color-picker > .editor > .visual > .area > .cursor {
+      border-color: Highlight;
+      box-shadow: none;
+    }
+
+    .ply-color-picker
+      > .editor
+      > .channels
+      > .ply-field
+      > .ply-range
+      > .controls
+      > .native
+      > .input {
+      background: linear-gradient(Highlight, Highlight) center / calc(100% - 9em / 7) calc(2em / 7)
+        no-repeat;
+    }
+  }
+}

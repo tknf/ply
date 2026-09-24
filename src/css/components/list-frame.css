@@ -1,0 +1,19 @@
+@layer components {
+  :is(.ply-task-list, .ply-data-list, .ply-message-list) {
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: var(--ply-radius-control);
+    background: var(--ply-surface);
+    box-shadow: var(--ply-shadow-surface);
+    list-style: none;
+  }
+  @media (forced-colors: active) {
+    :is(.ply-task-list, .ply-data-list, .ply-message-list) {
+      background: Canvas;
+      box-shadow: none;
+    }
+  }
+}

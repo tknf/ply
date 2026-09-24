@@ -14,6 +14,7 @@ export type IconName =
   | "compare"
   | "caret"
   | "trash"
+  | "x"
   | "x-circle"
   | "info"
   | "mail"

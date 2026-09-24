@@ -1,33 +1,165 @@
 @layer components {
   .ply-split-view {
+    --splitter-value: 50;
     container: ply-split-view / inline-size;
     min-inline-size: 0;
     & > .panes {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
-      gap: var(--ply-space-4);
-      align-items: start;
+      min-inline-size: 0;
+      overflow: hidden;
+      border: var(--ply-stroke-width) solid var(--ply-border);
+      border-radius: var(--ply-radius-surface);
+      background: var(--ply-surface);
+      box-shadow: var(--ply-shadow-surface);
       & > :is(.primary, .secondary) {
         min-inline-size: 0;
+        padding-block: var(--ply-space-4) var(--ply-space-3);
+        padding-inline: var(--ply-space-6);
+        overflow-wrap: anywhere;
+      }
+      & > .primary {
+        background: var(--ply-fill-raised);
       }
       & > .secondary {
-        padding-block-start: var(--ply-space-6);
-        border-block-start: 1px solid var(--ply-border);
+        border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+        background: linear-gradient(
+          176deg,
+          color-mix(in srgb, var(--ply-surface) 99%, var(--ply-ink)),
+          color-mix(in srgb, var(--ply-surface) 96%, var(--ply-ink))
+        );
+      }
+    }
+    @container ply-split-view (inline-size < 32rem) {
+      & > .panes > :is(.primary, .secondary) {
+        padding-inline: var(--ply-space-5);
       }
     }
     @container ply-split-view (inline-size >= 52rem) {
       & > .panes {
-        grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.38fr);
+        grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.5fr);
         & > .secondary {
-          padding-block-start: 0;
-          padding-inline-start: var(--ply-space-4);
           border-block-start: 0;
-          border-inline-start: 1px solid var(--ply-border);
+          border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
         }
       }
       &[data-layout="reader"] > .panes {
         grid-template-columns: minmax(18rem, 0.6fr) minmax(0, 1fr);
       }
+      &[data-resizable="true"][data-state] > .panes {
+        grid-template-columns:
+          minmax(0, calc((100% - 1rem) * var(--splitter-value) / 100)) 1rem
+          minmax(0, 1fr);
+        gap: 0;
+        & > .secondary {
+          border-inline-start: 0;
+        }
+        & > .handle {
+          display: grid;
+        }
+      }
+      &[data-resizable="true"][data-state] > .size-control {
+        display: flex;
+      }
+    }
+    & > .panes > .handle {
+      display: none;
+      position: relative;
+      z-index: 1;
+      place-items: center;
+      background: color-mix(in srgb, var(--ply-surface) 97%, var(--ply-ink));
+      cursor: col-resize;
+      touch-action: none;
+      &:focus-visible {
+        outline: 0.125rem solid var(--ply-link);
+        outline-offset: -0.125rem;
+      }
+      &::before {
+        content: "";
+        position: absolute;
+        inset-block: 0;
+        inset-inline-start: calc(50% - 0.0625rem);
+        inline-size: 0.125rem;
+        background: var(--ply-border);
+      }
+      & > .grip {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        place-items: center;
+        inline-size: 1.25rem;
+        block-size: 1.75rem;
+        border: var(--ply-stroke-width) solid var(--ply-border);
+        border-radius: var(--ply-radius-control);
+        background: linear-gradient(var(--ply-surface), var(--ply-background));
+        color: var(--ply-muted);
+        box-shadow: var(--ply-shadow-control);
+        & > .ply-icon {
+          font-size: 0.875rem;
+        }
+      }
+      &[data-state="dragging"]::before,
+      &:focus-visible::before {
+        background: var(--ply-link);
+      }
+      &[data-state="dragging"] > .grip,
+      &:focus-visible > .grip {
+        border-color: var(--ply-link);
+        color: var(--ply-link);
+      }
+    }
+    & > .size-control {
+      display: none;
+      align-items: center;
+      justify-content: end;
+      gap: var(--ply-space-2);
+      margin-block-start: var(--ply-space-2);
+      color: var(--ply-muted);
+      font-size: var(--ply-small);
+      line-height: var(--ply-small-leading);
+      & > input {
+        appearance: none;
+        inline-size: 8rem;
+        block-size: 0.375rem;
+        border: var(--ply-stroke-width) solid var(--ply-border);
+        border-radius: var(--ply-radius-pill);
+        background: var(--ply-background);
+        box-shadow: var(--ply-shadow-input);
+        cursor: pointer;
+        &:focus-visible {
+          outline: 0.125rem solid var(--ply-link);
+          outline-offset: 0.375rem;
+        }
+        &::-webkit-slider-thumb {
+          appearance: none;
+          inline-size: 1rem;
+          block-size: 1rem;
+          border: var(--ply-stroke-width) solid var(--ply-border);
+          border-radius: 50%;
+          background: linear-gradient(var(--ply-surface), var(--ply-background));
+          box-shadow: var(--ply-shadow-control);
+        }
+        &::-moz-range-thumb {
+          inline-size: 1rem;
+          block-size: 1rem;
+          border: var(--ply-stroke-width) solid var(--ply-border);
+          border-radius: 50%;
+          background: linear-gradient(var(--ply-surface), var(--ply-background));
+          box-shadow: var(--ply-shadow-control);
+        }
+      }
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-split-view > .panes,
+    .ply-split-view > .panes > .handle > .grip {
+      box-shadow: none;
+    }
+    .ply-split-view > .panes > :is(.primary, .secondary) {
+      background: Canvas;
+    }
+    .ply-split-view > .size-control > input {
+      appearance: auto;
     }
   }
 }

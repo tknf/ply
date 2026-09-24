@@ -21,7 +21,7 @@ export const interactiveExamples = [
       </span>
     ),
     usage:
-      "Phosphor regularを全20種に共通で使います。標準は1em、小型は6em/7。名前によるサイズ・ウェイトの分岐はありません。配布icons.svgを同一オリジンに配置し、spriteでURLを指定できます。装飾は読み上げを省き、用途を伝える文言を添えます。CSSのみでも同じSVG/useを利用でき、CSS背景・mask用の単独SVGも同じ素材から生成します。",
+      "Phosphor regularを共通で使います。標準は1em、小型は6em/7。名前によるサイズ・ウェイトの分岐はありません。配布icons.svgを同一オリジンに配置し、spriteでURLを指定できます。装飾は読み上げを省き、用途を伝える文言を添えます。CSSのみでも同じSVG/useを利用でき、CSS背景・mask用の単独SVGも同じ素材から生成します。",
   },
   {
     id: "dialog",
@@ -38,7 +38,7 @@ export const interactiveExamples = [
       </Dialog>
     ),
     usage:
-      "DialogControllerをdialogとして登録します。idは画面内で一意にします。見出し・本文・操作欄を分け、長文では本文をスクロールします。sizeはcompact/default/wide、closeLabelで閉じる操作の文言、actionsで追加操作を指定できます。初期フォーカスは見出しです。フォームではinitialFocusをcontentにし、必要な入力にautofocusを指定します。Escapeと閉じる操作で元のトリガーへ戻ります。保存・削除は利用側で処理してください。スマホのボトムシート化は後続の計画です。",
+      "DialogControllerをdialogとして登録します。idは画面内で一意にします。見出し・本文・操作欄を分け、長文では本文をスクロールします。sizeはcompact/default/wide、closeLabelで閉じる操作の文言、actionsで追加操作を指定できます。初期フォーカスは見出しです。フォームではinitialFocusをcontentにし、必要な入力にautofocusを指定します。Escapeと閉じる操作で元のトリガーへ戻ります。狭いタッチ画面では下端に寄せたシートとして表示します。保存・削除は利用側で処理してください。",
   },
   {
     id: "dropdown-menu",

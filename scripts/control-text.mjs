@@ -58,7 +58,7 @@ const reviewedOverrides = new Map([
   // ユーザー指定: 上から積み、一行時の中央は対称な上下余白で作る。
   [
     "src/css/components/dropdown-menu.css|.ply-menu > li > .item.ply-button",
-    new Map([["padding-block", "calc((var(--ply-menu-row-size) - 10em / 7 - 2px) / 2)"]]),
+    new Map([["padding-block", "calc((var(--ply-menu-row-size) - 10em / 7 - 0.125rem) / 2)"]]),
   ],
   [
     "src/css/components/dropdown-menu.css|.ply-menu > li > .item > .content > .heading",

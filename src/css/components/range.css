@@ -41,7 +41,7 @@
     }
 
     &:has(> .controls > .native > .input:disabled) {
-      --ply-range-color: var(--ply-control-border);
+      --ply-range-color: var(--ply-border);
       color: var(--ply-muted);
     }
 
@@ -150,10 +150,10 @@
       box-sizing: border-box;
       inline-size: calc(9em / 7);
       block-size: calc(9em / 7);
-      border: 2px solid var(--ply-range-color);
+      border: 0.125rem solid var(--ply-range-color);
       border-radius: 50%;
       background: linear-gradient(var(--ply-surface), var(--ply-background));
-      box-shadow: 0 1px 2px rgb(36 57 70 / 16%);
+      box-shadow: var(--ply-shadow-hardware);
       pointer-events: auto;
       cursor: grab;
       /* ネイティブの位置を、バーと共通の補間位置へ寄せる。 */
@@ -164,10 +164,10 @@
       box-sizing: border-box;
       inline-size: calc(9em / 7);
       block-size: calc(9em / 7);
-      border: 2px solid var(--ply-range-color);
+      border: 0.125rem solid var(--ply-range-color);
       border-radius: 50%;
       background: linear-gradient(var(--ply-surface), var(--ply-background));
-      box-shadow: 0 1px 2px rgb(36 57 70 / 16%);
+      box-shadow: var(--ply-shadow-hardware);
       pointer-events: auto;
       cursor: grab;
       translate: calc(var(--ply-range-thumb-offset) * (100cqi - 9em / 7) * var(--ply-range-sign));
@@ -190,13 +190,13 @@
     }
 
     &:focus-visible::-webkit-slider-thumb {
-      outline: 2px solid var(--ply-link);
-      outline-offset: 3px;
+      outline: 0.125rem solid var(--ply-link);
+      outline-offset: 0.1875rem;
     }
 
     &:focus-visible::-moz-range-thumb {
-      outline: 2px solid var(--ply-link);
-      outline-offset: 3px;
+      outline: 0.125rem solid var(--ply-link);
+      outline-offset: 0.1875rem;
     }
 
     &:disabled {
@@ -240,7 +240,6 @@
     .ply-range {
       --ply-border: GrayText;
       --ply-range-color: Highlight;
-      --ply-control-border: GrayText;
       --ply-link: Highlight;
       --ply-surface: Canvas;
       --ply-background: Canvas;
