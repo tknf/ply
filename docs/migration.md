@@ -61,7 +61,7 @@ native dialogから`popover="auto"`を持つパネルへ変更した。背景を
 - Boardは`columns[].items`へ`{ id, label, content, disabled? }`を渡し、`movable`で移動を有効にする。`content`は任意のHono Child。`BoardController`を`board`へ登録し、`board-item.css`も読む。pointerとSpace・矢印・Enterによる移動、Escapeによる取消に対応する。`board:beforemove`は取消可能、`board:move`は`{ id, fromColumn, toColumn, fromIndex, toIndex }`。保存は利用側へ接続する。
 - MessageListは欠損時のfallback、添付数、会話数、下書き/送信中/失敗、現在の項目、閲覧不能、0件/読込/失敗を扱う。hrefを省略すると非リンク。`previewLines`は1または2。
 - Notice・ErrorSummary・EmptyStateは`.symbol`を追加。Toastの`.close`は`.actions`の外へ出し、独立した右上の列へ置く。
-- Iconは全20種をregularに統一、標準1em・小型6em/7。個別の名前によるサイズ分岐はない。CSS用SVGも同じ素材から全件生成する。Selectの参照を`assets/caret-down.svg`から`assets/caret.svg`へ更新し、Checkboxは`assets/check.svg`をmaskに使う。
+- Iconは全種類をregularに統一、標準1em・小型6em/7。個別の名前によるサイズ分岐はない。CSS用SVGも同じ素材から全件生成する。Selectの参照を`assets/caret-down.svg`から`assets/caret.svg`へ更新し、Checkboxは`assets/check.svg`をmaskに使う。
 
 ```ts
 import { TableController, TableSortController, TableSelectController } from "ply/controllers";

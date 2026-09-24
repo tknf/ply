@@ -6,5 +6,5 @@
 - 背景・本文・リンク・状態色は用途トークンで指定する。部品の背景に応じて利用側でもコントラストを確認する。
 - 書体は`--ply-font`。Hiraginoを持たない環境ではシステムフォントへフォールバックする。
 - Buttonは`--ply-button-font`のfluid値を基準に、高さ・余白をemで追従させる。通常とcompactは左右余白、largeは文字サイズと高さの比率が異なる。
-- Buttonの比率の根拠は[Basecampの実測](../docs/references/37signals-20260910/button-measurements-20260911.md)。fluidの式はPlyの設計値で、Basecampから取得した式ではない。
+- Buttonの比率とfluidの式はPlyの設計値です。参照製品の測定値をそのまま採用したものではありません。
 - `--ply-duration`はreduced-motion時に0となる。現在の対象テーマはライト。

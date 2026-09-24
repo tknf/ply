@@ -4,7 +4,7 @@ Plyは、管理画面・業務システム・一般利用者向けのtoCサー�
 
 ButtonやInputなどの基本部品に加え、ToolbarやDangerZoneなど、特定の用途で情報と操作をまとめる部品も提供します。採用基準と使う範囲は[設計方針](docs/design-system-direction.md)を参照してください。
 
-メールクライアント、CRM、プロジェクト管理、ドキュメント管理、ファイナンシャルダッシュボード、チャットを具体的な適用先として評価します。受信・商談・会話などのデータモデルは利用アプリが持ち、Plyは情報の読み順・配置・操作を共通化します。[部品構成の見直し](docs/component-audit.md)に、全56分類とField配下の公開部品の判断、再構築した範囲と追加候補をまとめています。
+メールクライアント、CRM、プロジェクト管理、ドキュメント管理、ファイナンシャルダッシュボード、チャットを適用先として評価します。各アプリのデータモデルは利用側が持ち、Plyは情報の読み順・配置・操作を共通化します。
 
 基盤はフレームワークに依存しないCSSとセマンティックHTMLです。同じHTML構造を出力するHono JSXのSSRコンポーネントと、必要なJavaScriptによる動作も提供します。
 
@@ -25,14 +25,12 @@ vp run dev
 
 `http://127.0.0.1:5173`にカタログを表示します。ポート変更は`vp run dev --port 5178`。DB・認証・外部サービスは不要です。
 
-- `/`・`/components`：全56分類の部品一覧
+- `/`・`/components`：部品一覧
 - `/components/button`等：実表示、同じ表示のHTML、Honoコード、使い方
 - `/review/components`：全コンポーネントをまとめた確認
 - `/review/components/group-0`〜`group-5`：用途ごとの確認
 
-[実画面の測定と保存資料](docs/references/measurements-20260915.md)、[全件の判断・変更](docs/component-audit.md)、[HTMLの移行](docs/migration.md)を併せて参照してください。
-
-[全コンポーネントの余白と採用基準](docs/spacing-audit.md)には、状態・メディア・コンテナ条件を含む宣言値を全件掲載しています。[stimulus-ui対応表](docs/stimulus-ui-coverage.md)は導入済み0.1.0の38controllerを照合したものです。現在の利用・継承は15種類で、全機能対応ではありません。
+[HTMLの移行](docs/migration.md)も参照してください。
 
 ## フォームと操作
 
@@ -76,6 +74,9 @@ vp run preview
 ```
 
 `layers.css`は必ず先頭。その後reset・tokens・base・layout、必要なcomponentsを読みます。レイヤー優先順は`reset, base, tokens, layout, components, utilities, overrides`。`@import`は使いません。reset・baseはページ全体へ適用するため、既存アプリにはページ単位で導入してください。
+
+Dialog・Popover・HoverCard・Toast・Tooltipを個別に読み込む場合は、共通の面と余白を定義する`components/overlay.css`も読み込みます。
+TaskList・DataList・MessageListには`components/list-frame.css`、ChartFrame内のデータ表には`components/table.css`を併せて読み込みます。
 
 通常のフォームとdetailsはJavaScriptなしで操作できます。`/reservation`では日付・時刻・数値入力、radio・checkbox、fieldsetの無効化、入れ子のdetails、標準入力検証とresetを試せます。HTMLのソースは`catalog/pages/reservation.ts`です。Dialog・DropdownMenu・Tabs・FileDropの追加動作にはcontroller登録が必要です。CSSのみで任意のJavaScriptから操作する場合も、同じHTML構造・状態属性を使用できます。
 
@@ -147,7 +148,7 @@ vp run test:visual
 ## 主な部品API
 
 - `PageHeader`：左揃えが初期値。`icon={<Icon name="pencil" />}`を指定できる。
-- `Button` / `ActionLink`：通常は32px相当、`size="compact"`は同じ高さで左右余白を狭める。フォーム末尾等の大きな操作には`size="large"`（40px相当）を明示する。primaryは青い塗り。寸法の根拠は[Basecampの実測](docs/references/37signals-20260910/button-measurements-20260911.md)。
+- `Button` / `ActionLink`：通常は32px相当、`size="compact"`は同じ高さで左右余白を狭める。フォーム末尾等の大きな操作には`size="large"`（40px相当）を明示する。primaryは青い塗り。
 - `Surface`：`kind="panel" tone="warm"`で設定をまとめ、`tone="cool"`でプレビュー・補足を区別する。
 - `ActionList`：`layout="grid"`とitemsの`icon`・`accent`・`preview`で内容の見える入口を作る。カード内に別の操作を入れない。
 - `Icon`：文言を補う装飾SVG。独立したアイコンボタンを使う場合は利用側でアクセシブルな名前を付ける。
@@ -193,20 +194,18 @@ UIのモードと送信先は呼び出し側が指定します。独立した開
 - 関連日を変更して既存の入力が条件外になった場合は、入力を残してエラーを表示します。ユーザーが修正するまで標準フォームの送信を止めます。
 - JavaScriptなしでは動的な連動は行いません。サーバー側でも関連項目の前後関係を検証してください。
 
-UIの参照元と今回の確認範囲は[DatePickerの設計メモ](docs/date-picker-design.md)に記録しています。
-
 ## 共通アイコン
 
-Phosphor Iconsのregularを全20種に共通で使います。標準1em、小型6em/7とし、名前によるサイズ・ウェイトの分岐はありません。`vp run icons:build`でSVGスプライトとCSS用の単独SVGを同じ素材から生成します。配布される`ply/icons.svg`を同一オリジンの`/assets/ply-icons.svg`へ置いてください。配置先が異なる場合は`<Icon name="pencil" sprite="/static/icons.svg" />`で指定します。CSSのみでも同じ`svg/use`を使えます。ライセンスを含む[選定理由と配布方法](docs/icon-selection.md)を参照してください。
+Phosphor Iconsのregularを共通で使います。標準1em、小型6em/7とし、名前によるサイズ・ウェイトの分岐はありません。`vp run icons:build`でSVGスプライトとCSS用の単独SVGを同じ素材から生成します。配布される`ply/icons.svg`を同一オリジンの`/assets/ply-icons.svg`へ置いてください。配置先が異なる場合は`<Icon name="pencil" sprite="/static/icons.svg" />`で指定します。CSSのみでも同じ`svg/use`を使えます。ライセンスを含む[選定理由と配布方法](docs/icon-selection.md)を参照してください。
 
 第四版の確認は `/search` から記事を開き、「読み返す」「変更を確認」「下書きを保存」の順で操作できます。比較対象は同じ記事の前回保存（初回はサンプル初期内容）です。一覧へ戻ると検索条件を保持します。
 
 ## 部品の対象
 
-基本部品の用途と範囲は[対象と実装状況](docs/component-coverage.md)を参照してください。各ページには配布CSSを使う実物、HTML、実際にSSRして公開型でも検査するHonoコードを掲載しています。
+各部品ページには配布CSSを使う実物、HTML、公開型でも検査するHonoコードを掲載しています。
 
-追加：Avatar、Breadcrumb、Navigation、Steps、Toolbar、InputGroup、Switch、Range、Suggestion、DatePicker、Tag、Statistic、Card、Timeline、TaskList、Calendar、Board、ErrorSummary、Loading、Toast、Popover、CodeBlock、Keycap、Divider。Fieldが持つInput・Textarea・Select・Choiceを別部品として重複加算していません。
+公開部品の一覧はカタログの`/components`を参照してください。Fieldが持つInput・Textarea・Select・ChoiceはFieldの見本に含みます。
 
-Switch・Range・DatePicker・TaskListは標準入力の送信、キーボード操作、disabledを利用します。Suggestionは自由入力に候補を添えます。`SuggestionController`を`suggestion`として登録すると、Stimulus-uiの候補選択に部分一致の絞り込み、標準input/changeイベントの通知、フォームのリセットが加わります。JavaScriptなしでは標準datalistを使います。Popover・ToastはHTML Popover API対応ブラウザを前提とします。Popoverの位置補正には`PopoverController`を`popover`へ登録します。Toastの基本開閉は追加controller不要です。
+Switch・Range・DatePicker・TaskListは標準入力の送信、キーボード操作、disabledを利用します。Suggestionは自由入力に候補を添えます。`SuggestionController`を`suggestion`として登録すると、候補の絞り込み、標準input/changeイベントの通知、フォームのリセットが加わります。JavaScriptなしでは標準datalistを使います。Popover・ToastはHTML Popover API対応ブラウザを前提とし、対応するcontrollerを登録します。
 
 Calendarの週データとBoardの列データは利用側で与えます。案件管理の追加・移動は現在の画面のみ、設定は`ply-demo-workspace-settings`キーでこのブラウザのlocalStorageへ保存します。デモcontrollerはcatalogに限定します。CSSだけの予約、記事の既存保存キー、上流stimulus-uiの公開入口は維持しています。

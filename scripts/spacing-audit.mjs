@@ -159,7 +159,7 @@ const header =
   "- 換算はroot 16pxのremだけです。emはその要素の文字サイズ、lhはその要素の行高、%は包含ブロック、autoは残り幅に依存します。条件外の値や文字拡大時まで同じpxと断定しません。gap二値は縦・横、論理padding二値は開始・終了の順です。\n" +
   "- 同じ要素の状態別上書きを足し合わせないでください。最終値はレイヤー・詳細度・条件・記述順で決まります。0も、追加しない判断として全件掲載します。\n" +
   "- Field配下のInput、Textarea、Select、Choice、PasswordField、CountedTextarea、Combobox、CheckboxGroup、NumberField、DateField、TimeFieldはfield.cssとそれぞれの追加CSSの節に含みます。\n" +
-  "- 4pxは直近の補足、6pxは入力ラベル/タグの横、8pxは同じ操作・同じ行、12pxは小さな枠の内側、16pxは異なる役割、24pxは章、32pxはフォーム群、48pxは大区分。例外の文字比率・境界差分は各部品で説明します。これは観測から導いた自然法則ではなくPlyの設計判断です。\n" +
+  "- 4pxは直近の補足、6pxは入力ラベル/タグの横、8pxは同じ操作・同じ行、12pxは小さな枠の内側、16pxは異なる役割、20pxはカードの左右、24pxは章、32pxはフォーム群、48pxは大区分。例外の文字比率・境界差分は各部品で説明します。これは観測から導いた自然法則ではなくPlyの設計判断です。\n" +
   "- 余白を持つ親はGrid/Flexのgap、文章の前後関係はmargin-block-start、部品自身の内側はpaddingを所有します。違う軸で同じ値を使うこと自体は目的にしません。\n\n" +
   "## CSS外の配置計算\n\n" +
   "DropdownMenu・DatePickerの位置計算は起点から4px、画面端から8pxを確保します。[menuPosition](../src/controllers/dropdown-menu-position.ts)を共用します。PopoverのCSSアンカーの4pxとフォールバックも同じ基準です。Boardのドラッグ表示は指・ポインターを隠さないため12pxずらします。32pxの端判定・1フレーム10pxのスクロールは操作の閾値と速度であり、レイアウトgapではありません。\n\n" +
