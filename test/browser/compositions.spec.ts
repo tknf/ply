@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("部品一覧は56種類を重複なく案内する", async ({ page }) => {
+test("コンポーネント一覧は56種類を重複なく案内する", async ({ page }) => {
   await page.goto("/components");
   const links = page.locator(".catalog-component-index a");
   await expect(links).toHaveCount(56);
@@ -119,7 +119,7 @@ test("Popoverの表示APIがなくても設定の保存と初期値への復帰�
   await expect(status).toContainText("初期値に戻しました");
 });
 
-test("追加した標準部品はJavaScript無効でも操作できる", async ({ browser }) => {
+test("追加した標準コンポーネントはJavaScript無効でも操作できる", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto("/components/switch");
@@ -138,7 +138,7 @@ test("追加した標準部品はJavaScript無効でも操作できる", async (
 });
 
 for (const width of [375, 768, 1280]) {
-  test(`部品一覧と組み合わせ事例が${width}pxで収まる`, async ({ page }, testInfo) => {
+  test(`コンポーネント一覧と組み合わせ事例が${width}pxで収まる`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width, height: 1000 });
     for (const route of [
       "components",

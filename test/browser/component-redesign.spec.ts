@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { redesignedComponentIds } from "../../catalog/redesigned-components";
 
 for (const width of [375, 1280]) {
-  test(`全${redesignedComponentIds.length}部品が${width}pxで収まり参照先と表示を保つ`, async ({
+  test(`全${redesignedComponentIds.length}コンポーネントが${width}pxで収まり参照先と表示を保つ`, async ({
     page,
   }) => {
     test.setTimeout(120000);
@@ -142,7 +142,9 @@ test("月カレンダーは狭幅でも日付の列を保ちキーボードで�
   await expect.poll(() => viewport.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
 });
 
-test("Boardは広い画面内でも部品幅に応じて横スクロールから縦の棚へ変わる", async ({ page }) => {
+test("Boardは広い画面内でもコンポーネント幅に応じて横スクロールから縦の棚へ変わる", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/components/board");
   const board = page.locator('[data-example="hono"] .ply-board').first();
@@ -210,7 +212,7 @@ for (const width of [375, 1280]) {
   });
 }
 
-test("部品の入れ子とCSSの読み込み順が文字と固有の状態を変えない", async ({ page }) => {
+test("コンポーネントの入れ子とCSSの読み込み順が文字と固有の状態を変えない", async ({ page }) => {
   // 読込直後のtransition途中ではなく、確定したスタイル同士を比較する。
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/review/components");

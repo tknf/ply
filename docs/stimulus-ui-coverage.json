@@ -40,7 +40,7 @@
     ],
     "EditableController": [
       "未対応",
-      "値の表示・編集・確定・取消の部品なし。追加候補のProperty編集に対応する。"
+      "値の表示・編集・確定・取消のコンポーネントなし。追加候補のProperty編集に対応する。"
     ],
     "FileDropController": [
       "利用",

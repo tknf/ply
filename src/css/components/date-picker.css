@@ -40,6 +40,24 @@
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
     gap: var(--ply-space-3);
   }
+  /* JavaScriptが無効なら標準入力だけを表示する。 */
+  @media (scripting: none) {
+    .ply-date-picker > .control {
+      display: none;
+    }
+  }
+  /* controller接続前も接続後と同じ一欄の表示にし、構造の入れ替わりによるちらつきを防ぐ。 */
+  @media (scripting: enabled) {
+    .ply-date-picker[data-enhancement="pending"] {
+      & > .fallback {
+        display: none;
+      }
+      & > .control > .ply-input:disabled {
+        background: var(--ply-surface);
+        color: var(--ply-text);
+      }
+    }
+  }
   .ply-date-picker > .panel > .editors {
     display: grid;
     grid-template-columns: minmax(0, 1fr);

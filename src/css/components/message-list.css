@@ -4,10 +4,18 @@
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
+    /* ここから新しい：波線の区切り。前後の行の線と重ねない。 */
+    & > .divider {
+      padding-block: var(--ply-space-2) var(--ply-space-1);
+      padding-inline: var(--ply-space-4);
+    }
     & > li {
       min-inline-size: 0;
-      & + li {
+      & + li:not(.divider) {
         border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+      }
+      &.divider + li {
+        border-block-start: 0;
       }
       & > .row {
         display: grid;

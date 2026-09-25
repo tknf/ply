@@ -12,6 +12,19 @@ export default () => (
         ]}
       />
     </div>
+    <div class="ply-stack" data-space="small">
+      <p class="label">表示を切り替える</p>
+      <FilterBar
+        label="予定の表示形式"
+        appearance="segmented"
+        items={[
+          { label: "月", href: "/examples/schedule", current: true },
+          { label: "週", href: "/examples/schedule?view=week" },
+          { label: "年", href: "/examples/schedule?view=year" },
+          { label: "一覧", href: "/examples/schedule?view=agenda" },
+        ]}
+      />
+    </div>
     <Disclosure summary="件数・0件・長い条件名">
       <div class="ply-stack">
         <FilterBar

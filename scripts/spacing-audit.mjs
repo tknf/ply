@@ -53,7 +53,7 @@ for (const file of files) {
               : declaration.value.includes("em") && !declaration.value.includes("rem")
                 ? "文字サイズまたは行高に追従する比率。式を保持する。"
                 : declaration.prop.includes("gap")
-                  ? "並ぶ子の間隔。二値は行・列の順。上記の部品内の役割を適用。"
+                  ? "並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。"
                   : declaration.prop.includes("padding")
                     ? "この要素自身の内側。上記の領域・操作高・境界の計算を適用。"
                     : "前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。";
@@ -137,7 +137,7 @@ for (const name of (await readdir("catalog/hono-examples"))
               used.join(" ") +
               "` | `" +
               variant +
-              "` | layout.cssの該当宣言。部品内の余白に加算される配置側の値。 |",
+              "` | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |",
           );
         }
       }
@@ -159,8 +159,8 @@ const header =
   "- 換算はroot 16pxのremだけです。emはその要素の文字サイズ、lhはその要素の行高、%は包含ブロック、autoは残り幅に依存します。条件外の値や文字拡大時まで同じpxと断定しません。gap二値は縦・横、論理padding二値は開始・終了の順です。\n" +
   "- 同じ要素の状態別上書きを足し合わせないでください。最終値はレイヤー・詳細度・条件・記述順で決まります。0も、追加しない判断として全件掲載します。\n" +
   "- Field配下のInput、Textarea、Select、Choice、PasswordField、CountedTextarea、Combobox、CheckboxGroup、NumberField、DateField、TimeFieldはfield.cssとそれぞれの追加CSSの節に含みます。\n" +
-  "- 4pxは直近の補足、6pxは入力ラベル/タグの横、8pxは同じ操作・同じ行、12pxは小さな枠の内側、16pxは異なる役割、20pxはカードの左右、24pxは章、32pxはフォーム群、48pxは大区分。例外の文字比率・境界差分は各部品で説明します。これは観測から導いた自然法則ではなくPlyの設計判断です。\n" +
-  "- 余白を持つ親はGrid/Flexのgap、文章の前後関係はmargin-block-start、部品自身の内側はpaddingを所有します。違う軸で同じ値を使うこと自体は目的にしません。\n\n" +
+  "- 4pxは直近の補足、6pxは入力ラベル/タグの横、8pxは同じ操作・同じ行、12pxは小さな枠の内側、16pxは異なる役割、20pxはカードの左右、24pxは章、32pxはフォーム群、48pxは大区分。例外の文字比率・境界差分は各コンポーネントで説明します。これは観測から導いた自然法則ではなくPlyの設計判断です。\n" +
+  "- 余白を持つ親はGrid/Flexのgap、文章の前後関係はmargin-block-start、コンポーネント自身の内側はpaddingを所有します。違う軸で同じ値を使うこと自体は目的にしません。\n\n" +
   "## CSS外の配置計算\n\n" +
   "DropdownMenu・DatePickerの位置計算は起点から4px、画面端から8pxを確保します。[menuPosition](../src/controllers/dropdown-menu-position.ts)を共用します。PopoverのCSSアンカーの4pxとフォールバックも同じ基準です。Boardのドラッグ表示は指・ポインターを隠さないため12pxずらします。32pxの端判定・1フレーム10pxのスクロールは操作の閾値と速度であり、レイアウトgapではありません。\n\n" +
   "生成: `vp run docs:spacing`。宣言を変更したら再生成します。\n\n";
@@ -168,7 +168,7 @@ const result =
   header +
   sections.join("\n\n") +
   "\n\n## カタログ例に重なる配置の余白\n\n" +
-  "部品のCSSだけでなく、この配置も見た目へ加算されます。TagにはTagGroup、連続DisclosureにはDisclosureGroupを使います。汎用Stack/Clusterを使う例は以下の全箇所です。\n\n| ソース | 配置 | data-space | 所有元 |\n| --- | --- | --- | --- |\n" +
+  "コンポーネントのCSSだけでなく、この配置も見た目へ加算されます。TagにはTagGroup、連続DisclosureにはDisclosureGroupを使います。汎用Stack/Clusterを使う例は以下の全箇所です。\n\n| ソース | 配置 | data-space | 所有元 |\n| --- | --- | --- | --- |\n" +
   layoutRows.join("\n") +
   "\n";
 await writeFile("docs/spacing-audit.md", result);

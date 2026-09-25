@@ -140,7 +140,7 @@ test("ファイル選択・エラー関連・フォーカスが成立する", as
   ).not.toBe("none");
 });
 
-test("CSSの順序交換とforced-colorsで部品が操作可能", async ({ page }) => {
+test("CSSの順序交換とforced-colorsでコンポーネントが操作可能", async ({ page }) => {
   await page.goto("/example");
   const button = page.getByRole("button", { name: "下書きを保存" });
   const colors = () =>

@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 
-test("共通部品の仕事場で検索・追加・状態変更・完了を操作できる", async ({ page }, testInfo) => {
+test("共通コンポーネントの仕事場で検索・追加・状態変更・完了を操作できる", async ({
+  page,
+}, testInfo) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/review/workspace");
   await expect(page.getByRole("heading", { name: "ヘルプセンターのリニューアル" })).toBeVisible();

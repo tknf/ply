@@ -6,7 +6,7 @@ export type Accent = "blue" | "green" | "amber" | "coral";
 export type Tone = "neutral" | "info" | "success" | "warning" | "danger";
 export type ButtonVariant = "primary" | "secondary" | "danger" | "link";
 
-/** 利用側の配置クラスは残し、部品のルートクラスを必ず付ける。 */
+/** 利用側の配置クラスは残し、コンポーネントのルートクラスを必ず付ける。 */
 export const classes = (
   base: string,
   extra?: string | Promise<string>,

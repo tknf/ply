@@ -1,0 +1,29 @@
+[
+  {
+    "product": "vrchat",
+    "file": "docs/references/vrchat-wing-20260925/quick-menu-launch-pad.jpg",
+    "caption": "VRChat 2021.4.1のQuick Menu紹介動画サムネイル。左は閉じたWing（持ち手のみ）、右は開いたAvatars Wing",
+    "source_url": "https://i.ytimg.com/vi/IrpBox4FyFI/maxresdefault.jpg",
+    "retrieved_at": "2026-09-25",
+    "sha256": "6af7088f95b8c12fbabbbb303ac79afdcb30badd50da73eb9079914bf1f9ed0c",
+    "bytes": 95777
+  },
+  {
+    "product": "vrchat",
+    "file": "docs/references/vrchat-wing-20260925/main-menu-worlds-wing.png",
+    "caption": "VRChat公式ブログ「UI 2.0 is Now Live!」。Main Menuの左に開いたWorlds Wing",
+    "source_url": "https://images.squarespace-cdn.com/content/v1/5f0770791aaf57311515b23d/9fc9765f-435c-4bc5-a464-23db9bc3df91/MainMenu_Blogpost_v1.png?format=1500w",
+    "retrieved_at": "2026-09-25",
+    "sha256": "dda31e251722089599dc62535112f30dca0e2f2b90d90c687847ef7428921612",
+    "bytes": 297991
+  },
+  {
+    "product": "vrchat",
+    "file": "docs/references/vrchat-wing-20260925/quick-menu-emoji-wing.png",
+    "caption": "VRChat Ask Forum「Emojis not displaying on Quick Menu and Main Menu Wings」の投稿画像。持ち手・Wingパネル・手前の作業面の重なりが分かる",
+    "source_url": "https://global.discourse-cdn.com/vrchat/optimized/3X/c/4/c4487608e956d2f367afe203633040f0e82b055f_2_229x500.png",
+    "retrieved_at": "2026-09-25",
+    "sha256": "595d69f31d661bb5b3c03833e452785e0a051bdd822892973116d7da6d1a9122",
+    "bytes": 21008
+  }
+]

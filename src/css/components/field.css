@@ -205,11 +205,16 @@
       }
     }
   }
+  /* 選択肢の束は枠で囲み、見出しを枠線の上に載せる。 */
   .ply-choice-group {
-    border: 0;
+    padding-block: var(--ply-space-1) var(--ply-space-3);
+    padding-inline: var(--ply-space-3);
+    border: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: var(--ply-radius-control);
     & > legend {
+      padding-inline: var(--ply-space-1);
       font-size: var(--ply-label);
-      font-weight: 400;
+      font-weight: 600;
       line-height: var(--ply-label-leading);
     }
     & > * + * {

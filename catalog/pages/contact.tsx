@@ -4,7 +4,10 @@ export const ContactExample = () => (
   <Surface
     context={
       <ContextBar
-        items={[{ label: "部品一覧", href: "/components" }, { label: "担当者への問い合わせ" }]}
+        items={[
+          { label: "コンポーネント一覧", href: "/components" },
+          { label: "担当者への問い合わせ" },
+        ]}
       />
     }
   >

@@ -1,4 +1,5 @@
 import type { Child } from "hono/jsx";
+import { Divider } from "./divider";
 import { Icon } from "./icon";
 import { classes, type ElementProps } from "./types";
 
@@ -24,6 +25,8 @@ export type MessageListProps = ElementProps<"ul"> & {
   state?: "ready" | "loading" | "error";
   stateContent?: Child;
   previewLines?: 1 | 2;
+  /** この項目の直前に波線の区切りを置き、ここから新しいことを示す。 */
+  newSince?: { id: string; label?: string };
 };
 export const MessageList = ({
   label,
@@ -31,6 +34,7 @@ export const MessageList = ({
   state = "ready",
   stateContent,
   previewLines = 2,
+  newSince,
   class: className,
   ...attributes
 }: MessageListProps) => {
@@ -58,59 +62,66 @@ export const MessageList = ({
           const Row = item.href ? "a" : "div";
           const validDate = item.datetime && Number.isFinite(Date.parse(item.datetime));
           return (
-            <li
-              data-message-id={item.id}
-              data-unread={item.unread ? "true" : "false"}
-              data-current={item.current ? "true" : undefined}
-              data-state={item.state}
-            >
-              <Row class="row" href={item.href} aria-current={item.current ? "page" : undefined}>
-                {avatars && (
-                  <span class="avatar" aria-hidden="true">
-                    {item.avatar ?? <Icon name="mail" />}
-                  </span>
-                )}
-                <span class="sender">{item.sender.trim() || "差出人不明"}</span>
-                <span class="body">
-                  <strong class="title">
-                    {item.title.trim() || "（件名なし）"}
-                    {item.threadCount != null && item.threadCount > 1 && (
-                      <span class="count" aria-label={`${item.threadCount}件の会話`}>
-                        {item.threadCount}
+            <>
+              {newSince?.id === item.id && (
+                <li class="divider" role="none">
+                  <Divider label={newSince.label ?? "ここから新着"} line="wavy" />
+                </li>
+              )}
+              <li
+                data-message-id={item.id}
+                data-unread={item.unread ? "true" : "false"}
+                data-current={item.current ? "true" : undefined}
+                data-state={item.state}
+              >
+                <Row class="row" href={item.href} aria-current={item.current ? "page" : undefined}>
+                  {avatars && (
+                    <span class="avatar" aria-hidden="true">
+                      {item.avatar ?? <Icon name="mail" />}
+                    </span>
+                  )}
+                  <span class="sender">{item.sender.trim() || "差出人不明"}</span>
+                  <span class="body">
+                    <strong class="title">
+                      {item.title.trim() || "（件名なし）"}
+                      {item.threadCount != null && item.threadCount > 1 && (
+                        <span class="count" aria-label={`${item.threadCount}件の会話`}>
+                          {item.threadCount}
+                        </span>
+                      )}
+                    </strong>
+                    {item.preview && <span class="preview">{item.preview}</span>}
+                    {(item.state || item.unavailableReason) && (
+                      <span class="status">
+                        {item.unavailableReason ??
+                          (item.state === "draft"
+                            ? "下書き"
+                            : item.state === "sending"
+                              ? "送信中…"
+                              : "送信できませんでした")}
                       </span>
                     )}
-                  </strong>
-                  {item.preview && <span class="preview">{item.preview}</span>}
-                  {(item.state || item.unavailableReason) && (
-                    <span class="status">
-                      {item.unavailableReason ??
-                        (item.state === "draft"
-                          ? "下書き"
-                          : item.state === "sending"
-                            ? "送信中…"
-                            : "送信できませんでした")}
-                    </span>
-                  )}
-                </span>
-                <span class="meta">
-                  {item.time &&
-                    (validDate ? (
-                      <time datetime={item.datetime}>{item.time}</time>
-                    ) : (
-                      <span>{item.time}</span>
-                    ))}
-                  {item.attachments != null && item.attachments > 0 && (
-                    <span class="attachment" aria-label={`添付ファイル${item.attachments}件`}>
-                      <Icon name="file" />
-                      {item.attachments}
-                    </span>
-                  )}
-                  <span class="unread" hidden={!item.unread}>
-                    <span class="ply-visually-hidden">未読</span>
                   </span>
-                </span>
-              </Row>
-            </li>
+                  <span class="meta">
+                    {item.time &&
+                      (validDate ? (
+                        <time datetime={item.datetime}>{item.time}</time>
+                      ) : (
+                        <span>{item.time}</span>
+                      ))}
+                    {item.attachments != null && item.attachments > 0 && (
+                      <span class="attachment" aria-label={`添付ファイル${item.attachments}件`}>
+                        <Icon name="file" />
+                        {item.attachments}
+                      </span>
+                    )}
+                    <span class="unread" hidden={!item.unread}>
+                      <span class="ply-visually-hidden">未読</span>
+                    </span>
+                  </span>
+                </Row>
+              </li>
+            </>
           );
         })
       )}

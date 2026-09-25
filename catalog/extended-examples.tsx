@@ -55,7 +55,7 @@ export const extendedExamples = [
       />
     ),
     usage:
-      "itemsにlabel・href・current・任意のcountを渡し、共通のActionLinkとして描画します。CSSはbutton.cssとfilter-bar.cssを併用します。currentから選択中の表示とaria-currentを生成し、countは0件も表示します。条件を含むURLと選択状態はサーバーが指定します。通常のリンクなのでJavaScriptなしで移動でき、controllerの登録は不要です。childrenでリンクを直接構築する使い方も維持しています。",
+      "itemsにlabel・href・current・任意のcountを渡し、共通のActionLinkとして描画します。CSSはbutton.cssとfilter-bar.cssを併用します。currentから選択中の表示とaria-currentを生成し、countは0件も表示します。条件を含むURLと選択状態はサーバーが指定します。通常のリンクなのでJavaScriptなしで移動でき、controllerの登録は不要です。appearanceをsegmentedにすると、表示形式などの切り替えをつながった一組として並べます。childrenでリンクを直接構築する使い方も維持しています。",
   },
   {
     id: "file-input",
@@ -141,7 +141,7 @@ export const extendedExamples = [
     description: "対象に対する複数の操作をまとめる",
     render: () => <ToolbarExample id="sample-toolbar" />,
     usage:
-      "実行する操作をまとめる配置部品です。FilterBarは現在の絞り込み条件を示すnav、Toolbarは送信・リセット・移動をまとめるrole=toolbarです。両方の操作は同じピル形を使います。Button・ActionLinkなどの操作にdata-toolbar-target=controlを付けると、全体が一つのTab停止点になり、左右矢印とHome/Endで操作を移動できます。フォームの送信・リセットはButtonのtypeで指定します。狭い配置では項目が折り返します。",
+      "実行する操作をまとめる配置コンポーネントです。FilterBarは現在の絞り込み条件を示すnav、Toolbarは送信・リセット・移動をまとめるrole=toolbarです。両方の操作は同じピル形を使います。Button・ActionLinkなどの操作にdata-toolbar-target=controlを付けると、全体が一つのTab停止点になり、左右矢印とHome/Endで操作を移動できます。フォームの送信・リセットはButtonのtypeで指定します。狭い配置では項目が折り返します。",
   },
   {
     id: "input-group",
@@ -228,7 +228,7 @@ export const extendedExamples = [
       </div>
     ),
     usage:
-      "分類を表す小さな部品です。集合にはTagGroupを使い、横0.5em・縦0.125remの余白で折り返します。状態の表示はBadgeを使います。リンクはhover時に枠色で操作可能なことを示します。TagGroupを使う場合はtag-group.cssも読み込んでください。",
+      "分類を表す小さなコンポーネントです。集合にはTagGroupを使い、横0.5em・縦0.125remの余白で折り返します。状態の表示はBadgeを使います。リンクはhover時に枠色で操作可能なことを示します。TagGroupを使う場合はtag-group.cssも読み込んでください。",
   },
   {
     id: "statistic",
@@ -321,7 +321,7 @@ export const extendedExamples = [
       />
     ),
     usage:
-      "月・週・年と日付順の一覧、前後期間と今日への移動に対応します。年表示は月への入口、一覧は日付ごとのDataListです。selectionを渡すと既存CalendarControllerで単一日・範囲を選択し、calendar:changeを受け取れます。月の計算と予定の取得は利用側で行います。",
+      "月・週・年と日付順の一覧、前後期間と今日への移動に対応します。予定はlabel・hrefと任意のstart・end（HH:MM）・accentを持ち、startがなければ終日、endがなければ開始から1時間です。月は各日に一行ずつ、週は時刻の軸を持つ時間割で表示し、時間の重なる予定は横に並べます。週は0〜24時の時間割を画面に収まる高さ（--ply-calendar-scroll-size）でスクロールし、見出しと終日の行を固定します。先頭の一行の日数で列数が決まり、1日なら日、5日なら稼働日の表示です。hoursは稼働時間で、外側を淡く塗ります。nowを渡すと今日の列に現在時刻の線を引き、開いた時にその時刻を表示します（今日を含まない週は稼働時間の始まり）。scroll-initial-targetに対応しないブラウザではCalendarScrollControllerをcalendar-scrollとして登録します。weekStartで月曜・日曜始まりを選び、weeksの各行も同じ曜日から並べます。weekNumbersで月の各行と週の見出しにISO週番号を表示します。年表示は月への入口、一覧は日付ごとに月・週と同じ予定の行を並べます。selectionを渡すと既存CalendarControllerで単一日・範囲を選択し、calendar:changeを受け取れます。月の計算と予定の取得は利用側で行います。",
   },
   {
     id: "board",
@@ -626,7 +626,7 @@ export const extendedExamples = [
         <Keycap keys={["Esc"]} /> で編集に戻ります。
       </p>
     ),
-    usage: "表記のみの部品です。ショートカット自体は利用側で接続します。",
+    usage: "表記のみのコンポーネントです。ショートカット自体は利用側で接続します。",
   },
   {
     id: "divider",

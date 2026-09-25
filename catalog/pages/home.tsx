@@ -8,7 +8,7 @@ export const Home = ({
     layout="document"
     context={
       <ContextBar items={[{ label: "Ply" }, { label: "道具箱" }]}>
-        <a href="#components">部品を見る</a>
+        <a href="#components">コンポーネントを見る</a>
       </ContextBar>
     }
   >
@@ -115,7 +115,10 @@ export const Home = ({
         </ActionLink>
       </section>
     </div>
-    <Disclosure id="components" summary={`部品をひとつずつ見る · ${components.length}種類`}>
+    <Disclosure
+      id="components"
+      summary={`コンポーネントをひとつずつ見る · ${components.length}種類`}
+    >
       <p>CSS・HTMLとHonoの利用例です。</p>
       <ul class="catalog-index">
         {components.map((item) => (

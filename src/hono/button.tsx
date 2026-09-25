@@ -23,6 +23,8 @@ export type ButtonProps = PropsWithChildren<
     size?: "default" | "compact" | "large" | "tag";
     busy?: boolean;
     busyLabel?: string;
+    /** pillは作る・送る主操作。通常の操作は8pxの角のまま使う。 */
+    shape?: "default" | "pill";
   }
 >;
 
@@ -35,6 +37,7 @@ export const Button = ({
   disabled = false,
   busy = false,
   busyLabel = "処理中…",
+  shape = "default",
   ...attributes
 }: ButtonProps) => (
   <button
@@ -43,6 +46,7 @@ export const Button = ({
     type={type}
     data-variant={variant}
     data-size={size}
+    data-shape={shape === "pill" ? "pill" : undefined}
     data-busy={busy ? "true" : undefined}
     disabled={disabled || busy}
     aria-busy={busy ? "true" : attributes["aria-busy"]}
@@ -56,6 +60,8 @@ export type ActionLinkProps = PropsWithChildren<
     href: string;
     variant?: ButtonVariant;
     size?: "default" | "compact" | "large";
+    /** pillは作る・送る主操作。通常の操作は8pxの角のまま使う。 */
+    shape?: "default" | "pill";
   }
 >;
 export const ActionLink = ({
@@ -63,6 +69,7 @@ export const ActionLink = ({
   class: className,
   variant = "secondary",
   size = "default",
+  shape = "default",
   ...attributes
 }: ActionLinkProps) => (
   <a
@@ -70,6 +77,7 @@ export const ActionLink = ({
     class={classes("ply-button", className)}
     data-variant={variant}
     data-size={size}
+    data-shape={shape === "pill" ? "pill" : undefined}
   >
     {children}
   </a>

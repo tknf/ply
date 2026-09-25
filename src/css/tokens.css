@@ -1,5 +1,5 @@
 @layer tokens {
-  /* 同じローカル書体の行メトリクスを揃える。字形や字幅、部品ごとの余白は変えない。 */
+  /* 同じローカル書体の行メトリクスを揃える。字形や字幅、コンポーネントごとの余白は変えない。 */
   @font-face {
     font-family: "Ply UI Latin";
     src: local("HelveticaNeue");
@@ -156,6 +156,22 @@
     --ply-radius-control: 0.5rem;
     --ply-radius-surface: 0.75rem;
     --ply-radius-pill: 999rem;
+    /*
+      語彙の線と模様。ミシン目（破線）はまだ確定していないもの、波線はここから新しいもの、
+      斜線は使えない枠、太枠は今・編集中を示す。寸法をここで一つにし、各コンポーネントで描き直さない。
+    */
+    --ply-dash: 0.375rem;
+    --ply-dash-gap: 0.25rem;
+    --ply-perforation: color-mix(in srgb, var(--ply-muted) 55%, var(--ply-surface));
+    --ply-wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 6'%3E%3Cpath d='M0 3 Q3 0.5 6 3 T12 3' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E");
+    --ply-wave-size: 0.75rem 0.375rem;
+    --ply-hatch: repeating-linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--ply-muted) 28%, transparent) 0 var(--ply-stroke-width),
+      transparent var(--ply-stroke-width) 0.375rem
+    );
+    --ply-frame-width: 0.125rem;
+    --ply-frame-color: var(--ply-text);
     --ply-duration: 150ms;
     --ply-measure: 40rem;
     --ply-page: 64rem;

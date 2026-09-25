@@ -66,8 +66,10 @@
         background: color-mix(in srgb, var(--ply-info-soft) 40%, var(--ply-surface));
       }
 
+      /* 使えない・埋まっている枠は斜線で示す。 */
       & > tbody > tr > td[data-disabled="true"] {
         background: var(--ply-background);
+        background-image: var(--ply-hatch);
         color: var(--ply-muted);
       }
 

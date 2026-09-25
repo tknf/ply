@@ -5,12 +5,12 @@ import { partNameErrors } from "../scripts/part-names.mjs";
 const inspect = (source: string) =>
   partNameErrors(postcss.parse(source), "src/css/components/card.css");
 
-test("部品の役割名と内側の独立した部品を区別して許可する", () => {
+test("コンポーネントの役割名と内側の独立したコンポーネントを区別して許可する", () => {
   expect(inspect(".ply-card { & > .body { & > .ply-icon { color: inherit; } } }")).toEqual([]);
   expect(inspect(".ply-card > .body { color: inherit; }")).toEqual([]);
 });
 
-test("内部の役割名へ部品名を繰り返す退行を拒否する", () => {
+test("内部の役割名へコンポーネント名を繰り返す退行を拒否する", () => {
   expect(inspect(".ply-card > .ply-card-body { color: inherit; }")).not.toEqual([]);
 });
 

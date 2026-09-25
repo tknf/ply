@@ -29,11 +29,11 @@ test("Calendarの表示と選択、Overlayの共通構造と狭幅を確認す�
   await expect(dialog.locator(":scope > .body")).toContainText("見出しと本文");
 
   await page.goto("/components/calendar");
-  const week = page.locator('[data-example="hono"] .ply-calendar[data-view="week"]').first();
+  const week = page.getByRole("region", { name: "9月14日〜20日から選ぶ", exact: true });
   const date = week.locator('[data-calendar-value="2026-09-16"]');
   await date.click();
   await expect(date).toHaveAttribute("aria-pressed", "true");
-  const range = page.locator('[data-example="hono"] .ply-calendar[data-view="week"]').nth(1);
+  const range = page.getByRole("region", { name: "9月21日〜27日から期間を選ぶ", exact: true });
   await range.locator('[data-calendar-value="2026-09-26"]').click();
   await expect(range.locator('[data-calendar-value="2026-09-26"]')).toHaveAttribute(
     "data-state",
@@ -50,7 +50,7 @@ test("Calendarの表示と選択、Overlayの共通構造と狭幅を確認す�
   await schedule.getByRole("link", { name: "今日" }).click();
   await schedule.getByRole("link", { name: "一覧" }).click();
   await expect(schedule).toHaveAttribute("data-view", "agenda");
-  await expect(schedule.locator(".agenda-group")).toHaveCount(2);
+  await expect(schedule.locator(".agenda-group")).toHaveCount(4);
   await expect(schedule.locator(".agenda-group").first()).toContainText("10:00");
 
   await schedule.getByRole("link", { name: "年" }).click();

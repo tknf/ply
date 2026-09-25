@@ -112,7 +112,9 @@ export default () => (
           <p>必要な添付ファイルを保存してから進んでください。削除したデータは復元できません。</p>
           <p>対象：autumn-editorial-project-2026-abcdefghijklmnopqrstuvwxyz0123456789</p>
         </DangerZone>
-        <p>この作例では隣に本文を置き、部品の幅が狭くなった場合の折り返しを確認できます。</p>
+        <p>
+          この作例では隣に本文を置き、コンポーネントの幅が狭くなった場合の折り返しを確認できます。
+        </p>
       </div>
     </Disclosure>
     <Disclosure summary="右から左に読む場合">

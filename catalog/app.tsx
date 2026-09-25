@@ -1,5 +1,6 @@
 import { Hono, type Context } from "hono";
 import { html, raw } from "hono/html";
+import { getCookie } from "hono/cookie";
 import type { PropsWithChildren } from "hono/jsx";
 import {
   Surface,
@@ -93,7 +94,7 @@ const Document = ({
               ply
             </a>
             <div class="ply-cluster">
-              <a href="/components">部品一覧</a>
+              <a href="/components">コンポーネント一覧</a>
               <a href="/review/components">全体を見る</a>
             </div>
           </nav>
@@ -137,13 +138,16 @@ app.get("/review/applications", (c) =>
           <Surface
             context={
               <ContextBar
-                items={[{ label: "部品一覧", href: "/components" }, { label: "アプリへの適用例" }]}
+                items={[
+                  { label: "コンポーネント一覧", href: "/components" },
+                  { label: "アプリへの適用例" },
+                ]}
               />
             }
           >
             <PageHeader
               title="同じ作法で、違う仕事へ"
-              description="メール・CRM・プロジェクト・ドキュメント・財務・会話へ、共通部品を組み合わせた表示例です。"
+              description="メール・CRM・プロジェクト・ドキュメント・財務・会話へ、共通コンポーネントを組み合わせた表示例です。"
             />
             <AppPatterns />
           </Surface>
@@ -156,25 +160,28 @@ const reviewComponents = (c: Context) => {
   const ids = group?.ids ?? reviewComponentIds;
   return c.html(
     html`<!doctype html>${(
-        <Document title="部品の再設計">
+        <Document title="コンポーネントの再設計">
           <Surface
             context={
               <ContextBar
-                items={[{ label: "部品一覧", href: "/components" }, { label: "部品の再設計" }]}
+                items={[
+                  { label: "コンポーネント一覧", href: "/components" },
+                  { label: "コンポーネントの再設計" },
+                ]}
               />
             }
           >
             <PageHeader
-              title={group?.name ?? "Plyの部品を見直す"}
-              description="Button・Inputから一覧・通知まで。共通部品の大きさ、状態、文字位置を直接確認できます。"
+              title={group?.name ?? "Plyのコンポーネントを見直す"}
+              description="Button・Inputから一覧・通知まで。共通コンポーネントの大きさ、状態、文字位置を直接確認できます。"
             />
-            <nav class="ply-cluster" aria-label="部品の分類">
+            <nav class="ply-cluster" aria-label="コンポーネントの分類">
               <a href="/review/components">すべて</a>
               {componentGroups.map((entry, index) => (
                 <a href={`/review/components/group-${index}`}>{entry.name}</a>
               ))}
             </nav>
-            <nav class="ply-cluster" aria-label="再設計した部品">
+            <nav class="ply-cluster" aria-label="再設計したコンポーネント">
               {ids.map((id) => (
                 <a href={`#review-${id}`}>
                   {catalogExamples.find((entry) => entry.id === id)?.name}
@@ -189,7 +196,7 @@ const reviewComponents = (c: Context) => {
                       {catalogExamples.find((entry) => entry.id === id)?.name}
                     </a>
                   </h2>
-                  <div class="example">{getHonoExample(id).render()}</div>
+                  <div class="example">{getHonoExample(id).render({ cookies: getCookie(c) })}</div>
                 </section>
               ))}
             </div>
@@ -212,7 +219,7 @@ app.get("/preview/hono-page-header", (c) =>
               <link rel="stylesheet" href={`/src/css/${file}`} />
             ))}
           </head>
-          <body>{getHonoExample("page-header").render()}</body>
+          <body>{getHonoExample("page-header").render({ cookies: getCookie(c) })}</body>
         </html>
       )}`,
   ),
@@ -322,7 +329,7 @@ app.get("/saved", (c) =>
 app.get("/components", (c) =>
   c.html(
     html`<!doctype html>${(
-        <Document title="部品一覧">
+        <Document title="コンポーネント一覧">
           <Components components={catalogExamples} />
         </Document>
       )}`,
@@ -382,7 +389,7 @@ app.get("/components/:id", async (c) => {
   const example = catalogExamples.find(({ id }) => id === c.req.param("id"));
   if (!example) return c.notFound();
   const honoExample = getHonoExample(example.id);
-  const honoMarkup = await html`${honoExample.render()}`;
+  const honoMarkup = await html`${honoExample.render({ cookies: getCookie(c) })}`;
   const [htmlCode, jsxCode] = await Promise.all([
     formatExample(String(honoMarkup), "html"),
     formatExample(honoExample.source, "tsx"),
@@ -393,7 +400,10 @@ app.get("/components/:id", async (c) => {
           <Surface
             context={
               <ContextBar
-                items={[{ label: "部品一覧", href: "/components" }, { label: example.name }]}
+                items={[
+                  { label: "コンポーネント一覧", href: "/components" },
+                  { label: example.name },
+                ]}
               />
             }
           >

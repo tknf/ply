@@ -1,0 +1,209 @@
+@layer components {
+  .ply-wing {
+    --ply-wing-handle: 2.75rem;
+    --ply-wing-panel: 14rem;
+    --ply-wing-tuck: var(--ply-radius-surface);
+    --ply-wing-inset: var(--ply-space-6);
+    container: ply-wing / inline-size;
+    min-inline-size: 0;
+    & > .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--ply-space-3);
+      min-inline-size: 0;
+      & > .main {
+        position: relative;
+        z-index: 1;
+        min-inline-size: 0;
+      }
+      /* 狭い配置の既定。持ち手を横長の見出しにして、作業面の上下へ積む。 */
+      & > :is(.start, .end) {
+        position: relative;
+        min-inline-size: 0;
+        overflow: hidden;
+        border: var(--ply-stroke-width) solid var(--ply-border);
+        border-radius: var(--ply-radius-surface);
+        background: color-mix(in srgb, var(--ply-surface) 97%, var(--ply-ink));
+        box-shadow: var(--ply-shadow-surface);
+        color: var(--ply-text);
+        & > summary {
+          display: flex;
+          align-items: start;
+          gap: var(--ply-space-2);
+          /* 枠線はdetails側が持つため、44px − 20px行を上下12pxずつに分ける。 */
+          padding-block: var(--ply-space-3);
+          padding-inline: var(--ply-space-4);
+          background: color-mix(in srgb, var(--ply-surface) 93%, var(--ply-ink));
+          color: var(--ply-muted);
+          font-family: var(--ply-control-font-family);
+          font-size: var(--ply-label);
+          font-weight: 600;
+          /* 流体の文字サイズでも44pxの計算を崩さないよう、行は20pxに固定する。 */
+          line-height: 1.25rem;
+          list-style: none;
+          overflow-wrap: anywhere;
+          cursor: pointer;
+          &::-webkit-details-marker {
+            display: none;
+          }
+          &:hover {
+            color: var(--ply-link);
+          }
+          &:focus-visible {
+            outline-offset: -0.125rem;
+          }
+          /* 図は(20 − 14) / 2 = 3px、印は(20 − 12) / 2 = 4px下げて先頭行の中心へ置く。 */
+          & > .icon {
+            flex: none;
+            margin-block-start: 0.1875rem;
+            font-size: 0.875rem;
+          }
+          & > .marker {
+            flex: none;
+            display: grid;
+            margin-block-start: 0.25rem;
+            & > .ply-icon {
+              font-size: 0.75rem;
+              transition: rotate var(--ply-duration) ease;
+            }
+          }
+        }
+        &[open] > summary {
+          color: var(--ply-text);
+          & > .icon {
+            color: var(--ply-link);
+          }
+          & > .marker > .ply-icon {
+            rotate: 180deg;
+          }
+        }
+        & > .body {
+          display: grid;
+          align-content: start;
+          gap: var(--ply-space-2);
+          min-inline-size: 0;
+          padding-block: var(--ply-space-3) var(--ply-space-4);
+          padding-inline: var(--ply-space-4);
+          border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+          font-size: var(--ply-label);
+          line-height: var(--ply-label-leading);
+          overflow-wrap: anywhere;
+        }
+      }
+    }
+    /*
+      作業面の後ろへ差し込む配置。左右の列は開閉に関わらず持ち手＋パネルの幅を確保し、作業面を動かさない。
+      Wingは作業面より上下に一段低く、内側の縁を作業面の角丸の分だけ潜らせる。
+    */
+    @container ply-wing (inline-size >= 56rem) {
+      & > .layout {
+        grid-template-columns:
+          calc(var(--ply-wing-handle) + var(--ply-wing-panel))
+          minmax(0, var(--ply-page))
+          calc(var(--ply-wing-handle) + var(--ply-wing-panel));
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+        & > :is(.start, .main, .end) {
+          grid-row: 1;
+        }
+        & > .main {
+          grid-column: 2;
+        }
+        & > :is(.start, .end) {
+          /* 内容で行を伸ばさず、作業面の高さから上下のinsetを引いた高さに合わせる。 */
+          block-size: 0;
+          min-block-size: calc(100% - var(--ply-wing-inset) * 2);
+          inline-size: calc(var(--ply-wing-handle) + var(--ply-wing-tuck));
+          box-shadow: var(--ply-shadow-chip);
+          & > summary {
+            position: absolute;
+            inset-block: 0;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--ply-space-2);
+            inline-size: var(--ply-wing-handle);
+            padding-block: var(--ply-space-3);
+            padding-inline: 0;
+            & > :is(.icon, .marker) {
+              margin-block-start: 0;
+            }
+            & > .label {
+              min-block-size: 0;
+              writing-mode: vertical-rl;
+              letter-spacing: 0.08em;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+          & > .body {
+            position: absolute;
+            inset-block: 0;
+            overflow-y: auto;
+            padding-block: var(--ply-space-4);
+            border-block-start: 0;
+          }
+        }
+        & > :is(.start, .end)[open] {
+          inline-size: calc(var(--ply-wing-handle) + var(--ply-wing-panel) + var(--ply-wing-tuck));
+        }
+        & > .start {
+          grid-column: 1;
+          justify-self: end;
+          margin-inline-end: calc(var(--ply-wing-tuck) * -1);
+          & > summary {
+            inset-inline-start: 0;
+            border-inline-end: var(--ply-stroke-width) solid var(--ply-border);
+            & > .marker > .ply-icon {
+              rotate: 90deg;
+            }
+            &:dir(rtl) > .marker > .ply-icon {
+              rotate: -90deg;
+            }
+          }
+          & > .body {
+            inset-inline: var(--ply-wing-handle) 0;
+            padding-inline: var(--ply-space-4) calc(var(--ply-wing-tuck) + var(--ply-space-4));
+          }
+          &[open] > summary > .marker > .ply-icon {
+            rotate: -90deg;
+          }
+          &[open] > summary:dir(rtl) > .marker > .ply-icon {
+            rotate: 90deg;
+          }
+        }
+        & > .end {
+          grid-column: 3;
+          justify-self: start;
+          margin-inline-start: calc(var(--ply-wing-tuck) * -1);
+          & > summary {
+            inset-inline-end: 0;
+            border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
+            & > .marker > .ply-icon {
+              rotate: -90deg;
+            }
+            &:dir(rtl) > .marker > .ply-icon {
+              rotate: 90deg;
+            }
+          }
+          & > .body {
+            inset-inline: 0 var(--ply-wing-handle);
+            padding-inline: calc(var(--ply-wing-tuck) + var(--ply-space-4)) var(--ply-space-4);
+          }
+          &[open] > summary > .marker > .ply-icon {
+            rotate: 90deg;
+          }
+          &[open] > summary:dir(rtl) > .marker > .ply-icon {
+            rotate: -90deg;
+          }
+        }
+      }
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-wing > .layout > :is(.start, .end) {
+      box-shadow: none;
+    }
+  }
+}

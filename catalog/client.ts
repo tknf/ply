@@ -14,6 +14,8 @@ import "@hotwired/turbo";
 import {
   ClipboardController,
   CodeBlockController,
+  WingController,
+  CalendarScrollController,
   CommandMenuController,
   TableController,
   TableSortController,
@@ -61,6 +63,8 @@ import {
 const application = Application.start();
 application.register("clipboard", ClipboardController);
 application.register("code-block", CodeBlockController);
+application.register("wing", WingController);
+application.register("calendar-scroll", CalendarScrollController);
 application.register("board", BoardController);
 application.register("calendar", CalendarController);
 application.register("carousel", CarouselController);

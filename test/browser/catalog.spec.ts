@@ -56,7 +56,7 @@ for (const width of [375, 768, 1280]) {
   });
 }
 
-test("タブの無効項目を飛ばしメニュー選択と内側部品の状態を保つ", async ({ page }) => {
+test("タブの無効項目を飛ばしメニュー選択と内側コンポーネントの状態を保つ", async ({ page }) => {
   await page.goto("/components/tabs");
   const tabs = page.locator('[data-example="hono"]');
   await tabs.getByRole("tab", { name: "内容", exact: true }).focus();
@@ -150,7 +150,7 @@ test("ファイルのドロップが状態・選択・イベントを同期す�
   await transfer.dispose();
 });
 
-test("動作部品のフォーカスがforced-colorsでも見える", async ({ page }, testInfo) => {
+test("動作コンポーネントのフォーカスがforced-colorsでも見える", async ({ page }, testInfo) => {
   await testInfo.attach("browser-version", {
     body: page.context().browser()?.version() ?? "不明",
     contentType: "text/plain",
@@ -213,7 +213,7 @@ test("primaryのhoverで背景が変わり各操作のfocusで輪郭が見える
   }
 });
 
-test("部品CSSの読み込み順と作業面の有無で固有の表示を壊さない", async ({ page }) => {
+test("コンポーネントCSSの読み込み順と作業面の有無で固有の表示を壊さない", async ({ page }) => {
   for (const id of ["notice", "field", "comparison"]) {
     await page.goto(`/components/${id}`);
     const root = page.locator('[data-example="hono"]');
@@ -241,7 +241,7 @@ test("部品CSSの読み込み順と作業面の有無で固有の表示を壊�
         .forEach((element) => element.classList.remove("ply-surface"));
     });
     await expect
-      .poll(styles, { message: `${id}の部品CSSは読み込み順に依存しない` })
+      .poll(styles, { message: `${id}のコンポーネントCSSは読み込み順に依存しない` })
       .toEqual(before);
   }
 });

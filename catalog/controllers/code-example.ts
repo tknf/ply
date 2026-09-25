@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 
-/** 閉じたコードの大量の着色要素を、部品の操作面へ参加させない。 */
+/** 閉じたコードの大量の着色要素を、コンポーネントの操作面へ参加させない。 */
 export class CodeExampleController extends Controller<HTMLDetailsElement> {
   connect = () => this.opened();
   opened = () => {

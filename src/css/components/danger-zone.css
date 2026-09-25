@@ -38,7 +38,7 @@
   }
 
   .ply-danger-zone > .actions {
-    /* 操作を内容幅で並べ、部品の幅に合わせて折り返すためFlex。 */
+    /* 操作を内容幅で並べ、コンポーネントの幅に合わせて折り返すためFlex。 */
     display: flex;
     flex-wrap: wrap;
     align-items: start;

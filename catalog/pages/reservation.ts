@@ -1,6 +1,6 @@
 import { html } from "hono/html";
 
-// CSSだけの利用例。PlyのSSR部品やcontrollerを必要としない標準HTML。
+// CSSだけの利用例。PlyのSSRコンポーネントやcontrollerを必要としない標準HTML。
 export const reservationExample = html`
   <section class="ply-surface" data-layout="document">
     <nav class="ply-context-bar" aria-label="現在の位置">

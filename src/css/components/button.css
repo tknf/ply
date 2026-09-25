@@ -46,6 +46,11 @@
     &[data-size="compact"] {
       padding-inline: 0.5em;
     }
+    /* 作る・送る主操作はピル。丸い端に文字が寄らないよう左右を少し広げる。 */
+    &[data-shape="pill"] {
+      padding-inline: 1.25em;
+      border-radius: var(--ply-radius-pill);
+    }
     &[data-size="large"] {
       min-block-size: var(--ply-button-large);
       padding-inline: 1.1em;

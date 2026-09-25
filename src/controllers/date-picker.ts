@@ -133,7 +133,11 @@ export class DatePickerController extends CalendarController {
         this.controlTarget.hidden = false;
         this.displayTarget.disabled = false;
         this.triggerTarget.setAttribute("aria-expanded", "false");
+      } else {
+        this.controlTarget.hidden = true;
+        this.fallbackTarget.hidden = false;
       }
+      delete this.element.dataset.enhancement;
       this.element.addEventListener("input", this.inputChanged);
       this.element.addEventListener("change", this.inputChanged);
       this.element.addEventListener("calendar:beforechange", this.guardSelection);
@@ -180,9 +184,11 @@ export class DatePickerController extends CalendarController {
         input.min = this.minDateValue;
         input.max = this.maxDateValue;
       }
-      this.controlTarget.hidden = true;
+      // Turboのキャッシュ等で再表示されても、SSR直後と同じ構造から再接続する。
+      this.controlTarget.hidden = false;
       this.displayTarget.disabled = true;
       this.fallbackTarget.hidden = false;
+      this.element.dataset.enhancement = "pending";
       this.calendarEnabled = false;
       this.sourceDefaults.clear();
     };

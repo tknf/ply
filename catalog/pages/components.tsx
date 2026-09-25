@@ -2,12 +2,16 @@ import { Surface, ContextBar, PageHeader, Tag } from "../../src/hono";
 import { componentGroups } from "../component-groups";
 export type ComponentEntry = { id: string; name: string; description: string };
 export const Components = ({ components }: { components: readonly ComponentEntry[] }) => (
-  <Surface context={<ContextBar items={[{ label: "道具箱", href: "/" }, { label: "部品一覧" }]} />}>
+  <Surface
+    context={
+      <ContextBar items={[{ label: "道具箱", href: "/" }, { label: "コンポーネント一覧" }]} />
+    }
+  >
     <PageHeader
-      title="部品から組み立てる"
+      title="コンポーネントから組み立てる"
       description={`${components.length}種類。入力、操作、一覧、予定まで、同じ作法で組み合わせます。`}
     />
-    <nav class="catalog-component-jump" aria-label="部品の分類">
+    <nav class="catalog-component-jump" aria-label="コンポーネントの分類">
       {componentGroups.map((group, index) => (
         <a href={`#component-group-${index}`}>{group.name}</a>
       ))}

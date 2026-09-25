@@ -79,22 +79,10 @@
     }
   }
 
+  /* 開閉の見た目はDisclosureが持つ。ここではグラフとの区切りだけを置く。 */
   .ply-chart-frame > .data {
     min-inline-size: 0;
     border-block-start: var(--ply-stroke-width) solid var(--ply-border);
-    & > summary {
-      inline-size: fit-content;
-      padding-block: var(--ply-space-2);
-      color: var(--ply-link);
-      font-family: var(--ply-control-font-family);
-      font-size: var(--ply-small);
-      line-height: var(--ply-small-leading);
-      cursor: pointer;
-      &:focus-visible {
-        outline: 0.125rem solid var(--ply-link);
-        outline-offset: 0.125rem;
-      }
-    }
   }
 
   .ply-chart-frame > .source {

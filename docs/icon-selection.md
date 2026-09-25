@@ -25,7 +25,7 @@ Checkbox・TaskListは同じregularのSVGを14pxのmaskとして使う。Select�
 - `dist/icons.svg`を同一オリジンへ配置する。既定URLは`/assets/ply-icons.svg`。配置先を変える場合は`<Icon name="pencil" sprite="/static/icons.svg" />`。
 - 同じURLを参照するため共通リソースとしてキャッシュでき、HTMLの重複も減る。実際のキャッシュ期間は利用側のHTTPヘッダーで設定する。
 - CSSだけの場合も`<svg class="ply-icon" viewBox="0 0 256 256" aria-hidden="true" focusable="false"><use href="/assets/ply-icons.svg#ply-pencil"></use></svg>`を使用できる。
-- Selectの矢印はCSS背景、Checkboxの印はCSS maskとして同じ素材を参照する。SVG枠の大きさはその操作部品の規則で指定する。
+- Selectの矢印はCSS背景、Checkboxの印はCSS maskとして同じ素材を参照する。SVG枠の大きさはその操作コンポーネントの規則で指定する。
 - MITの著作権・許諾文をスプライト内と`dist/PHOSPHOR-LICENSE`へ同梱する。依存は生成時だけ必要。
 
 外部スプライトのため、利用側ではSVGの同一オリジン配信とパスの設定が必要。JS無効時にも表示される。Chromium・Firefox・WebKitで実際の描画領域を確認する試験を追加した。

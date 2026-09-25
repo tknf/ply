@@ -26,10 +26,10 @@ import {
 } from "../../src/hono";
 import { makeCalendarWeeks, scheduleUrl } from "../calendar-data";
 const ExampleContext = ({ label }: { label: string }) => (
-  <ContextBar items={[{ label: "部品一覧", href: "/components" }, { label }]} />
+  <ContextBar items={[{ label: "コンポーネント一覧", href: "/components" }, { label }]} />
 );
 const CompositionNote = ({ children }: { children: string }) => (
-  <p class="catalog-footnote">使用部品：{children}</p>
+  <p class="catalog-footnote">使用コンポーネント：{children}</p>
 );
 export const ProjectExample = () => (
   <Surface context={<ExampleContext label="案件管理の事例" />}>
@@ -174,7 +174,7 @@ export const SettingsExample = () => (
         items={[
           { label: "基本情報", href: "#settings-basic" },
           { label: "通知と表示", href: "#settings-display" },
-          { label: "部品一覧", href: "/components" },
+          { label: "コンポーネント一覧", href: "/components" },
         ]}
       />
       <form
@@ -251,7 +251,7 @@ export const SettingsExample = () => (
           変更後に「設定を保存」を押してください。
         </p>
         <noscript>
-          <p>設定の保存にはJavaScriptが必要です。入力部品はそのまま試せます。</p>
+          <p>設定の保存にはJavaScriptが必要です。入力コンポーネントはそのまま試せます。</p>
         </noscript>
         <Toast id="settings-result">設定をこのブラウザに保存しました。</Toast>
       </form>
@@ -367,7 +367,7 @@ export const ScheduleExample = ({
       {view === "year" ? (
         <Calendar {...calendarProps} view="year" months={months} />
       ) : (
-        <Calendar {...calendarProps} view={view} weeks={shownWeeks} />
+        <Calendar {...calendarProps} view={view} weeks={shownWeeks} now="10:30" />
       )}
       <CompositionNote>
         Calendar・FilterBar・Tag・DataList・ActionLink・PageHeader・ContextBar

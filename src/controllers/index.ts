@@ -43,6 +43,8 @@ export { PickerController } from "./picker";
 export { TagFieldController } from "./tag-field";
 export { TagInputController } from "@tknf/stimulus-ui";
 export { SplitterController } from "@tknf/stimulus-ui";
+export { WingController } from "./wing";
+export { CalendarScrollController } from "./calendar-scroll";
 export { TreeController } from "@tknf/stimulus-ui";
 export { TreePresentationController } from "./tree-presentation";
 export { TableOfContentsController } from "@tknf/stimulus-ui";

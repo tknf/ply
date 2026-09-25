@@ -72,8 +72,7 @@ export const Carousel = ({
                   eyebrow={
                     <>
                       <span class="position">
-                        {String(index + 1).padStart(2, "0")} /{" "}
-                        {String(slides.length).padStart(2, "0")}
+                        {index + 1} / {slides.length}
                       </span>
                       {slide.eyebrow}
                     </>

@@ -7,6 +7,15 @@ export default () => (
       <Button>キャンセル</Button>
     </div>
     <div class="ply-cluster">
+      <Button variant="primary" shape="pill">
+        新しい記事を書く
+      </Button>
+      <Button shape="pill">下書きを送る</Button>
+      <ActionLink href="/example" shape="pill">
+        予定を作る
+      </ActionLink>
+    </div>
+    <div class="ply-cluster">
       <Button size="compact" variant="primary">
         保存する
       </Button>

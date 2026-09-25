@@ -1,4 +1,5 @@
 import { useId } from "hono/jsx";
+import { Disclosure } from "./disclosure";
 import type { ImageCropperValue } from "@tknf/stimulus-ui";
 import { Button } from "./button";
 import { ImageFrame } from "./image-frame";
@@ -221,8 +222,7 @@ export const ImageCropper = ({
             value={crop.zoom}
             disabled={disabled}
           />
-          <details class="position">
-            <summary>位置と大きさを細かく調整</summary>
+          <Disclosure class="position" summary="位置と大きさを細かく調整">
             <div class="ranges">
               <CropRange
                 id={`${rootId}-x`}
@@ -265,7 +265,7 @@ export const ImageCropper = ({
                 disabled={disabled}
               />
             </div>
-          </details>
+          </Disclosure>
           <p class="instructions" id={instructionsId} data-image-cropper-target="instructions">
             枠をドラッグして移動、下端の持ち手で大きさを変更します。矢印キーでも調整できます。
           </p>

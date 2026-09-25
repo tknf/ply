@@ -10,7 +10,7 @@ CSS、Hono、controllerを同じ版で更新する。内部クラス名とDOM構
 | PageHeader       | `.ply-page-header > .icon`、`.heading > h1 + p`、`.actions`                                                        |
 | Breadcrumb       | `nav.ply-breadcrumb > ol > li`。最後の項目だけが現在地                                                             |
 | ContextBar       | `div.ply-context-bar > nav.ply-breadcrumb` と `.actions`                                                           |
-| Field            | `.ply-field > .heading`、入力部品、`.messages > .help / .error`                                                    |
+| Field            | `.ply-field > .heading`、入力コンポーネント、`.messages > .help / .error`                                          |
 | FieldGroup       | `.ply-field-group > legend + .layout`。layout内にdescriptionとfields                                               |
 | InputGroup       | `.ply-input-group > .control > .affix / .ply-input`                                                                |
 | Tabs             | `.ply-tabs > .list` と `.panel`                                                                                    |
@@ -19,10 +19,10 @@ CSS、Hono、controllerを同じ版で更新する。内部クラス名とDOM構
 | DatePicker       | `.ply-date-picker > .control / .fallback / .panel`。panel内にeditors、month、grid、actions                         |
 | Card             | `.ply-card > .preview / .eyebrow / .title / .body / .meta`                                                         |
 | DataList         | `.ply-data-list > li > .start / .body / .end`                                                                      |
-| Table / Calendar | `.ply-table > table`、`.ply-calendar > table`。スクロール領域が部品のルート                                        |
+| Table / Calendar | `.ply-table > table`、`.ply-calendar > table`。スクロール領域がコンポーネントのルート                              |
 | ImageFrame       | `.ply-image-frame > .image > img`                                                                                  |
 
-古い`ply-部品名-部分名`を新しい役割名へ移す。役割名だけをグローバルCSSへ書かない。controllerの接続はクラスの代わりに対応する`data-*-target`を使う。
+古い`ply-コンポーネント名-部分名`を新しい役割名へ移す。役割名だけをグローバルCSSへ書かない。controllerの接続はクラスの代わりに対応する`data-*-target`を使う。
 
 ## CommandMenu
 
@@ -49,7 +49,7 @@ native dialogから`popover="auto"`を持つパネルへ変更した。背景を
 - Toastの閉じる操作はアイコンにし、closeLabelをアクセシブルな名前として保持する。
 - Buttonの14px／20px、高さ32px、largeの16px／24px・40px、既存の字形補正は保つ。派生CSSから上書きしない。
 
-役割を削除した公開部品はない。ActionListのLinkListへの改名や検索Pickerの追加など、次の提案は[部品監査](component-audit.md)に分けた。
+役割を削除した公開コンポーネントはない。ActionListのLinkListへの改名や検索Pickerの追加など、次の提案は[コンポーネント監査](component-audit.md)に分けた。
 
 ## 9月16日のフィードバック対応
 

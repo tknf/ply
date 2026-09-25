@@ -7,14 +7,14 @@ export default () => (
       label="Plyの道具箱"
       action="command-menu:select->command-demo#selected"
       shortcuts={[
-        { label: "部品一覧", href: "/components", icon: "grid", accent: "green" },
+        { label: "コンポーネント一覧", href: "/components", icon: "grid", accent: "green" },
         { label: "入力", href: "/components/field", icon: "pencil", accent: "blue" },
         { label: "予定", href: "/components/calendar", icon: "calendar", accent: "amber" },
         { label: "通知", href: "/components/message-list", icon: "mail", accent: "coral" },
       ]}
       groups={[
         {
-          label: "最近使った部品",
+          label: "最近使ったコンポーネント",
           items: [
             {
               label: "Card",
@@ -35,7 +35,11 @@ export default () => (
               description: "日付・期間",
               keywords: ["日付", "予定"],
             },
-            { label: "編集できない部品（閲覧権限のみ）", value: "restricted", disabled: true },
+            {
+              label: "編集できないコンポーネント（閲覧権限のみ）",
+              value: "restricted",
+              disabled: true,
+            },
           ],
         },
         {

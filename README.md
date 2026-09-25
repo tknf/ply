@@ -2,15 +2,15 @@
 
 Plyは、管理画面・業務システム・一般利用者向けのtoCサービスで再利用するデザインシステムです。BasecampやHEYのような個性と親しみやすさを持ち、用途をまたいでもできるだけ統一感のある画面を作れることを目指します。予約システム、売上管理、CMSなどの入力・確認・比較・操作を、共通の文字・余白・操作の作法で構成します。
 
-ButtonやInputなどの基本部品に加え、ToolbarやDangerZoneなど、特定の用途で情報と操作をまとめる部品も提供します。採用基準と使う範囲は[設計方針](docs/design-system-direction.md)を参照してください。
+ButtonやInputなどの基本コンポーネントに加え、ToolbarやDangerZoneなど、特定の用途で情報と操作をまとめるコンポーネントも提供します。採用基準と使う範囲は[設計方針](docs/design-system-direction.md)を参照してください。
 
 メールクライアント、CRM、プロジェクト管理、ドキュメント管理、ファイナンシャルダッシュボード、チャットを適用先として評価します。各アプリのデータモデルは利用側が持ち、Plyは情報の読み順・配置・操作を共通化します。
 
 基盤はフレームワークに依存しないCSSとセマンティックHTMLです。同じHTML構造を出力するHono JSXのSSRコンポーネントと、必要なJavaScriptによる動作も提供します。
 
-UIは行メトリクスを揃えたローカルのシステムフォントを使います。Button・Inputなどの操作部品も`--ply-control-font-family`を共有し、欧文をHelvetica Neue／Arial、和文をHiraginoで表示します。macOSのHiraginoに対するブラウザの行メトリクス補正が、操作部品の文字位置の基準になることを避けるためです。LINE Seed JPは採用せず、Hiraginoのない環境では端末のシステムフォントへフォールバックします。
+UIは行メトリクスを揃えたローカルのシステムフォントを使います。Button・Inputなどの操作コンポーネントも`--ply-control-font-family`を共有し、欧文をHelvetica Neue／Arial、和文をHiraginoで表示します。macOSのHiraginoに対するブラウザの行メトリクス補正が、操作コンポーネントの文字位置の基準になることを避けるためです。LINE Seed JPは採用せず、Hiraginoのない環境では端末のシステムフォントへフォールバックします。
 
-上付きの問題と対策、確認範囲、変更時の注意点は[操作部品の文字位置](docs/control-text-alignment.md)を参照してください。
+上付きの問題と対策、確認範囲、変更時の注意点は[操作コンポーネントの文字位置](docs/control-text-alignment.md)を参照してください。
 
 あずきブックスの出版社向けデザインを切り出し、ブラッシュアップします。中央に置く作業面と上部のコンテキスト領域を継承します。第四版はBasecamp5・HEY・Fizzyの実画面調査を踏まえ、仕事の内容と操作のつながりを見直しています。既存画面の100%再現は目標にせず、書籍・審査などの業務モデルは利用アプリに残します。
 
@@ -25,7 +25,7 @@ vp run dev
 
 `http://127.0.0.1:5173`にカタログを表示します。ポート変更は`vp run dev --port 5178`。DB・認証・外部サービスは不要です。
 
-- `/`・`/components`：部品一覧
+- `/`・`/components`：コンポーネント一覧
 - `/components/button`等：実表示、同じ表示のHTML、Honoコード、使い方
 - `/review/components`：全コンポーネントをまとめた確認
 - `/review/components/group-0`〜`group-5`：用途ごとの確認
@@ -45,7 +45,7 @@ FileInputは標準ファイル選択と、必要に応じてファイル名一�
 | パス              | 責務                                     | 公開入口            |
 | ----------------- | ---------------------------------------- | ------------------- |
 | `src/css`         | フレームワーク非依存の生CSS              | `ply/css/*`         |
-| `src/hono`        | 部品ごとのHono SSRコンポーネントと型     | `ply/hono`          |
+| `src/hono`        | HonoのSSRコンポーネントと型              | `ply/hono`          |
 | `src/controllers` | 利用するstimulus-ui controllerの公開入口 | `ply/controllers`   |
 | `catalog`         | Honoアプリ、利用例、カタログ専用ナビ     | 配布APIには含めない |
 
@@ -137,7 +137,7 @@ vp run test:visual
 
 `check`は型・lint・formatと、論理プロパティ、ネスト、レイヤー、禁止記法、未定義トークンを確認します。`test:visual`は自分専用の5178番サーバーを起動・終了し、Chromium・Firefox・WebKitで表示と操作を確認します。スクリーンショット・失敗時trace・JSON結果は`test-results`へ出力します。
 
-各部品のカタログには、実際に描画したHonoコードと、その出力HTMLも掲載しています。`check:package`は掲載例を`ply/hono`の配布型でもコンパイルし、ソースと公開型の不一致を検査します。
+各コンポーネントのカタログには、実際に描画したHonoコードと、その出力HTMLも掲載しています。`check:package`は掲載例を`ply/hono`の配布型でもコンパイルし、ソースと公開型の不一致を検査します。
 
 現在はライトが対象です。Safari 16.5実機、スクリーンリーダー、他OSのフォント、実利用者評価は未確認です。WebKitのテスト結果をSafari 16.5確認済みとは扱いません。文字200%試験はCSSの文字サイズ拡大であり、OS設定や全ブラウザのズームを代替しません。自動テストに全画像の目視やデザイン承認は含まれません。
 
@@ -145,7 +145,7 @@ vp run test:visual
 - [トークン仕様](design/tokens.md)
 - [移行ガイド](docs/migration.md)
 
-## 主な部品API
+## 主なコンポーネントAPI
 
 - `PageHeader`：左揃えが初期値。`icon={<Icon name="pencil" />}`を指定できる。
 - `Button` / `ActionLink`：通常は32px相当、`size="compact"`は同じ高さで左右余白を狭める。フォーム末尾等の大きな操作には`size="large"`（40px相当）を明示する。primaryは青い塗り。
@@ -200,11 +200,11 @@ Phosphor Iconsのregularを共通で使います。標準1em、小型6em/7とし
 
 第四版の確認は `/search` から記事を開き、「読み返す」「変更を確認」「下書きを保存」の順で操作できます。比較対象は同じ記事の前回保存（初回はサンプル初期内容）です。一覧へ戻ると検索条件を保持します。
 
-## 部品の対象
+## コンポーネントの対象
 
-各部品ページには配布CSSを使う実物、HTML、公開型でも検査するHonoコードを掲載しています。
+各コンポーネントページには配布CSSを使う実物、HTML、公開型でも検査するHonoコードを掲載しています。
 
-公開部品の一覧はカタログの`/components`を参照してください。Fieldが持つInput・Textarea・Select・ChoiceはFieldの見本に含みます。
+公開コンポーネントの一覧はカタログの`/components`を参照してください。Fieldが持つInput・Textarea・Select・ChoiceはFieldの見本に含みます。
 
 Switch・Range・DatePicker・TaskListは標準入力の送信、キーボード操作、disabledを利用します。Suggestionは自由入力に候補を添えます。`SuggestionController`を`suggestion`として登録すると、候補の絞り込み、標準input/changeイベントの通知、フォームのリセットが加わります。JavaScriptなしでは標準datalistを使います。Popover・ToastはHTML Popover API対応ブラウザを前提とし、対応するcontrollerを登録します。
 

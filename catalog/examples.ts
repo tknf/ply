@@ -26,7 +26,14 @@ export const examples = [
     name: "SplitView",
     description: "一覧と本文、作業と補足を並べる。",
     usage:
-      "primary・secondaryをDOMの読み順で配置します。layout=readerは一覧を狭く、inspectorは補足を狭くします。resizableを指定し、SplitterControllerをsplitterとして登録すると、境界のドラッグ・キー操作とrange入力で幅を変更できます。52rem未満では縦に積みます。",
+      "primary・secondaryをDOMの読み順で配置します。layout=readerは一覧を狭く、inspectorは補足を狭くします。resizableを指定し、SplitterControllerをsplitterとして登録すると、境界の持ち手のドラッグと矢印キーで幅を変更できます。52rem未満では縦に積みます。",
+  },
+  {
+    id: "wing",
+    name: "Wing",
+    description: "中央の作業面の後ろから、左右に開閉できる補助パネルを差し込む。",
+    usage:
+      "childrenを中央の作業面、start・endを左右のWingに置きます。各Wingはlabel・contentと任意のicon・openを受け取り、openの既定は展開です。開閉はdetails/summaryで動き、controllerの登録は不要です。storageKeyを指定し、WingControllerをwingとして登録すると、左右の開閉状態をcookieへ保存します。サーバーでwingCookieName(storageKey)のcookieを読み、savedStateへ渡すと、保存した状態のままSSRしてちらつきません。渡さない場合も接続時にcookieから復元します。キーはサイト内で一意にします。見出しは縦書きで、日本語は正立、英語などは時計回りに回して上から読みます。入り切らない見出しは末尾を省略し、右から左へ書く言語では開閉の印を反転します。56rem以上ではWingを作業面の後ろへ差し込み、閉じると外側の持ち手だけ、開くと持ち手から外側へパネルが出ます。左右の列は開閉に関わらず幅を確保し、作業面を動かしません。Wingは作業面より上下24pxずつ低く、内容はWingの中でスクロールします。作業面には背景を持つSurface等を置きます。56rem未満ではWingを補足として作業面の下へstart・endの順に積みます。AppShellではwingsに同じstart・endを渡すと、作業面の後ろに付きます。画面端に固定する常設のナビゲーションではなく、作業面に付属する補助パネルとして使います。",
   },
   {
     id: "section",
@@ -103,7 +110,7 @@ export const examples = [
     name: "Grid",
     description: "行と列を保ったまま、二方向にセルを読む作業面です。",
     usage:
-      "等列数のtableを使い、GridControllerをgridとして登録すると矢印・Home・End・PageUp・PageDownでセル間を移動できます。値の選択や更新は含めず、必要な場合は既存の操作部品をセル内で使用します。空状態ではControllerを起動しません。",
+      "等列数のtableを使い、GridControllerをgridとして登録すると矢印・Home・End・PageUp・PageDownでセル間を移動できます。値の選択や更新は含めず、必要な場合は既存の操作コンポーネントをセル内で使用します。空状態ではControllerを起動しません。",
   },
   {
     id: "treegrid",

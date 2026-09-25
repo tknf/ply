@@ -10,11 +10,39 @@ export const scheduleUrl = (
 const sampleEvents = (date: string): readonly CalendarEvent[] => {
   if (date === "2026-09-15")
     return [
-      { time: "10:00", label: "編集会議", href: "/examples/project", accent: "blue" },
-      { time: "14:00", label: "利用案内を確認", href: "/reservation" },
+      {
+        start: "10:00",
+        end: "11:00",
+        label: "編集会議",
+        href: "/examples/project",
+        accent: "blue",
+      },
+      {
+        start: "10:30",
+        end: "12:00",
+        label: "取材の準備",
+        href: "/examples/project",
+        accent: "green",
+      },
+      { start: "14:00", label: "利用案内を確認", href: "/reservation" },
+    ];
+  if (date === "2026-09-16")
+    return [{ label: "社内研修", href: "/examples/project", accent: "coral" }];
+  if (date === "2026-09-24")
+    return [
+      {
+        start: "13:00",
+        end: "15:00",
+        label: "デザインレビュー",
+        href: "/examples/project",
+        accent: "blue",
+      },
+      { start: "13:30", end: "14:00", label: "来客", href: "/examples/contact", accent: "amber" },
     ];
   if (date === "2026-09-25")
-    return [{ time: "18:00", label: "秋の読書会", href: "/reservation", accent: "amber" }];
+    return [
+      { start: "18:00", end: "21:00", label: "秋の読書会", href: "/reservation", accent: "amber" },
+    ];
   if (["2026-03-08", "2026-06-17", "2026-12-03"].includes(date))
     return [{ label: "制作の予定", href: "/examples/project" }];
   return [];

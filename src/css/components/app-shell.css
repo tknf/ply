@@ -44,7 +44,8 @@
         max-inline-size: 60cqi;
       }
     }
-    & > .workspace {
+    & > .workspace,
+    & > .ply-wing > .layout > .main > .workspace {
       container: ply-workspace / inline-size;
       display: grid;
       align-content: start;
@@ -57,11 +58,25 @@
       background: var(--ply-surface);
       box-shadow: var(--ply-shadow-sheet);
     }
+    /* Wingの左右列を含めた幅を使う。作業面の最大幅はWingの中央列が所有する。 */
+    & > .ply-wing {
+      inline-size: 100%;
+      padding-inline: var(--ply-space-4);
+      & > .layout > .main > .workspace {
+        inline-size: 100%;
+      }
+    }
     @container ply-app-shell (inline-size < 45rem) {
       & > .workspace {
         inline-size: calc(100% - var(--ply-space-4));
+      }
+      & > .workspace,
+      & > .ply-wing > .layout > .main > .workspace {
         padding-block: var(--ply-space-6);
         padding-inline: var(--ply-space-4);
+      }
+      & > .ply-wing {
+        padding-inline: var(--ply-space-2);
       }
       & > .bar {
         padding-inline: var(--ply-space-2);

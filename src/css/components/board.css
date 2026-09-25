@@ -82,7 +82,8 @@
         margin-block-start: var(--ply-space-3);
         padding-block: var(--ply-space-3);
         padding-inline: var(--ply-space-4);
-        border: var(--ply-stroke-width) dashed var(--ply-border);
+        /* 受け入れ先はミシン目で囲む。 */
+        border: var(--ply-stroke-width) dashed var(--ply-perforation);
         border-radius: var(--ply-radius-control);
         color: var(--ply-muted);
         text-align: center;

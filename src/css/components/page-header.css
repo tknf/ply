@@ -42,11 +42,40 @@
       gap: var(--ply-space-2);
       min-inline-size: 0;
     }
+    /* 中央揃えは作業面の主題。見出しの左右から線を伸ばし、ここからまとまりが始まることを示す。 */
     &[data-align="center"] {
       flex-direction: column;
       text-align: center;
       & > .heading {
         flex-basis: auto;
+        align-self: stretch;
+      }
+      & > .heading > h1 {
+        display: flex;
+        align-items: center;
+        gap: var(--ply-space-4);
+        &::before,
+        &::after {
+          content: "";
+          flex: 1 1 1.5rem;
+          min-inline-size: 1.5rem;
+          block-size: var(--ply-stroke-width);
+          background: linear-gradient(
+            to right,
+            transparent,
+            color-mix(in srgb, var(--ply-link) 55%, var(--ply-surface))
+          );
+        }
+        &::after {
+          background: linear-gradient(
+            to left,
+            transparent,
+            color-mix(in srgb, var(--ply-link) 55%, var(--ply-surface))
+          );
+        }
+      }
+      & > .heading > p {
+        margin-inline: auto;
       }
       & > .actions {
         justify-content: center;

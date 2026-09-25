@@ -1,4 +1,5 @@
 import type { Child } from "hono/jsx";
+import { Disclosure } from "./disclosure";
 
 export type ChartLegendItem = {
   label: string;
@@ -45,10 +46,10 @@ export const ChartFrame = ({
         ))}
       </ul>
     )}
-    <details class="data ply-table">
-      <summary>{tableLabel}</summary>
-      {table}
-    </details>
+    {/* 数値の表は他の開閉と同じDisclosureで畳む。表の見た目はply-tableの枠が持つ。 */}
+    <Disclosure class="data" summary={tableLabel}>
+      <div class="ply-table">{table}</div>
+    </Disclosure>
     {source && <p class="source">出典：{source}</p>}
   </figure>
 );

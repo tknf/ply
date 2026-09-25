@@ -1,11 +1,16 @@
 @layer components {
+  /* 線は背景として描き、実線・ミシン目・波線を同じ位置と太さの規則で切り替える。 */
   .ply-divider {
+    --ply-divider-color: var(--ply-border);
+    --ply-divider-size: var(--ply-stroke-width);
+    --ply-divider-paint: linear-gradient(var(--ply-divider-color), var(--ply-divider-color));
     display: flex;
     align-items: center;
     gap: var(--ply-space-3);
+    block-size: var(--ply-divider-size);
     margin: 0;
     border: 0;
-    border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+    background: var(--ply-divider-paint) 0 50% / 100% var(--ply-divider-size) no-repeat;
     & > span {
       flex: 0 1 auto;
       min-inline-size: 0;
@@ -14,12 +19,40 @@
       line-height: var(--ply-small-leading);
     }
     &:has(> span) {
-      border: 0;
+      block-size: auto;
+      background: none;
     }
     &:has(> span)::after {
       content: "";
       flex: 1 0 2rem;
-      border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+      block-size: var(--ply-divider-size);
+      background: var(--ply-divider-paint) 0 50% / 100% 100% no-repeat;
+    }
+    &[data-line="dashed"] {
+      --ply-divider-color: var(--ply-perforation);
+      --ply-divider-paint: repeating-linear-gradient(
+        to right,
+        var(--ply-divider-color) 0 var(--ply-dash),
+        transparent var(--ply-dash) calc(var(--ply-dash) + var(--ply-dash-gap))
+      );
+    }
+    /* 波線は線だけを波の形で抜き、文字は抜かない。 */
+    &[data-line="wavy"] {
+      --ply-divider-color: var(--ply-link);
+      --ply-divider-size: 0.375rem;
+      & > span {
+        color: var(--ply-link);
+        font-weight: 600;
+      }
+    }
+    &[data-line="wavy"]:not(:has(> span)),
+    &[data-line="wavy"]:has(> span)::after {
+      mask: var(--ply-wave) 0 50% / var(--ply-wave-size) repeat-x;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-divider {
+      --ply-divider-color: CanvasText;
     }
   }
 }

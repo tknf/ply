@@ -6,7 +6,8 @@
     padding-block: var(--ply-space-3);
     padding-inline: var(--ply-space-4);
     min-inline-size: 0;
-    border: var(--ply-stroke-width) dashed var(--ply-border);
+    /* 受け入れ先はミシン目で囲む。 */
+    border: var(--ply-stroke-width) dashed var(--ply-perforation);
     border-radius: calc(4em / 7);
     background: color-mix(in srgb, var(--ply-background) 50%, var(--ply-surface));
     font-size: var(--ply-label);
@@ -36,6 +37,25 @@
     /* 選択した名前は折り返せる一覧へ出し、標準入力との二重表示を避ける。 */
     &[data-enhanced="true"] > .ply-input {
       color: transparent;
+    }
+    /*
+      JavaScriptが有効なら標準入力を画面上は隠し、ラベルを共通Buttonとして見せる。
+      入力はフォーカスとキーボード操作のため残し、フォーカスの輪はラベルに出す。
+    */
+    & > .choose {
+      justify-self: start;
+      cursor: pointer;
+    }
+    &:has(> .ply-input:focus-visible) > .choose {
+      outline: 0.125rem solid var(--ply-link);
+      outline-offset: 0.125rem;
+    }
+    &:has(> .ply-input:disabled) > .choose {
+      border-color: var(--ply-border);
+      background: var(--ply-background);
+      color: var(--ply-muted);
+      box-shadow: none;
+      cursor: not-allowed;
     }
     & > .ply-input[type="file"] {
       block-size: auto;
@@ -130,6 +150,22 @@
   @media (forced-colors: active) {
     .ply-file-input[data-enhanced="true"] > .ply-input {
       color: CanvasText;
+    }
+  }
+  @media (scripting: enabled) {
+    .ply-file-input > .ply-input[type="file"] {
+      position: absolute;
+      inline-size: var(--ply-stroke-width);
+      block-size: var(--ply-stroke-width);
+      min-block-size: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+  @media (scripting: none) {
+    .ply-file-input > .choose {
+      display: none;
     }
   }
 }

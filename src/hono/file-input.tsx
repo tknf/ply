@@ -34,6 +34,19 @@ export const FileInput = ({
             type="file"
             data-file-input-target="input"
           />
+          {/*
+            標準のボタンの文言はページではなくブラウザの言語で決まるため、ラベルを共通Buttonの見た目で置く。
+            操作とフォーカスは標準入力が持ち、JavaScriptが無効な時は標準入力をそのまま表示する。
+          */}
+          <label
+            class="ply-button choose"
+            for={inputId}
+            data-variant="secondary"
+            data-size="default"
+            aria-hidden="true"
+          >
+            ファイルを選択
+          </label>
           <p class="hint" data-file-input-target="hint" hidden>
             ここにファイルをドロップすることもできます。
           </p>

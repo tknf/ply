@@ -3,6 +3,7 @@ export default () => (
   <div class="ply-stack">
     <MessageList
       label="受信した連絡"
+      newSince={{ id: "sample-categories" }}
       items={[
         {
           id: "sample-categories",
@@ -42,7 +43,7 @@ export default () => (
               preview:
                 "https://example.com/documents/abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789",
               href: "/review/mail/categories",
-              time: "2026/09/15 10:24",
+              time: "9月15日 10:24",
               datetime: "2026-09-15T10:24:00+09:00",
               threadCount: 128,
               unread: true,
@@ -62,7 +63,7 @@ export default () => (
               title: "確認用の添付資料",
               href: "/review/mail/categories",
               attachments: 1,
-              time: "9/12",
+              time: "9月12日",
             },
             {
               id: "unicode",
@@ -70,7 +71,7 @@ export default () => (
               title: "確認してください 👩‍💻 Meeting at 東京",
               preview: "本文の日本語・English・العربيةが混在します。",
               href: "/review/mail/meeting",
-              time: "9/11",
+              time: "9月11日",
             },
           ]}
         />
@@ -109,7 +110,7 @@ export default () => (
               sender: "担当者",
               title: "共有が終了した連絡",
               unavailableReason: "この連絡を閲覧する権限がありません。",
-              time: "9/10",
+              time: "9月10日",
             },
           ]}
         />

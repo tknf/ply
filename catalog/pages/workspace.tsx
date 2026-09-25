@@ -86,10 +86,10 @@ export const WorkspaceFrame = ({
             label: "Plyを使う",
             items: [
               {
-                label: "部品カタログ",
+                label: "コンポーネントカタログ",
                 href: "/components",
                 icon: "grid",
-                description: "部品と使い方を見る",
+                description: "コンポーネントと使い方を見る",
               },
               {
                 label: "全体の組み合わせ",

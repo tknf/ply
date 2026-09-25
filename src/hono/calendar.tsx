@@ -1,12 +1,37 @@
 import type { Child } from "hono/jsx";
 import { ActionLink, Button } from "./button";
-import { DataList } from "./data-list";
 import { FilterBar, type FilterBarItem } from "./filter-bar";
 import { Icon } from "./icon";
-import { Tag, TagGroup } from "./tag";
 import { classes, type Accent, type ElementProps } from "./types";
+import {
+  eventRange,
+  isAllDay,
+  layoutDay,
+  minutesOf,
+  sortEvents,
+} from "../internal/calendar-layout";
+import {
+  columnOf,
+  isWeekend,
+  rowWeekNumber,
+  weekdayLabel,
+  weekdayLabels,
+  type WeekStart,
+} from "../internal/calendar-date";
 
-export type CalendarEvent = { label: string; href: string; time?: string; accent?: Accent };
+export type { WeekStart } from "../internal/calendar-date";
+
+export type CalendarEvent = {
+  label: string;
+  href: string;
+  /** 開始時刻（HH:MM）。省略すると終日の予定。 */
+  start?: string;
+  /** 終了時刻（HH:MM）。省略すると開始から1時間。 */
+  end?: string;
+  accent?: Accent;
+  /** 仮の予定。ミシン目の縁と斜線で、まだ確定していないことを示す。 */
+  tentative?: boolean;
+};
 export type CalendarDay = {
   day: number;
   date: string;
@@ -28,6 +53,14 @@ export type CalendarMonth = {
 };
 type CalendarBaseProps = Omit<ElementProps<"div">, "children"> & {
   label: string;
+  /** 時間割の稼働時間（時）。外側を淡く塗り、今日が含まれない時は開始時刻へスクロールする。 */
+  hours?: { start: number; end: number };
+  /** currentの日に引く現在時刻（HH:MM）。時間割は開いた時にこの時刻を表示する。 */
+  now?: string;
+  /** 週の開始曜日。weeksの各行もこの曜日から並べる。 */
+  weekStart?: WeekStart;
+  /** 月の各行と週の見出しにISO週番号を表示する。 */
+  weekNumbers?: boolean;
   previous?: CalendarPeriodLink;
   next?: CalendarPeriodLink;
   today?: CalendarPeriodLink;
@@ -38,6 +71,7 @@ type CalendarBaseProps = Omit<ElementProps<"div">, "children"> & {
 export type CalendarProps = CalendarBaseProps &
   (
     | {
+        /** weekは先頭の一行を時間割で表示する。1日なら日、5日なら稼働日の表示になる。 */
         view?: "month" | "week";
         weeks: readonly (readonly (CalendarDay | null)[])[];
         months?: never;
@@ -56,7 +90,6 @@ export type CalendarProps = CalendarBaseProps &
         selection?: never;
       }
   );
-const weekdays = ["月", "火", "水", "木", "金", "土", "日"] as const;
 
 const DayMarker = ({ day, selection }: { day: CalendarDay; selection?: CalendarSelection }) => {
   const label = day.label ?? day.date;
@@ -93,16 +126,15 @@ const DayMarker = ({ day, selection }: { day: CalendarDay; selection?: CalendarS
       {day.day}
     </Button>
   ) : day.href && !day.disabled ? (
-    <ActionLink
+    <a
       class="day"
-      size="compact"
       href={day.href}
       aria-current={day.current ? "date" : undefined}
       data-current={day.current ? "true" : undefined}
       aria-label={label}
     >
       {day.day}
-    </ActionLink>
+    </a>
   ) : (
     <time
       class="day"
@@ -115,46 +147,241 @@ const DayMarker = ({ day, selection }: { day: CalendarDay; selection?: CalendarS
   );
 };
 
-const DayEvents = ({ events, label }: { events?: readonly CalendarEvent[]; label: string }) =>
-  events && events.length > 0 ? (
-    <TagGroup label={`${label}の予定`}>
-      {events.map((event) => (
-        <Tag
-          label={event.time ? `${event.time} ${event.label}` : event.label}
-          href={event.href}
-          accent={event.accent}
-        />
-      ))}
-    </TagGroup>
+/** 月の初日だけ、日付の前に月を添えて月の切り替わりを示す。 */
+const MonthStart = ({ day }: { day: CalendarDay }) =>
+  day.day === 1 ? (
+    <span class="month-start" aria-hidden="true">
+      {Number(day.date.slice(5, 7))}月
+    </span>
   ) : null;
+
+const clock = (minutes: number) =>
+  `${Math.floor(minutes / 60)}:${(minutes % 60).toString().padStart(2, "0")}`;
+
+/** 時刻は表示用に正規化し、datetimeには入力どおりのHH:MMを残す。 */
+const EventTime = ({
+  event,
+  withEnd,
+  allDayLabel,
+}: {
+  event: CalendarEvent;
+  withEnd?: boolean;
+  allDayLabel?: boolean;
+}) => {
+  if (isAllDay(event)) return allDayLabel ? <span class="time">終日</span> : null;
+  const range = eventRange(event);
+  return (
+    <span class="time">
+      <time datetime={event.start}>{clock(range.start)}</time>
+      {withEnd && (
+        <>
+          –<time datetime={event.end}>{clock(range.end)}</time>
+        </>
+      )}
+    </span>
+  );
+};
+
+/** 今日より前の日の予定と、今日のうち現在時刻までに終わった予定を過去として淡くする。 */
+type Clock = { today?: string; now: number | null };
+const isPast = (day: CalendarDay, event: CalendarEvent, clockState: Clock) => {
+  if (!clockState.today) return false;
+  if (day.date < clockState.today) return true;
+  return (
+    day.date === clockState.today &&
+    clockState.now !== null &&
+    !isAllDay(event) &&
+    eventRange(event).end <= clockState.now
+  );
+};
+
+const EventLink = ({
+  event,
+  withEnd,
+  allDayLabel,
+  past,
+}: {
+  event: CalendarEvent;
+  withEnd?: boolean;
+  allDayLabel?: boolean;
+  past: boolean;
+}) => (
+  <a
+    class="event"
+    href={event.href}
+    data-accent={event.accent}
+    data-all-day={isAllDay(event) ? "true" : undefined}
+    data-past={past ? "true" : undefined}
+    data-tentative={event.tentative ? "true" : undefined}
+  >
+    <span class="bar" aria-hidden="true" />
+    <EventTime event={event} withEnd={withEnd} allDayLabel={allDayLabel} />
+    <span class="label">{event.label}</span>
+  </a>
+);
+
+const DayEvents = ({ day, clockState }: { day: CalendarDay; clockState: Clock }) =>
+  day.events && day.events.length > 0 ? (
+    <ul class="events" aria-label={`${day.label ?? day.date}の予定`}>
+      {sortEvents(day.events).map((event) => (
+        <li>
+          <EventLink event={event} past={isPast(day, event, clockState)} />
+        </li>
+      ))}
+    </ul>
+  ) : null;
+
+const hourLabel = (hour: number) => `${hour.toString().padStart(2, "0")}:00`;
+
+const CalendarWeek = ({
+  label,
+  week,
+  selection,
+  hours,
+  clockState,
+}: {
+  label: string;
+  week: readonly (CalendarDay | null)[];
+  selection?: CalendarSelection;
+  hours: { start: number; end: number };
+  clockState: Clock;
+}) => {
+  const nowMinutes = clockState.now;
+  const showsToday = week.some((day) => day?.current);
+  const nowVisible = showsToday && nowMinutes !== null;
+  // 開いた時は現在時刻、今日を含まない週は稼働時間の始まりを、少し手前から表示する。
+  const target = Math.max(0, (nowVisible ? nowMinutes : hours.start * 60) - 60);
+  return (
+    <div
+      class="week"
+      style={`--ply-calendar-days: ${week.length}; --ply-calendar-core-start: ${hours.start}; --ply-calendar-core-end: ${hours.end}`}
+    >
+      <span class="corner" aria-hidden="true" />
+      <span class="all-day-label" aria-hidden="true">
+        終日
+      </span>
+      <div class="hours" aria-hidden="true">
+        {Array.from({ length: 24 }, (_, hour) => (
+          <span style={`--ply-calendar-hour-index: ${hour}`}>{hourLabel(hour)}</span>
+        ))}
+        {nowVisible && (
+          <span class="now-label" style={`--ply-calendar-now: ${nowMinutes}`}>
+            {clock(nowMinutes)}
+          </span>
+        )}
+      </div>
+      <span class="scroll-target" style={`--ply-calendar-target: ${target}`} />
+      {week.map((day) => {
+        if (!day) return <div class="column" aria-hidden="true" />;
+        const events = day.events ?? [];
+        const allDay = sortEvents(events).filter(isAllDay);
+        const timed = layoutDay(events);
+        return (
+          <div
+            class="column"
+            role="group"
+            aria-label={day.label ?? day.date}
+            data-current={day.current ? "true" : undefined}
+            data-outside={day.outside ? "true" : undefined}
+            data-weekend={isWeekend(day.date) ? "true" : undefined}
+          >
+            <div class="heading">
+              <span class="weekday" aria-hidden="true">
+                {weekdayLabel(day.date)}
+              </span>
+              <DayMarker day={day} selection={selection} />
+            </div>
+            <div class="all-day">
+              {allDay.length > 0 && (
+                <ul aria-label="終日の予定">
+                  {allDay.map((event) => (
+                    <li>
+                      <EventLink event={event} past={isPast(day, event, clockState)} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <div class="timed">
+              {timed.length > 0 && (
+                <ol aria-label={`${label}・${day.label ?? day.date}の時間の予定`}>
+                  {timed.map((item) => (
+                    <li
+                      style={`--ply-calendar-start: ${item.start}; --ply-calendar-end: ${item.end}; --ply-calendar-lane: ${item.lane}; --ply-calendar-lanes: ${item.lanes}`}
+                      data-length={item.end - item.start < 45 ? "short" : undefined}
+                    >
+                      <EventLink
+                        event={item.event}
+                        withEnd
+                        past={isPast(day, item.event, clockState)}
+                      />
+                    </li>
+                  ))}
+                </ol>
+              )}
+              {day.current && nowVisible && (
+                <span
+                  class="now"
+                  style={`--ply-calendar-now: ${nowMinutes}`}
+                  role="img"
+                  aria-label={`現在時刻 ${clock(nowMinutes)}`}
+                />
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+const rowDates = (week: readonly (CalendarDay | null)[]) =>
+  week.flatMap((day) => (day ? [day.date] : []));
 
 const CalendarGrid = ({
   label,
   weeks,
   selection,
+  clockState,
+  weekStart,
+  weekNumbers,
 }: {
   label: string;
   weeks: readonly (readonly (CalendarDay | null)[])[];
   selection?: CalendarSelection;
+  clockState: Clock;
+  weekStart: WeekStart;
+  weekNumbers: boolean;
 }) => (
-  <table>
+  <table data-week-numbers={weekNumbers ? "true" : undefined}>
     <caption>{label}</caption>
     <thead>
       <tr>
-        {weekdays.map((weekday) => (
+        {weekNumbers && (
+          <th scope="col" class="week-number">
+            週
+          </th>
+        )}
+        {weekdayLabels(weekStart).map((weekday) => (
           <th scope="col">{weekday}</th>
         ))}
       </tr>
     </thead>
     <tbody>
       {weeks.map((week) => (
-        <tr>
+        <tr data-current={week.some((day) => day?.current) ? "true" : undefined}>
+          {weekNumbers && (
+            <th scope="row" class="week-number">
+              {rowWeekNumber(rowDates(week), weekStart)}
+            </th>
+          )}
           {Array.from({ length: 7 }, (_, index) => {
             const day = week[index];
             return (
               <td
                 data-current={day?.current ? "true" : undefined}
                 data-outside={day?.outside ? "true" : undefined}
+                data-disabled={day?.disabled ? "true" : undefined}
                 data-events={day?.events?.length ? "true" : undefined}
                 data-selected={
                   day && selection?.mode === "single" && selection.value === day.date
@@ -165,10 +392,11 @@ const CalendarGrid = ({
                 {day && (
                   <>
                     <span class="weekday" aria-hidden="true">
-                      {weekdays[index]}
+                      {weekdayLabel(day.date)}
                     </span>
+                    <MonthStart day={day} />
                     <DayMarker day={day} selection={selection} />
-                    <DayEvents events={day.events} label={day.label ?? day.date} />
+                    <DayEvents day={day} clockState={clockState} />
                   </>
                 )}
               </td>
@@ -180,7 +408,15 @@ const CalendarGrid = ({
   </table>
 );
 
-const CalendarYear = ({ label, months }: { label: string; months: readonly CalendarMonth[] }) => {
+const CalendarYear = ({
+  label,
+  months,
+  weekStart,
+}: {
+  label: string;
+  months: readonly CalendarMonth[];
+  weekStart: WeekStart;
+}) => {
   const dates = months
     .flatMap((month) =>
       month.weeks.flat().filter((day): day is CalendarDay => Boolean(day && !day.outside)),
@@ -199,7 +435,7 @@ const CalendarYear = ({ label, months }: { label: string; months: readonly Calen
         {dates.map((day, index) => {
           const month = monthStarts.get(day.date);
           const calendarDate = new Date(`${day.date}T00:00:00Z`);
-          const weekday = (calendarDate.getUTCDay() + 6) % 7;
+          const column = columnOf(day.date, weekStart);
           const previousDate = dates[index - 1];
           const missingDays = previousDate
             ? Math.max(
@@ -209,7 +445,7 @@ const CalendarYear = ({ label, months }: { label: string; months: readonly Calen
                     86_400_000,
                 ) - 1,
               )
-            : weekday;
+            : column;
           const dateLabel = day.events?.length
             ? `${day.label ?? day.date}、${day.events.length}件の予定：${day.events.map((event) => event.label).join("、")}`
             : (day.label ?? day.date);
@@ -221,7 +457,7 @@ const CalendarYear = ({ label, months }: { label: string; months: readonly Calen
               aria-current={day.current && !dateHref ? "date" : undefined}
             >
               <span class="weekday" aria-hidden="true">
-                {weekdays[weekday]}
+                {weekdayLabel(day.date)}
               </span>
               <span class="number" aria-hidden="true">
                 {day.day}
@@ -235,7 +471,7 @@ const CalendarYear = ({ label, months }: { label: string; months: readonly Calen
               ))}
               <div
                 class="year-day"
-                data-weekend={weekday >= 5 ? "true" : undefined}
+                data-weekend={isWeekend(day.date) ? "true" : undefined}
                 data-month-start={month ? "true" : undefined}
                 data-current={day.current ? "true" : undefined}
                 data-events={day.events?.length ? "true" : undefined}
@@ -274,29 +510,51 @@ const CalendarYear = ({ label, months }: { label: string; months: readonly Calen
   );
 };
 
+/** 一覧は日付ごとのまとまり。日付は週の見出しと同じ数字と曜日、予定は月・週と同じ行で表す。 */
 const CalendarAgenda = ({
   days,
   previewLabel,
+  clockState,
 }: {
   days: readonly CalendarDay[];
   previewLabel?: string;
+  clockState: Clock;
 }) => (
   <div class={classes("agenda", previewLabel && "period-agenda")}>
     {previewLabel && <p class="agenda-heading">{previewLabel}</p>}
-    {days.map((day) => (
-      <section class="agenda-group">
-        <h3>
-          <time datetime={day.date}>{day.label ?? day.date}</time>
-        </h3>
-        <DataList
-          aria-label={`${day.label ?? day.date}の予定`}
-          items={(day.events ?? []).map((event) => ({
-            title: event.label,
-            href: event.href,
-            start: event.time ? <time datetime={event.time}>{event.time}</time> : undefined,
-          }))}
-        />
-      </section>
+    {days.map((day, index) => (
+      <>
+        {/* 日本語の日付は月・日・曜日の順に読むため、月は日付に添えず、月が変わる所だけに区切りとして置く。 */}
+        {index > 0 && day.date.slice(0, 7) !== days[index - 1]?.date.slice(0, 7) && (
+          <p class="agenda-month" aria-hidden="true">
+            {Number(day.date.slice(5, 7))}月
+          </p>
+        )}
+        <section
+          class="agenda-group"
+          aria-label={day.label ?? day.date}
+          data-current={day.current ? "true" : undefined}
+        >
+          <h3>
+            <time datetime={day.date}>
+              <span class="number">{day.day}</span>
+              <span class="weekday">{weekdayLabel(day.date)}</span>
+            </time>
+          </h3>
+          <ul class="events" aria-label={`${day.label ?? day.date}の予定`}>
+            {sortEvents(day.events ?? []).map((event) => (
+              <li>
+                <EventLink
+                  event={event}
+                  withEnd
+                  allDayLabel
+                  past={isPast(day, event, clockState)}
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      </>
     ))}
   </div>
 );
@@ -312,10 +570,18 @@ export const Calendar = ({
   views,
   actions,
   selection,
+  hours = { start: 8, end: 20 },
+  now,
+  weekStart = "monday",
+  weekNumbers = false,
   emptyLabel = "この期間に予定はありません",
   class: className,
   ...attributes
 }: CalendarProps) => {
+  const clockState: Clock = {
+    today: (weeks ?? []).flat().find((day) => day?.current)?.date,
+    now: minutesOf(now),
+  };
   const eventDays = (weeks ?? [])
     .flat()
     .filter((day): day is CalendarDay =>
@@ -335,7 +601,12 @@ export const Calendar = ({
       aria-label={label}
     >
       <div class="controls">
-        <h2>{label}</h2>
+        <h2>
+          {label}
+          {weekNumbers && view === "week" && weeks?.[0] && (
+            <span class="week-number">第{rowWeekNumber(rowDates(weeks[0]), weekStart)}週</span>
+          )}
+        </h2>
         {(previous || today || next) && (
           <nav class="period" aria-label="表示期間">
             {previous && (
@@ -369,31 +640,53 @@ export const Calendar = ({
             )}
           </nav>
         )}
-        {views && views.length > 0 && <FilterBar label="予定の表示形式" items={views} />}
+        {views && views.length > 0 && (
+          <FilterBar label="予定の表示形式" items={views} appearance="segmented" />
+        )}
         {actions != null && actions !== false && <div class="actions">{actions}</div>}
       </div>
       {view === "year" ? (
         months && months.length > 0 ? (
-          <CalendarYear label={label} months={months} />
+          <CalendarYear label={label} months={months} weekStart={weekStart} />
         ) : (
           <p class="empty">{emptyLabel}</p>
         )
       ) : view === "agenda" ? (
         eventDays.length > 0 ? (
-          <CalendarAgenda days={eventDays} />
+          <CalendarAgenda days={eventDays} clockState={clockState} />
         ) : (
           <p class="empty">{emptyLabel}</p>
         )
+      ) : view === "week" && weeks?.[0] ? (
+        <div
+          class="viewport"
+          tabindex={0}
+          role="group"
+          aria-label={`${label}の時間割`}
+          data-controller="calendar-scroll"
+        >
+          <CalendarWeek
+            label={label}
+            week={weeks[0]}
+            selection={selection}
+            hours={hours}
+            clockState={clockState}
+          />
+        </div>
       ) : weeks && weeks.length > 0 ? (
         <>
           <div class="viewport" tabindex={0} role="group" aria-label={`${label}の日付グリッド`}>
-            <CalendarGrid label={label} weeks={weeks} selection={selection} />
+            <CalendarGrid
+              label={label}
+              weeks={weeks}
+              selection={selection}
+              clockState={clockState}
+              weekStart={weekStart}
+              weekNumbers={weekNumbers}
+            />
           </div>
           {eventDays.length > 0 && (
-            <CalendarAgenda
-              days={eventDays}
-              previewLabel={view === "week" ? "この週の予定" : "この月の予定"}
-            />
+            <CalendarAgenda days={eventDays} previewLabel="この月の予定" clockState={clockState} />
           )}
         </>
       ) : (

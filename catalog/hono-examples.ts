@@ -1,8 +1,14 @@
 import type { Child } from "hono/jsx";
 
-const modules = import.meta.glob<{ default: () => Child }>("./hono-examples/*.tsx", {
-  eager: true,
-});
+/** 例がSSRで使うリクエスト由来の値。WingはcookieからSSRの開閉状態を決める。 */
+export type ExampleContext = { cookies: Record<string, string> };
+
+const modules = import.meta.glob<{ default: (context: ExampleContext) => Child }>(
+  "./hono-examples/*.tsx",
+  {
+    eager: true,
+  },
+);
 const sources = import.meta.glob<string>("./hono-examples/*.tsx", {
   eager: true,
   query: "?raw",

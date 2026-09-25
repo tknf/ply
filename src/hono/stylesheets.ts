@@ -7,6 +7,7 @@ export const stylesheets = [
   "components/app-shell.css",
   "components/command-menu.css",
   "components/split-view.css",
+  "components/wing.css",
   "components/section.css",
   "components/message.css",
   "components/list-frame.css",

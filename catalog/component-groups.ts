@@ -5,6 +5,7 @@ export const componentGroups = [
       "app-shell",
       "command-menu",
       "split-view",
+      "wing",
       "section",
       "surface",
       "context-bar",

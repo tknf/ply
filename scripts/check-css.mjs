@@ -18,7 +18,7 @@ const tokenDefinitions = new Set();
 const references = [];
 let checkedSurfacePadding = false;
 let checkedSectionHeading = false;
-// 文字位置に影響する書体の基準は、操作部品で共通のトークンを使う。
+// 文字位置に影響する書体の基準は、操作コンポーネントで共通のトークンを使う。
 const controlFontOwners = new Map([
   ["src/css/components/button.css", ".ply-button"],
   ["src/css/components/field.css", ".ply-input"],
@@ -28,6 +28,7 @@ const controlFontOwners = new Map([
   ["src/css/components/dialog.css", ".ply-dialog > .panel"],
   ["src/css/components/popover.css", ".ply-popover > .panel"],
   ["src/css/components/disclosure.css", "& > summary"],
+  ["src/css/components/wing.css", "& > summary"],
   ["src/css/components/tabs.css", "& > button"],
 ]);
 const cssFiles = [

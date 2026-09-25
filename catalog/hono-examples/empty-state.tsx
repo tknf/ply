@@ -12,7 +12,7 @@ export default () => (
         kind="start"
         title="最初の記事を書いてみましょう"
         actions={
-          <ActionLink href="/example" variant="primary">
+          <ActionLink href="/example" variant="primary" shape="pill">
             記事を書く
           </ActionLink>
         }

@@ -2,6 +2,7 @@ export * from "./surface";
 export * from "./app-shell";
 export * from "./command-menu";
 export * from "./split-view";
+export * from "./wing";
 export * from "./section";
 export * from "./message";
 export * from "./message-list";

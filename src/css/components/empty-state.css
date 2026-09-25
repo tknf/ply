@@ -33,17 +33,6 @@
       box-shadow:
         -0.25rem 0.25rem 0 var(--ply-cover),
         -0.3125rem 0.3125rem 0 var(--ply-border);
-      &::after {
-        content: "";
-        position: absolute;
-        inset-block-start: -0.1875rem;
-        inset-inline-end: -0.1875rem;
-        inline-size: 0.625rem;
-        block-size: 0.625rem;
-        border: 0.125rem solid var(--ply-surface);
-        border-radius: 50%;
-        background: var(--ply-mark);
-      }
     }
     & > .title {
       grid-column: 2;
@@ -76,9 +65,6 @@
     &[data-kind="complete"] > .symbol {
       background: linear-gradient(white, var(--ply-success-soft));
       color: var(--ply-success);
-      &::after {
-        background: var(--ply-success);
-      }
     }
     @container ply-empty-state (inline-size < 22rem) {
       & > .symbol {

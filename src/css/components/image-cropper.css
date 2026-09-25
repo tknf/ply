@@ -137,19 +137,12 @@
       min-inline-size: 0;
     }
 
+    /* 開閉の見た目はDisclosureが持つ。 */
     & > .layout > .settings > .position {
-      padding-block: var(--ply-space-2);
       border-block: var(--ply-stroke-width) solid var(--ply-border);
     }
 
-    & > .layout > .settings > .position > summary {
-      color: var(--ply-link);
-      font-size: var(--ply-label);
-      line-height: var(--ply-label-leading);
-      cursor: pointer;
-    }
-
-    & > .layout > .settings > .position > .ranges {
+    & > .layout > .settings > .position > .body > .ranges {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: var(--ply-space-4);
@@ -207,7 +200,7 @@
 
   @container ply-image-cropper (inline-size < 25rem) {
     .ply-image-cropper > .layout > .settings,
-    .ply-image-cropper > .layout > .settings > .position > .ranges {
+    .ply-image-cropper > .layout > .settings > .position > .body > .ranges {
       grid-template-columns: minmax(0, 1fr);
     }
   }

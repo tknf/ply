@@ -42,12 +42,17 @@
     flex: none;
   }
 
+  /* 編集中は濃い太枠で囲み、今ここを書き換えていることを示す。 */
   .ply-editable-property > .editor {
     display: grid;
     justify-items: start;
     gap: var(--ply-space-2);
     min-inline-size: 0;
     inline-size: min(100%, 28rem);
+    padding-block: var(--ply-space-2);
+    padding-inline: var(--ply-space-2);
+    border: var(--ply-frame-width) solid var(--ply-frame-color);
+    border-radius: var(--ply-radius-surface);
   }
 
   .ply-editable-property > .editor > .ply-input {

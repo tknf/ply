@@ -170,7 +170,7 @@ test("色の変更や説明文の文字サイズまで禁止しない", async ()
   ).toEqual([]);
 });
 
-test("旧実装のような共通部品を迂回したボタンを新規ファイルでも検出する", () => {
+test("旧実装のような共通コンポーネントを迂回したボタンを新規ファイルでも検出する", () => {
   const source = 'export const Example = () => <button type="button">確認する</button>;';
   expect(controlMarkupErrors(source, "src/hono/new-menu.tsx")).not.toEqual([]);
   expect(

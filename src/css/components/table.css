@@ -126,9 +126,15 @@
           opacity: 0.6;
           box-shadow: none;
         }
+        /* 並べ替え中の列以外は、見出しに触れた時だけ印を出して見出しを静かに保つ。 */
         & > .indicator {
           inline-size: 1rem;
           color: var(--ply-muted);
+          opacity: 0;
+          transition: opacity var(--ply-duration) ease;
+        }
+        &:is(:hover, :focus-visible) > .indicator {
+          opacity: 1;
         }
       }
       & > thead > tr > th[data-state="ascending"] > .sort,
@@ -136,6 +142,7 @@
         color: var(--ply-link);
         & > .indicator {
           color: inherit;
+          opacity: 1;
         }
       }
       & > :is(thead, tbody) > tr > :is(th, td):has(> .ply-choice) {
@@ -162,6 +169,12 @@
         font-weight: 600;
         border-block-end: 0;
       }
+    }
+  }
+  /* 触れて確かめられない端末では、並べ替えられる列だと分かるよう印を常に出す。 */
+  @media (hover: none) {
+    .ply-table > table > thead > tr > th > .sort > .indicator {
+      opacity: 1;
     }
   }
 }

@@ -25,7 +25,7 @@ export const TableOfContents = ({ label, sections, offset = 80 }: TableOfContent
     }
     chapter += 1;
     subsection = 0;
-    return { section, level, number: String(chapter).padStart(2, "0") };
+    return { section, level, number: String(chapter) };
   });
   return (
     <div

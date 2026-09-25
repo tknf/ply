@@ -300,7 +300,7 @@ test("Toolbarの使用例は標準フォーム操作を持ち表示と掲載コ�
   expect(result.match(/<button[^>]*type="reset"[^>]*>初期値に戻す<\/button>/g)).toHaveLength(1);
 });
 
-test("標準HTML属性とStimulus属性を部品へ渡せる", async () => {
+test("標準HTML属性とStimulus属性をコンポーネントへ渡せる", async () => {
   const result = await render(
     <Button type="submit" name="intent" value="save" form="editor" data-action="click->editor#save">
       保存する

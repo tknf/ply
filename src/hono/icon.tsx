@@ -8,7 +8,7 @@ export type IconProps = {
   class?: string;
   "data-size"?: "small";
 };
-/** 装飾アイコン。意味と操作名は隣の文言または操作部品のaria-labelで伝える。 */
+/** 装飾アイコン。意味と操作名は隣の文言または操作コンポーネントのaria-labelで伝える。 */
 export const Icon = ({
   name,
   sprite = "/assets/ply-icons.svg",

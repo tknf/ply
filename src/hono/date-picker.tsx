@@ -93,6 +93,7 @@ export const DatePicker = (props: DatePickerProps) => {
       id={pickerId}
       class={classes("ply-date-picker", className)}
       data-controller="date-picker"
+      data-enhancement="pending"
       data-date-picker-choice-value={mode}
       data-date-picker-mode-value={initial.kind}
       data-date-picker-min-date-value={min}
@@ -107,7 +108,8 @@ export const DatePicker = (props: DatePickerProps) => {
       <legend id={`${pickerId}-label`} class="label">
         {label}
       </legend>
-      <div class="control" data-date-picker-target="control" hidden>
+      {/* JavaScript有効時はCSSが接続前から一欄の表示にし、接続後と同じ構造を保つ。無効時は標準入力を表示する。 */}
+      <div class="control" data-date-picker-target="control">
         <Input
           id={`${pickerId}-input`}
           value={formatSelection(initial)}

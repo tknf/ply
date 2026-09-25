@@ -99,7 +99,7 @@ export default () => (
               <td data-cell="short" data-sort-value={record.date}>
                 {record.date ? (
                   <time datetime={record.date}>
-                    {record.date.slice(0, 10).replaceAll("-", "/")}
+                    {Number(record.date.slice(5, 7))}月{Number(record.date.slice(8, 10))}日
                   </time>
                 ) : (
                   "未登録"

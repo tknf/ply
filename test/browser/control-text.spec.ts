@@ -92,7 +92,7 @@ test.beforeEach(async ({ page }) => {
 
 test("Button・Inputの14pxと16pxで直書き・子要素・placeholderが上ずれない", async ({ page }) => {
   for (const metric of await measureControls(page)) {
-    expect(metric.weight, "親の太字を操作部品へ引き継がない").toBe("400");
+    expect(metric.weight, "親の太字を操作コンポーネントへ引き継がない").toBe("400");
     expect(
       Math.abs(metric.delta),
       `${metric.tag} ${metric.size}px wrapped=${metric.wrapped}`,

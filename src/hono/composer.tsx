@@ -46,7 +46,7 @@ export const Composer = ({
     {attachments && <div class="attachments">{attachments}</div>}
     <div class="footer">
       {actions && <div class="actions">{actions}</div>}
-      <Button type="submit" variant="primary" busy={busy} busyLabel="送信中…">
+      <Button type="submit" variant="primary" shape="pill" busy={busy} busyLabel="送信中…">
         {submitLabel}
       </Button>
     </div>

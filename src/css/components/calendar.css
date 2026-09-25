@@ -1,5 +1,8 @@
 @layer components {
   .ply-calendar {
+    --ply-calendar-scroll-size: min(40rem, 75dvh);
+    --ply-calendar-meta-size: clamp(0.6875rem, calc(0.666667rem + 0.104167vw), 0.75rem);
+    --ply-calendar-quiet: color-mix(in srgb, var(--ply-background) 55%, var(--ply-surface));
     min-inline-size: 0;
     color: var(--ply-text);
     font-family: var(--ply-control-font-family);
@@ -19,6 +22,12 @@
         font-size: var(--ply-body);
         font-weight: 600;
         line-height: var(--ply-control-leading);
+        & > .week-number {
+          margin-inline-start: var(--ply-space-2);
+          color: var(--ply-muted);
+          font-size: var(--ply-small);
+          font-weight: 500;
+        }
       }
       & > .period {
         display: inline-flex;
@@ -50,6 +59,7 @@
         outline: 0.125rem solid var(--ply-link);
         outline-offset: -0.125rem;
       }
+      /* 月は罫線と日付だけの静かな表。今日は日付の丸だけで示し、セル全体を塗らない。 */
       & > table {
         inline-size: 100%;
         min-inline-size: 35rem;
@@ -70,22 +80,19 @@
           white-space: nowrap;
         }
         & > thead > tr > th {
-          padding-block: var(--ply-space-2) var(--ply-space-1);
-          padding-inline: var(--ply-space-2);
+          padding-block: var(--ply-space-2);
+          padding-inline: var(--ply-space-1);
           border-block-end: var(--ply-stroke-width) solid var(--ply-border);
-          border-inline-end: var(--ply-stroke-width) solid var(--ply-border);
-          background: var(--ply-background);
           color: var(--ply-muted);
-          font-weight: 400;
-          text-align: start;
-          &:last-child {
-            border-inline-end: 0;
-          }
+          font-size: var(--ply-calendar-meta-size);
+          font-weight: 500;
+          line-height: 1rem;
+          text-align: center;
         }
         & > tbody > tr > td {
-          block-size: 4.5rem;
-          padding-block: var(--ply-space-2) var(--ply-space-1);
-          padding-inline: var(--ply-space-2);
+          block-size: 6.5rem;
+          padding-block: var(--ply-space-1) var(--ply-space-2);
+          padding-inline: var(--ply-space-1);
           border-inline-end: var(--ply-stroke-width) solid var(--ply-border);
           border-block-end: var(--ply-stroke-width) solid var(--ply-border);
           background: var(--ply-surface);
@@ -93,104 +100,517 @@
           &:last-child {
             border-inline-end: 0;
           }
-          &:hover,
-          &:focus-within {
-            background: var(--ply-info-soft);
-          }
           &[data-outside="true"] {
-            color: var(--ply-muted);
-            background: var(--ply-background);
-          }
-          &[data-current="true"] {
-            background: var(--ply-info-soft);
-          }
-          & > .day {
-            min-inline-size: var(--ply-button-size);
-            font-variant-numeric: tabular-nums;
-          }
-          & > :is(button, a).day {
-            border-color: transparent;
-            background: transparent;
-            background-image: none;
-            box-shadow: none;
-            &:hover:not(:disabled):not([data-state]) {
-              background: var(--ply-background);
-              box-shadow: none;
-            }
-            &:active:not(:disabled):not([data-state]) {
-              background: var(--ply-cover);
-              box-shadow: var(--ply-shadow-control-pressed);
-            }
+            background: var(--ply-calendar-quiet);
           }
           & > .weekday {
             display: none;
           }
-          & > time.day {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-block-size: var(--ply-button-size);
-            &[data-current="true"] {
-              color: var(--ply-link);
-              font-weight: 600;
-            }
-          }
-          & > :is(button, a).day[data-current="true"] {
-            border-color: var(--ply-link);
-          }
-          & > .day[data-state="selected"],
-          & > .day[data-state="range-start"],
-          & > .day[data-state="range-end"] {
-            border-color: var(--ply-link);
-            background: var(--ply-link);
-            background-image: var(--ply-fill-primary);
-            color: var(--ply-surface);
-            box-shadow: var(--ply-shadow-control-primary);
-          }
-          & > .day[data-state="in-range"] {
-            background: var(--ply-info-soft);
-            border-color: var(--ply-link);
-          }
-          & > .ply-tag-group {
+          & > .events {
             display: grid;
             gap: var(--ply-space-1);
             min-inline-size: 0;
+            margin: 0;
             margin-block-start: var(--ply-space-1);
-            & > .ply-tag {
-              max-inline-size: 100%;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
+            padding: 0;
+            list-style: none;
+            & > li {
+              min-inline-size: 0;
             }
           }
         }
-        & > tbody > tr:last-child > td {
+        & > tbody > tr:last-child > :is(td, th) {
           border-block-end: 0;
+        }
+        /* 使えない日は斜線、今日を含む週は濃い太枠で「今」を示す。 */
+        & > tbody > tr > td[data-disabled="true"] {
+          background-image: var(--ply-hatch);
+        }
+        & > tbody > tr[data-current="true"] > :is(td, th) {
+          box-shadow:
+            inset 0 var(--ply-frame-width) 0 var(--ply-frame-color),
+            inset 0 calc(var(--ply-frame-width) * -1) 0 var(--ply-frame-color);
+          &:first-child {
+            box-shadow:
+              inset 0 var(--ply-frame-width) 0 var(--ply-frame-color),
+              inset 0 calc(var(--ply-frame-width) * -1) 0 var(--ply-frame-color),
+              inset var(--ply-frame-width) 0 0 var(--ply-frame-color);
+          }
+          &:last-child {
+            box-shadow:
+              inset 0 var(--ply-frame-width) 0 var(--ply-frame-color),
+              inset 0 calc(var(--ply-frame-width) * -1) 0 var(--ply-frame-color),
+              inset calc(var(--ply-frame-width) * -1) 0 0 var(--ply-frame-color);
+          }
+        }
+        /* 週番号は日付の数字と同じ高さの淡い列。 */
+        & > thead > tr > th.week-number {
+          inline-size: 2rem;
+          border-inline-end: var(--ply-stroke-width) solid var(--ply-border);
+        }
+        & > tbody > tr > th.week-number {
+          padding-block: var(--ply-space-1) 0;
+          padding-inline: 0;
+          border-inline-end: var(--ply-stroke-width) solid var(--ply-border);
+          border-block-end: var(--ply-stroke-width) solid var(--ply-border);
+          color: var(--ply-muted);
+          font-size: var(--ply-calendar-meta-size);
+          font-weight: 500;
+          font-variant-numeric: tabular-nums;
+          line-height: 1.5rem;
+          text-align: center;
+          vertical-align: top;
         }
       }
     }
-    &[data-view="week"] > .viewport > table > tbody > tr > td {
-      block-size: 6.5rem;
-      & > .weekday {
-        display: block;
-        padding-block-end: var(--ply-space-1);
-        color: var(--ply-muted);
-        font-size: var(--ply-small);
+    & > .viewport > table > tbody > tr > td[data-outside="true"] > :is(a, time).day {
+      color: var(--ply-muted);
+    }
+    /* 選択用の日付は共通Buttonを使い、面と影を外して数字の丸にそろえる。button.cssより強い詳細度を保ち、読み込み順に左右されない。 */
+    & > .viewport > table > tbody > tr > td,
+    & > .viewport > .week > .column > .heading {
+      & > .ply-button.day {
+        border-color: transparent;
+        background: transparent;
+        background-image: none;
+        box-shadow: none;
+        font-variant-numeric: tabular-nums;
+        &:hover:not(:disabled):not([data-state]) {
+          background: var(--ply-calendar-quiet);
+          box-shadow: none;
+        }
+        &:active:not(:disabled):not([data-state]) {
+          background: var(--ply-cover);
+          box-shadow: var(--ply-shadow-control-pressed);
+        }
+        &[data-current="true"]:not(
+            [data-state="selected"],
+            [data-state="range-start"],
+            [data-state="range-end"]
+          ) {
+          color: var(--ply-coral);
+        }
+        &:is([data-state="selected"], [data-state="range-start"], [data-state="range-end"]) {
+          border-color: var(--ply-link);
+          background: var(--ply-link);
+          background-image: var(--ply-fill-primary);
+          color: var(--ply-surface);
+          box-shadow: var(--ply-shadow-control-primary);
+        }
+        &[data-state="in-range"] {
+          background: var(--ply-info-soft);
+          border-color: var(--ply-link);
+        }
       }
     }
-    &[data-view="week"] > .viewport > table {
-      min-inline-size: 56rem;
-      & > thead {
-        position: absolute;
-        inline-size: 0.0625rem;
-        block-size: 0.0625rem;
-        overflow: hidden;
-        clip-path: inset(50%);
+    /*
+      予定は色の面で叫ばず、2pxの線と文字色で区別する。面を塗るのは終日と時間割のブロックだけ。
+      既定は青。過去の予定は線と同じ淡い色へ下げる。
+    */
+    & > .viewport > table > tbody > tr > td > .events > li > .event,
+    & > .viewport > .week > .column > .all-day > ul > li > .event,
+    & > .viewport > .week > .column > .timed > ol > li > .event,
+    & > .agenda > .agenda-group > .events > li > .event {
+      --ply-calendar-event-color: var(--ply-blue);
+      --ply-calendar-event-soft: var(--ply-cover);
+      --ply-calendar-event-fill: var(--ply-calendar-event-soft);
+      --ply-calendar-event-line: color-mix(
+        in srgb,
+        var(--ply-calendar-event-color) 55%,
+        var(--ply-surface)
+      );
+      display: flex;
+      align-items: stretch;
+      gap: var(--ply-space-1);
+      min-inline-size: 0;
+      border-radius: 0.25rem;
+      color: var(--ply-text);
+      font-size: var(--ply-small);
+      line-height: 1rem;
+      text-decoration: none;
+      &:hover {
+        background: var(--ply-calendar-quiet);
       }
-      & > tbody > tr > td > .ply-tag-group > .ply-tag {
-        overflow: visible;
-        text-overflow: clip;
-        white-space: normal;
+      &:focus-visible {
+        outline: 0.125rem solid var(--ply-link);
+        outline-offset: 0;
+      }
+      &[data-accent="green"] {
+        --ply-calendar-event-color: var(--ply-green);
+        --ply-calendar-event-soft: var(--ply-success-soft);
+      }
+      &[data-accent="amber"] {
+        --ply-calendar-event-color: var(--ply-amber);
+        --ply-calendar-event-soft: var(--ply-butter);
+      }
+      &[data-accent="coral"] {
+        --ply-calendar-event-color: var(--ply-coral);
+        --ply-calendar-event-soft: var(--ply-danger-soft);
+      }
+      & > .bar {
+        flex: none;
+        inline-size: 0.125rem;
+        border-radius: var(--ply-radius-pill);
+        background: var(--ply-calendar-event-line);
+      }
+      & > .time {
+        flex: none;
+        color: var(--ply-muted);
+        font-size: var(--ply-calendar-meta-size);
+        font-variant-numeric: tabular-nums;
+      }
+      & > .label {
+        min-inline-size: 0;
+        overflow: hidden;
+        font-weight: 500;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      /* 終日も時刻のある予定と同じ16pxの行にし、面の有無だけで区別する。 */
+      &[data-all-day="true"] {
+        /* 線を面の左端に置き、時刻のある予定の線と同じ位置にそろえる。 */
+        padding-inline: 0 0.25rem;
+        background: var(--ply-calendar-event-fill);
+        color: var(--ply-calendar-event-color);
+      }
+      /* 過去は各色の面と文字を同じ割合で淡くし、色の組み合わせを保ったまま読める濃さに留める。 */
+      /* 仮の予定はミシン目の線と斜線。まだ確定していないことを確定した予定と形で分ける。 */
+      &[data-tentative="true"] {
+        --ply-calendar-event-fill: var(--ply-surface);
+        background-image: var(--ply-hatch);
+        & > .bar {
+          background: repeating-linear-gradient(
+            to bottom,
+            var(--ply-calendar-event-line) 0 0.1875rem,
+            transparent 0.1875rem 0.3125rem
+          );
+        }
+      }
+      &[data-past="true"] {
+        --ply-calendar-event-fill: color-mix(
+          in srgb,
+          var(--ply-calendar-event-soft) 55%,
+          var(--ply-surface)
+        );
+        color: var(--ply-muted);
+        &[data-all-day="true"] {
+          color: color-mix(in srgb, var(--ply-calendar-event-color) 75%, var(--ply-surface));
+        }
+      }
+    }
+    /*
+      週・日の時間割は0〜24時を描画し、画面に収まる高さでスクロールする。見出しと終日の行は上に固定する。
+      高さは--ply-calendar-scroll-sizeで変えられる。
+    */
+    &[data-view="week"] > .viewport {
+      max-block-size: var(--ply-calendar-scroll-size);
+      overscroll-behavior: contain;
+      border: var(--ply-stroke-width) solid var(--ply-border);
+      border-radius: var(--ply-radius-control);
+    }
+    /* 1時間を52pxとし、予定の位置と長さを0時からの分で求める。 */
+    & > .viewport > .week {
+      --ply-calendar-hour: 3.25rem;
+      --ply-calendar-heading-size: 2.5rem;
+      --ply-calendar-first-hour: 0;
+      --ply-calendar-hours: 24;
+      --ply-calendar-days: 7;
+      --ply-calendar-core-start: 0;
+      --ply-calendar-core-end: 24;
+      display: grid;
+      grid-template-columns: 3.5rem repeat(var(--ply-calendar-days), minmax(6.5rem, 1fr));
+      grid-template-rows: auto auto auto;
+      position: relative;
+      min-inline-size: calc(3.5rem + var(--ply-calendar-days) * 6.5rem);
+      background: var(--ply-surface);
+      /*
+        開いた時の表示位置。時間割全体の左端に置き、横にはスクロールさせない。時間割の上端は固定した見出しと
+        終日の行の高さ分だけ下にあるため、目的の時刻をそのまま使うとスクロール領域の上端で見出しの直下に来る。
+      */
+      & > .scroll-target {
+        --ply-calendar-target: 0;
+        position: absolute;
+        inset-block-start: calc(var(--ply-calendar-target) * var(--ply-calendar-hour) / 60);
+        inset-inline-start: 0;
+        inline-size: var(--ply-stroke-width);
+        block-size: var(--ply-stroke-width);
+        scroll-initial-target: nearest;
+        pointer-events: none;
+      }
+      & > .corner {
+        position: sticky;
+        inset-block-start: 0;
+        inset-inline-start: 0;
+        z-index: 4;
+        grid-row: 1;
+        grid-column: 1;
+        border-block-end: var(--ply-stroke-width) solid var(--ply-border);
+        background: var(--ply-surface);
+      }
+      & > :is(.all-day-label, .hours) {
+        position: sticky;
+        inset-inline-start: 0;
+        z-index: 2;
+        grid-column: 1;
+        background: var(--ply-surface);
+        color: var(--ply-muted);
+        font-size: var(--ply-calendar-meta-size);
+        font-variant-numeric: tabular-nums;
+        line-height: 1rem;
+        text-align: end;
+      }
+      & > .all-day-label {
+        inset-block-start: var(--ply-calendar-heading-size);
+        z-index: 4;
+        grid-row: 2;
+        padding-block: var(--ply-space-1);
+        padding-inline: 0 var(--ply-space-2);
+        border-block-end: var(--ply-stroke-width) solid var(--ply-border);
+        font-weight: 600;
+      }
+      & > .hours {
+        position: sticky;
+        grid-row: 3;
+        & > span {
+          --ply-calendar-hour-index: 0;
+          position: absolute;
+          inset-block-start: calc(var(--ply-calendar-hour-index) * var(--ply-calendar-hour));
+          inset-inline-end: var(--ply-space-2);
+          font-weight: 500;
+          /* 時刻を線の高さの中央に置く。上端の時刻だけは時間割の外へはみ出さないよう上端に揃える。 */
+          translate: 0 -50%;
+          &:first-child {
+            translate: none;
+          }
+        }
+        & > .now-label {
+          --ply-calendar-now: 0;
+          inset-block-start: calc(
+            (var(--ply-calendar-now) - var(--ply-calendar-first-hour) * 60) *
+              var(--ply-calendar-hour) / 60
+          );
+          inset-inline-end: var(--ply-space-1);
+          z-index: 1;
+          padding-block: 0.125rem;
+          padding-inline: 0.25rem;
+          border-radius: var(--ply-radius-pill);
+          background: var(--ply-coral);
+          color: var(--ply-surface);
+          font-weight: 700;
+        }
+      }
+      & > .column {
+        grid-row: 1 / 4;
+        display: grid;
+        grid-template-rows: subgrid;
+        min-inline-size: 0;
+        & > .heading {
+          position: sticky;
+          inset-block-start: 0;
+          z-index: 3;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: var(--ply-space-1);
+          block-size: var(--ply-calendar-heading-size);
+          padding-inline: var(--ply-space-1);
+          border-block-end: var(--ply-stroke-width) solid var(--ply-border);
+          background: var(--ply-surface);
+          & > .weekday {
+            color: var(--ply-muted);
+            font-size: var(--ply-small);
+            font-weight: 500;
+          }
+        }
+        &[data-current="true"] > .heading > .weekday {
+          color: var(--ply-text);
+        }
+        &[data-weekend="true"]:not([data-current="true"]) > .heading > :is(.weekday, .day) {
+          color: color-mix(in srgb, var(--ply-muted) 65%, var(--ply-surface));
+        }
+        &[data-outside="true"] > .heading > :is(.weekday, .day) {
+          color: var(--ply-muted);
+        }
+        & > :is(.all-day, .timed) {
+          min-inline-size: 0;
+          border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
+        }
+        & > .all-day {
+          position: sticky;
+          inset-block-start: var(--ply-calendar-heading-size);
+          z-index: 3;
+          background: var(--ply-surface);
+          padding-block: var(--ply-space-1);
+          padding-inline: 0.125rem;
+          border-block-end: var(--ply-stroke-width) solid var(--ply-border);
+          & > ul {
+            display: grid;
+            gap: 0.125rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            /* 下の時間割の予定と同じ文字の大きさにそろえる。 */
+            & > li > .event {
+              font-size: var(--ply-calendar-meta-size);
+            }
+          }
+        }
+        /*
+          時間の線は1時間ごと。各時間の下端に引き、終日の行の境界線と重なる0時の線と、枠と重なる24時の線は
+          描かない（高さを線1本分詰めて24時の線を外す）。稼働時間の外はわずかに塗る。
+        */
+        & > .timed {
+          position: relative;
+          block-size: calc(
+            var(--ply-calendar-hours) * var(--ply-calendar-hour) - var(--ply-stroke-width)
+          );
+          background:
+            repeating-linear-gradient(
+              to bottom,
+              transparent 0 calc(var(--ply-calendar-hour) - var(--ply-stroke-width)),
+              var(--ply-border) calc(var(--ply-calendar-hour) - var(--ply-stroke-width))
+                var(--ply-calendar-hour)
+            ),
+            linear-gradient(
+              to bottom,
+              var(--ply-calendar-quiet)
+                calc(
+                  (var(--ply-calendar-core-start) - var(--ply-calendar-first-hour)) *
+                    var(--ply-calendar-hour)
+                ),
+              transparent
+                calc(
+                  (var(--ply-calendar-core-start) - var(--ply-calendar-first-hour)) *
+                    var(--ply-calendar-hour)
+                )
+                calc(
+                  (var(--ply-calendar-core-end) - var(--ply-calendar-first-hour)) *
+                    var(--ply-calendar-hour)
+                ),
+              var(--ply-calendar-quiet)
+                calc(
+                  (var(--ply-calendar-core-end) - var(--ply-calendar-first-hour)) *
+                    var(--ply-calendar-hour)
+                )
+            );
+          & > ol {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            & > li {
+              /* 開始・終了は0時からの分。重なる予定は列数で幅を等分する。 */
+              --ply-calendar-start: 0;
+              --ply-calendar-end: 60;
+              --ply-calendar-lane: 0;
+              --ply-calendar-lanes: 1;
+              position: absolute;
+              inset-block-start: calc(
+                (var(--ply-calendar-start) - var(--ply-calendar-first-hour) * 60) *
+                  var(--ply-calendar-hour) / 60 + 0.0625rem
+              );
+              inset-inline-start: calc(
+                0.125rem + (100% - 0.25rem) * var(--ply-calendar-lane) / var(--ply-calendar-lanes)
+              );
+              inline-size: calc((100% - 0.25rem) / var(--ply-calendar-lanes) - 0.125rem);
+              block-size: max(
+                1.25rem,
+                calc(
+                  (var(--ply-calendar-end) - var(--ply-calendar-start)) * var(--ply-calendar-hour) /
+                    60 - 0.125rem
+                )
+              );
+              /* 短い予定や狭い列でも題名を先に読めるよう、題名を折り返して時刻を後に置く。 */
+              & > .event {
+                position: relative;
+                flex-direction: column;
+                gap: 0;
+                block-size: 100%;
+                padding-block: 0.1875rem;
+                padding-inline: 0.625rem 0.25rem;
+                overflow: hidden;
+                border-radius: 0.375rem;
+                background: var(--ply-calendar-event-fill);
+                color: var(--ply-calendar-event-color);
+                font-size: var(--ply-calendar-meta-size);
+                &:hover {
+                  background: var(--ply-calendar-event-fill);
+                  box-shadow: var(--ply-shadow-chip);
+                }
+                & > .bar {
+                  position: absolute;
+                  inset-block: 0.1875rem;
+                  inset-inline-start: 0.25rem;
+                }
+                & > .label {
+                  order: -1;
+                  flex: none;
+                  white-space: normal;
+                  overflow-wrap: anywhere;
+                }
+                & > .time {
+                  overflow: hidden;
+                  color: inherit;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                }
+                &[data-tentative="true"] {
+                  background-image: var(--ply-hatch);
+                  outline: var(--ply-stroke-width) dashed var(--ply-calendar-event-line);
+                  outline-offset: calc(var(--ply-stroke-width) * -1);
+                }
+                &[data-past="true"] {
+                  color: color-mix(
+                    in srgb,
+                    var(--ply-calendar-event-color) 75%,
+                    var(--ply-surface)
+                  );
+                }
+              }
+              /* 45分未満は高さが一行分なので、題名と時刻を一行に並べて題名を優先する。 */
+              &[data-length="short"] > .event {
+                flex-direction: row;
+                gap: var(--ply-space-1);
+                padding-block: 0.125rem;
+                & > .label {
+                  flex: none;
+                  max-inline-size: 100%;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                }
+                & > .time {
+                  flex: 0 1 auto;
+                  min-inline-size: 0;
+                }
+                & > .bar {
+                  inset-block: 0.125rem;
+                }
+              }
+            }
+          }
+          & > .now {
+            --ply-calendar-now: 0;
+            position: absolute;
+            inset-block-start: calc(
+              (var(--ply-calendar-now) - var(--ply-calendar-first-hour) * 60) *
+                var(--ply-calendar-hour) / 60
+            );
+            inset-inline: 0;
+            z-index: 1;
+            border-block-start: 0.125rem solid var(--ply-coral);
+            pointer-events: none;
+            &::before {
+              content: "";
+              position: absolute;
+              inset-block-start: -0.3125rem;
+              inset-inline-start: -0.25rem;
+              inline-size: 0.5rem;
+              block-size: 0.5rem;
+              border-radius: 50%;
+              background: var(--ply-coral);
+            }
+          }
+        }
       }
     }
     & > .year-overview {
@@ -277,6 +697,12 @@
               color: var(--ply-link);
             }
           }
+          /* 月へのリンクはセル全体を覆うため、日付をその塗りより手前に置き、操作はリンクへ通す。 */
+          & > time {
+            position: relative;
+            z-index: 3;
+            pointer-events: none;
+          }
           & > time,
           & > .date-link > time {
             display: flex;
@@ -324,27 +750,84 @@
         }
       }
     }
+    /* 一覧は日付ごとのまとまり。左に日付、右に月・週と同じ予定の行を時刻の列をそろえて並べる。 */
     & > .agenda {
       display: grid;
-      gap: var(--ply-space-3);
-      padding-block: var(--ply-space-3);
+      padding-block: var(--ply-space-2);
+      & > .agenda-heading {
+        margin: 0;
+        padding-block: var(--ply-space-2);
+        font-size: var(--ply-label);
+        font-weight: 600;
+      }
+      & > .agenda-month {
+        margin: 0;
+        padding-block: var(--ply-space-3) var(--ply-space-1);
+        border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+        color: var(--ply-text);
+        font-size: var(--ply-small);
+        font-weight: 600;
+        line-height: 1rem;
+        & + .agenda-group {
+          border-block-start: 0;
+        }
+      }
       & > .agenda-group {
         display: grid;
-        grid-template-columns: max-content minmax(0, 1fr);
+        grid-template-columns: 4rem minmax(0, 1fr);
         align-items: start;
-        gap: var(--ply-space-4);
+        gap: var(--ply-space-3);
         min-inline-size: 0;
+        padding-block: var(--ply-space-3);
+        border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+        &:first-of-type {
+          border-block-start: 0;
+        }
         & > h3 {
           margin: 0;
-          padding-block: var(--ply-space-2);
-          font-size: var(--ply-label);
-          font-weight: 600;
-          line-height: var(--ply-label-leading);
-          white-space: nowrap;
+          & > time {
+            display: flex;
+            align-items: center;
+            gap: var(--ply-space-1);
+            color: var(--ply-muted);
+            font-size: var(--ply-calendar-meta-size);
+            font-weight: 500;
+            line-height: 1rem;
+            & > .number {
+              display: inline-grid;
+              place-items: center;
+              min-inline-size: 1.75rem;
+              block-size: 1.75rem;
+              border-radius: var(--ply-radius-pill);
+              color: var(--ply-text);
+              font-size: var(--ply-body);
+              font-weight: 600;
+              font-variant-numeric: tabular-nums;
+            }
+          }
         }
-        & > .ply-data-list > li > .start > time {
-          font-variant-numeric: tabular-nums;
-          white-space: nowrap;
+        &[data-current="true"] > h3 > time > .number {
+          background: var(--ply-coral);
+          color: var(--ply-surface);
+        }
+        & > .events {
+          display: grid;
+          gap: 0.125rem;
+          min-inline-size: 0;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          & > li {
+            min-inline-size: 0;
+          }
+          /* 行の高さは行高で作り、左の線を行の高さいっぱいに伸ばす。 */
+          & > li > .event {
+            padding-inline-end: var(--ply-space-2);
+            line-height: 1.75rem;
+            & > .time {
+              min-inline-size: 6.5rem;
+            }
+          }
         }
       }
     }
@@ -355,6 +838,53 @@
       margin: 0;
       padding-block: var(--ply-space-6);
       color: var(--ply-muted);
+    }
+  }
+  /* 月の表と週の見出しの日付は同じ見た目。経路をまとめても詳細度が上がらないよう:whereで包む。 */
+  /* 日付は数字だけ。今日は塗った丸、月の初日は月を添える。 */
+  :where(
+    .ply-calendar > .viewport > table > tbody > tr > td,
+    .ply-calendar > .viewport > .week > .column > .heading
+  ) {
+    & > :is(a, time).day {
+      display: inline-grid;
+      place-items: center;
+      min-inline-size: 1.5rem;
+      block-size: 1.5rem;
+      padding-inline: 0.25rem;
+      border-radius: var(--ply-radius-pill);
+      color: var(--ply-text);
+      font-size: var(--ply-small);
+      font-weight: 500;
+      line-height: 1rem;
+      font-variant-numeric: tabular-nums;
+      text-decoration: none;
+      vertical-align: middle;
+      &[data-current="true"] {
+        background: var(--ply-coral);
+        color: var(--ply-surface);
+        font-weight: 600;
+      }
+    }
+    & > a.day:not([data-current="true"]):hover {
+      background: var(--ply-calendar-quiet);
+    }
+    & > a.day:focus-visible {
+      outline: 0.125rem solid var(--ply-link);
+      outline-offset: 0.0625rem;
+    }
+    & > .month-start {
+      display: inline-block;
+      margin-inline-end: 0.125rem;
+      padding-block: 0.125rem;
+      padding-inline: 0.375rem;
+      border-radius: var(--ply-radius-pill);
+      background: var(--ply-blue);
+      color: var(--ply-surface);
+      font-size: var(--ply-calendar-meta-size);
+      font-weight: 600;
+      line-height: 1rem;
+      vertical-align: middle;
     }
   }
   @media (max-width: 40rem) {
@@ -372,19 +902,24 @@
           justify-content: start;
         }
       }
-      & > .agenda > .agenda-group {
-        grid-template-columns: 1fr;
-        gap: var(--ply-space-1);
-      }
       & > .agenda.period-agenda {
         display: grid;
-        & > .agenda-heading {
-          margin: 0;
-          font-size: var(--ply-label);
-          font-weight: 600;
+      }
+      /* 狭い幅では日付を予定の上に置き、時刻と題名は入り切らなければ折り返す。 */
+      & > .agenda > .agenda-group {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--ply-space-1);
+        & > .events > li > .event {
+          flex-wrap: wrap;
+          & > .time {
+            min-inline-size: 5.5rem;
+          }
+          & > .label {
+            flex: 1 1 8rem;
+          }
         }
       }
-      &:is([data-view="month"], [data-view="week"]) > .viewport {
+      &[data-view="month"] > .viewport {
         overflow: visible;
         & > table {
           min-inline-size: 0;
@@ -400,11 +935,19 @@
             padding: 0;
             border-radius: 0;
             text-align: center;
-            & > .day {
+            & > .month-start {
+              display: none;
+            }
+            & > .ply-button.day {
               min-inline-size: 0;
               inline-size: 100%;
             }
-            & > .ply-tag-group {
+            /* 文字を拡大しても7列に収まるよう、日付の丸はセルの幅を超えない。 */
+            & > :is(a, time).day {
+              min-inline-size: min(1.5rem, 100%);
+              padding-inline: 0;
+            }
+            & > .events {
               display: none;
             }
             &[data-events="true"]::after {
@@ -418,16 +961,6 @@
               background: var(--ply-link);
               pointer-events: none;
             }
-          }
-        }
-      }
-      &[data-view="week"] > .viewport > table {
-        min-inline-size: 0;
-        & > tbody > tr > td {
-          block-size: 4.25rem;
-          & > .weekday {
-            padding-block: var(--ply-space-1) 0;
-            font-size: var(--ply-small);
           }
         }
       }

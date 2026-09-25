@@ -42,7 +42,7 @@
 | `AvatarController`             | UIのみ     | Avatarはあるが、画像の読込・失敗・fallbackの状態同期を上流へ接続していない。                       |
 | `TableOfContentsController`    | 未対応     | 文書の目次・スクロールによる現在地追跡のUIなし。                                                   |
 | `TimerController`              | 未対応     | 計時、経過、区切り通知のUIなし。                                                                   |
-| `EditableController`           | 未対応     | 値の表示・編集・確定・取消の部品なし。追加候補のProperty編集に対応する。                           |
+| `EditableController`           | 未対応     | 値の表示・編集・確定・取消のコンポーネントなし。追加候補のProperty編集に対応する。                 |
 | `HoverCardController`          | 未対応     | Popoverはclick起点。hover/focusで開く対話可能なプレビューとは別。                                  |
 
 ## 今回の実装の境界
@@ -55,6 +55,6 @@ ListReorderは単一のnative listを対象にし、項目ごとの持ち手・�
 
 1. Tooltip、TagInput、Editable、Tree、Splitter：補足・宛先・属性編集・階層・可変ペイン。
 2. Listbox、ToggleGroup、Grid、Treegrid、TableOfContents、HoverCard：選択、密な表、資料閲覧。
-3. Avatarの読込状態、ListReorder、ColorPicker、ImageCropper、Timer、Carousel、LandmarkNavigation：用途に応じた独立部品・拡張。
+3. Avatarの読込状態、ListReorder、ColorPicker、ImageCropper、Timer、Carousel、LandmarkNavigation：用途に応じた独立コンポーネント・拡張。
 
 Disclosure、Toast、Toolbarはnativeでの簡単な利用を残し、上流の拡張契約が必要な使い方を追加候補にします。既存のUIがあるだけでcontroller対応済みとは扱いません。
