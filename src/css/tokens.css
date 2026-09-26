@@ -207,7 +207,7 @@
     --ply-hatch-step: 0.5rem;
     --ply-hatch: repeating-linear-gradient(
       135deg,
-      color-mix(in srgb, var(--ply-muted) 18%, var(--ply-surface)) 0 var(--ply-stroke-width),
+      color-mix(in srgb, var(--ply-muted) 11%, var(--ply-surface)) 0 var(--ply-stroke-width),
       transparent var(--ply-stroke-width) calc(var(--ply-hatch-step) * 0.7071068)
     );
     /* 蛍光ペン。文字の下半分に、端が少し斜めに切れた帯を引く。 */

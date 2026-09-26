@@ -115,14 +115,49 @@ const List = () => (
   </div>
 );
 
+const cardVariants = [
+  { id: "a", caption: "案A：見出しつきの紙" },
+  { id: "b", caption: "案B：情報カード" },
+  { id: "c", caption: "案C：重ねた紙" },
+] as const;
+
 const Cards = () => (
-  <div class="ply-split">
-    <Card title="秋の読書会" pinned footer="9月25日 18:00 · あと4席">
-      <p>最近読んだ本を一冊持ち寄って、小さな感想を交換する会です。</p>
-    </Card>
-    <Card title="仕事場の案内を更新する" footer="田中 遥 · 9月15日">
-      <p>利用時間とキャンセル条件を見直します。</p>
-    </Card>
+  <div class="specimen-cards">
+    {cardVariants.map(({ id, caption }) => (
+      <figure>
+        <figcaption>{caption}</figcaption>
+        <Card
+          class={`specimen-card-${id}`}
+          title="秋の読書会"
+          eyebrow={<span>イベント</span>}
+          pinned={id === "a"}
+          footer={
+            <>
+              <span>9月25日 18:00</span>
+              <span>あと4席</span>
+            </>
+          }
+        >
+          <p>最近読んだ本を一冊持ち寄って、小さな感想を交換する会です。</p>
+        </Card>
+        <Card
+          class={`specimen-card-${id}`}
+          title="仕事場の案内を更新する"
+          eyebrow={<span>記事</span>}
+          footer={
+            <>
+              <span>田中 遥</span>
+              <span>9月15日</span>
+            </>
+          }
+        >
+          <p>利用時間とキャンセル条件を見直します。</p>
+          <Badge tone="success" stamped>
+            承認済み
+          </Badge>
+        </Card>
+      </figure>
+    ))}
   </div>
 );
 

@@ -675,3 +675,106 @@
     }
   }
 }
+
+/* 見本ページだけの試案。採用したものをコンポーネントへ移す。 */
+@layer overrides {
+  .specimen-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: var(--ply-space-8) var(--ply-space-6);
+    padding-block-start: var(--ply-space-4);
+    & > figure {
+      display: grid;
+      gap: var(--ply-space-3);
+      margin: 0;
+      & > figcaption {
+        color: var(--ply-muted);
+        font-size: var(--ply-small);
+        font-weight: 600;
+      }
+    }
+  }
+  /* 案A：見出しつきの紙。墨のつまみが上端から出て、紙は枠なしで影だけ。 */
+  .ply-card.specimen-card-a {
+    position: relative;
+    margin-block-start: var(--ply-space-4);
+    padding-block: var(--ply-space-4);
+    border: 0;
+    border-radius: var(--ply-radius-mark);
+    box-shadow:
+      0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 6%),
+      0 0.2em 0.2em rgb(36 57 70 / 5%),
+      0 0.4em 0.4em rgb(36 57 70 / 5%),
+      0 0.8em 0.8em rgb(36 57 70 / 5%);
+    & > .eyebrow {
+      position: absolute;
+      inset-block-start: -1.25rem;
+      inset-inline-start: 0;
+      padding-block: 0.125rem;
+      padding-inline: var(--ply-space-2);
+      background: var(--ply-ink);
+      color: var(--ply-surface);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    & > .title {
+      font-size: var(--ply-section-title);
+      font-weight: 700;
+    }
+    & > .meta {
+      gap: 0;
+      font-weight: 600;
+      & > * + * {
+        margin-inline-start: var(--ply-space-2);
+        padding-inline-start: var(--ply-space-2);
+        border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
+      }
+    }
+  }
+  /* 案B：情報カード。題名の下に朱の罫線を一本、全幅に引く。 */
+  .ply-card.specimen-card-b {
+    padding-block: var(--ply-space-3) var(--ply-space-4);
+    border: 0;
+    border-radius: var(--ply-radius-mark);
+    background:
+      linear-gradient(var(--ply-surface), var(--ply-surface)) padding-box,
+      repeating-linear-gradient(
+          to bottom,
+          transparent 0 calc(1.5rem - var(--ply-stroke-width)),
+          color-mix(in srgb, var(--ply-info) 14%, var(--ply-surface))
+            calc(1.5rem - var(--ply-stroke-width)) 1.5rem
+        )
+        0 3.25rem / 100% calc(100% - 3.25rem) no-repeat;
+    box-shadow:
+      0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 7%),
+      0 0.25rem 0.75rem rgb(36 57 70 / 8%);
+    & > .title {
+      margin-inline: calc(var(--ply-space-4) * -1);
+      padding-inline: var(--ply-space-4);
+      padding-block-end: var(--ply-space-2);
+      border-block-end: var(--ply-frame-width) solid
+        color-mix(in srgb, var(--ply-coral) 70%, var(--ply-surface));
+    }
+    & > .body {
+      line-height: 1.5rem;
+    }
+  }
+  /* 案C：重ねた紙。後ろにもう一枚の紙が、少しずれて傾いて覗く。 */
+  .ply-card.specimen-card-c {
+    border: 0;
+    border-radius: var(--ply-radius-mark);
+    box-shadow:
+      0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 8%),
+      0 0.125rem 0.25rem rgb(36 57 70 / 6%),
+      0.375rem 0.4375rem 0 calc(var(--ply-stroke-width) * -1)
+        color-mix(in srgb, var(--ply-soft) 80%, var(--ply-surface)),
+      0.375rem 0.4375rem 0 0 rgb(36 57 70 / 9%),
+      0.75rem 0.875rem 0 calc(var(--ply-stroke-width) * -2)
+        color-mix(in srgb, var(--ply-soft) 90%, var(--ply-surface)),
+      0.75rem 0.875rem 0 calc(var(--ply-stroke-width) * -1) rgb(36 57 70 / 7%);
+    & > .title {
+      font-size: var(--ply-section-title);
+      font-weight: 700;
+    }
+  }
+}
