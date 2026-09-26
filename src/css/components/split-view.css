@@ -1,6 +1,12 @@
 @layer components {
+  /*
+    二つの面は見開きのノート。一枚の紙の真ん中にのど（綴じ目）を置き、
+    のどへ向かって両方のページがわずかに沈む陰影を付けて、紙の厚みと開いた形を見せる。
+    狭い幅では上下のページになり、のどは横になる。
+  */
   .ply-split-view {
     --splitter-value: 50;
+    --ply-split-fold: color-mix(in srgb, var(--ply-ink) 7%, transparent);
     container: ply-split-view / inline-size;
     min-inline-size: 0;
     & > .panes {
@@ -9,21 +15,25 @@
       min-inline-size: 0;
       overflow: hidden;
       border: 0;
-      border-block: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: 0;
-      background: transparent;
+      border-radius: var(--ply-radius-surface);
+      background: var(--ply-surface) var(--ply-fill-paper);
+      box-shadow: var(--ply-shadow-paper);
       & > :is(.primary, .secondary) {
         min-inline-size: 0;
-        padding-block: var(--ply-space-4) var(--ply-space-3);
+        padding-block: var(--ply-space-4) var(--ply-space-5);
         padding-inline: var(--ply-space-6);
         overflow-wrap: anywhere;
       }
       & > .primary {
-        background: var(--ply-surface);
+        background: linear-gradient(to top, var(--ply-split-fold), transparent var(--ply-space-6));
       }
       & > .secondary {
-        border-block-start: var(--ply-stroke-width) solid var(--ply-border);
-        background: color-mix(in srgb, var(--ply-background) 50%, var(--ply-surface));
+        border-block-start: var(--ply-stroke-width) solid var(--ply-split-fold);
+        background: linear-gradient(
+          to bottom,
+          var(--ply-split-fold),
+          transparent var(--ply-space-6)
+        );
       }
     }
     @container ply-split-view (inline-size < 32rem) {
@@ -34,9 +44,35 @@
     @container ply-split-view (inline-size >= 52rem) {
       & > .panes {
         grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.5fr);
+        & > .primary {
+          background: linear-gradient(
+            to left,
+            var(--ply-split-fold),
+            transparent var(--ply-space-8)
+          );
+          &:dir(rtl) {
+            background: linear-gradient(
+              to right,
+              var(--ply-split-fold),
+              transparent var(--ply-space-8)
+            );
+          }
+        }
         & > .secondary {
           border-block-start: 0;
-          border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
+          border-inline-start: var(--ply-stroke-width) solid var(--ply-split-fold);
+          background: linear-gradient(
+            to right,
+            var(--ply-split-fold),
+            transparent var(--ply-space-8)
+          );
+          &:dir(rtl) {
+            background: linear-gradient(
+              to left,
+              var(--ply-split-fold),
+              transparent var(--ply-space-8)
+            );
+          }
         }
       }
       &[data-layout="reader"] > .panes {
@@ -55,12 +91,12 @@
         }
       }
     }
+    /* 幅を変える持ち手は、のどに留めたクリップ。 */
     & > .panes > .handle {
       display: none;
       position: relative;
       z-index: 1;
       place-items: center;
-      background: color-mix(in srgb, var(--ply-surface) 97%, var(--ply-ink));
       cursor: col-resize;
       touch-action: none;
       &:focus-visible {
@@ -71,9 +107,9 @@
         content: "";
         position: absolute;
         inset-block: 0;
-        inset-inline-start: calc(50% - 0.0625rem);
-        inline-size: 0.125rem;
-        background: var(--ply-border);
+        inset-inline-start: calc(50% - var(--ply-stroke-width) / 2);
+        inline-size: var(--ply-stroke-width);
+        background: var(--ply-split-fold);
       }
       & > .grip {
         position: relative;
@@ -81,8 +117,8 @@
         display: grid;
         place-items: center;
         inline-size: 1.25rem;
-        block-size: 1.75rem;
-        border: var(--ply-stroke-width) solid var(--ply-border);
+        block-size: 2.25rem;
+        border: 0;
         border-radius: var(--ply-radius-pill);
         background: var(--ply-surface) var(--ply-fill-control);
         color: var(--ply-muted);
@@ -97,12 +133,17 @@
       }
       &[data-state="dragging"] > .grip,
       &:focus-visible > .grip {
-        border-color: var(--ply-link);
         color: var(--ply-link);
+        box-shadow:
+          0 0 0 0.125rem var(--ply-link),
+          var(--ply-shadow-control);
       }
     }
   }
   @media (forced-colors: active) {
+    .ply-split-view > .panes {
+      border: var(--ply-stroke-width) solid CanvasText;
+    }
     .ply-split-view > .panes,
     .ply-split-view > .panes > .handle > .grip {
       box-shadow: none;

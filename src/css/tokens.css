@@ -243,6 +243,8 @@
     --ply-dash: 0.375rem;
     --ply-dash-gap: 0.25rem;
     --ply-perforation: color-mix(in srgb, var(--ply-muted) 55%, var(--ply-surface));
+    /* ノートや便箋の罫線。行を区切り、書く位置を示す。 */
+    --ply-ruled-line: color-mix(in srgb, var(--ply-info) 22%, var(--ply-surface));
     /* 切り離せる紙（切手・切符）のパンチ穴。穴の半径と並びの間隔。 */
     --ply-punch-hole: 0.125rem;
     --ply-punch-pitch: 0.375rem;

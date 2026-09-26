@@ -9,8 +9,16 @@
     padding-inline: var(--ply-space-4);
     border: 0;
     border-radius: var(--ply-radius-surface);
-    background: var(--ply-surface);
+    background: var(--ply-surface) var(--ply-fill-paper);
     box-shadow: var(--ply-shadow-paper);
+    transition:
+      box-shadow var(--ply-duration) ease,
+      translate var(--ply-duration) ease;
+    /* 指を載せた紙は、トレイから少し持ち上がる。 */
+    &:hover {
+      box-shadow: var(--ply-shadow-paper-lift);
+      translate: 0 calc(var(--ply-stroke-width) * -1);
+    }
     & > .body {
       min-inline-size: 0;
       padding-block: 0.375rem;
@@ -40,7 +48,8 @@
     }
     &[data-moving="true"] {
       outline: 0.125rem solid var(--ply-link);
-      box-shadow: var(--ply-shadow-menu);
+      box-shadow: var(--ply-shadow-paper-lift);
+      rotate: -1deg;
     }
     &[data-moving="true"] > .ply-button.handle:not(:disabled) {
       cursor: grabbing;

@@ -6,24 +6,57 @@
     min-inline-size: 0;
     padding-block: var(--ply-space-4) var(--ply-space-3);
     padding-inline: var(--ply-space-5);
-    /* 書く紙。枠線を使わず、紙の影で作業面の上に置く。 */
+    /*
+      書く紙は便箋。紙そのものを欄にし、本文には便箋の罫線を引く。
+      本文の欄は枠で囲まず、書いている間は紙全体に輪を出す。
+    */
     border: 0;
     border-radius: var(--ply-radius-surface);
-    background: var(--ply-surface);
+    background: var(--ply-surface) var(--ply-fill-paper);
     box-shadow: var(--ply-shadow-paper);
+    transition: box-shadow var(--ply-duration) ease;
+    &:has(> .ply-field > .ply-input:focus-visible) {
+      box-shadow:
+        0 0 0 0.125rem var(--ply-link),
+        var(--ply-shadow-paper-lift);
+    }
+    &:has(> .ply-field > .ply-input[data-invalid="true"]) {
+      box-shadow:
+        0 0 0 var(--ply-stroke-width) var(--ply-danger),
+        var(--ply-shadow-paper);
+    }
   }
 
+  /* 罫線は行の高さごとに引き、文字と一緒にスクロールする。最後の罫線が次に書く行を示す。 */
   .ply-composer > .ply-field > .ply-input {
-    min-block-size: 5rem;
+    min-block-size: 4lh;
+    padding-block: 0;
+    padding-inline: 0;
+    border: 0;
+    border-radius: 0;
+    background: linear-gradient(
+        to top,
+        var(--ply-ruled-line) var(--ply-stroke-width),
+        transparent 0
+      )
+      0 0 / 100% 1lh;
+    background-origin: content-box;
+    background-attachment: local;
+    box-shadow: none;
     resize: vertical;
+    &:focus-visible {
+      outline: none;
+    }
+    &:disabled {
+      background: var(--ply-hatch);
+    }
   }
 
   .ply-composer > .attachments {
     display: grid;
     gap: var(--ply-space-2);
     min-inline-size: 0;
-    padding-block-start: var(--ply-space-2);
-    border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+    padding-block-start: var(--ply-space-3);
   }
 
   .ply-composer > .footer {
