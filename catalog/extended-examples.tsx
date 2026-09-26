@@ -289,7 +289,7 @@ export const extendedExamples = [
       />
     ),
     usage:
-      "標準checkboxとして操作できます。完了の保存はフォーム送信または利用側controllerで行います。",
+      "標準checkboxとして操作できます。完了の保存はフォーム送信または利用側controllerで行います。headingを渡すと、開閉できる外側の見出しに未完了の数と進み具合を添えます（TaskListControllerをtask-listとして登録すると、チェックに合わせて数え直します）。titleは紙の中に書く一覧の名前、addは最後の行に置く書き足す欄で、追加は利用側のフォームで扱います。",
   },
   {
     id: "calendar",

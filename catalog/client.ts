@@ -16,6 +16,7 @@ import {
   CodeBlockController,
   WingController,
   CalendarScrollController,
+  TaskListController,
   CommandMenuController,
   TableController,
   TableSortController,
@@ -65,6 +66,7 @@ application.register("clipboard", ClipboardController);
 application.register("code-block", CodeBlockController);
 application.register("wing", WingController);
 application.register("calendar-scroll", CalendarScrollController);
+application.register("task-list", TaskListController);
 application.register("board", BoardController);
 application.register("calendar", CalendarController);
 application.register("carousel", CarouselController);

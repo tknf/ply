@@ -20,5 +20,6 @@
   "chat": "chat-circle",
   "grid": "squares-four",
   "grip": "dots-six-vertical",
-  "equals": "equals"
+  "equals": "equals",
+  "plus": "plus"
 }

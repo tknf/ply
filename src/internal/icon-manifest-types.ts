@@ -21,4 +21,5 @@ export type IconName =
   | "chat"
   | "grid"
   | "grip"
-  | "equals";
+  | "equals"
+  | "plus";

@@ -1,122 +1,196 @@
 @layer components {
   /*
-    やることの一覧はメモ。一枚の紙の行をノートの青い罫線で区切る。
+    やることの一覧はメモ。外側の見出しに開閉・名前・未完了の数・進み具合を置き、
+    その下の一枚の紙の行をノートの青い罫線で区切る。
     チェックは朱の余白線の外（印を付ける場所）に置き、終えたことはペンで線を引いて消す。
+    最後の行は、次の空いた罫線に書き足す欄。
   */
   .ply-task-list {
     --ply-task-margin: 2.75rem;
     --ply-task-rule: color-mix(in srgb, var(--ply-info) 22%, var(--ply-surface));
+    --ply-task-progress: 0;
     container: ply-task-list / inline-size;
-    position: relative;
-    overflow: hidden;
-    counter-reset: ply-task-done ply-task-total;
-    border-radius: var(--ply-radius-surface);
-    background:
-      linear-gradient(
-          color-mix(in srgb, var(--ply-coral) 45%, var(--ply-surface)),
-          color-mix(in srgb, var(--ply-coral) 45%, var(--ply-surface))
-        )
-        var(--ply-task-margin) 0 / var(--ply-stroke-width) 100% no-repeat,
-      var(--ply-fill-paper),
-      var(--ply-surface);
-    box-shadow: var(--ply-shadow-paper);
-    &:dir(rtl) {
-      background-position:
-        calc(100% - var(--ply-task-margin)) 0,
-        0 0,
-        0 0;
-    }
-    /* 終えた数と全体の数。チェックの状態から数えるので、操作に合わせて変わる。 */
-    & > li:not(.heading) {
-      counter-increment: ply-task-total;
-    }
-    & > li:has(> .ply-choice > input:checked) {
-      counter-increment: ply-task-total ply-task-done;
-    }
-    &:has(> .heading)::after {
-      content: counter(ply-task-done) "/" counter(ply-task-total) / "";
-      position: absolute;
-      inset-block-start: calc(var(--ply-space-3) + 0.25rem);
-      inset-inline-end: var(--ply-space-4);
-      color: var(--ply-muted);
-      font-size: var(--ply-small);
-      line-height: var(--ply-small-leading);
-      font-variant-numeric: tabular-nums;
-    }
-    & > li {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) fit-content(40%);
+    display: grid;
+    gap: var(--ply-space-2);
+    color: var(--ply-text);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+    /* 外側の見出し。進み具合は細いピルの中を、終えた割合だけ塗る。 */
+    & > summary {
+      display: flex;
+      flex-wrap: wrap;
       align-items: center;
-      gap: var(--ply-space-3);
-      min-inline-size: 0;
-      border-block-start: var(--ply-stroke-width) solid var(--ply-task-rule);
-      &:first-child,
-      &.heading + li {
-        border-block-start: 0;
+      gap: var(--ply-space-2);
+      inline-size: fit-content;
+      max-inline-size: 100%;
+      cursor: pointer;
+      list-style: none;
+      &::-webkit-details-marker {
+        display: none;
       }
-      /* 題名は余白線の内側に書き、下に二重の罫線を引いて行と分ける。終えた数を隣に添える。 */
-      &.heading {
-        display: flex;
-        align-items: baseline;
-        gap: var(--ply-space-2);
-        padding-block: var(--ply-space-3) var(--ply-space-2);
-        padding-inline: calc(var(--ply-task-margin) + var(--ply-space-3)) var(--ply-space-4);
-        border-block-end: calc(var(--ply-stroke-width) * 3) double var(--ply-task-rule);
-        & > .title {
-          margin: 0;
-          font-size: var(--ply-section-title);
-          font-weight: 600;
-          line-height: 1.4;
-        }
-        & > .progress {
-          color: var(--ply-muted);
-          font-size: var(--ply-small);
-          font-variant-numeric: tabular-nums;
+      &:focus-visible {
+        outline: 0.125rem solid var(--ply-link);
+        outline-offset: 0.125rem;
+        border-radius: var(--ply-radius-mark);
+      }
+      & > .marker {
+        display: grid;
+        place-items: center;
+        color: var(--ply-muted);
+        transition: rotate var(--ply-duration) ease;
+        & > .ply-icon {
+          font-size: 0.75rem;
         }
       }
-      & > .end {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: var(--ply-space-2);
-        padding-inline-end: var(--ply-space-4);
+      & > .name {
+        font-weight: 600;
+      }
+      & > .remaining {
         color: var(--ply-muted);
         font-size: var(--ply-small);
+        font-variant-numeric: tabular-nums;
       }
-      & > .ply-choice {
-        grid-template-columns: var(--ply-task-margin) minmax(0, 1fr);
-        column-gap: var(--ply-space-3);
-        padding-block: var(--ply-space-2);
-        padding-inline: 0 var(--ply-space-3);
-        transition: background-color var(--ply-duration) ease;
-        &:hover {
-          background: color-mix(in srgb, var(--ply-background) 55%, transparent);
+      & > .meter {
+        inline-size: 3rem;
+        block-size: 0.25rem;
+        border-radius: var(--ply-radius-pill);
+        background:
+          linear-gradient(var(--ply-success), var(--ply-success)) 0 0 /
+            calc(var(--ply-task-progress) * 100%) 100% no-repeat,
+          var(--ply-border);
+        &:dir(rtl) {
+          background-position:
+            100% 0,
+            0 0;
         }
-        & > input {
-          justify-self: center;
+      }
+    }
+    &:not([open]) > summary > .marker {
+      rotate: -90deg;
+    }
+    &:not([open]):dir(rtl) > summary > .marker {
+      rotate: 90deg;
+    }
+    /* 一枚の紙。余白線は紙の上から下まで引く。 */
+    & > .sheet {
+      min-inline-size: 0;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      border-radius: var(--ply-radius-surface);
+      background:
+        linear-gradient(
+            color-mix(in srgb, var(--ply-coral) 45%, var(--ply-surface)),
+            color-mix(in srgb, var(--ply-coral) 45%, var(--ply-surface))
+          )
+          var(--ply-task-margin) 0 / var(--ply-stroke-width) 100% no-repeat,
+        var(--ply-fill-paper),
+        var(--ply-surface);
+      box-shadow: var(--ply-shadow-paper);
+      list-style: none;
+      &:dir(rtl) {
+        background-position:
+          calc(100% - var(--ply-task-margin)) 0,
+          0 0,
+          0 0;
+      }
+      & > li {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) fit-content(40%);
+        align-items: center;
+        gap: var(--ply-space-3);
+        min-inline-size: 0;
+        border-block-start: var(--ply-stroke-width) solid var(--ply-task-rule);
+        &:first-child,
+        &.heading + li {
+          border-block-start: 0;
         }
-        & > input:checked::before {
-          animation: ply-check-arrive calc(var(--ply-duration) * 1.5) ease-out;
+        /* この一覧の名前は余白線の内側に書き、下に二重の罫線を引いて行と分ける。 */
+        &.heading {
+          display: block;
+          padding-block: var(--ply-space-3) var(--ply-space-2);
+          padding-inline: calc(var(--ply-task-margin) + var(--ply-space-3)) var(--ply-space-4);
+          border-block-end: calc(var(--ply-stroke-width) * 3) double var(--ply-task-rule);
+          & > .title {
+            margin: 0;
+            font-size: var(--ply-label);
+            font-weight: 600;
+            line-height: var(--ply-label-leading);
+          }
         }
-        & > span {
-          min-inline-size: 0;
-          overflow-wrap: anywhere;
-        }
-        & > span > strong {
-          font-weight: 400;
-        }
-        /* 終えたことは、ペンで引いた太めの線で消す。 */
-        & > input:checked + span > strong {
+        /* 書き足す欄は、次の空いた罫線の上に書く。枠を持たず、余白線の外に足す印を置く。 */
+        &.add {
+          grid-template-columns: var(--ply-task-margin) minmax(0, 1fr);
+          gap: var(--ply-space-3);
+          padding-inline-end: var(--ply-space-3);
           color: var(--ply-muted);
-          text-decoration: line-through;
-          text-decoration-color: color-mix(in srgb, var(--ply-ink) 70%, transparent);
-          text-decoration-thickness: calc(var(--ply-stroke-width) * 1.5);
+          & > .plus {
+            display: grid;
+            place-items: center;
+          }
+          & > .entry {
+            min-inline-size: 0;
+            min-block-size: 2.25rem;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: var(--ply-text);
+            font: inherit;
+            &::placeholder {
+              color: var(--ply-muted);
+              opacity: 1;
+            }
+            &:focus-visible {
+              outline: 0.125rem solid var(--ply-link);
+              outline-offset: 0.125rem;
+              border-radius: var(--ply-radius-mark);
+            }
+          }
+        }
+        & > .end {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: var(--ply-space-2);
+          padding-inline-end: var(--ply-space-4);
+          color: var(--ply-muted);
+          font-size: var(--ply-small);
+        }
+        & > .ply-choice {
+          grid-template-columns: var(--ply-task-margin) minmax(0, 1fr);
+          column-gap: var(--ply-space-3);
+          padding-block: var(--ply-space-2);
+          padding-inline: 0 var(--ply-space-3);
+          transition: background-color var(--ply-duration) ease;
+          &:hover {
+            background: color-mix(in srgb, var(--ply-background) 55%, transparent);
+          }
+          & > input {
+            justify-self: center;
+          }
+          & > input:checked::before {
+            animation: ply-check-arrive calc(var(--ply-duration) * 1.5) ease-out;
+          }
+          & > span {
+            min-inline-size: 0;
+            overflow-wrap: anywhere;
+          }
+          & > span > strong {
+            font-weight: 400;
+          }
+          /* 終えたことは、ペンで引いた太めの線で消す。 */
+          & > input:checked + span > strong {
+            color: var(--ply-muted);
+            text-decoration: line-through;
+            text-decoration-color: color-mix(in srgb, var(--ply-ink) 70%, transparent);
+            text-decoration-thickness: calc(var(--ply-stroke-width) * 1.5);
+          }
         }
       }
     }
   }
   @container ply-task-list (inline-size < 26rem) {
-    .ply-task-list > li {
+    .ply-task-list > .sheet > li:not(.heading, .add) {
       grid-template-columns: minmax(0, 1fr);
       gap: 0;
       & > .end {
@@ -126,17 +200,17 @@
     }
   }
   @media (pointer: coarse) {
-    .ply-task-list > li > .ply-choice {
+    .ply-task-list > .sheet > li > .ply-choice {
       min-block-size: 2.75rem;
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .ply-task-list > li > .ply-choice > input:checked::before {
+    .ply-task-list > .sheet > li > .ply-choice > input:checked::before {
       animation: none;
     }
   }
   @media (forced-colors: active) {
-    .ply-task-list {
+    .ply-task-list > .sheet {
       border: var(--ply-stroke-width) solid CanvasText;
       background: Canvas;
       box-shadow: none;

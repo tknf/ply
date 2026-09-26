@@ -1,9 +1,6 @@
 @layer components {
-  /* 一覧の既定のmarginとpaddingと行頭記号を外す。紙の見た目と各行の内側はTaskList自身が所有する。 */
+  /* TaskListのルートは中の一覧の幅に合わせて縮む。紙の見た目と一覧の既定値の解除はTaskList自身が所有する。 */
   .ply-task-list {
     min-inline-size: 0;
-    margin: 0;
-    padding: 0;
-    list-style: none;
   }
 }
