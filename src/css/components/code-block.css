@@ -6,6 +6,9 @@
   */
   .ply-code-block {
     --ply-code-grid: color-mix(in srgb, var(--ply-ruled-line) 50%, transparent);
+    --ply-code-grid-lines:
+      linear-gradient(to bottom, var(--ply-code-grid) var(--ply-stroke-width), transparent 0),
+      linear-gradient(to right, var(--ply-code-grid) var(--ply-stroke-width), transparent 0);
     /* 札とコピーの行の高さの半分。紙はこの分だけ下から始め、行の中心を紙の上端に重ねる。 */
     --ply-code-straddle: 1rem;
     position: relative;
@@ -20,8 +23,24 @@
       z-index: -1;
       inset: var(--ply-code-straddle) 0 0;
       border-radius: var(--ply-radius-surface);
-      background: var(--ply-surface) var(--ply-fill-paper);
+      /*
+        札の行の下も方眼にする。升目の大きさは本文と同じ行の高さで、
+        紙はこの層の上端から始まり、本文の一行目はそこから札の行の下半分（--ply-code-straddle）と
+        本文の上の余白の下にある。升目の周期は行の高さなので、上の余白の分だけずらせば本文の罫とつながる。
+      */
+      background-color: var(--ply-surface);
+      background-image: var(--ply-code-grid-lines), var(--ply-fill-paper);
+      background-position:
+        var(--ply-space-5) calc(var(--ply-code-straddle) + var(--ply-space-2)),
+        var(--ply-space-5) calc(var(--ply-code-straddle) + var(--ply-space-2)),
+        0 0;
+      background-size:
+        1lh 1lh,
+        1lh 1lh,
+        auto;
       box-shadow: var(--ply-shadow-paper);
+      font-size: var(--ply-small);
+      line-height: var(--ply-small-leading);
     }
     /* 名前の札とコピーの操作は、紙の上端をまたいで並べる。 */
     & > figcaption {
@@ -59,9 +78,9 @@
       padding-inline: var(--ply-space-5);
       border-radius: 0 0 var(--ply-radius-surface) var(--ply-radius-surface);
       /* 升目は行の高さと同じ大きさ。本文の始まりから数え、スクロールしても文字と一緒に動く。 */
-      background:
-        linear-gradient(to bottom, var(--ply-code-grid) var(--ply-stroke-width), transparent 0),
-        linear-gradient(to right, var(--ply-code-grid) var(--ply-stroke-width), transparent 0);
+      /* 紙の方眼の上に重ねるため、本文の下地は紙の色で塗る。スクロールしても升目が二重にならない。 */
+      background-color: var(--ply-surface);
+      background-image: var(--ply-code-grid-lines);
       background-size: 1lh 1lh;
       background-origin: content-box;
       background-attachment: local;
