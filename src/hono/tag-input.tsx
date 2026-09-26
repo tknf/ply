@@ -47,6 +47,18 @@ export const TagInput = ({
           data-tag-field-name-value={name}
           data-tag-field-required-value={required ? "true" : "false"}
         >
+          <Input
+            {...field}
+            name={name}
+            form={form}
+            type="text"
+            value={serialized}
+            required={required}
+            disabled={disabled}
+            placeholder={placeholder}
+            data-tag-input-target="input"
+            data-tag-field-target="entry"
+          />
           <ul class="chips" data-tag-field-target="list" aria-label={`${label}のタグ`} hidden>
             {tags.map((tag) => (
               <li data-tag-input-target="chip" data-tag-input-value={tag}>
@@ -86,18 +98,6 @@ export const TagInput = ({
               />
             </li>
           </template>
-          <Input
-            {...field}
-            name={name}
-            form={form}
-            type="text"
-            value={serialized}
-            required={required}
-            disabled={disabled}
-            placeholder={placeholder}
-            data-tag-input-target="input"
-            data-tag-field-target="entry"
-          />
           <input
             type="hidden"
             name={name}

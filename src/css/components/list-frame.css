@@ -7,7 +7,6 @@
     border: var(--ply-stroke-width) solid var(--ply-border);
     border-radius: var(--ply-radius-control);
     background: var(--ply-surface);
-    box-shadow: var(--ply-shadow-surface);
     list-style: none;
   }
   @media (forced-colors: active) {

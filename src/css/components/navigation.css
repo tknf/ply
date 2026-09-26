@@ -6,6 +6,7 @@
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     & > a {
+      position: relative;
       display: flex;
       align-items: start;
       gap: var(--ply-space-2);
@@ -36,9 +37,19 @@
         background: var(--ply-background);
         color: var(--ply-text);
       }
+      /* 現在地はインクの太字と開始側の青い2pxの印。面は塗らない（選択中の面と分ける）。 */
       &[data-current="true"] {
-        background: var(--ply-cover);
-        color: var(--ply-link);
+        color: var(--ply-text);
+        font-weight: 600;
+        &::before {
+          content: "";
+          position: absolute;
+          inset-block: 0.375rem;
+          inset-inline-start: 0;
+          inline-size: 0.125rem;
+          border-radius: var(--ply-radius-pill);
+          background: var(--ply-link);
+        }
       }
     }
     @media (pointer: coarse) {

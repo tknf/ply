@@ -6,13 +6,20 @@
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     overflow-wrap: anywhere;
+    /* まとまりの見出しはSectionと同じ形。太字の名前・状態・右へ伸びる線の順。 */
     & > .title {
       display: flex;
       flex-wrap: wrap;
-      align-items: baseline;
+      align-items: center;
       gap: var(--ply-space-1) var(--ply-space-2);
       font-size: inherit;
       font-weight: 600;
+      &::after {
+        content: "";
+        flex: 1 1 1rem;
+        block-size: var(--ply-stroke-width);
+        background: var(--ply-border);
+      }
       & > .state {
         color: var(--ply-muted);
         font-size: var(--ply-small);
@@ -26,8 +33,7 @@
       margin-block-start: var(--ply-space-2);
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: var(--ply-radius-control);
-      background: var(--ply-fill-raised);
-      box-shadow: var(--ply-shadow-surface);
+      background: var(--ply-surface);
       & > :is(.before, .after) {
         min-inline-size: 0;
         padding-block: var(--ply-space-3);

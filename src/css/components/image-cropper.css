@@ -112,7 +112,7 @@
       block-size: 0.875rem;
       border: 0.125rem solid var(--ply-link);
       border-radius: 0.25rem;
-      background: var(--ply-fill-raised);
+      background: var(--ply-surface);
       box-shadow: var(--ply-shadow-hardware);
     }
 
@@ -165,7 +165,7 @@
       padding-inline: var(--ply-space-5);
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: var(--ply-radius-surface);
-      background: var(--ply-fill-raised);
+      background: var(--ply-surface);
       box-shadow: var(--ply-shadow-surface);
       color: var(--ply-muted);
       font-size: var(--ply-label);

@@ -22,7 +22,7 @@ export default () => (
     <section class="ply-stack" data-space="small" aria-label="一つの主要操作">
       <h3>一つの主要操作</h3>
       <ContextBar items={[{ label: "記事", href: "/search" }, { label: "記事一覧" }]}>
-        <ActionLink href="/example" variant="primary" shape="pill">
+        <ActionLink href="/example" variant="primary">
           <Icon name="pencil" />
           記事を書く
         </ActionLink>

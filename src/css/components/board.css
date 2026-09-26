@@ -20,12 +20,9 @@
       min-block-size: 8rem;
       padding-inline: var(--ply-space-3);
       border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-surface);
-      background: linear-gradient(
-        var(--ply-surface),
-        color-mix(in srgb, var(--ply-lane-accent) 5%, var(--ply-surface))
-      );
-      box-shadow: var(--ply-shadow-surface);
+      /* 列は作業面の上の区画。影で浮かせず、列の色を薄く敷く。手に取れるのは中の項目だけ。 */
+      border-radius: var(--ply-radius-control);
+      background: color-mix(in srgb, var(--ply-lane-accent) 4%, var(--ply-surface));
       &[data-tone="info"] {
         --ply-lane-accent: var(--ply-info);
       }
@@ -41,40 +38,42 @@
       &[data-current="true"] {
         --ply-lane-accent: var(--ply-link);
       }
+      /* まとまりの見出しはSectionと同じ形。印・太字の名前・件数・右へ伸びる線の順。 */
       & > .title {
         display: flex;
         align-items: center;
         gap: var(--ply-space-2);
-        inline-size: fit-content;
-        max-inline-size: 100%;
-        color: var(--ply-lane-accent);
-        font-size: var(--ply-small);
-        font-weight: 400;
-        line-height: var(--ply-small-leading);
+        min-inline-size: 0;
+        color: var(--ply-text);
+        font-size: var(--ply-label);
+        font-weight: 600;
+        line-height: var(--ply-label-leading);
         overflow-wrap: anywhere;
+        &::after {
+          content: "";
+          flex: 1 1 1rem;
+          block-size: var(--ply-stroke-width);
+          background: var(--ply-border);
+        }
         & > .label {
           display: inline-flex;
           align-items: center;
-          gap: var(--ply-space-1);
-          padding-block: 0.0625rem;
-          padding-inline: 0.375rem;
-          border-radius: var(--ply-space-1);
-          background: transparent;
-          color: var(--ply-lane-accent);
+          gap: var(--ply-space-2);
+          min-inline-size: 0;
           &::before {
             content: "";
             flex: 0 0 auto;
-            inline-size: 0.375rem;
-            block-size: 0.375rem;
-            border: var(--ply-stroke-width) solid currentColor;
+            inline-size: 0.5rem;
+            block-size: 0.5rem;
             border-radius: 50%;
-            background: currentColor;
+            background: var(--ply-lane-accent);
           }
         }
         & > small {
-          color: var(--ply-lane-accent);
-          font-size: inherit;
+          color: var(--ply-muted);
+          font-size: var(--ply-small);
           font-weight: 400;
+          font-variant-numeric: tabular-nums;
         }
       }
       & > .empty {
@@ -114,7 +113,7 @@
       padding-inline: var(--ply-space-3);
       border: var(--ply-stroke-width) solid var(--ply-link);
       border-radius: 0.5rem;
-      background: var(--ply-fill-raised);
+      background: var(--ply-surface);
       box-shadow: var(--ply-shadow-menu);
     }
     @container ply-board (inline-size < 36rem) {

@@ -105,8 +105,14 @@
     gap: var(--ply-space-2);
   }
 
-  .ply-range > .heading > .label {
+  /* 範囲の名前（legend）も一つの値の名前と同じ太さと位置にする。 */
+  .ply-range > .heading > .label,
+  .ply-range > legend.label {
     font-weight: var(--ply-label-weight);
+  }
+
+  .ply-range > legend.label {
+    padding: 0;
   }
 
   .ply-range > .heading > .value {

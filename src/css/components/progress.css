@@ -31,12 +31,7 @@
         display: block;
         block-size: 100%;
         border-radius: inherit;
-        background: linear-gradient(
-          90deg,
-          color-mix(in srgb, var(--ply-link) 80%, white),
-          var(--ply-link)
-        );
-        box-shadow: inset 0 0.0625rem 0 rgb(255 255 255 / 28%);
+        background: var(--ply-link);
         transition: inline-size var(--ply-duration) ease-out;
       }
       /* 終わりが分からない処理は、トラック全体を流れる共通の斜線で示す。 */

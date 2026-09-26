@@ -332,7 +332,7 @@
       padding-inline: var(--ply-space-4);
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: calc(4em / 7);
-      background: var(--ply-surface) var(--ply-fill-raised);
+      background: var(--ply-surface);
       box-shadow: var(--ply-shadow-control);
       transition:
         border-color var(--ply-duration) ease,
@@ -378,8 +378,8 @@
     &[data-size="short"] {
       max-inline-size: 8rem;
     }
-    /* 探す・絞る入力はピル。丸い端に文字が寄らないよう左右を少し広げる。 */
-    &[type="search"] {
+    /* 候補から選ぶ・探す入力はピル。書く入力は角のまま。丸い端に文字が寄らないよう左右を少し広げる。 */
+    &:is([type="search"], [list], select:not([multiple], [size])) {
       padding-inline: 1em;
       border-radius: var(--ply-radius-pill);
     }

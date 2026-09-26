@@ -33,7 +33,7 @@
         block-size: 1.5rem;
         border: var(--ply-stroke-width) solid var(--ply-border);
         border-radius: 50%;
-        background: linear-gradient(var(--ply-surface), var(--ply-background));
+        background: var(--ply-surface);
         box-shadow: var(--ply-shadow-chip);
         color: var(--ply-muted);
         & > .ply-icon {

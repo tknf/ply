@@ -5,7 +5,7 @@
     --ply-overlay-inset-inline: 1.25rem;
     border: var(--ply-stroke-width) solid var(--ply-border);
     border-radius: var(--ply-radius-surface);
-    background: var(--ply-fill-raised);
+    background: var(--ply-surface);
     color: var(--ply-text);
     font-family: var(--ply-control-font-family);
     font-size: var(--ply-label);

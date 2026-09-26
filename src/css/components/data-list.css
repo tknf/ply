@@ -19,9 +19,9 @@
       &:focus-within {
         background: var(--ply-background);
       }
+      /* 現在地はインクの太字と開始側の青い2pxの印。面は塗らない。 */
       &[data-current="true"] {
         box-shadow: inset 0.125rem 0 var(--ply-link);
-        background: linear-gradient(var(--ply-surface), var(--ply-info-soft));
         &:dir(rtl) {
           box-shadow: inset -0.125rem 0 var(--ply-link);
         }
@@ -36,10 +36,11 @@
       & > .body {
         min-inline-size: 0;
         overflow-wrap: anywhere;
+        /* 項目の題名は太字。Card・ActionList・BoardのItemと同じ構造にする。 */
         & > .title {
           color: var(--ply-text);
           font-size: var(--ply-label);
-          font-weight: 400;
+          font-weight: 600;
           line-height: var(--ply-label-leading);
         }
         & > a.title {

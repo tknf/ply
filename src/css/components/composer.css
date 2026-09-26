@@ -8,8 +8,7 @@
     padding-inline: var(--ply-space-5);
     border: var(--ply-stroke-width) solid var(--ply-border);
     border-radius: var(--ply-radius-control);
-    background: var(--ply-fill-raised);
-    box-shadow: var(--ply-shadow-surface);
+    background: var(--ply-surface);
   }
 
   .ply-composer > .ply-field > .ply-input {

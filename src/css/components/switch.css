@@ -18,7 +18,7 @@
       block-size: calc(10em / 7);
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: var(--ply-radius-pill);
-      background: linear-gradient(var(--ply-background), var(--ply-border));
+      background: var(--ply-background);
       color: var(--ply-muted);
       box-shadow: var(--ply-shadow-input);
       padding-block: calc(1em / 7);

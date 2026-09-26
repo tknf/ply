@@ -2,9 +2,7 @@ import { Wing, wingCookieName, ActionLink, Card, Surface, Timeline } from "../..
 
 const actions = (
   <>
-    <ActionLink href="/examples/project" shape="pill">
-      新しいプロジェクト
-    </ActionLink>
+    <ActionLink href="/examples/project">新しいプロジェクト</ActionLink>
     <ActionLink href="/examples/contact">メンバーを招待</ActionLink>
     <ActionLink href="/examples/settings" variant="link">
       アカウントの管理

@@ -12,11 +12,11 @@
     min-block-size: var(--ply-button-size);
     max-inline-size: 100%;
     padding-block: 0;
-    padding-inline: 1em;
+    /* 押す物はピル。主・控えめ・危険は形ではなく塗り・枠・色で分ける。丸い端に文字が寄らないよう左右を広げる。 */
+    padding-inline: 1.25em;
     border: var(--ply-stroke-width) solid var(--ply-border);
-    border-radius: var(--ply-radius-control);
+    border-radius: var(--ply-radius-pill);
     background: var(--ply-surface);
-    background-image: var(--ply-fill-raised);
     color: var(--ply-text);
     font-family: var(--ply-control-font-family);
     font-size: var(--ply-button-font);
@@ -44,16 +44,11 @@
     }
 
     &[data-size="compact"] {
-      padding-inline: 0.5em;
-    }
-    /* 作る・送る主操作はピル。丸い端に文字が寄らないよう左右を少し広げる。 */
-    &[data-shape="pill"] {
-      padding-inline: 1.25em;
-      border-radius: var(--ply-radius-pill);
+      padding-inline: 0.875em;
     }
     &[data-size="large"] {
       min-block-size: var(--ply-button-large);
-      padding-inline: 1.1em;
+      padding-inline: 1.375em;
       font-size: calc(var(--ply-button-font) * 8 / 7);
       line-height: var(--ply-control-leading);
     }

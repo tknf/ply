@@ -2,7 +2,7 @@
   .ply-surface {
     container: ply-surface / inline-size;
     min-inline-size: 0;
-    background: var(--ply-fill-raised);
+    background: var(--ply-surface);
     border: var(--ply-stroke-width) solid var(--ply-border);
     border-radius: var(--ply-radius-surface);
     box-shadow: var(--ply-shadow-surface);
@@ -21,11 +21,12 @@
     &:has(> .body:empty) > .ply-context-bar {
       border-block-end: 0;
     }
+    /* 面の色は区別のため。強調ではないのでグラデーションにせず平らに敷く。 */
     &[data-tone="warm"] {
-      background: linear-gradient(var(--ply-surface), var(--ply-soft));
+      background: var(--ply-soft);
     }
     &[data-tone="cool"] {
-      background: linear-gradient(var(--ply-surface), var(--ply-info-soft));
+      background: var(--ply-info-soft);
     }
     &[data-kind="panel"] {
       border-radius: var(--ply-radius-control);

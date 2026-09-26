@@ -6,10 +6,11 @@
     min-inline-size: 0;
     padding-block: var(--ply-space-4) var(--ply-space-3);
     padding-inline: var(--ply-space-5);
-    border: var(--ply-stroke-width) solid var(--ply-border);
-    border-radius: var(--ply-radius-surface);
-    background: var(--ply-fill-raised);
-    box-shadow: var(--ply-shadow-surface);
+    /* 作業面から切り離す区画。影で浮かせず、危険の色のミシン目で囲む。 */
+    border: var(--ply-stroke-width) dashed
+      color-mix(in srgb, var(--ply-danger) 45%, var(--ply-surface));
+    border-radius: var(--ply-radius-control);
+    background: var(--ply-surface);
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);

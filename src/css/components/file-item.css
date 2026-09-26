@@ -17,9 +17,8 @@
       block-size: 2.5rem;
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: 0.25rem 0.625rem 0.25rem 0.25rem;
-      background: linear-gradient(var(--ply-surface), var(--ply-info-soft));
+      background: var(--ply-surface);
       color: var(--ply-link);
-      box-shadow: var(--ply-shadow-chip);
     }
     /* 送信待ちの紙はミシン目の縁。まだ手元に確定していないことを示す。 */
     &[data-state="pending"] > .icon {
@@ -34,7 +33,7 @@
       overflow-wrap: anywhere;
       & > .title {
         font-size: var(--ply-label);
-        font-weight: 400;
+        font-weight: 600;
         line-height: var(--ply-label-leading);
         & > strong {
           font-weight: inherit;

@@ -1,16 +1,24 @@
 @layer components {
+  /* 作業面に書かれた操作の一覧。項目ごとに浮かせず、一つの枠に行を並べる。 */
   .ply-action-list {
     display: grid;
-    gap: var(--ply-space-1);
+    gap: 0;
     min-inline-size: 0;
     margin: 0;
     padding: 0;
+    overflow: hidden;
+    border: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: var(--ply-radius-control);
+    background: var(--ply-surface);
     list-style: none;
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     & > li {
       min-inline-size: 0;
+      & + li {
+        border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+      }
       & > a {
         display: grid;
         grid-template-columns: 1.5rem minmax(0, 1fr) 1rem;
@@ -21,10 +29,7 @@
         min-inline-size: 0;
         padding-block: var(--ply-space-2);
         padding-inline: var(--ply-space-4);
-        border: var(--ply-stroke-width) solid var(--ply-border);
-        border-radius: var(--ply-radius-control);
-        background: var(--ply-fill-raised);
-        box-shadow: var(--ply-shadow-control);
+        background: var(--ply-surface);
         text-decoration: none;
         color: inherit;
         overflow-wrap: anywhere;
@@ -47,9 +52,8 @@
           block-size: 1.5rem;
           border: var(--ply-stroke-width) solid var(--ply-border);
           border-radius: 50%;
-          background: linear-gradient(var(--ply-surface), var(--ply-background));
+          background: var(--ply-surface);
           color: var(--ply-link);
-          box-shadow: inset 0 0.0625rem 0 var(--ply-surface);
           & > .ply-icon {
             font-size: 0.875rem;
           }
@@ -78,14 +82,11 @@
           }
         }
         &:hover {
-          box-shadow: var(--ply-shadow-control-hover);
-        }
-        &:active {
-          box-shadow: var(--ply-shadow-control-pressed);
+          background: color-mix(in srgb, var(--ply-background) 65%, var(--ply-surface));
         }
         &:focus-visible {
           outline: 0.125rem solid var(--ply-link);
-          outline-offset: 0.125rem;
+          outline-offset: -0.125rem;
         }
         &[data-accent="amber"] > .icon {
           color: var(--ply-amber);
@@ -98,10 +99,15 @@
         }
       }
     }
+    /* 格子でも一つの枠を保ち、隣との境を1pxの線で引く。 */
     &[data-layout="grid"] {
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-      gap: var(--ply-space-3);
+      gap: var(--ply-stroke-width);
+      background: var(--ply-border);
       & > li {
+        & + li {
+          border-block-start: 0;
+        }
         & > a {
           & > .preview {
             grid-column: 2 / -1;

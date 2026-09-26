@@ -9,9 +9,8 @@
       min-inline-size: 0;
       overflow: hidden;
       border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-surface);
+      border-radius: var(--ply-radius-control);
       background: var(--ply-surface);
-      box-shadow: var(--ply-shadow-surface);
       & > :is(.primary, .secondary) {
         min-inline-size: 0;
         padding-block: var(--ply-space-4) var(--ply-space-3);
@@ -19,15 +18,11 @@
         overflow-wrap: anywhere;
       }
       & > .primary {
-        background: var(--ply-fill-raised);
+        background: var(--ply-surface);
       }
       & > .secondary {
         border-block-start: var(--ply-stroke-width) solid var(--ply-border);
-        background: linear-gradient(
-          176deg,
-          color-mix(in srgb, var(--ply-surface) 99%, var(--ply-ink)),
-          color-mix(in srgb, var(--ply-surface) 96%, var(--ply-ink))
-        );
+        background: color-mix(in srgb, var(--ply-background) 50%, var(--ply-surface));
       }
     }
     @container ply-split-view (inline-size < 32rem) {
@@ -87,8 +82,8 @@
         inline-size: 1.25rem;
         block-size: 1.75rem;
         border: var(--ply-stroke-width) solid var(--ply-border);
-        border-radius: var(--ply-radius-control);
-        background: linear-gradient(var(--ply-surface), var(--ply-background));
+        border-radius: var(--ply-radius-pill);
+        background: var(--ply-surface);
         color: var(--ply-muted);
         box-shadow: var(--ply-shadow-control);
         & > .ply-icon {

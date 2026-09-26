@@ -9,7 +9,7 @@
     padding-inline: var(--ply-space-4);
     border: var(--ply-stroke-width) solid var(--ply-border);
     border-radius: var(--ply-radius-control);
-    background: var(--ply-fill-raised);
+    background: var(--ply-surface);
     box-shadow: var(--ply-shadow-surface);
     & > .body {
       min-inline-size: 0;

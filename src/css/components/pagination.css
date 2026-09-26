@@ -25,7 +25,7 @@
     }
     & > ul > li > a {
       border-color: var(--ply-border);
-      background: var(--ply-fill-raised);
+      background: var(--ply-surface);
       color: var(--ply-text);
       box-shadow: var(--ply-shadow-control);
       &:hover {

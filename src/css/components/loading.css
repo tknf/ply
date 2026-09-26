@@ -26,9 +26,8 @@
       padding-block: 0.6875rem 0.625rem;
       padding-inline: 0.9375rem;
       border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-surface);
-      background: var(--ply-fill-raised);
-      box-shadow: var(--ply-shadow-surface);
+      border-radius: var(--ply-radius-control);
+      background: var(--ply-surface);
     }
     &[data-variant="orbit"] > .indicator {
       border: 0.125rem solid var(--ply-border);

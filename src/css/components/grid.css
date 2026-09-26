@@ -12,9 +12,8 @@
       min-inline-size: 100%;
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-spacing: 0;
-      border-radius: var(--ply-radius-surface);
+      border-radius: var(--ply-radius-control);
       background: var(--ply-surface);
-      box-shadow: var(--ply-shadow-surface);
 
       & > caption {
         padding-block-end: var(--ply-space-3);
@@ -40,7 +39,7 @@
 
       & > thead > tr > th {
         padding-block: var(--ply-space-2);
-        background: var(--ply-fill-raised);
+        background: var(--ply-surface);
         color: var(--ply-muted);
         font-size: var(--ply-small);
         font-weight: 600;
@@ -53,7 +52,7 @@
         inset-inline-start: 0;
         z-index: 1;
         min-inline-size: 6.5rem;
-        background: var(--ply-fill-raised);
+        background: var(--ply-surface);
         font-weight: 600;
         white-space: nowrap;
       }
@@ -87,10 +86,9 @@
       padding-block: var(--ply-space-3);
       padding-inline: var(--ply-space-4);
       border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-surface);
-      background: var(--ply-fill-raised);
+      border-radius: var(--ply-radius-control);
+      background: var(--ply-surface);
       color: var(--ply-muted);
-      box-shadow: var(--ply-shadow-surface);
     }
   }
 

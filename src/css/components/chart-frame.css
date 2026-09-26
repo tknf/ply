@@ -33,11 +33,7 @@
     overflow: auto;
     border: var(--ply-stroke-width) solid var(--ply-border);
     border-radius: var(--ply-radius-control);
-    background: linear-gradient(
-      var(--ply-surface),
-      color-mix(in srgb, var(--ply-surface) 96%, var(--ply-ink))
-    );
-    box-shadow: var(--ply-shadow-surface);
+    background: var(--ply-surface);
     & > svg {
       display: block;
       max-inline-size: 100%;

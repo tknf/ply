@@ -48,13 +48,9 @@
         }
       }
       & > .count {
-        min-inline-size: 1.5rem;
-        padding-inline: 0;
-        border-radius: var(--ply-radius-pill);
-        background: transparent;
         color: var(--ply-muted);
         font-size: var(--ply-small);
-        text-align: center;
+        font-variant-numeric: tabular-nums;
       }
       & > .actions {
         margin-inline-start: auto;

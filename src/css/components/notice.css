@@ -2,6 +2,7 @@
   .ply-notice {
     container: ply-notice / inline-size;
     --ply-notice-accent: var(--ply-info);
+    --ply-notice-fill: var(--ply-emphasis-info);
     display: grid;
     grid-template-columns: minmax(0, 1.5rem) minmax(0, 1fr);
     align-items: start;
@@ -9,10 +10,11 @@
     min-inline-size: 0;
     padding-block: var(--ply-space-3) var(--ply-space-2);
     padding-inline: var(--ply-space-4);
-    border: var(--ply-stroke-width) solid var(--ply-border);
+    /* 通知は作業面に書かれた「ここを見て」。影で浮かせず、役割の色の強調の面と淡い枠で示す。 */
+    border: var(--ply-stroke-width) solid
+      color-mix(in srgb, var(--ply-notice-accent) 22%, var(--ply-surface));
     border-radius: var(--ply-radius-control);
-    background: var(--ply-fill-raised);
-    box-shadow: var(--ply-shadow-surface);
+    background: var(--ply-notice-fill);
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
@@ -24,10 +26,9 @@
       place-items: center;
       inline-size: min(1.5rem, 100%);
       block-size: 1.5rem;
-      border-radius: 0.5rem;
+      border-radius: 50%;
       color: var(--ply-notice-accent);
-      background: color-mix(in srgb, var(--ply-notice-accent) 8%, white);
-      box-shadow: inset 0 0.0625rem 0 rgb(255 255 255 / 75%);
+      background: var(--ply-surface);
     }
     & > .title {
       grid-column: 2;
@@ -52,12 +53,15 @@
     }
     &[data-tone="success"] {
       --ply-notice-accent: var(--ply-success);
+      --ply-notice-fill: var(--ply-emphasis-success);
     }
     &[data-tone="warning"] {
       --ply-notice-accent: var(--ply-warning);
+      --ply-notice-fill: var(--ply-emphasis-warning);
     }
     &[data-tone="danger"] {
       --ply-notice-accent: var(--ply-danger);
+      --ply-notice-fill: var(--ply-emphasis-danger);
     }
     @container ply-notice (inline-size < 24rem) {
       & > .symbol {

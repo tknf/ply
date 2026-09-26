@@ -30,7 +30,7 @@
       padding-inline: 1.125rem;
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: var(--ply-radius-surface);
-      background: var(--ply-fill-raised);
+      background: var(--ply-surface);
       box-shadow: var(--ply-shadow-surface);
     }
 

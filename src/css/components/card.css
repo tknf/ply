@@ -8,7 +8,7 @@
     padding-inline: var(--ply-space-4);
     border: var(--ply-stroke-width) solid var(--ply-border);
     border-radius: var(--ply-radius-surface);
-    background: var(--ply-fill-raised);
+    background: var(--ply-surface);
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);

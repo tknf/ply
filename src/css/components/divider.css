@@ -6,7 +6,7 @@
     --ply-divider-paint: linear-gradient(var(--ply-divider-color), var(--ply-divider-color));
     display: flex;
     align-items: center;
-    gap: var(--ply-space-3);
+    gap: var(--ply-space-2);
     block-size: var(--ply-divider-size);
     margin: 0;
     border: 0;
@@ -16,6 +16,7 @@
       min-inline-size: 0;
       color: var(--ply-muted);
       font-size: var(--ply-small);
+      font-weight: 600;
       line-height: var(--ply-small-leading);
     }
     &:has(> span) {
@@ -42,7 +43,6 @@
       --ply-divider-size: 0.375rem;
       & > span {
         color: var(--ply-link);
-        font-weight: 600;
       }
     }
     &[data-line="wavy"]:not(:has(> span)),

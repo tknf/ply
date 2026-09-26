@@ -10,16 +10,12 @@
     overflow: hidden;
     border: var(--ply-stroke-width) solid var(--ply-border);
     border-radius: 50%;
-    background: linear-gradient(
-      color-mix(in srgb, var(--ply-avatar-fill) 72%, var(--ply-surface)),
-      var(--ply-avatar-fill)
-    );
+    background: var(--ply-avatar-fill);
     color: var(--ply-blue-dark);
     font-family: var(--ply-control-font-family);
     font-size: var(--ply-small);
     font-weight: 600;
     line-height: 1;
-    box-shadow: var(--ply-shadow-chip);
     &[data-tone="blue"] {
       --ply-avatar-fill: var(--ply-cover);
       color: var(--ply-blue-dark);

@@ -119,23 +119,44 @@
     --ply-border: var(--ply-gray-100);
     --ply-stroke-width: 0.0625rem;
     --ply-ink: var(--ply-black);
-    --ply-fill-raised: linear-gradient(
-      176deg,
-      var(--ply-surface) 0%,
-      color-mix(in srgb, var(--ply-surface) 99%, var(--ply-ink)) 48%,
-      color-mix(in srgb, var(--ply-surface) 96%, var(--ply-ink)) 100%
-    );
+    /*
+      グラデーションは「ここを見て」の面だけに使う。形は役割の色からその淡い対への135度の一つだけ。
+      一覧・本文・情報の面は平らな--ply-surfaceにする。
+    */
     --ply-fill-primary: linear-gradient(
-      176deg,
-      color-mix(in srgb, var(--ply-link) 92%, white) 0%,
-      color-mix(in srgb, var(--ply-link) 98%, white) 48%,
-      color-mix(in srgb, var(--ply-link) 98%, var(--ply-ink)) 100%
+      135deg,
+      color-mix(in srgb, var(--ply-link) 84%, white) 0%,
+      var(--ply-link) 100%
     );
     --ply-fill-primary-hover: linear-gradient(
-      176deg,
-      color-mix(in srgb, var(--ply-button-hover) 92%, white) 0%,
-      color-mix(in srgb, var(--ply-button-hover) 98%, white) 48%,
-      color-mix(in srgb, var(--ply-button-hover) 98%, var(--ply-ink)) 100%
+      135deg,
+      color-mix(in srgb, var(--ply-button-hover) 84%, white) 0%,
+      var(--ply-button-hover) 100%
+    );
+    --ply-emphasis-neutral: linear-gradient(
+      135deg,
+      var(--ply-surface) 0%,
+      color-mix(in srgb, var(--ply-background) 70%, var(--ply-surface)) 100%
+    );
+    --ply-emphasis-info: linear-gradient(
+      135deg,
+      var(--ply-info-soft) 0%,
+      color-mix(in srgb, var(--ply-info-soft) 35%, var(--ply-surface)) 100%
+    );
+    --ply-emphasis-success: linear-gradient(
+      135deg,
+      var(--ply-success-soft) 0%,
+      color-mix(in srgb, var(--ply-success-soft) 35%, var(--ply-surface)) 100%
+    );
+    --ply-emphasis-warning: linear-gradient(
+      135deg,
+      var(--ply-warning-soft) 0%,
+      color-mix(in srgb, var(--ply-warning-soft) 35%, var(--ply-surface)) 100%
+    );
+    --ply-emphasis-danger: linear-gradient(
+      135deg,
+      var(--ply-danger-soft) 0%,
+      color-mix(in srgb, var(--ply-danger-soft) 35%, var(--ply-surface)) 100%
     );
     --ply-link: var(--ply-brand);
     --ply-info: var(--ply-blue-dark);

@@ -58,9 +58,11 @@
           outline: 0.125rem solid var(--ply-link);
           outline-offset: -0.1875rem;
         }
+        /* 現在地はインクの太字と下の青い2pxの印。 */
         &[data-state="active"] {
           border-block-end-color: var(--ply-link);
-          color: var(--ply-link);
+          color: var(--ply-text);
+          font-weight: 600;
         }
         &:disabled {
           color: var(--ply-muted);
