@@ -1,7 +1,8 @@
 @layer components {
   /*
     帳票の記入欄。値は青い罫線の上に書いた文字で、Composerの本文と同じ罫線を使う。
-    鉛筆を取ると、その罫線の位置が欄になる。確定すると、書き終えた印をペンで描く。
+    鉛筆を取っても箱は出さず、同じ罫線の上にそのまま書く。書いている罫線は青く太くなる。
+    確定すると、新しい値を書き始めの側からペンで書き、書き終えた印を添える。
   */
   .ply-editable-property {
     display: grid;
@@ -22,7 +23,7 @@
     min-inline-size: 0;
     inline-size: min(100%, 28rem);
     padding-block: 0.125rem;
-    /* 書き始めの位置は、編集中の欄の文字と同じ（欄の左右0.75emと枠の幅）。 */
+    /* 書き始めの位置は、編集中の欄の文字と同じ（欄の左右0.75emと透明にした枠の幅）。 */
     padding-inline: calc(var(--ply-label) * 0.75 + var(--ply-stroke-width)) 0.125rem;
     border: 0;
     border-block-end: var(--ply-frame-width) solid var(--ply-ruled-line);
@@ -72,8 +73,12 @@
     }
   }
 
-  .ply-editable-property[data-saved="true"] > .preview > .value::after {
-    animation: ply-editable-property-saved 1.6s ease-out forwards;
+  /* 確定した値は、書き始めの側からペンで書き、書き終えたところで印を添える。 */
+  .ply-editable-property[data-saved="true"] > .preview > .value {
+    animation: ply-editable-property-write 0.45s steps(12, end) both;
+    &::after {
+      animation: ply-editable-property-saved 1.6s ease-out 0.4s both;
+    }
   }
 
   .ply-editable-property > .preview > .edit {
@@ -83,7 +88,10 @@
     }
   }
 
-  /* 書いている間は、罫線の位置に欄と確定・取消を並べる。欄の外に枠は重ねない。 */
+  /*
+    書いている間も同じ罫線の上。欄の枠と影は外し、罫線を書いている印として青く太くし、
+    罫線の上に淡い青を敷く。行の高さと書き始めの位置は、値を表示している時と同じ。
+  */
   .ply-editable-property > .editor {
     display: flex;
     flex-wrap: wrap;
@@ -91,11 +99,36 @@
     gap: var(--ply-space-2);
     min-inline-size: 0;
     inline-size: min(100%, 28rem);
+    padding-block: 0.125rem;
+    padding-inline: 0 0.125rem;
+    border-block-end: var(--ply-frame-width) solid var(--ply-ruled-line);
+    transition:
+      border-color var(--ply-duration) ease,
+      background-color var(--ply-duration) ease;
+    &:has(> .ply-input:focus) {
+      border-block-end-color: var(--ply-link);
+      background-color: color-mix(in srgb, var(--ply-info-soft) 70%, transparent);
+    }
+    &:has(> .ply-input[data-invalid="true"], > .ply-input:user-invalid) {
+      border-block-end-color: var(--ply-danger);
+    }
   }
 
   .ply-editable-property > .editor > .ply-input {
     flex: 1 1 12rem;
     inline-size: auto;
+    border-color: transparent;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    &:focus-visible {
+      outline: none;
+      border-color: transparent;
+    }
+    /* 使えない欄は、罫線の上に斜線を引く。 */
+    &:disabled {
+      background: var(--ply-hatch);
+    }
   }
 
   .ply-editable-property > .editor > .actions {
@@ -108,6 +141,9 @@
     display: none;
   }
   @media (prefers-reduced-motion: reduce) {
+    .ply-editable-property[data-saved="true"] > .preview > .value {
+      animation: none;
+    }
     .ply-editable-property[data-saved="true"] > .preview > .value::after {
       animation: none;
       clip-path: inset(0);
@@ -120,6 +156,14 @@
     }
     .ply-editable-property > .preview > .value::after {
       background: CanvasText;
+    }
+  }
+  @keyframes ply-editable-property-write {
+    0% {
+      clip-path: var(--ply-editable-pen-start);
+    }
+    100% {
+      clip-path: inset(0);
     }
   }
   @keyframes ply-editable-property-saved {

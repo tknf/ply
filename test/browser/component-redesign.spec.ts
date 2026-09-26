@@ -161,6 +161,38 @@ test("EditablePropertyは確定した時だけ書き終えた印を描き、未�
   await expect(property).not.toHaveAttribute("data-saved");
 });
 
+test("EditablePropertyは表示と編集で罫線の位置と書き始めを変えない", async ({ page }) => {
+  await page.goto("/components/editable-property");
+  const property = page.locator('[data-example="hono"] .ply-editable-property').first();
+  const measure = () =>
+    property.evaluate((element) => {
+      const input = element.querySelector("input");
+      const editing = element.getAttribute("data-state") === "editing";
+      const row = element.querySelector(editing ? ".editor" : ".preview");
+      if (!input || !row) return null;
+      let start = 0;
+      if (editing) {
+        const style = getComputedStyle(input);
+        start =
+          input.getBoundingClientRect().left +
+          parseFloat(style.paddingLeft) +
+          parseFloat(style.borderLeftWidth);
+      } else {
+        const range = document.createRange();
+        const value = element.querySelector(".value");
+        if (value) range.selectNodeContents(value);
+        start = range.getBoundingClientRect().left;
+      }
+      return { line: row.getBoundingClientRect().bottom, start };
+    });
+  const viewing = await measure();
+  await property.getByRole("button", { name: "担当者を編集" }).click();
+  await expect(property).toHaveAttribute("data-state", "editing");
+  const editing = await measure();
+  expect(editing?.line).toBe(viewing?.line);
+  expect(editing?.start).toBeCloseTo(viewing?.start ?? Number.NaN, 0);
+});
+
 test("Boardのゴム印は紙を運んだ列の印に押し直され、たたんだ列は札の幅になる", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/components/board");
