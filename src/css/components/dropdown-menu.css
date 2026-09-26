@@ -41,7 +41,7 @@
     margin: 0;
     padding-block: var(--ply-space-1);
     padding-inline: var(--ply-space-1);
-    border: var(--ply-stroke-width) solid var(--ply-border);
+    border: 0;
     border-radius: var(--ply-radius-surface);
     background: var(--ply-surface);
     color: var(--ply-text);

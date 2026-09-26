@@ -31,9 +31,10 @@
       grid-template-columns: minmax(0, 1fr);
       gap: 0;
       margin-block-start: var(--ply-space-2);
-      border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-surface);
-      background: var(--ply-surface);
+      border: 0;
+      border-block: var(--ply-stroke-width) solid var(--ply-border);
+      border-radius: 0;
+      background: transparent;
       & > :is(.before, .after) {
         min-inline-size: 0;
         padding-block: var(--ply-space-3);

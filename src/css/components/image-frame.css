@@ -9,8 +9,8 @@
       place-items: center;
       aspect-ratio: 5 / 7;
       overflow: hidden;
-      border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-surface);
+      border: 0;
+      border-radius: var(--ply-radius-field);
       background: var(--ply-background);
       & > img {
         position: absolute;

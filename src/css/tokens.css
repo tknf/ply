@@ -95,14 +95,34 @@
     --ply-success-soft: var(--ply-mint);
     --ply-warning-soft: #fff6dc;
     --ply-danger-soft: #fff0ed;
+    /*
+      紙の影。枠線を使わず、1pxの輪郭と同じ濃さで広がる三段の影で、机に置いた紙に見せる。
+      持ち上げた紙はlift、後ろに続きがある紙はstack（重ねた紙）。
+    */
+    --ply-shadow-paper:
+      0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 7%), 0 0.125rem 0.25rem rgb(36 57 70 / 5%),
+      0 0.375rem 0.75rem rgb(36 57 70 / 5%), 0 0.75rem 1.5rem rgb(36 57 70 / 4%);
+    --ply-shadow-paper-lift:
+      0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 9%), 0 0.25rem 0.5rem rgb(36 57 70 / 7%),
+      0 0.75rem 1.5rem rgb(36 57 70 / 6%), 0 1.5rem 3rem rgb(36 57 70 / 4%);
+    --ply-shadow-stack:
+      var(--ply-shadow-paper),
+      0.375rem 0.4375rem 0 calc(var(--ply-stroke-width) * -1)
+        color-mix(in srgb, var(--ply-soft) 80%, var(--ply-surface)),
+      0.375rem 0.4375rem 0 0 rgb(36 57 70 / 9%),
+      0.75rem 0.875rem 0 calc(var(--ply-stroke-width) * -2)
+        color-mix(in srgb, var(--ply-soft) 90%, var(--ply-surface)),
+      0.75rem 0.875rem 0 calc(var(--ply-stroke-width) * -1) rgb(36 57 70 / 7%);
     --ply-shadow-sheet:
-      inset 0 0.0625rem 0 rgb(255 255 255 / 78%), 0 0.0625rem 0.125rem rgb(36 57 70 / 8%),
-      0 0.1875rem 0.375rem rgb(36 57 70 / 6%), 0 0.5rem 1rem rgb(36 57 70 / 4%),
-      0 1rem 2rem rgb(36 57 70 / 3%), 0 2rem 4rem rgb(36 57 70 / 2%);
+      0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 8%), inset 0 0.0625rem 0 rgb(255 255 255 / 78%),
+      0 0.0625rem 0.125rem rgb(36 57 70 / 8%), 0 0.1875rem 0.375rem rgb(36 57 70 / 6%),
+      0 0.5rem 1rem rgb(36 57 70 / 4%), 0 1rem 2rem rgb(36 57 70 / 3%),
+      0 2rem 4rem rgb(36 57 70 / 2%);
     --ply-shadow-menu:
-      inset 0 0.0625rem 0 rgb(255 255 255 / 78%), 0 0.0625rem 0.125rem rgb(36 57 70 / 8%),
-      0 0.1875rem 0.375rem rgb(36 57 70 / 6%), 0 0.5rem 1rem rgb(36 57 70 / 5%),
-      0 1rem 2rem rgb(36 57 70 / 4%), 0 2rem 3rem rgb(36 57 70 / 2%);
+      0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 8%), inset 0 0.0625rem 0 rgb(255 255 255 / 78%),
+      0 0.0625rem 0.125rem rgb(36 57 70 / 8%), 0 0.1875rem 0.375rem rgb(36 57 70 / 6%),
+      0 0.5rem 1rem rgb(36 57 70 / 5%), 0 1rem 2rem rgb(36 57 70 / 4%),
+      0 2rem 3rem rgb(36 57 70 / 2%);
     --ply-space-1: 0.25rem;
     --ply-space-2: 0.5rem;
     --ply-space-3: 0.75rem;
@@ -183,12 +203,14 @@
     --ply-label-leading: calc(10 / 7);
     --ply-small-leading: calc(20 / 13);
     /*
-      角丸は役割で四つだけ。押す物はピル、箱（欄・枠・面・メニュー）は--ply-radius-surface、
-      箱の内側の行は同心の--ply-radius-control、小さな札（チェック・キー・予定）は--ply-radius-mark。
+      角丸は役割で決める。押す物はピル、紙（作業面・Card・Boardの項目・メニュー・ダイアログ）は--ply-radius-surface、
+      欄と作業面の中の枠は--ply-radius-field、その内側の行は同心の--ply-radius-control、
+      小さな札（チェック・キー・予定）は--ply-radius-mark。
     */
     --ply-radius-mark: 0.25rem;
     --ply-radius-control: 0.5rem;
-    --ply-radius-surface: 0.75rem;
+    --ply-radius-field: 0.75rem;
+    --ply-radius-surface: 1rem;
     --ply-radius-pill: 999rem;
     /*
       語彙の線と模様。ミシン目（破線）はまだ確定していないもの、波線はここから新しいもの、

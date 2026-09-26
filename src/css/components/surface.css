@@ -3,9 +3,9 @@
     container: ply-surface / inline-size;
     min-inline-size: 0;
     background: var(--ply-surface);
-    border: var(--ply-stroke-width) solid var(--ply-border);
+    border: 0;
     border-radius: var(--ply-radius-surface);
-    box-shadow: var(--ply-shadow-surface);
+    box-shadow: var(--ply-shadow-paper);
     & > .body {
       display: grid;
       align-content: start;
@@ -29,7 +29,7 @@
       background: var(--ply-info-soft);
     }
     &[data-kind="panel"] {
-      border-radius: var(--ply-radius-surface);
+      border-radius: var(--ply-radius-field);
       box-shadow: var(--ply-shadow-control);
     }
     &[data-layout="document"] > .body {
@@ -38,6 +38,7 @@
   }
   @media (forced-colors: active) {
     :is(.ply-surface, .ply-surface[data-kind="panel"]) {
+      border: var(--ply-stroke-width) solid CanvasText;
       background: Canvas;
       box-shadow: none;
     }

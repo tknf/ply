@@ -10,6 +10,8 @@ export type CardProps = PropsWithChildren<
     eyebrow?: Child;
     /** 固定した項目。上端をマスキングテープで留めたように示す。 */
     pinned?: boolean;
+    /** 後ろに続きがある項目（スレッド、フォルダ、子の項目、まとめた通知）。重ねた紙で示す。 */
+    stacked?: boolean;
   }
 >;
 /** リンクは見出しに限定し、本文や末尾のフォーム操作と競合させない。 */
@@ -20,6 +22,7 @@ export const Card = ({
   preview,
   eyebrow,
   pinned = false,
+  stacked = false,
   children,
   class: className,
   ...attributes
@@ -28,6 +31,7 @@ export const Card = ({
     {...attributes}
     class={classes("ply-card", className)}
     data-pinned={pinned ? "true" : undefined}
+    data-stacked={stacked ? "true" : undefined}
   >
     {preview != null && preview !== false && <div class="preview">{preview}</div>}
     {eyebrow != null && eyebrow !== false && <div class="eyebrow">{eyebrow}</div>}

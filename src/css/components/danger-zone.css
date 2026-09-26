@@ -9,7 +9,7 @@
     /* 作業面から切り離す区画。影で浮かせず、危険の色のミシン目で囲む。 */
     border: var(--ply-stroke-width) dashed
       color-mix(in srgb, var(--ply-danger) 45%, var(--ply-surface));
-    border-radius: var(--ply-radius-surface);
+    border-radius: var(--ply-radius-field);
     background: var(--ply-surface);
     color: var(--ply-text);
     font-size: var(--ply-label);

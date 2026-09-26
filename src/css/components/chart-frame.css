@@ -31,9 +31,9 @@
     padding-block: var(--ply-space-3) var(--ply-space-2);
     padding-inline: var(--ply-space-4);
     overflow: auto;
-    border: var(--ply-stroke-width) solid var(--ply-border);
-    border-radius: var(--ply-radius-surface);
-    background: var(--ply-surface);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
     & > svg {
       display: block;
       max-inline-size: 100%;

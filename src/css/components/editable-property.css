@@ -19,9 +19,11 @@
     inline-size: min(100%, 28rem);
     padding-block: 0.125rem;
     padding-inline: var(--ply-space-2) 0.125rem;
-    border: var(--ply-stroke-width) solid var(--ply-border);
-    border-radius: var(--ply-radius-surface);
-    background: var(--ply-surface);
+    /* 値は記入線の上に書かれた文字。編集を始めた時だけ欄になる。 */
+    border: 0;
+    border-block-end: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: 0;
+    background: transparent;
   }
 
   .ply-editable-property > .preview[hidden],
@@ -51,7 +53,7 @@
     padding-block: var(--ply-space-2);
     padding-inline: var(--ply-space-2);
     border: var(--ply-frame-width) solid var(--ply-frame-color);
-    border-radius: var(--ply-radius-surface);
+    border-radius: var(--ply-radius-field);
   }
 
   .ply-editable-property > .editor > .ply-input {

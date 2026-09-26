@@ -8,7 +8,7 @@
     min-inline-size: 0;
     /* 受け入れ先はミシン目で囲む。 */
     border: var(--ply-stroke-width) dashed var(--ply-perforation);
-    border-radius: var(--ply-radius-surface);
+    border-radius: var(--ply-radius-field);
     background: color-mix(in srgb, var(--ply-background) 50%, var(--ply-surface));
     font-size: var(--ply-label);
     line-height: calc(10 / 7);

@@ -34,8 +34,8 @@
       min-inline-size: 0;
       padding-block: var(--ply-space-4);
       padding-inline: var(--ply-space-5);
-      border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-surface);
+      border: 0;
+      border-radius: var(--ply-radius-field);
       background: color-mix(in srgb, var(--ply-background) 65%, var(--ply-surface));
     }
 
@@ -163,7 +163,7 @@
       padding-block: var(--ply-space-4) var(--ply-space-3);
       padding-inline: var(--ply-space-5);
       border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-surface);
+      border-radius: var(--ply-radius-field);
       background: var(--ply-surface);
       color: var(--ply-muted);
       font-size: var(--ply-label);

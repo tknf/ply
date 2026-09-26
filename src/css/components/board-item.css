@@ -7,10 +7,10 @@
     min-inline-size: 0;
     padding-block: var(--ply-space-2);
     padding-inline: var(--ply-space-4);
-    border: var(--ply-stroke-width) solid var(--ply-border);
+    border: 0;
     border-radius: var(--ply-radius-surface);
     background: var(--ply-surface);
-    box-shadow: var(--ply-shadow-surface);
+    box-shadow: var(--ply-shadow-paper);
     & > .body {
       min-inline-size: 0;
       padding-block: 0.375rem;
@@ -52,6 +52,7 @@
   }
   @media (forced-colors: active) {
     .ply-board-item {
+      border: var(--ply-stroke-width) solid CanvasText;
       background: Canvas;
       box-shadow: none;
     }

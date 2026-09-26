@@ -4,19 +4,18 @@
     display: flex;
     flex-direction: column;
     min-inline-size: 0;
-    padding-block: var(--ply-space-3);
-    padding-inline: var(--ply-space-4);
-    border: var(--ply-stroke-width) solid var(--ply-border);
+    padding-block: var(--ply-space-4);
+    padding-inline: var(--ply-space-5);
+    /* Cardは紙。枠線を使わず、紙の影と大きな角丸で見せる。 */
+    border: 0;
     border-radius: var(--ply-radius-surface);
     background: var(--ply-surface);
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     overflow-wrap: anywhere;
-    box-shadow: var(--ply-shadow-surface);
-    transition:
-      border-color var(--ply-duration) ease,
-      box-shadow var(--ply-duration) ease;
+    box-shadow: var(--ply-shadow-paper);
+    transition: box-shadow var(--ply-duration) ease;
     /* 固定した項目は、上端をマスキングテープで留める。端はちぎったように少しぎざぎざにする。 */
     &[data-pinned="true"] {
       position: relative;
@@ -48,9 +47,12 @@
         pointer-events: none;
       }
     }
+    /* 後ろに続きがある（スレッド・フォルダ・子の項目・まとめた通知）Cardは、重ねた紙にする。 */
+    &[data-stacked="true"] {
+      box-shadow: var(--ply-shadow-stack);
+    }
     &:has(> .title > a:hover) {
-      border-color: color-mix(in srgb, var(--ply-link) 32%, var(--ply-border));
-      box-shadow: var(--ply-shadow-control-hover);
+      box-shadow: var(--ply-shadow-paper-lift);
     }
     & > .preview {
       overflow: hidden;
@@ -71,14 +73,16 @@
       gap: var(--ply-space-2);
       color: var(--ply-muted);
       font-size: var(--ply-small);
+      font-weight: 600;
       & + .title {
         margin-block-start: var(--ply-space-1);
       }
     }
+    /* 題名は紙の上の見出し。一覧の項目より一段大きくする。 */
     & > .title {
-      font-size: var(--ply-body);
+      font-size: var(--ply-section-title);
       font-weight: 600;
-      line-height: 1.5;
+      line-height: 1.4;
       & > a {
         color: inherit;
         text-decoration: none;
@@ -105,6 +109,11 @@
       color: var(--ply-muted);
       font-size: var(--ply-small);
       line-height: var(--ply-small-leading);
+      /* 並べたメタ情報は縦の罫線で区切る。 */
+      & > * + *:not(.end) {
+        padding-inline-start: var(--ply-space-2);
+        border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
+      }
       & > .end {
         margin-inline-start: auto;
       }
@@ -132,7 +141,9 @@
       }
     }
     &[data-state="complete"] {
-      border-color: color-mix(in srgb, var(--ply-success) 25%, var(--ply-border));
+      box-shadow:
+        0 0 0 var(--ply-stroke-width) color-mix(in srgb, var(--ply-success) 30%, var(--ply-surface)),
+        var(--ply-shadow-paper);
     }
     &[data-state="new"] {
       animation: ply-card-arrive calc(var(--ply-duration) * 3) ease-out;
@@ -140,6 +151,7 @@
   }
   @media (forced-colors: active) {
     .ply-card {
+      border: var(--ply-stroke-width) solid CanvasText;
       background: Canvas;
       box-shadow: none;
     }

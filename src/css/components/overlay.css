@@ -3,7 +3,7 @@
     --ply-overlay-close-size: calc(var(--ply-label) * 16 / 7);
     --ply-overlay-title-line: calc(var(--ply-label) * 10 / 7);
     --ply-overlay-inset-inline: 1.25rem;
-    border: var(--ply-stroke-width) solid var(--ply-border);
+    border: 0;
     border-radius: var(--ply-radius-surface);
     background: var(--ply-surface);
     color: var(--ply-text);

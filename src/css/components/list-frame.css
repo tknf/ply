@@ -4,9 +4,11 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-    border: var(--ply-stroke-width) solid var(--ply-border);
-    border-radius: var(--ply-radius-surface);
-    background: var(--ply-surface);
+    /* 作業面に書かれた一覧は枠で囲まず、始まりと終わりの罫線と行の罫線だけにする。 */
+    border: 0;
+    border-block: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: 0;
+    background: transparent;
     list-style: none;
   }
   @media (forced-colors: active) {

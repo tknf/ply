@@ -25,9 +25,9 @@
     &[data-layout="region"] {
       padding-block: 0.6875rem 0.625rem;
       padding-inline: 0.9375rem;
-      border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-surface);
-      background: var(--ply-surface);
+      border: 0;
+      border-radius: var(--ply-radius-field);
+      background: color-mix(in srgb, var(--ply-background) 60%, var(--ply-surface));
     }
     &[data-variant="orbit"] > .indicator {
       border: 0.125rem solid var(--ply-border);

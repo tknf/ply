@@ -6,9 +6,11 @@
     min-inline-size: 0;
     padding-block: var(--ply-space-4) var(--ply-space-3);
     padding-inline: var(--ply-space-5);
-    border: var(--ply-stroke-width) solid var(--ply-border);
+    /* 書く紙。枠線を使わず、紙の影で作業面の上に置く。 */
+    border: 0;
     border-radius: var(--ply-radius-surface);
     background: var(--ply-surface);
+    box-shadow: var(--ply-shadow-paper);
   }
 
   .ply-composer > .ply-field > .ply-input {
@@ -51,6 +53,7 @@
   }
   @media (forced-colors: active) {
     .ply-composer {
+      border: var(--ply-stroke-width) solid CanvasText;
       background: Canvas;
       box-shadow: none;
     }

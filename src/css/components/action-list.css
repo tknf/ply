@@ -7,9 +7,10 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-    border: var(--ply-stroke-width) solid var(--ply-border);
-    border-radius: var(--ply-radius-surface);
-    background: var(--ply-surface);
+    border: 0;
+    border-block: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: 0;
+    background: transparent;
     list-style: none;
     color: var(--ply-text);
     font-size: var(--ply-label);

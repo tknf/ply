@@ -8,9 +8,10 @@
       grid-template-columns: minmax(0, 1fr);
       min-inline-size: 0;
       overflow: hidden;
-      border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-surface);
-      background: var(--ply-surface);
+      border: 0;
+      border-block: var(--ply-stroke-width) solid var(--ply-border);
+      border-radius: 0;
+      background: transparent;
       & > :is(.primary, .secondary) {
         min-inline-size: 0;
         padding-block: var(--ply-space-4) var(--ply-space-3);

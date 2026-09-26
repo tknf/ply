@@ -19,9 +19,9 @@
       padding-block: var(--ply-space-2);
       min-block-size: 8rem;
       padding-inline: var(--ply-space-3);
-      border: var(--ply-stroke-width) solid var(--ply-border);
+      border: 0;
       /* 列は作業面の上の区画。影で浮かせず、列の色を薄く敷く。手に取れるのは中の項目だけ。 */
-      border-radius: var(--ply-radius-surface);
+      border-radius: var(--ply-radius-field);
       background: color-mix(in srgb, var(--ply-lane-accent) 4%, var(--ply-surface));
       &[data-tone="info"] {
         --ply-lane-accent: var(--ply-info);
@@ -112,7 +112,7 @@
       padding-block: var(--ply-space-2);
       padding-inline: var(--ply-space-3);
       border: var(--ply-stroke-width) solid var(--ply-link);
-      border-radius: var(--ply-radius-surface);
+      border-radius: var(--ply-radius-field);
       background: var(--ply-surface);
       box-shadow: var(--ply-shadow-menu);
     }

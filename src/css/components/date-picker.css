@@ -64,7 +64,7 @@
     gap: var(--ply-space-2);
     & > .ply-input {
       padding-inline: var(--ply-space-3);
-      border-radius: var(--ply-radius-surface);
+      border-radius: var(--ply-radius-field);
       background: color-mix(in srgb, var(--ply-text) 3%, var(--ply-surface));
       font-variant-numeric: tabular-nums;
     }
@@ -95,7 +95,7 @@
     overflow: auto;
     padding-block: var(--ply-space-3) var(--ply-space-2);
     padding-inline: var(--ply-space-5);
-    border: var(--ply-stroke-width) solid var(--ply-border);
+    border: 0;
     border-radius: var(--ply-radius-surface);
     background: var(--ply-surface);
     color: var(--ply-text);

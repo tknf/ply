@@ -30,7 +30,7 @@
       margin: 0;
       margin-inline: auto;
       padding: 0;
-      border: var(--ply-stroke-width) solid var(--ply-border);
+      border: 0;
       border-radius: var(--ply-radius-surface);
       background: var(--ply-surface);
       color: var(--ply-text);

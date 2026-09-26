@@ -12,7 +12,7 @@
       flex: 0 0 auto;
       inline-size: 2.5rem;
       block-size: 2.5rem;
-      border-radius: var(--ply-radius-surface);
+      border-radius: var(--ply-radius-field);
       background: var(--ply-cover);
       color: var(--ply-link);
       font-size: 1.5rem;
