@@ -1,5 +1,6 @@
 @layer components {
   .ply-board-item {
+    position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: start;
@@ -46,6 +47,46 @@
       &:disabled {
         cursor: not-allowed;
       }
+    }
+    /*
+      ゴム印の列（Boardの`stamp`）に置いた紙には、列の色で少し傾いたゴム印を押す。
+      印の文言は列から受け継ぐので、紙を運ぶと置いた列のゴム印に押し直される。
+      Badgeのゴム印と同じ二重の枠と傾き。
+    */
+    &::after {
+      content: var(--ply-board-stamp, none);
+      position: absolute;
+      inset-block-end: var(--ply-space-2);
+      /* 右上の持ち手に重ならないよう、持ち手の列より内側に押す。 */
+      inset-inline-end: calc(var(--ply-space-4) + 2rem);
+      padding-inline: 0.4375rem;
+      border: var(--ply-frame-width) solid currentColor;
+      border-radius: var(--ply-radius-mark);
+      box-shadow:
+        inset 0 0 0 var(--ply-stroke-width) var(--ply-board-paper, var(--ply-surface)),
+        inset 0 0 0 calc(var(--ply-stroke-width) * 2) currentColor;
+      color: color-mix(in srgb, var(--ply-lane-accent, var(--ply-muted)) 80%, transparent);
+      font-size: var(--ply-small);
+      font-weight: 700;
+      line-height: var(--ply-small-leading);
+      letter-spacing: 0.08em;
+      rotate: -8deg;
+      /* 印のインクは下の文字を隠さず、重なった所だけ濃くなる。 */
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+    /* 動かせない紙は、上端をマスキングテープでトレイに留める。Cardの`pinned`と同じテープ。 */
+    &[data-disabled="true"]::before {
+      content: "";
+      position: absolute;
+      inset-block-start: -0.4375rem;
+      inset-inline-start: calc(50% - 1.75rem);
+      inline-size: 3.5rem;
+      block-size: 1rem;
+      background: var(--ply-tape);
+      clip-path: var(--ply-tape-edge);
+      rotate: 3deg;
+      pointer-events: none;
     }
     &[data-moving="true"] {
       outline: 0.125rem solid var(--ply-link);

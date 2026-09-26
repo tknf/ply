@@ -1,9 +1,15 @@
 @layer components {
   .ply-board {
     container: ply-board / inline-size;
+    /*
+      開いた列は同じ幅を分け合い、16remより狭くなる分は横にスクロールする。
+      たたんだ列だけは札の幅にする。列ごとの決め方は、Boardが要素のstyleで並び順どおりに渡す。
+    */
+    --ply-board-tracks: none;
     display: grid;
+    grid-template-columns: var(--ply-board-tracks);
     grid-auto-flow: column;
-    grid-auto-columns: minmax(min(100%, 16rem), 1fr);
+    grid-auto-columns: minmax(auto, 1fr);
     align-items: stretch;
     gap: var(--ply-space-4);
     min-inline-size: 0;
@@ -15,9 +21,11 @@
     line-height: var(--ply-label-leading);
     & > section {
       --ply-lane-accent: var(--ply-muted);
+      /* ゴム印の文言。`stamp`を持つ列は、要素のstyleで上書きする。 */
+      --ply-board-stamp: none;
+      min-inline-size: 16rem;
       --ply-board-paper: color-mix(in srgb, var(--ply-lane-accent) 6%, var(--ply-surface));
       position: relative;
-      min-inline-size: 0;
       padding-block: var(--ply-space-5) var(--ply-space-2);
       min-block-size: 8rem;
       padding-inline: var(--ply-space-3);
@@ -85,14 +93,24 @@
       }
       & > .empty {
         display: none;
+        position: relative;
         margin-block-start: var(--ply-space-3);
         padding-block: var(--ply-space-3);
         padding-inline: var(--ply-space-4);
-        /* 受け入れ先はミシン目で囲む。 */
-        border: var(--ply-stroke-width) dashed var(--ply-perforation);
-        border-radius: var(--ply-radius-control);
+        border: 0;
+        /* 紙を置く場所は、紙と同じ角の形を列の色の点線でなぞる。Noticeと同じ点線。 */
+        border-radius: var(--ply-radius-surface);
         color: var(--ply-muted);
         text-align: center;
+        &::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background: color-mix(in srgb, var(--ply-lane-accent) 40%, var(--ply-background));
+          mask: var(--ply-dashed-frame);
+          pointer-events: none;
+        }
       }
       & > .items:empty + .empty {
         display: block;
@@ -103,6 +121,40 @@
         & > * + * {
           margin-block-start: var(--ply-space-2);
         }
+      }
+    }
+    /* 受け付けない列は、無効なFieldと同じく白地に斜線を引いたトレイにする。 */
+    & > section[data-disabled="true"] {
+      background: var(--ply-hatch), var(--ply-surface);
+      /* 点線は受け入れ先の印なので、受け付けない列には引かない。 */
+      & > .empty::after {
+        display: none;
+      }
+    }
+    /* たたんだ列は、Wingと同じ縦書きの細い札。中の項目は隠し、件数だけを見せる。 */
+    & > section[data-collapsed="true"] {
+      inline-size: 2.75rem;
+      min-inline-size: 0;
+      min-block-size: 12rem;
+      padding-block: var(--ply-space-3);
+      padding-inline: 0;
+      & > .title {
+        position: static;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--ply-space-2);
+        max-inline-size: none;
+        margin-inline: auto;
+        padding-block: var(--ply-space-2);
+        padding-inline: 0.125rem;
+        inline-size: fit-content;
+        & > .label {
+          writing-mode: vertical-rl;
+        }
+      }
+      & > :is(.items, .empty) {
+        display: none;
       }
     }
     /* 紙を運んでいる先のトレイは、受け入れ先のミシン目で縁取る。 */
@@ -129,11 +181,27 @@
     }
     @container ply-board (inline-size < 36rem) {
       & > section {
-        grid-column: 1;
+        grid-column: 1 / -1;
+        min-inline-size: 0;
+      }
+      & > section[data-collapsed="true"] {
+        inline-size: auto;
+        min-block-size: 0;
+        & > .title {
+          flex-direction: row;
+          margin-inline: var(--ply-space-3) 0;
+          padding-inline: var(--ply-space-2);
+          & > .label {
+            writing-mode: horizontal-tb;
+          }
+        }
       }
     }
   }
   @media (forced-colors: active) {
+    .ply-board > section > .empty {
+      border: var(--ply-stroke-width) dashed CanvasText;
+    }
     .ply-board > section,
     .ply-board > .drag-preview {
       background: Canvas;

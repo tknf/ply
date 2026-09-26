@@ -142,6 +142,36 @@ test("月カレンダーは狭幅でも日付の列を保ちキーボードで�
   await expect.poll(() => viewport.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
 });
 
+test("Boardのゴム印は紙を運んだ列の印に押し直され、たたんだ列は札の幅になる", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/components/board");
+  await page
+    .locator('[data-example="hono"] details')
+    .evaluateAll((elements) => elements.forEach((element) => element.setAttribute("open", "")));
+  const approval = page.getByRole("region", { name: "原稿の承認", exact: true });
+  const stamp = (id: string) =>
+    approval
+      .locator(`[data-board-id="${id}"]`)
+      .evaluate((element) => getComputedStyle(element, "::after").content);
+  expect(await stamp("d1")).toBe("none");
+  expect(await stamp("d3")).toBe('"承認"');
+  await approval.locator('[data-board-id="d1"]').getByRole("button").focus();
+  await page.keyboard.press("Space");
+  await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("Enter");
+  await expect(approval.locator('[data-column-id="approved"] [data-board-id="d1"]')).toBeVisible();
+  expect(await stamp("d1")).toBe('"承認"');
+
+  const hiring = page.getByRole("region", { name: "採用の進行", exact: true });
+  const widths = await hiring
+    .locator(":scope > section")
+    .evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect().width));
+  expect(widths[0]).toBeLessThan(64);
+  expect(widths[1]).toBeGreaterThan(200);
+  await expect(hiring.locator('[data-column-id="closed"] .title > small')).toHaveText("3");
+  await expect(hiring.locator('[data-column-id="closed"] .items')).toBeHidden();
+});
+
 test("Boardは広い画面内でもコンポーネント幅に応じて横スクロールから縦の棚へ変わる", async ({
   page,
 }) => {

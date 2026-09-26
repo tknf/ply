@@ -26,23 +26,8 @@
         inset-inline-start: calc(50% - 2.25rem);
         inline-size: 4.5rem;
         block-size: 1.125rem;
-        background: color-mix(in srgb, var(--ply-butter) 78%, transparent);
-        clip-path: polygon(
-          0 12%,
-          4% 0,
-          96% 0,
-          100% 14%,
-          97% 32%,
-          100% 50%,
-          97% 68%,
-          100% 86%,
-          96% 100%,
-          4% 100%,
-          0 88%,
-          3% 68%,
-          0 50%,
-          3% 32%
-        );
+        background: var(--ply-tape);
+        clip-path: var(--ply-tape-edge);
         rotate: -2deg;
         pointer-events: none;
       }
