@@ -4,8 +4,15 @@ export default () => (
   <div class="ply-stack">
     <EditableProperty id="property-owner" label="担当者" name="owner" value="田中 遥" required />
     <EditableProperty id="property-note" label="メモ" name="note" emptyLabel="未登録" />
+    <EditableProperty
+      id="property-summary"
+      label="打ち合わせの要点"
+      name="summary"
+      value={"カテゴリは5つにまとめる。\n公開は9月30日。\n次回は10月7日の14時から。"}
+      multiline
+    />
     <p class="catalog-footnote">
-      鉛筆で書き始め、Enterか「確定」で書き終えます。Escapeか「取消」で元の値に戻します。
+      鉛筆で書き始め、Control＋Enter（Macは⌘＋Enter）か「確定」で書き終えます。Escapeか「取消」で元の値に戻します。一行でも複数行でも同じです。
     </p>
     <DisclosureGroup label="値と置き場所の違い">
       <Disclosure summary="記入票に並べる" open>
@@ -25,6 +32,26 @@ export default () => (
             name="code"
             value="AUT-0930"
             maxLength={8}
+          />
+        </div>
+      </Disclosure>
+      <Disclosure summary="複数行：空のメモと長い文">
+        <div class="ply-split">
+          <EditableProperty
+            id="property-memo-empty"
+            label="引き継ぎのメモ"
+            name="handover"
+            emptyLabel="未登録"
+            multiline
+          />
+          <EditableProperty
+            id="property-memo-long"
+            label="会場の案内"
+            name="guide"
+            value={
+              "入口右手の窓口で名前をお伝えください。会議室の鍵は、予約した時間の5分前からお渡しします。\n長期利用の方は、月初めに利用票を提出してください。"
+            }
+            multiline
           />
         </div>
       </Disclosure>

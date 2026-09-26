@@ -4,7 +4,7 @@
 
 ## 読み方と対象
 
-- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は941件です。省略した状態別・メディア・コンテナ条件はありません。
+- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は945件です。省略した状態別・メディア・コンテナ条件はありません。
 - CSSの生の宣言、ネストしたセレクタの階層、条件、ソース位置を掲載します。→は親ルールから子ルールへの経路であり、結合済みCSSセレクタではありません。
 - 換算はroot 16pxのremだけです。emはその要素の文字サイズ、lhはその要素の行高、%は包含ブロック、autoは残り幅に依存します。条件外の値や文字拡大時まで同じpxと断定しません。gap二値は縦・横、論理padding二値は開始・終了の順です。
 - 同じ要素の状態別上書きを足し合わせないでください。最終値はレイヤー・詳細度・条件・記述順で決まります。0も、追加しない判断として全件掲載します。
@@ -691,21 +691,25 @@ ClickUpの実測に合わせる。月のセルは上4px・下8px・左右4px、�
 
 ## editable-property
 
-属性名と値は4pxで結ぶ。値の行は上下2px、書き始めは編集中の欄の文字と同じ位置（欄の左右0.75emと透明にした枠1px）、終わりは2px。書き終えた印は値の後8px。編集中も同じ罫線の上に書き、欄の枠と影を外して上下2px・終わり2pxの同じ行に欄と確定・取消を8pxで並べる。表示と編集で罫線の位置と書き始めは動かさない。Buttonの文字・高さは共通定義が所有する。
+属性名と値は4pxで結ぶ。値の行は上下2px、書き始めは編集中の欄の文字と同じ位置（欄の左右0.75emと透明にした枠1px）、終わりは2px。書き終えた印は値の後8px。編集中も同じ罫線の上に書き、欄の枠と影を外して上下2px・終わり2pxの同じ行に欄と確定・取消を8pxで並べる。表示と編集で罫線の位置と書き始めは動かさない。複数行は行の高さを文字の2倍にしてComposerと同じく一行ごとに罫線を引き、表示と編集で一行目の位置を変えない。編集中の欄は3行分から内容に合わせて伸び、確定・取消は欄の下の終わりの側に8px空けて置く。Buttonの文字・高さは共通定義が所有する。
 
 対象: [src/css/components/editable-property.css](../src/css/components/editable-property.css)
 
-| ソース                                                   | セレクタの階層                                          | 条件 | 宣言値                                                                             | root 16pxでremを換算                                          | 値の扱い                                                             |
-| -------------------------------------------------------- | ------------------------------------------------------- | ---- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [L9](../src/css/components/editable-property.css#L9)     | `.ply-editable-property`                                | 常時 | `gap: var(--ply-space-1)`                                                          | `4px`                                                         | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L22](../src/css/components/editable-property.css#L22)   | `.ply-editable-property > .preview`                     | 常時 | `gap: var(--ply-space-2)`                                                          | `8px`                                                         | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L25](../src/css/components/editable-property.css#L25)   | `.ply-editable-property > .preview`                     | 常時 | `padding-block: 0.125rem`                                                          | `2px`                                                         | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L27](../src/css/components/editable-property.css#L27)   | `.ply-editable-property > .preview`                     | 常時 | `padding-inline: calc(var(--ply-label) * 0.75 + var(--ply-stroke-width)) 0.125rem` | `calc(var(--ply-label) * 0.75 + var(--ply-stroke-width)) 2px` | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L64](../src/css/components/editable-property.css#L64)   | `.ply-editable-property > .preview > .value → &::after` | 常時 | `margin-inline-start: var(--ply-space-2)`                                          | `8px`                                                         | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
-| [L99](../src/css/components/editable-property.css#L99)   | `.ply-editable-property > .editor`                      | 常時 | `gap: var(--ply-space-2)`                                                          | `8px`                                                         | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L102](../src/css/components/editable-property.css#L102) | `.ply-editable-property > .editor`                      | 常時 | `padding-block: 0.125rem`                                                          | `2px`                                                         | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L103](../src/css/components/editable-property.css#L103) | `.ply-editable-property > .editor`                      | 常時 | `padding-inline: 0 0.125rem`                                                       | `0 2px`                                                       | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L137](../src/css/components/editable-property.css#L137) | `.ply-editable-property > .editor > .actions`           | 常時 | `gap: var(--ply-space-2)`                                                          | `8px`                                                         | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| ソース                                                   | セレクタの階層                                                                 | 条件 | 宣言値                                                                             | root 16pxでremを換算                                          | 値の扱い                                                             |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------ | ---- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------------- |
+| [L11](../src/css/components/editable-property.css#L11)   | `.ply-editable-property`                                                       | 常時 | `gap: var(--ply-space-1)`                                                          | `4px`                                                         | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L24](../src/css/components/editable-property.css#L24)   | `.ply-editable-property > .preview`                                            | 常時 | `gap: var(--ply-space-2)`                                                          | `8px`                                                         | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L27](../src/css/components/editable-property.css#L27)   | `.ply-editable-property > .preview`                                            | 常時 | `padding-block: 0.125rem`                                                          | `2px`                                                         | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L29](../src/css/components/editable-property.css#L29)   | `.ply-editable-property > .preview`                                            | 常時 | `padding-inline: calc(var(--ply-label) * 0.75 + var(--ply-stroke-width)) 0.125rem` | `calc(var(--ply-label) * 0.75 + var(--ply-stroke-width)) 2px` | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L66](../src/css/components/editable-property.css#L66)   | `.ply-editable-property > .preview > .value → &::after`                        | 常時 | `margin-inline-start: var(--ply-space-2)`                                          | `8px`                                                         | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L101](../src/css/components/editable-property.css#L101) | `.ply-editable-property > .editor`                                             | 常時 | `gap: var(--ply-space-2)`                                                          | `8px`                                                         | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L104](../src/css/components/editable-property.css#L104) | `.ply-editable-property > .editor`                                             | 常時 | `padding-block: 0.125rem`                                                          | `2px`                                                         | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L105](../src/css/components/editable-property.css#L105) | `.ply-editable-property > .editor`                                             | 常時 | `padding-inline: 0 0.125rem`                                                       | `0 2px`                                                       | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L139](../src/css/components/editable-property.css#L139) | `.ply-editable-property > .editor > .actions`                                  | 常時 | `gap: var(--ply-space-2)`                                                          | `8px`                                                         | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L162](../src/css/components/editable-property.css#L162) | `.ply-editable-property[data-multiline="true"] → & > .preview`                 | 常時 | `padding-block: 0`                                                                 | `0`                                                           | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L170](../src/css/components/editable-property.css#L170) | `.ply-editable-property[data-multiline="true"] → & > .editor`                  | 常時 | `padding-block: 0`                                                                 | `0`                                                           | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L182](../src/css/components/editable-property.css#L182) | `.ply-editable-property[data-multiline="true"] → & > .editor → & > .ply-input` | 常時 | `padding-block: 0`                                                                 | `0`                                                           | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L191](../src/css/components/editable-property.css#L191) | `.ply-editable-property[data-multiline="true"] → & > .editor → & > .actions`   | 常時 | `margin-inline-start: auto`                                                        | `auto`                                                        | 可変の残り幅を配置へ使う。固定間隔ではない。                         |
 
 ## empty-state
 
@@ -1764,9 +1768,10 @@ gap・margin・padding・insetの宣言はありません。
 | [dropdown-menu.tsx:168](../catalog/hono-examples/dropdown-menu.tsx#L168)       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [dropdown-menu.tsx:183](../catalog/hono-examples/dropdown-menu.tsx#L183)       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [editable-property.tsx:4](../catalog/hono-examples/editable-property.tsx#L4)   | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [editable-property.tsx:12](../catalog/hono-examples/editable-property.tsx#L12) | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [editable-property.tsx:58](../catalog/hono-examples/editable-property.tsx#L58) | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [editable-property.tsx:66](../catalog/hono-examples/editable-property.tsx#L66) | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [editable-property.tsx:19](../catalog/hono-examples/editable-property.tsx#L19) | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [editable-property.tsx:39](../catalog/hono-examples/editable-property.tsx#L39) | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [editable-property.tsx:85](../catalog/hono-examples/editable-property.tsx#L85) | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [editable-property.tsx:93](../catalog/hono-examples/editable-property.tsx#L93) | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [empty-state.tsx:3](../catalog/hono-examples/empty-state.tsx#L3)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [error-summary.tsx:3](../catalog/hono-examples/error-summary.tsx#L3)           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [field-group.tsx:4](../catalog/hono-examples/field-group.tsx#L4)               | `ply-form`    | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |

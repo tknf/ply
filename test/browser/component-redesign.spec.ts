@@ -151,7 +151,10 @@ test("EditablePropertyは確定した時だけ書き終えた印を描き、未�
   await expect(value).toHaveAttribute("data-empty", "true");
   await property.getByRole("button", { name: "メモを編集" }).click();
   await page.keyboard.type("9月中に確認");
+  // 素のEnterでは確定せず、フォームも送らない。
   await page.keyboard.press("Enter");
+  await expect(property).toHaveAttribute("data-state", "editing");
+  await page.keyboard.press("ControlOrMeta+Enter");
   await expect(value).toHaveText("9月中に確認");
   await expect(value).not.toHaveAttribute("data-empty");
   await expect(property).toHaveAttribute("data-saved", "true");
@@ -159,6 +162,44 @@ test("EditablePropertyは確定した時だけ書き終えた印を描き、未�
   await property.getByRole("button", { name: "メモを編集" }).click();
   await page.keyboard.press("Escape");
   await expect(property).not.toHaveAttribute("data-saved");
+});
+
+test("EditablePropertyの複数行はEnterで改行し、Control / Meta+Enterで確定して改行を表示に残す", async ({
+  page,
+}) => {
+  await page.goto("/components/editable-property");
+  const property = page
+    .locator('[data-example="hono"] .ply-editable-property[data-multiline="true"]')
+    .first();
+  const value = property.locator(".value");
+  const rule = () =>
+    property.evaluate((element) => {
+      const editing = element.getAttribute("data-state") === "editing";
+      const row = element.querySelector(editing ? ".editor > textarea" : ".preview");
+      return row?.getBoundingClientRect().top;
+    });
+  const viewing = await rule();
+  await property.getByRole("button", { name: "打ち合わせの要点を編集" }).click();
+  expect(await rule()).toBe(viewing);
+  await property
+    .locator("textarea")
+    .evaluate((element) =>
+      element instanceof HTMLTextAreaElement
+        ? element.setSelectionRange(element.value.length, element.value.length)
+        : undefined,
+    );
+  await page.keyboard.press("Enter");
+  await page.keyboard.type("資料は前日までに共有する。");
+  await expect(property).toHaveAttribute("data-state", "editing");
+  await page.keyboard.press("ControlOrMeta+Enter");
+  await expect(property).toHaveAttribute("data-state", "viewing");
+  expect(await value.textContent()).toBe(
+    "カテゴリは5つにまとめる。\n公開は9月30日。\n次回は10月7日の14時から。\n資料は前日までに共有する。",
+  );
+  // 改行を表示にも残し、4行分の高さで表示する。
+  expect(await value.evaluate((element) => element.getBoundingClientRect().height)).toBeGreaterThan(
+    100,
+  );
 });
 
 test("EditablePropertyは表示と編集で罫線の位置と書き始めを変えない", async ({ page }) => {

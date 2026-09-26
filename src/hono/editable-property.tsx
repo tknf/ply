@@ -1,5 +1,5 @@
 import { Button } from "./button";
-import { Input } from "./field";
+import { Input, Textarea } from "./field";
 import { Icon } from "./icon";
 
 export type EditablePropertyProps = {
@@ -12,9 +12,14 @@ export type EditablePropertyProps = {
   disabled?: boolean;
   form?: string;
   maxLength?: number;
+  /** 複数行の値。罫線を引いた便箋の欄で書き、改行はそのまま表示する。 */
+  multiline?: boolean;
 };
 
-/** 値の位置で短い文字列を編集する。保存処理は利用側がeditable:commitで受け取る。 */
+/**
+ * 値の位置で文字列を編集する。保存処理は利用側がeditable:commitで受け取る。
+ * 一行・複数行とも、確定はControl+Enter / Meta+Enter、取消はEscapeにそろえる。
+ */
 export const EditableProperty = ({
   id,
   label,
@@ -25,58 +30,69 @@ export const EditableProperty = ({
   disabled,
   form,
   maxLength,
-}: EditablePropertyProps) => (
-  <div
-    class="ply-editable-property"
-    data-controller="editable editable-property"
-    data-action="editable:commit->editable-property#commit"
-    data-editable-property-empty-value={emptyLabel}
-  >
-    <span class="label" id={`${id}-label`}>
-      {label}
-    </span>
-    <div class="preview" data-editable-target="preview" hidden>
-      <span
-        class="value"
-        data-editable-property-target="value"
-        data-empty={value ? undefined : "true"}
-      >
-        {value || emptyLabel}
+  multiline = false,
+}: EditablePropertyProps) => {
+  const field = {
+    id: `${id}-input`,
+    "aria-labelledby": `${id}-label`,
+    name,
+    required,
+    disabled,
+    form,
+    maxLength,
+    "data-editable-target": "input",
+    "data-editable-property-target": "input",
+  };
+  return (
+    <div
+      class="ply-editable-property"
+      data-multiline={multiline ? "true" : undefined}
+      data-controller="editable editable-property"
+      data-editable-commit-key-value="modifier-enter"
+      data-action="editable:commit->editable-property#commit"
+      data-editable-property-empty-value={emptyLabel}
+    >
+      <span class="label" id={`${id}-label`}>
+        {label}
       </span>
-      <Button
-        class="edit"
-        type="button"
-        data-icon-only="true"
-        aria-label={`${label}を編集`}
-        data-editable-target="edit"
-        aria-controls={`${id}-editor`}
-        aria-expanded="false"
-        disabled={disabled}
-      >
-        <Icon name="pencil" />
-      </Button>
-    </div>
-    <div class="editor" id={`${id}-editor`} data-editable-target="editor">
-      <Input
-        id={`${id}-input`}
-        aria-labelledby={`${id}-label`}
-        name={name}
-        value={value}
-        required={required}
-        disabled={disabled}
-        form={form}
-        maxLength={maxLength}
-        data-editable-target="input"
-        data-editable-property-target="input"
-      />
-      <div class="actions">
-        <Button type="button" variant="primary" data-editable-target="save">
-          確定
-        </Button>
-        <Button type="button" data-editable-target="cancel">
-          取消
+      <div class="preview" data-editable-target="preview" hidden>
+        <span
+          class="value"
+          data-editable-property-target="value"
+          data-empty={value ? undefined : "true"}
+        >
+          {value || emptyLabel}
+        </span>
+        <Button
+          class="edit"
+          type="button"
+          data-icon-only="true"
+          aria-label={`${label}を編集`}
+          data-editable-target="edit"
+          aria-controls={`${id}-editor`}
+          aria-expanded="false"
+          disabled={disabled}
+        >
+          <Icon name="pencil" />
         </Button>
       </div>
+      <div class="editor" id={`${id}-editor`} data-editable-target="editor">
+        {/* textareaの初期値は属性ではなく中身に書く。 */}
+        {multiline ? <Textarea {...field}>{value}</Textarea> : <Input {...field} value={value} />}
+        <div class="actions">
+          <Button
+            type="button"
+            variant="primary"
+            data-editable-target="save"
+            aria-keyshortcuts="Control+Enter Meta+Enter"
+          >
+            確定
+          </Button>
+          <Button type="button" data-editable-target="cancel">
+            取消
+          </Button>
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
+};

@@ -5,7 +5,7 @@ export class EditablePropertyController extends Controller<HTMLElement> {
   static targets = ["input", "value"];
   static values = { empty: String };
 
-  declare readonly inputTarget: HTMLInputElement;
+  declare readonly inputTarget: HTMLInputElement | HTMLTextAreaElement;
   declare readonly valueTarget: HTMLElement;
   declare readonly emptyValue: string;
 

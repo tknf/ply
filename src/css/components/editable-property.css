@@ -6,6 +6,8 @@
   */
   .ply-editable-property {
     display: grid;
+    /* 並べた隣の欄が高くても、名前と値の行を伸ばさない。 */
+    align-content: start;
     gap: var(--ply-space-1);
     min-inline-size: 0;
   }
@@ -135,6 +137,60 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--ply-space-2);
+  }
+
+  /*
+    複数行は便箋の欄。Composerの本文と同じく一行ごとに青い罫線を引き、表示と編集で同じ行の上に書く。
+    書いている間は罫線を青くし、確定・取消は欄の下の終わりの側に置く。
+  */
+  .ply-editable-property[data-multiline="true"] {
+    --ply-editable-rule: var(--ply-ruled-line);
+    & > .preview,
+    & > .editor > .ply-input {
+      background: linear-gradient(
+          to top,
+          var(--ply-editable-rule) var(--ply-stroke-width),
+          transparent 0
+        )
+        0 0 / 100% 1lh;
+      background-origin: content-box;
+      font-size: var(--ply-label);
+      line-height: 2;
+    }
+    & > .preview {
+      align-items: start;
+      padding-block: 0;
+      border-block-end: 0;
+      & > .value {
+        line-height: inherit;
+        white-space: pre-wrap;
+      }
+    }
+    & > .editor {
+      padding-block: 0;
+      border-block-end: 0;
+      &:has(> .ply-input:focus) {
+        --ply-editable-rule: var(--ply-link);
+      }
+      &:has(> .ply-input[data-invalid="true"], > .ply-input:user-invalid) {
+        --ply-editable-rule: var(--ply-danger);
+      }
+      & > .ply-input {
+        flex-basis: 100%;
+        min-block-size: 3lh;
+        field-sizing: content;
+        padding-block: 0;
+        border-block-width: 0;
+        background-attachment: local;
+        resize: none;
+        &:disabled {
+          background: var(--ply-hatch);
+        }
+      }
+      & > .actions {
+        margin-inline-start: auto;
+      }
+    }
   }
 
   .ply-editable-property:not([data-state]) > .editor > .actions {
