@@ -29,9 +29,8 @@
       padding-block: 0.875rem 0.75rem;
       padding-inline: 1.125rem;
       border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-surface);
+      border-radius: var(--ply-radius-control);
       background: var(--ply-surface);
-      box-shadow: var(--ply-shadow-surface);
     }
 
     & > .editor > .visual,
@@ -203,8 +202,7 @@
     }
 
     &:disabled > .editor {
-      background: var(--ply-background);
-      box-shadow: none;
+      background: var(--ply-hatch), var(--ply-surface);
     }
 
     &:disabled > .editor > .visual {

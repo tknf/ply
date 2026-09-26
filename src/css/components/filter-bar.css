@@ -24,7 +24,7 @@
         font-variant-numeric: tabular-nums;
       }
     }
-    /* 表示の切り替えはButtonGroupと同じく、端だけ角を丸め、隣の枠線を1px重ねて一組に見せる。 */
+    /* 表示の切り替えはButtonGroupと同じく、両端だけピルに丸め、隣の枠線を1px重ねて一組に見せる。 */
     &[data-appearance="segmented"] {
       display: inline-flex;
       flex-wrap: nowrap;
@@ -34,12 +34,12 @@
         border-radius: 0;
       }
       & > a:first-child {
-        border-start-start-radius: var(--ply-radius-control);
-        border-end-start-radius: var(--ply-radius-control);
+        border-start-start-radius: var(--ply-radius-pill);
+        border-end-start-radius: var(--ply-radius-pill);
       }
       & > a:last-child {
-        border-start-end-radius: var(--ply-radius-control);
-        border-end-end-radius: var(--ply-radius-control);
+        border-start-end-radius: var(--ply-radius-pill);
+        border-end-end-radius: var(--ply-radius-pill);
       }
       & > a:not(:first-child) {
         margin-inline-start: calc(var(--ply-stroke-width) * -1);

@@ -27,7 +27,7 @@
     }
     &:has(> .ply-input:disabled) {
       border-color: var(--ply-border);
-      background: var(--ply-background);
+      background: var(--ply-hatch), var(--ply-surface);
       color: var(--ply-muted);
       outline: none;
     }
@@ -52,7 +52,7 @@
     }
     &:has(> .ply-input:disabled) > .choose {
       border-color: var(--ply-border);
-      background: var(--ply-background);
+      background: var(--ply-hatch), var(--ply-surface);
       color: var(--ply-muted);
       box-shadow: none;
       cursor: not-allowed;
@@ -94,7 +94,7 @@
       }
       &:disabled::file-selector-button {
         border-color: var(--ply-border);
-        background: var(--ply-background);
+        background: var(--ply-hatch), var(--ply-surface);
         color: var(--ply-muted);
         cursor: not-allowed;
       }

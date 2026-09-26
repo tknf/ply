@@ -35,9 +35,8 @@
       padding-block: var(--ply-space-4);
       padding-inline: var(--ply-space-5);
       border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-surface);
+      border-radius: var(--ply-radius-control);
       background: color-mix(in srgb, var(--ply-background) 65%, var(--ply-surface));
-      box-shadow: var(--ply-shadow-surface);
     }
 
     & > .layout > .stage > .viewport {
@@ -164,9 +163,8 @@
       padding-block: var(--ply-space-4) var(--ply-space-3);
       padding-inline: var(--ply-space-5);
       border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-surface);
+      border-radius: var(--ply-radius-control);
       background: var(--ply-surface);
-      box-shadow: var(--ply-shadow-surface);
       color: var(--ply-muted);
       font-size: var(--ply-label);
     }
