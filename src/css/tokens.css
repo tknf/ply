@@ -246,6 +246,11 @@
     --ply-wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 6'%3E%3Cpath d='M0 3 Q3 0.5 6 3 T12 3' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E");
     --ply-wave-size: 0.75rem 0.375rem;
     /*
+      紙の縁の荒い破線。枠線のdashedは破線の長さを決められないため、角丸の四角をSVGで描いてmaskに使う。
+      四角は要素と同じ大きさで、線の外側の半分は切れて内側の2pxだけが見える。角丸は紙の16px。
+    */
+    --ply-dashed-frame: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' rx='16' fill='none' stroke='black' stroke-width='4' stroke-dasharray='6 4'/%3E%3C/svg%3E");
+    /*
       斜線は地を塗らず、面の上に一色の線だけを引く。
       線の横の間隔（--ply-hatch-step）を整数pxにし、全ての線を同じ画素の位置と濃さで描く。
       45度の線の周期は横の間隔×cos45度。間隔が端数だと線ごとに濃さが変わり、2色に見える。

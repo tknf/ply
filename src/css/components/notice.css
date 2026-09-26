@@ -12,10 +12,10 @@
     padding-inline: var(--ply-space-4);
     /*
       通知は作業面に貼った付箋。役割の色の紙に、上の縁ののりの帯を一段濃く入れ、下の縁だけを少し浮かせる。
-      縁は役割の色の点線。ミシン目（未確定）の破線と分けるため、丸い点にする。
+      縁は役割の色の荒い破線。ミシン目（未確定）の細かい破線と分ける。
     */
-    border: var(--ply-frame-width) dotted
-      color-mix(in srgb, var(--ply-notice-accent) 40%, var(--ply-notice-paper));
+    position: relative;
+    border: var(--ply-frame-width) solid transparent;
     border-radius: var(--ply-radius-surface);
     background:
       linear-gradient(
@@ -33,6 +33,15 @@
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     overflow-wrap: anywhere;
+    &::after {
+      content: "";
+      position: absolute;
+      inset: calc(var(--ply-frame-width) * -1);
+      border-radius: inherit;
+      background: color-mix(in srgb, var(--ply-notice-accent) 40%, var(--ply-notice-paper));
+      mask: var(--ply-dashed-frame);
+      pointer-events: none;
+    }
     & > .symbol {
       grid-column: 1;
       grid-row: 1 / span 2;
