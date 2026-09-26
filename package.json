@@ -45,7 +45,7 @@
     "@hotwired/turbo": "^8.0.23",
     "@phosphor-icons/core": "^2.1.1",
     "@playwright/test": "^1.63.0",
-    "@tknf/stimulus-ui": "^0.1.0",
+    "@tknf/stimulus-ui": "^0.2.0",
     "@types/node": "^26.5.0",
     "hono": "^4.0.0",
     "postcss": "^8.5.28",
@@ -57,7 +57,7 @@
   },
   "peerDependencies": {
     "@hotwired/stimulus": "^3.2.2",
-    "@tknf/stimulus-ui": "0.1.0",
+    "@tknf/stimulus-ui": "0.2.0",
     "hono": "^4.0.0"
   },
   "peerDependenciesMeta": {

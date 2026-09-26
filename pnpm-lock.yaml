@@ -125,8 +125,8 @@ importers:
         specifier: ^1.63.0
         version: 1.63.0
       '@tknf/stimulus-ui':
-        specifier: ^0.1.0
-        version: 0.1.0(@hotwired/stimulus@3.2.2)
+        specifier: ^0.2.0
+        version: 0.2.0(@hotwired/stimulus@3.2.2)
       '@types/node':
         specifier: ^26.5.0
         version: 26.5.0
@@ -538,8 +538,8 @@ packages:
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
 
-  '@tknf/stimulus-ui@0.1.0':
-    resolution: {integrity: sha512-0cHkmGuLYZ0T2L0GFjL7ZHxaQMQouni/hgUuCSd3/zBCcFd5rIDfDEMMG0cjC0fLGpBoUy3usSFCoUxdxrZ6vw==}
+  '@tknf/stimulus-ui@0.2.0':
+    resolution: {integrity: sha512-AnunRBJ+b42RHR/kQD+25wkVqS/c7xKaZ25r6XYb7RGgpF6mP6HsOb83L8xlJilPjmFu/ZuGrO9IVt9xGLRv0w==}
     peerDependencies:
       '@hotwired/stimulus': ^3.2.2
 
@@ -1536,7 +1536,7 @@ snapshots:
     dependencies:
       '@testing-library/dom': 10.4.1
 
-  '@tknf/stimulus-ui@0.1.0(@hotwired/stimulus@3.2.2)':
+  '@tknf/stimulus-ui@0.2.0(@hotwired/stimulus@3.2.2)':
     dependencies:
       '@hotwired/stimulus': 3.2.2
 

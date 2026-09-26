@@ -49,7 +49,7 @@ FileInputは標準ファイル選択と、必要に応じてファイル名一�
 | `src/controllers` | 利用するstimulus-ui controllerの公開入口 | `ply/controllers`   |
 | `catalog`         | Honoアプリ、利用例、カタログ専用ナビ     | 配布APIには含めない |
 
-`index.ts`は再exportのみです。Honoはブラウザ用コードをimportしません。controllersは自動起動・自動登録しません。上流の対応機能を利用・継承し、Ply固有の配置・操作契約は追加controllerが担当します。現在の接続先は`@tknf/stimulus-ui@0.1.0`、Stimulus 3.2.2です。
+`index.ts`は再exportのみです。Honoはブラウザ用コードをimportしません。controllersは自動起動・自動登録しません。上流の対応機能を利用・継承し、Ply固有の配置・操作契約は追加controllerが担当します。現在の接続先は`@tknf/stimulus-ui@0.2.0`、Stimulus 3.2.2です。
 
 ```sh
 vp run build
