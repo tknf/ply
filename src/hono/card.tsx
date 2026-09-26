@@ -8,6 +8,8 @@ export type CardProps = PropsWithChildren<
     footer?: Child;
     preview?: Child;
     eyebrow?: Child;
+    /** 分類のつまみ。紙から出たインデックスの見出しとして、墨で塗って示す。 */
+    tab?: string;
     /** 固定した項目。上端をマスキングテープで留めたように示す。 */
     pinned?: boolean;
     /** 後ろに続きがある項目（スレッド、フォルダ、子の項目、まとめた通知）。重ねた紙で示す。 */
@@ -21,6 +23,7 @@ export const Card = ({
   footer,
   preview,
   eyebrow,
+  tab,
   pinned = false,
   stacked = false,
   children,
@@ -33,6 +36,11 @@ export const Card = ({
     data-pinned={pinned ? "true" : undefined}
     data-stacked={stacked ? "true" : undefined}
   >
+    {tab && (
+      <span class="tab">
+        <span>{tab}</span>
+      </span>
+    )}
     {preview != null && preview !== false && <div class="preview">{preview}</div>}
     {eyebrow != null && eyebrow !== false && <div class="eyebrow">{eyebrow}</div>}
     <h3 class="title">{href ? <a href={href}>{title}</a> : title}</h3>

@@ -137,7 +137,7 @@ app.get("/review/specimen", (c) =>
   c.html(
     html`<!doctype html>${(
         <Document title="規則の見本">
-          <Specimen />
+          <Specimen context={{ cookies: getCookie(c) }} />
         </Document>
       )}`,
   ),

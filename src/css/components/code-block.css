@@ -2,6 +2,9 @@
   .ply-code-block {
     min-inline-size: 0;
     margin: 0;
+    /* 色を敷いたトレイに、コードを書いた白い紙を載せる。紙の角はトレイと同心にする。 */
+    padding-block-end: var(--ply-space-1);
+    padding-inline: var(--ply-space-1);
     border: 0;
     border-radius: var(--ply-radius-field);
     background: color-mix(in srgb, var(--ply-background) 60%, var(--ply-surface));
@@ -12,7 +15,7 @@
       align-items: center;
       gap: var(--ply-space-2);
       padding-block: var(--ply-space-2);
-      padding-inline: var(--ply-space-3);
+      padding-inline: var(--ply-space-2);
       font-size: var(--ply-small);
       line-height: var(--ply-small-leading);
       color: var(--ply-muted);
@@ -33,10 +36,8 @@
       margin: 0;
       padding-block: var(--ply-space-3);
       padding-inline: var(--ply-space-4);
-      border-block-start: var(--ply-stroke-width) solid var(--ply-border);
-      border-end-start-radius: var(--ply-radius-field);
-      border-end-end-radius: var(--ply-radius-field);
-      background: transparent;
+      border-radius: var(--ply-radius-control);
+      background: var(--ply-surface);
       font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
       font-size: var(--ply-small);
       line-height: var(--ply-small-leading);

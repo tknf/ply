@@ -1,3 +1,5 @@
+import type { ExampleContext } from "../hono-examples";
+import { getHonoExample } from "../hono-examples";
 import {
   Badge,
   Button,
@@ -115,55 +117,134 @@ const List = () => (
   </div>
 );
 
-const Cards = () => (
-  <Section title="予定" count={3}>
-    <div class="specimen-cards">
-      <Card
-        title="秋の読書会"
-        eyebrow={<span>イベント</span>}
-        pinned
-        footer={
-          <>
-            <span>9月25日 18:00</span>
-            <span>あと4席</span>
-          </>
-        }
-      >
-        <p>最近読んだ本を一冊持ち寄って、小さな感想を交換する会です。</p>
-      </Card>
-      <Card
-        title="仕事場の案内を更新する"
-        eyebrow={<span>記事</span>}
-        footer={
-          <>
-            <span>田中 遥</span>
-            <span>9月15日</span>
-          </>
-        }
-      >
-        <p>利用時間とキャンセル条件を見直します。</p>
-        <Badge tone="success" stamped>
-          承認済み
-        </Badge>
-      </Card>
-      <Card
-        title="受付の手順についての相談"
-        eyebrow={<span>スレッド</span>}
-        stacked
-        footer={
-          <>
-            <span>返信 4件</span>
-            <span>9月14日</span>
-          </>
-        }
-      >
-        <p>後ろに続きがある項目は、重ねた紙で示します。</p>
-      </Card>
-    </div>
-  </Section>
+const cardSamples = (variant: string) => (
+  <>
+    <Card
+      class={`specimen-tab-${variant}`}
+      title="秋の読書会"
+      tab="イベント"
+      pinned
+      footer={
+        <>
+          <span>9月25日 18:00</span>
+          <span>あと4席</span>
+        </>
+      }
+    >
+      <p>最近読んだ本を一冊持ち寄って、小さな感想を交換する会です。</p>
+    </Card>
+    <Card
+      class={`specimen-tab-${variant}`}
+      title="受付の手順についての相談"
+      tab="スレッド"
+      stacked
+      footer={
+        <>
+          <span>返信 4件</span>
+          <span>9月14日</span>
+        </>
+      }
+    >
+      <p>後ろに続きがある項目は、重ねた紙で示します。</p>
+      <Badge tone="success" stamped>
+        承認済み
+      </Badge>
+    </Card>
+  </>
 );
 
-export const Specimen = () => (
+const listItems = [
+  {
+    title: "当日の受付",
+    description: "初めての方は、入口右手の窓口で名前をお伝えください。",
+    meta: "田中 遥 · 9月15日",
+    end: (
+      <Badge tone="success" stamped>
+        承認済み
+      </Badge>
+    ),
+  },
+  {
+    title: "予約の変更と取り消し",
+    description: "前日までの取り消しは無料です。当日の変更は受付にご相談ください。",
+    meta: "佐藤 健 · 9月14日",
+    end: <Badge draft>下書き</Badge>,
+    current: true,
+  },
+  {
+    title: "会議室の使い方",
+    description: "予約した時間の5分前から、受付で鍵をお渡しします。",
+    meta: "森 美咲 · 9月12日",
+    end: <Badge tone="info">確認待ち</Badge>,
+  },
+];
+
+/** まだ決めていない形を並べて選ぶ。採用した案だけコンポーネントへ移す。 */
+const Choices = () => (
+  <div class="ply-stack">
+    <Section title="案：Cardのつまみの位置" count={3}>
+      <div class="specimen-choices">
+        <figure>
+          <figcaption>1. 上端をまたぐ</figcaption>
+          {cardSamples("straddle")}
+        </figure>
+        <figure>
+          <figcaption>2. 左上の外に出す</figcaption>
+          {cardSamples("above")}
+        </figure>
+        <figure>
+          <figcaption>3. 側面から出る縦のつまみ</figcaption>
+          {cardSamples("side")}
+        </figure>
+      </div>
+    </Section>
+    <Section title="案：DataList" count={3}>
+      <div class="specimen-choices">
+        <figure>
+          <figcaption>1. 罫線だけ（今）</figcaption>
+          <DataList items={listItems} />
+        </figure>
+        <figure>
+          <figcaption>2. ノート：朱の余白線と罫線</figcaption>
+          <DataList class="specimen-list-note" items={listItems} />
+        </figure>
+        <figure>
+          <figcaption>3. 紙の短冊：一行ずつの紙</figcaption>
+          <DataList class="specimen-list-strips" items={listItems} />
+        </figure>
+      </div>
+    </Section>
+  </div>
+);
+
+const changed = [
+  ["notice", "Notice：枠線なし、役割の色の面"],
+  ["action-list", "ActionList：枠なし、始まりと終わりの罫線"],
+  ["message-list", "MessageList：枠なし、行の罫線"],
+  ["task-list", "TaskList：枠なし、行の罫線"],
+  ["comparison", "Comparison：枠なし、上下の罫線と縦の罫線"],
+  ["split-view", "SplitView：枠なし、上下の罫線"],
+  ["composer", "Composer：書く紙（枠線なし、紙の影）"],
+  ["board", "Board：列は色の面、項目は紙"],
+  ["danger-zone", "DangerZone：危険の色のミシン目"],
+  ["editable-property", "EditableProperty：値は記入線の上"],
+  ["code-block", "CodeBlock：枠線なし、面の色"],
+  ["tabs", "Tabs：墨のつまみ"],
+  ["badge", "Badge：ゴム印とミシン目"],
+  ["button", "Button：ピル"],
+] as const;
+
+const Changed = ({ context }: { context: ExampleContext }) => (
+  <div class="ply-stack">
+    {changed.map(([id, label]) => (
+      <Section title={label}>
+        <div class="specimen-example">{getHonoExample(id).render(context)}</div>
+      </Section>
+    ))}
+  </div>
+);
+
+export const Specimen = ({ context }: { context: ExampleContext }) => (
   <Surface
     context={
       <ContextBar
@@ -173,7 +254,7 @@ export const Specimen = () => (
   >
     <PageHeader
       title="規則の見本"
-      description="形・影・状態の規則と、紙と文具の手触りを、組み合わせた画面で確かめます。"
+      description="形・紙・状態の規則と、紙と文具の手触りを、組み合わせた画面で確かめます。"
     />
     <Tabs
       id="specimen-tabs"
@@ -182,10 +263,9 @@ export const Specimen = () => (
       items={[
         { value: "form", label: "記事を書く", content: <Form /> },
         { value: "list", label: "記事を探す", count: 3, content: <List /> },
-        { value: "cards", label: "予定", content: <Cards /> },
+        { value: "choices", label: "案を選ぶ", content: <Choices /> },
+        { value: "changed", label: "変えたコンポーネント", content: <Changed context={context} /> },
       ]}
     />
-    <List />
-    <Cards />
   </Surface>
 );

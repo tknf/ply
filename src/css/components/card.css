@@ -66,6 +66,23 @@
         block-size: auto;
       }
     }
+    /* 分類のつまみは墨で塗った札。紙の外へ出す位置は利用側の配置に合わせて決める。 */
+    & > .tab {
+      inline-size: fit-content;
+      max-inline-size: 100%;
+      padding-block: 0.125rem;
+      padding-inline: var(--ply-space-2);
+      background: var(--ply-ink);
+      color: var(--ply-surface);
+      font-size: var(--ply-small);
+      font-weight: 600;
+      line-height: var(--ply-small-leading);
+      letter-spacing: 0.04em;
+      overflow-wrap: anywhere;
+      & + * {
+        margin-block-start: var(--ply-space-2);
+      }
+    }
     & > .eyebrow {
       display: flex;
       flex-wrap: wrap;
