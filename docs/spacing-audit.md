@@ -4,7 +4,7 @@
 
 ## 読み方と対象
 
-- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は873件です。省略した状態別・メディア・コンテナ条件はありません。
+- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は888件です。省略した状態別・メディア・コンテナ条件はありません。
 - CSSの生の宣言、ネストしたセレクタの階層、条件、ソース位置を掲載します。→は親ルールから子ルールへの経路であり、結合済みCSSセレクタではありません。
 - 換算はroot 16pxのremだけです。emはその要素の文字サイズ、lhはその要素の行高、%は包含ブロック、autoは残り幅に依存します。条件外の値や文字拡大時まで同じpxと断定しません。gap二値は縦・横、論理padding二値は開始・終了の順です。
 - 同じ要素の状態別上書きを足し合わせないでください。最終値はレイヤー・詳細度・条件・記述順で決まります。0も、追加しない判断として全件掲載します。
@@ -32,21 +32,26 @@ DropdownMenu・DatePickerの位置計算は起点から4px、画面端から8px�
 
 ## action-list
 
-移動先の一覧。行内はアイコンと題名を8px、題名と説明を2pxで結ぶ。縦12pxは二行の入口を読み分ける内側の余白。プレビューは本文と4px、境界の前後は8px。カード表示の外側12pxは隣の入口との区切りで、情報内の8pxより一段広くする。
+道具への入口の切符。切符の間8px、格子では12px。半券の幅40pxは印の16pxと左右12pxの余白。本文は上下12px、半券のミシン目から題名まで12px、右16px。題名と説明を2pxで結ぶ。プレビューは本文と8px、その中の段は4px。
 
 対象: [src/css/components/action-list.css](../src/css/components/action-list.css)
 
-| ソース                                             | セレクタの階層                                                 | 条件 | 宣言値                                   | root 16pxでremを換算      | 値の扱い                                                             |
-| -------------------------------------------------- | -------------------------------------------------------------- | ---- | ---------------------------------------- | ------------------------- | -------------------------------------------------------------------- |
-| [L5](../src/css/components/action-list.css#L5)     | `.ply-action-list`                                             | 常時 | `gap: 0`                                 | `0`                       | この位置では余白を足さない。上記の所有範囲に従う。                   |
-| [L7](../src/css/components/action-list.css#L7)     | `.ply-action-list`                                             | 常時 | `margin: 0`                              | `0`                       | この位置では余白を足さない。上記の所有範囲に従う。                   |
-| [L8](../src/css/components/action-list.css#L8)     | `.ply-action-list`                                             | 常時 | `padding: 0`                             | `0`                       | この位置では余白を足さない。上記の所有範囲に従う。                   |
-| [L28](../src/css/components/action-list.css#L28)   | `.ply-action-list → & > li → & > a`                            | 常時 | `gap: 0.125rem var(--ply-space-2)`       | `2px 8px`                 | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L31](../src/css/components/action-list.css#L31)   | `.ply-action-list → & > li → & > a`                            | 常時 | `padding-block: var(--ply-space-2)`      | `8px`                     | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L32](../src/css/components/action-list.css#L32)   | `.ply-action-list → & > li → & > a`                            | 常時 | `padding-inline: var(--ply-space-4)`     | `16px`                    | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L70](../src/css/components/action-list.css#L70)   | `.ply-action-list → & > li → & > a → & > .preview`             | 常時 | `margin-block-start: var(--ply-space-2)` | `8px`                     | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
-| [L73](../src/css/components/action-list.css#L73)   | `.ply-action-list → & > li → & > a → & > .preview → & > * + *` | 常時 | `margin-block-start: var(--ply-space-1)` | `4px`                     | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
-| [L106](../src/css/components/action-list.css#L106) | `.ply-action-list → &[data-layout="grid"]`                     | 常時 | `gap: var(--ply-stroke-width)`           | `var(--ply-stroke-width)` | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| ソース                                             | セレクタの階層                                                 | 条件 | 宣言値                                       | root 16pxでremを換算     | 値の扱い                                                             |
+| -------------------------------------------------- | -------------------------------------------------------------- | ---- | -------------------------------------------- | ------------------------ | -------------------------------------------------------------------- |
+| [L8](../src/css/components/action-list.css#L8)     | `.ply-action-list`                                             | 常時 | `gap: var(--ply-space-2)`                    | `8px`                    | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L10](../src/css/components/action-list.css#L10)   | `.ply-action-list`                                             | 常時 | `margin: 0`                                  | `0`                      | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L11](../src/css/components/action-list.css#L11)   | `.ply-action-list`                                             | 常時 | `padding: 0`                                 | `0`                      | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L40](../src/css/components/action-list.css#L40)   | `.ply-action-list → & > li → & > a`                            | 常時 | `gap: 0.125rem var(--ply-space-3)`           | `2px 12px`               | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L43](../src/css/components/action-list.css#L43)   | `.ply-action-list → & > li → & > a`                            | 常時 | `padding-block: var(--ply-space-3)`          | `12px`                   | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L44](../src/css/components/action-list.css#L44)   | `.ply-action-list → & > li → & > a`                            | 常時 | `padding-inline: 0 var(--ply-space-4)`       | `0 16px`                 | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L89](../src/css/components/action-list.css#L89)   | `.ply-action-list → & > li → & > a → &::before`                | 常時 | `inset-block: 0`                             | `0`                      | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L90](../src/css/components/action-list.css#L90)   | `.ply-action-list → & > li → & > a → &::before`                | 常時 | `inset-inline-start: 0`                      | `0`                      | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L104](../src/css/components/action-list.css#L104) | `.ply-action-list → & > li → & > a → &::after`                 | 常時 | `inset-block: 0`                             | `0`                      | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L105](../src/css/components/action-list.css#L105) | `.ply-action-list → & > li → & > a → &::after`                 | 常時 | `inset-inline-start: var(--ply-ticket-stub)` | `var(--ply-ticket-stub)` | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
+| [L145](../src/css/components/action-list.css#L145) | `.ply-action-list → & > li → & > a → & > .preview`             | 常時 | `margin-block-start: var(--ply-space-2)`     | `8px`                    | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L148](../src/css/components/action-list.css#L148) | `.ply-action-list → & > li → & > a → & > .preview → & > * + *` | 常時 | `margin-block-start: var(--ply-space-1)`     | `4px`                    | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L154](../src/css/components/action-list.css#L154) | `.ply-action-list → & > li → & > a → &:not(:has(> .icon))`     | 常時 | `padding-inline: var(--ply-space-4)`         | `16px`                   | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L196](../src/css/components/action-list.css#L196) | `.ply-action-list → &[data-layout="grid"]`                     | 常時 | `gap: var(--ply-space-3)`                    | `12px`                   | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
 
 ## app-shell
 
@@ -908,10 +913,10 @@ TaskList・DataList・MessageListのリスト既定marginとpaddingを0にする
 
 対象: [src/css/components/list-frame.css](../src/css/components/list-frame.css)
 
-| ソース                                        | セレクタの階層                           | 条件 | 宣言値       | root 16pxでremを換算 | 値の扱い                                           |
-| --------------------------------------------- | ---------------------------------------- | ---- | ------------ | -------------------- | -------------------------------------------------- |
-| [L4](../src/css/components/list-frame.css#L4) | `:is(.ply-task-list, .ply-message-list)` | 常時 | `margin: 0`  | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
-| [L5](../src/css/components/list-frame.css#L5) | `:is(.ply-task-list, .ply-message-list)` | 常時 | `padding: 0` | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
+| ソース                                        | セレクタの階層   | 条件 | 宣言値       | root 16pxでremを換算 | 値の扱い                                           |
+| --------------------------------------------- | ---------------- | ---- | ------------ | -------------------- | -------------------------------------------------- |
+| [L4](../src/css/components/list-frame.css#L4) | `.ply-task-list` | 常時 | `margin: 0`  | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
+| [L5](../src/css/components/list-frame.css#L5) | `.ply-task-list` | 常時 | `padding: 0` | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
 
 ## loading
 
@@ -933,25 +938,34 @@ TaskList・DataList・MessageListのリスト既定marginとpaddingを0にする
 
 ## message-list
 
-各行の上下左右8px。avatar・差出人・本文・日時の横間隔も8px、折り返し行間4px。題名と短いpreviewは同じメッセージとして追加marginを入れない。会話件数・添付印は4px。状態表示の領域は上下24px・左右12px。広い配置の差出人は一覧幅の18%を6〜12remへ制限、日時は8remの共通列にし、日時の文字数で行ごとの本文位置がずれることを防ぐ。36rem未満では差出人と日時の下へ本文を回し、avatarの字下げだけを維持する。新着の波線の区切りは上8px・下4px・左右16pxで、行と同じ開始位置に揃え、前後の行の線と重ねない。
+一枚の紙の上の行は上下12px・左右20px（16pxの角丸の紙に文字が寄らないよう一段広げる）。行は「差出人と時刻・件名・書き出し」の三段で、段の間は2px、差出人と時刻の間は12px。avatarは本文の左に置き、横12pxで離す。会話件数・添付印は4px、時刻・添付・封蝋は8px。状態表示は上下32px・左右20px、読み込み中の斜線の行の間は12px、失敗の付箋は紙の内側16px。新着の波線の区切りは上12px・左右20pxで行の開始位置に揃え、前後の行の線と重ねない。
 
 対象: [src/css/components/message-list.css](../src/css/components/message-list.css)
 
-| ソース                                              | セレクタの階層                                                                | 条件 | 宣言値                                                 | root 16pxでremを換算 | 値の扱い                                                             |
-| --------------------------------------------------- | ----------------------------------------------------------------------------- | ---- | ------------------------------------------------------ | -------------------- | -------------------------------------------------------------------- |
-| [L9](../src/css/components/message-list.css#L9)     | `.ply-message-list → & > .divider`                                            | 常時 | `padding-block: var(--ply-space-2) var(--ply-space-1)` | `8px 4px`            | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L10](../src/css/components/message-list.css#L10)   | `.ply-message-list → & > .divider`                                            | 常時 | `padding-inline: var(--ply-space-4)`                   | `16px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L25](../src/css/components/message-list.css#L25)   | `.ply-message-list → & > li → & > .row`                                       | 常時 | `gap: var(--ply-space-1) var(--ply-space-2)`           | `4px 8px`            | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L28](../src/css/components/message-list.css#L28)   | `.ply-message-list → & > li → & > .row`                                       | 常時 | `padding-block: var(--ply-space-2)`                    | `8px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L29](../src/css/components/message-list.css#L29)   | `.ply-message-list → & > li → & > .row`                                       | 常時 | `padding-inline: var(--ply-space-4)`                   | `16px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L61](../src/css/components/message-list.css#L61)   | `.ply-message-list → & > li → & > .row → & > .body → & > .title → & > .count` | 常時 | `margin-inline-start: var(--ply-space-1)`              | `4px`                | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
-| [L86](../src/css/components/message-list.css#L86)   | `.ply-message-list → & > li → & > .row → & > .meta`                           | 常時 | `gap: var(--ply-space-1)`                              | `4px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L103](../src/css/components/message-list.css#L103) | `.ply-message-list → & > li → & > .row → & > .meta → & > .attachment`         | 常時 | `gap: var(--ply-space-1)`                              | `4px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L115](../src/css/components/message-list.css#L115) | `.ply-message-list → & > li → &[data-current="true"] → &::before`             | 常時 | `inset-block: var(--ply-space-2)`                      | `8px`                | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
-| [L116](../src/css/components/message-list.css#L116) | `.ply-message-list → & > li → &[data-current="true"] → &::before`             | 常時 | `inset-inline-start: var(--ply-space-1)`               | `4px`                | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
-| [L132](../src/css/components/message-list.css#L132) | `.ply-message-list → & > li → &[data-state="draft"] > .row > .body > .status` | 常時 | `padding-inline: var(--ply-space-2)`                   | `8px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L146](../src/css/components/message-list.css#L146) | `.ply-message-list → & > .state`                                              | 常時 | `padding-block: var(--ply-space-6)`                    | `24px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L147](../src/css/components/message-list.css#L147) | `.ply-message-list → & > .state`                                              | 常時 | `padding-inline: var(--ply-space-3)`                   | `12px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| ソース                                              | セレクタの階層                                                                | 条件 | 宣言値                                    | root 16pxでremを換算 | 値の扱い                                                             |
+| --------------------------------------------------- | ----------------------------------------------------------------------------- | ---- | ----------------------------------------- | -------------------- | -------------------------------------------------------------------- |
+| [L9](../src/css/components/message-list.css#L9)     | `.ply-message-list`                                                           | 常時 | `margin: 0`                               | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L10](../src/css/components/message-list.css#L10)   | `.ply-message-list`                                                           | 常時 | `padding: 0`                              | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L22](../src/css/components/message-list.css#L22)   | `.ply-message-list → & > .divider`                                            | 常時 | `padding-block: var(--ply-space-3) 0`     | `12px 0`             | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L23](../src/css/components/message-list.css#L23)   | `.ply-message-list → & > .divider`                                            | 常時 | `padding-inline: var(--ply-space-5)`      | `20px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L41](../src/css/components/message-list.css#L41)   | `.ply-message-list → & > li → & > .row`                                       | 常時 | `gap: 0.125rem var(--ply-space-3)`        | `2px 12px`           | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L43](../src/css/components/message-list.css#L43)   | `.ply-message-list → & > li → & > .row`                                       | 常時 | `padding-block: var(--ply-space-3)`       | `12px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L44](../src/css/components/message-list.css#L44)   | `.ply-message-list → & > li → & > .row`                                       | 常時 | `padding-inline: var(--ply-space-5)`      | `20px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L79](../src/css/components/message-list.css#L79)   | `.ply-message-list → & > li → & > .row → & > .body → & > .title → & > .count` | 常時 | `margin-inline-start: var(--ply-space-1)` | `4px`                | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L90](../src/css/components/message-list.css#L90)   | `.ply-message-list → & > li → & > .row → & > .body → & > .preview`            | 常時 | `margin-block-start: 0.125rem`            | `2px`                | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L98](../src/css/components/message-list.css#L98)   | `.ply-message-list → & > li → & > .row → & > .body → & > .status`             | 常時 | `margin-block-start: var(--ply-space-1)`  | `4px`                | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L108](../src/css/components/message-list.css#L108) | `.ply-message-list → & > li → & > .row → & > .meta`                           | 常時 | `gap: var(--ply-space-2)`                 | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L116](../src/css/components/message-list.css#L116) | `.ply-message-list → & > li → & > .row → & > .meta → & > .attachment`         | 常時 | `gap: 0.125rem`                           | `2px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L153](../src/css/components/message-list.css#L153) | `.ply-message-list → & > li → &[data-current="true"] → &::before`             | 常時 | `inset-block: var(--ply-space-2)`         | `8px`                | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
+| [L154](../src/css/components/message-list.css#L154) | `.ply-message-list → & > li → &[data-current="true"] → &::before`             | 常時 | `inset-inline-start: var(--ply-space-2)`  | `8px`                | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
+| [L165](../src/css/components/message-list.css#L165) | `.ply-message-list → & > li → &[data-state="draft"] > .row > .body > .status` | 常時 | `padding-inline: var(--ply-space-2)`      | `8px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L186](../src/css/components/message-list.css#L186) | `.ply-message-list → & > .state`                                              | 常時 | `gap: var(--ply-space-3)`                 | `12px`               | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L187](../src/css/components/message-list.css#L187) | `.ply-message-list → & > .state`                                              | 常時 | `padding-block: var(--ply-space-8)`       | `32px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L188](../src/css/components/message-list.css#L188) | `.ply-message-list → & > .state`                                              | 常時 | `padding-inline: var(--ply-space-5)`      | `20px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L202](../src/css/components/message-list.css#L202) | `.ply-message-list → &[data-state="loading"] > .state`                        | 常時 | `padding-block: var(--ply-space-4)`       | `16px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L224](../src/css/components/message-list.css#L224) | `.ply-message-list → &[data-state="error"]`                                   | 常時 | `padding-block: var(--ply-space-4)`       | `16px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L225](../src/css/components/message-list.css#L225) | `.ply-message-list → &[data-state="error"]`                                   | 常時 | `padding-inline: var(--ply-space-4)`      | `16px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L227](../src/css/components/message-list.css#L227) | `.ply-message-list → &[data-state="error"] → & > .state`                      | 常時 | `padding-block: var(--ply-space-4)`       | `16px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
 
 ## message
 
@@ -996,12 +1010,13 @@ TaskList・DataList・MessageListのリスト既定marginとpaddingを0にする
 
 対象: [src/css/components/notice.css](../src/css/components/notice.css)
 
-| ソース                                      | セレクタの階層                        | 条件 | 宣言値                                                 | root 16pxでremを換算 | 値の扱い                                                             |
-| ------------------------------------------- | ------------------------------------- | ---- | ------------------------------------------------------ | -------------------- | -------------------------------------------------------------------- |
-| [L9](../src/css/components/notice.css#L9)   | `.ply-notice`                         | 常時 | `gap: var(--ply-space-1) var(--ply-space-2)`           | `4px 8px`            | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L11](../src/css/components/notice.css#L11) | `.ply-notice`                         | 常時 | `padding-block: var(--ply-space-3) var(--ply-space-2)` | `12px 8px`           | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L12](../src/css/components/notice.css#L12) | `.ply-notice`                         | 常時 | `padding-inline: var(--ply-space-4)`                   | `16px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L47](../src/css/components/notice.css#L47) | `.ply-notice → & > .body → & > * + *` | 常時 | `margin-block-start: var(--ply-space-2)`               | `8px`                | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| ソース                                      | セレクタの階層                        | 条件 | 宣言値                                                 | root 16pxでremを換算                | 値の扱い                                                             |
+| ------------------------------------------- | ------------------------------------- | ---- | ------------------------------------------------------ | ----------------------------------- | -------------------------------------------------------------------- |
+| [L9](../src/css/components/notice.css#L9)   | `.ply-notice`                         | 常時 | `gap: var(--ply-space-1) var(--ply-space-2)`           | `4px 8px`                           | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L11](../src/css/components/notice.css#L11) | `.ply-notice`                         | 常時 | `padding-block: var(--ply-space-4) var(--ply-space-3)` | `16px 12px`                         | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L12](../src/css/components/notice.css#L12) | `.ply-notice`                         | 常時 | `padding-inline: var(--ply-space-4)`                   | `16px`                              | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L39](../src/css/components/notice.css#L39) | `.ply-notice → &::after`              | 常時 | `inset: calc(var(--ply-frame-width) * -1)`             | `calc(var(--ply-frame-width) * -1)` | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
+| [L71](../src/css/components/notice.css#L71) | `.ply-notice → & > .body → & > * + *` | 常時 | `margin-block-start: var(--ply-space-2)`               | `8px`                               | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
 
 ## overlay
 

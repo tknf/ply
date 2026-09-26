@@ -14,15 +14,22 @@
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     & > li {
-      --ply-ticket-stub: 3rem;
-      --ply-ticket-notch: 0.4375rem;
+      --ply-ticket-stub: 2.5rem;
+      --ply-ticket-notch: 0.375rem;
       min-inline-size: 0;
-      filter: drop-shadow(0 0 var(--ply-stroke-width) rgb(36 57 70 / 14%))
-        drop-shadow(0 0.1875rem 0.25rem rgb(36 57 70 / 7%));
+      /* 押す物と同じく、接地から遠方まで濃度を減らす影。切り欠きの形に沿わせる。 */
+      filter: drop-shadow(0 0 var(--ply-stroke-width) rgb(36 57 70 / 16%))
+        drop-shadow(0 0.0625rem 0.0625rem rgb(36 57 70 / 8%))
+        drop-shadow(0 0.1875rem 0.375rem rgb(36 57 70 / 7%));
       transition: filter var(--ply-duration) ease;
       &:has(> a:hover) {
+        filter: drop-shadow(0 0 var(--ply-stroke-width) rgb(36 57 70 / 18%))
+          drop-shadow(0 0.125rem 0.125rem rgb(36 57 70 / 8%))
+          drop-shadow(0 0.375rem 0.75rem rgb(36 57 70 / 10%));
+      }
+      &:has(> a:active) {
         filter: drop-shadow(0 0 var(--ply-stroke-width) rgb(36 57 70 / 16%))
-          drop-shadow(0 0.375rem 0.625rem rgb(36 57 70 / 10%));
+          drop-shadow(0 0.0625rem 0.0625rem rgb(36 57 70 / 6%));
       }
       & > a {
         --ply-ticket-accent: var(--ply-link);
@@ -30,27 +37,18 @@
         grid-template-columns: var(--ply-ticket-stub) minmax(0, 1fr) 1rem;
         align-content: start;
         align-items: start;
-        gap: 0.125rem var(--ply-space-4);
+        gap: 0.125rem var(--ply-space-3);
         block-size: 100%;
         min-inline-size: 0;
         padding-block: var(--ply-space-3);
         padding-inline: 0 var(--ply-space-4);
         border-radius: var(--ply-radius-surface);
-        background:
-          repeating-linear-gradient(
-              to bottom,
-              var(--ply-perforation) 0 var(--ply-dash),
-              transparent var(--ply-dash) calc(var(--ply-dash) + var(--ply-dash-gap))
-            )
-            var(--ply-ticket-stub) 0 / var(--ply-stroke-width) 100% no-repeat,
-          linear-gradient(
-              color-mix(in srgb, var(--ply-ticket-accent) 9%, var(--ply-surface)),
-              color-mix(in srgb, var(--ply-ticket-accent) 9%, var(--ply-surface))
-            )
-            0 0 / var(--ply-ticket-stub) 100% no-repeat,
-          var(--ply-fill-paper),
-          var(--ply-surface);
-        box-shadow: inset 0 var(--ply-stroke-width) 0 rgb(255 255 255 / 90%);
+        position: relative;
+        isolation: isolate;
+        background: var(--ply-surface) var(--ply-fill-control);
+        box-shadow:
+          inset 0 var(--ply-stroke-width) 0 rgb(255 255 255 / 90%),
+          inset 0 calc(var(--ply-stroke-width) * -1) 0 rgb(36 57 70 / 4%);
         text-decoration: none;
         color: inherit;
         overflow-wrap: anywhere;
@@ -69,11 +67,6 @@
             0 100% / 100% 51% no-repeat;
         transition: translate var(--ply-duration) ease;
         &:dir(rtl) {
-          background-position:
-            calc(100% - var(--ply-ticket-stub)) 0,
-            100% 0,
-            0 0,
-            0 0;
           mask:
             radial-gradient(
                 circle at calc(100% - var(--ply-ticket-stub)) 0,
@@ -88,6 +81,35 @@
               )
               0 100% / 100% 51% no-repeat;
         }
+        /* 半券。道具の色で塗り、押す物と同じかすかな陰影を付ける。 */
+        &::before {
+          content: "";
+          position: absolute;
+          z-index: -1;
+          inset-block: 0;
+          inset-inline-start: 0;
+          inline-size: var(--ply-ticket-stub);
+          background: linear-gradient(
+            176deg,
+            color-mix(in srgb, var(--ply-ticket-accent) 84%, white) 0%,
+            var(--ply-ticket-accent) 55%,
+            color-mix(in srgb, var(--ply-ticket-accent) 90%, black) 100%
+          );
+          box-shadow: inset 0 var(--ply-stroke-width) 0 rgb(255 255 255 / 22%);
+        }
+        /* 半券と本体の境目のミシン目。 */
+        &::after {
+          content: "";
+          position: absolute;
+          inset-block: 0;
+          inset-inline-start: var(--ply-ticket-stub);
+          inline-size: var(--ply-stroke-width);
+          background: repeating-linear-gradient(
+            to bottom,
+            var(--ply-perforation) 0 var(--ply-dash),
+            transparent var(--ply-dash) calc(var(--ply-dash) + var(--ply-dash-gap))
+          );
+        }
         & > .title {
           grid-column: 2;
           font-weight: 600;
@@ -98,17 +120,17 @@
           font-size: var(--ply-small);
           line-height: var(--ply-small-leading);
         }
-        /* 半券の印。道具の色で、半券の上下の中央に置く。 */
+        /* 半券の印。白抜きで、題名の一行目にそろえる。 */
         & > .icon {
           grid-column: 1;
-          grid-row: 1 / span 3;
-          align-self: center;
+          grid-row: 1;
           justify-self: center;
           display: grid;
           place-items: center;
-          color: var(--ply-ticket-accent);
+          block-size: 1lh;
+          color: var(--ply-surface);
           & > .ply-icon {
-            font-size: 1.125rem;
+            font-size: 1rem;
           }
         }
         & > .arrow {
@@ -130,8 +152,11 @@
         &:not(:has(> .icon)) {
           grid-template-columns: minmax(0, 1fr) 1rem;
           padding-inline: var(--ply-space-4);
-          background: var(--ply-fill-paper), var(--ply-surface);
           mask: none;
+          &::before,
+          &::after {
+            display: none;
+          }
           & > :is(.title, .description, .preview) {
             grid-column: 1;
           }

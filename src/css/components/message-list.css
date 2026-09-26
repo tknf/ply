@@ -1,7 +1,7 @@
 @layer components {
   /*
     受け取った連絡は手紙の束。一枚の紙の上に行を並べる。
-    まだ開けていない手紙には封蝋を押し、題名と差出人を太字にする。
+    行は「差出人と時刻・件名・書き出し」の三段にし、まだ開けていない手紙には封蝋を押して太字にする。
   */
   .ply-message-list {
     container: ply-message-list / inline-size;
@@ -19,8 +19,8 @@
     line-height: var(--ply-label-leading);
     /* ここから新しい：波線の区切り。前後の行の線と重ねない。 */
     & > .divider {
-      padding-block: var(--ply-space-2) var(--ply-space-1);
-      padding-inline: var(--ply-space-4);
+      padding-block: var(--ply-space-3) 0;
+      padding-inline: var(--ply-space-5);
     }
     & > li {
       position: relative;
@@ -33,37 +33,42 @@
       }
       & > .row {
         display: grid;
-        grid-template-columns: clamp(6rem, 18cqi, 12rem) minmax(0, 1fr) minmax(0, 8rem);
-        align-items: start;
-        gap: var(--ply-space-1) var(--ply-space-2);
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+          "sender meta"
+          "body body";
+        align-items: baseline;
+        gap: 0.125rem var(--ply-space-3);
         min-inline-size: 0;
-        min-block-size: 3.5rem;
-        padding-block: var(--ply-space-2);
-        padding-inline: var(--ply-space-4);
+        padding-block: var(--ply-space-3);
+        padding-inline: var(--ply-space-5);
         color: inherit;
         text-decoration: none;
         &:is(a):hover {
-          background: color-mix(in srgb, var(--ply-background) 65%, var(--ply-surface));
+          background: color-mix(in srgb, var(--ply-background) 55%, transparent);
         }
         &:focus-visible {
           outline: 0.125rem solid var(--ply-link);
           outline-offset: -0.125rem;
-          background: var(--ply-cover);
-        }
-        &:is(a):active {
-          box-shadow: var(--ply-shadow-control-pressed);
         }
         & > .avatar {
+          grid-area: avatar;
+          align-self: start;
           display: grid;
           place-items: center;
-          min-block-size: 2rem;
+          block-size: 2rem;
           color: var(--ply-muted);
         }
         & > .sender {
+          grid-area: sender;
           min-inline-size: 0;
-          overflow-wrap: anywhere;
+          overflow: hidden;
+          color: var(--ply-text);
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         & > .body {
+          grid-area: body;
           min-inline-size: 0;
           & > .title {
             display: block;
@@ -75,42 +80,48 @@
               color: var(--ply-muted);
               font-size: var(--ply-small);
               font-weight: 400;
+              font-variant-numeric: tabular-nums;
             }
           }
           & > .preview {
             display: block;
             overflow: hidden;
             max-block-size: 2lh;
+            margin-block-start: 0.125rem;
             overflow-wrap: anywhere;
             color: var(--ply-muted);
             font-size: var(--ply-small);
             line-height: var(--ply-small-leading);
           }
           & > .status {
-            display: block;
+            display: inline-block;
+            margin-block-start: var(--ply-space-1);
             color: var(--ply-muted);
             font-size: var(--ply-small);
+            line-height: var(--ply-small-leading);
           }
         }
         & > .meta {
+          grid-area: meta;
           display: flex;
-          flex-wrap: wrap;
-          justify-content: end;
           align-items: center;
-          align-content: start;
-          gap: var(--ply-space-1) var(--ply-space-2);
-          max-inline-size: 10em;
-          text-align: end;
-          overflow-wrap: anywhere;
-          font-size: var(--ply-small);
+          gap: var(--ply-space-2);
           color: var(--ply-muted);
+          font-size: var(--ply-small);
+          font-variant-numeric: tabular-nums;
+          white-space: nowrap;
+          & > .attachment {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.125rem;
+          }
           /*
             封蝋。封筒の切手と同じ右上に押す。少し歪んだ丸に、押し型の縁の盛り上がりと、
             光の当たる上・沈む下の陰影を付ける。
           */
           & > .unread {
             display: block;
-            order: -1;
+            order: 1;
             inline-size: 1.125rem;
             block-size: 1.125rem;
             border-radius: 60% 40% 55% 45% / 45% 58% 42% 55%;
@@ -127,81 +138,115 @@
               0 var(--ply-stroke-width) 0.125rem rgb(36 57 70 / 30%);
             rotate: -8deg;
           }
-          & > .attachment {
-            flex-basis: 100%;
-            justify-content: end;
-            display: inline-flex;
-            align-items: center;
-            gap: var(--ply-space-1);
-          }
-        }
-      }
-      /* 現在地は、縁から離して内側に置く青いバー。縁に沿った線にしない。 */
-      &[data-current="true"] {
-        &::before {
-          content: "";
-          position: absolute;
-          inset-block: var(--ply-space-2);
-          inset-inline-start: var(--ply-space-1);
-          inline-size: var(--ply-frame-width);
-          border-radius: var(--ply-radius-pill);
-          background: var(--ply-link);
         }
       }
       &[data-unread="true"] > .row > .sender,
       &[data-unread="true"] > .row > .body > .title {
         font-weight: 600;
       }
+      /* 今、隣で開いている手紙は、縁から離して内側に置く青いバー。 */
+      &[data-current="true"] {
+        background: color-mix(in srgb, var(--ply-info-soft) 60%, transparent);
+        &::before {
+          content: "";
+          position: absolute;
+          inset-block: var(--ply-space-2);
+          inset-inline-start: var(--ply-space-2);
+          inline-size: var(--ply-frame-width);
+          border-radius: var(--ply-radius-pill);
+          background: var(--ply-link);
+        }
+      }
       &[data-state="failed"] > .row > .body > .status {
         color: var(--ply-danger);
       }
       /* 下書きはミシン目の縁の小さなピルで示す。 */
       &[data-state="draft"] > .row > .body > .status {
-        display: inline-block;
         padding-inline: var(--ply-space-2);
         border: var(--ply-stroke-width) dashed var(--ply-perforation);
         border-radius: var(--ply-radius-pill);
       }
     }
+    /* 差出人の顔は左に置き、三段の本文をその右へ並べる。 */
     &[data-avatars="true"] > li > .row {
-      grid-template-columns: 2rem clamp(6rem, 18cqi, 12rem) minmax(0, 1fr) minmax(0, 8rem);
+      grid-template-columns: 2rem minmax(0, 1fr) auto;
+      grid-template-areas:
+        "avatar sender meta"
+        "avatar body body";
     }
     &[data-preview-lines="1"] > li > .row > .body > .preview {
       max-block-size: 1lh;
       white-space: nowrap;
       text-overflow: ellipsis;
     }
+    /* 状態は語彙で示す。空は重ねた紙、読み込み中は斜線の行、失敗は付箋。 */
     & > .state {
-      padding-block: var(--ply-space-6);
-      padding-inline: var(--ply-space-3);
+      display: grid;
+      justify-items: center;
+      gap: var(--ply-space-3);
+      padding-block: var(--ply-space-8);
+      padding-inline: var(--ply-space-5);
       color: var(--ply-muted);
+      text-align: center;
     }
-    @container ply-message-list (inline-size < 36rem) {
-      & > li > .row {
-        grid-template-columns: minmax(0, 1fr) auto;
-        & > .body {
-          grid-column: 1 / -1;
-        }
-        & > .meta {
-          grid-column: 2;
-          grid-row: 1;
-        }
+    &[data-state="empty"] > .state::before {
+      content: "";
+      inline-size: 2.5rem;
+      block-size: 1.75rem;
+      border-radius: var(--ply-radius-mark);
+      background: var(--ply-surface);
+      box-shadow: var(--ply-shadow-stack);
+    }
+    &[data-state="loading"] > .state {
+      justify-items: stretch;
+      padding-block: var(--ply-space-4);
+      text-align: start;
+      &::before,
+      &::after {
+        content: "";
+        block-size: 2.75rem;
+        border-radius: var(--ply-radius-field);
+        background:
+          var(--ply-hatch) 0 0 / var(--ply-hatch-step) 100%,
+          color-mix(in srgb, var(--ply-background) 70%, var(--ply-surface));
+        animation: ply-message-list-flow 0.8s linear infinite;
       }
-      &[data-avatars="true"] > li > .row {
-        grid-template-columns: 2rem minmax(0, 1fr) auto;
-        & > .avatar {
-          grid-row: 1 / span 2;
-        }
-        & > .sender {
-          grid-column: 2;
-        }
-        & > .body {
-          grid-column: 2 / -1;
-        }
-        & > .meta {
-          grid-column: 3;
-        }
+      &::after {
+        inline-size: 70%;
       }
+      &::before,
+      &::after {
+        order: -1;
+      }
+    }
+    &[data-state="error"] {
+      overflow: visible;
+      padding-block: var(--ply-space-4);
+      padding-inline: var(--ply-space-4);
+      & > .state {
+        padding-block: var(--ply-space-4);
+        border-radius: var(--ply-radius-surface);
+        background:
+          linear-gradient(
+              color-mix(in srgb, var(--ply-coral) 22%, var(--ply-surface)),
+              color-mix(in srgb, var(--ply-coral) 22%, var(--ply-surface))
+            )
+            0 0 / 100% var(--ply-space-2) no-repeat,
+          color-mix(in srgb, var(--ply-coral) 15%, var(--ply-surface));
+        box-shadow: var(--ply-shadow-note);
+        color: var(--ply-text);
+      }
+    }
+  }
+  @keyframes ply-message-list-flow {
+    to {
+      background-position-x: var(--ply-hatch-step);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ply-message-list[data-state="loading"] > .state::before,
+    .ply-message-list[data-state="loading"] > .state::after {
+      animation: none;
     }
   }
   @media (forced-colors: active) {

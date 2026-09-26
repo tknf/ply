@@ -45,6 +45,7 @@ export const MessageList = ({
       class={classes("ply-message-list", className)}
       aria-label={label}
       aria-busy={state === "loading" ? "true" : undefined}
+      data-state={state !== "ready" ? state : items.length === 0 ? "empty" : "ready"}
       data-avatars={String(avatars)}
       data-preview-lines={previewLines}
     >
