@@ -202,7 +202,7 @@
     --ply-hatch-step: 0.5rem;
     --ply-hatch: repeating-linear-gradient(
       135deg,
-      color-mix(in srgb, var(--ply-muted) 32%, var(--ply-surface)) 0 var(--ply-stroke-width),
+      color-mix(in srgb, var(--ply-muted) 18%, var(--ply-surface)) 0 var(--ply-stroke-width),
       transparent var(--ply-stroke-width) calc(var(--ply-hatch-step) * 0.7071068)
     );
     --ply-frame-width: 0.125rem;
