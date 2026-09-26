@@ -450,7 +450,7 @@ export const extendedExamples = [
       />
     ),
     usage:
-      "標準form・Textarea・Buttonを使います。actionとmethodを利用側で指定し、attachmentsへFileInputや選択済みファイルを渡せます。busyは送信ボタンの重複操作を止め、errorは本文に関連付けます。送信・下書き保存は利用側が実装します。",
+      "標準form・Textarea・Buttonを使います。actionとmethodを利用側で指定し、attachmentsへFileInputや選択済みファイルを渡せます。busyは送信ボタンの重複操作を止め、errorは本文に関連付けます。送信・下書き保存は利用側が実装します。本文は書いた分だけ伸びます（field-sizingに対応するブラウザ）。editorへリッチテキストの編集部品やcontenteditableを渡すと、本文の欄と差し替え、便箋の罫線と紙全体の輪をその部品にかけます。送信する値の受け渡しは編集部品の側で行います。",
   },
   {
     id: "picker",

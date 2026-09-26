@@ -16,6 +16,11 @@ export type ComposerProps = Omit<ElementProps<"form">, "children"> & {
   error?: string;
   attachments?: Child;
   actions?: Child;
+  /**
+   * 本文の欄の代わりに置く編集部品（リッチテキストの編集部品やcontenteditableなど）。
+   * 渡すと便箋の罫線と紙全体の輪はこの部品にかかり、送信する値の受け渡しは部品の側で行う。
+   */
+  editor?: Child;
 };
 
 /** 本文と添付、送信操作の配置。送信先と保存処理は利用側が指定する。 */
@@ -32,17 +37,35 @@ export const Composer = ({
   error,
   attachments,
   actions,
+  editor,
   class: className,
   ...attributes
 }: ComposerProps) => (
   <form {...attributes} id={id} class={classes("ply-composer", className)} aria-busy={busy}>
-    <Field id={`${id}-body`} label={label} error={error}>
-      {(field) => (
-        <Textarea {...field} name={name} rows={rows} required={required} placeholder={placeholder}>
-          {value}
-        </Textarea>
-      )}
-    </Field>
+    {editor != null && editor !== false ? (
+      <div class="ply-field">
+        <span class="label" id={`${id}-body-label`}>
+          {label}
+        </span>
+        <div class="editor" role="group" aria-labelledby={`${id}-body-label`}>
+          {editor}
+        </div>
+      </div>
+    ) : (
+      <Field id={`${id}-body`} label={label} error={error}>
+        {(field) => (
+          <Textarea
+            {...field}
+            name={name}
+            rows={rows}
+            required={required}
+            placeholder={placeholder}
+          >
+            {value}
+          </Textarea>
+        )}
+      </Field>
+    )}
     {attachments && <div class="attachments">{attachments}</div>}
     <div class="footer">
       {actions && <div class="actions">{actions}</div>}

@@ -156,11 +156,14 @@
       - 「ここを見て」の面（--ply-emphasis-*、主操作の--ply-fill-primary）：役割の色からその淡い対への135度。
       一覧・本文・情報の面は平らな--ply-surfaceにする。
     */
-    /* 紙の面。陰影はごく浅くし、厚みは--ply-shadow-paperの内側の影で出す。 */
+    /*
+      紙の面の陰影。ごく浅くし、厚みは--ply-shadow-paperの内側の影で出す。
+      紙の地の色を隠さないよう、透明から墨をわずかに重ねる層にする。
+    */
     --ply-fill-paper: linear-gradient(
       176deg,
-      var(--ply-surface) 0%,
-      color-mix(in srgb, var(--ply-surface) 98.5%, var(--ply-ink)) 100%
+      transparent 0%,
+      color-mix(in srgb, var(--ply-ink) 1.5%, transparent) 100%
     );
     --ply-fill-control: linear-gradient(
       176deg,

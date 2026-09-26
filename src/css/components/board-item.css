@@ -9,7 +9,8 @@
     padding-inline: var(--ply-space-4);
     border: 0;
     border-radius: var(--ply-radius-surface);
-    background: var(--ply-surface) var(--ply-fill-paper);
+    /* Boardのトレイの上では、列の色に淡く染まった紙になる。 */
+    background: var(--ply-board-paper, var(--ply-surface)) var(--ply-fill-paper);
     box-shadow: var(--ply-shadow-paper);
     transition:
       box-shadow var(--ply-duration) ease,

@@ -8,15 +8,17 @@
     gap: var(--ply-space-4);
     min-inline-size: 0;
     overflow: auto;
-    padding-block: var(--ply-space-1) var(--ply-space-3);
+    padding-block: var(--ply-space-4) var(--ply-space-3);
     overscroll-behavior-inline: contain;
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     & > section {
       --ply-lane-accent: var(--ply-muted);
+      --ply-board-paper: color-mix(in srgb, var(--ply-lane-accent) 6%, var(--ply-surface));
+      position: relative;
       min-inline-size: 0;
-      padding-block: var(--ply-space-2);
+      padding-block: var(--ply-space-5) var(--ply-space-2);
       min-block-size: 8rem;
       padding-inline: var(--ply-space-3);
       border: 0;
@@ -45,42 +47,40 @@
       &[data-current="true"] {
         --ply-lane-accent: var(--ply-link);
       }
-      /* まとまりの見出しはSectionと同じ形。印・太字の名前・件数・右へ伸びる線の順。 */
+      /*
+        列の名前は、トレイの上端をまたいで貼った列の色の札。件数も札の中に書く。
+        紙（項目）は列の色に淡く染め、列を移ると色も変わる。
+      */
       & > .title {
-        display: flex;
-        align-items: center;
+        position: absolute;
+        inset-block-start: calc(-0.5lh - 0.125rem);
+        inset-inline-start: var(--ply-space-4);
+        display: inline-flex;
+        align-items: baseline;
         gap: var(--ply-space-2);
-        min-inline-size: 0;
-        color: var(--ply-text);
-        font-size: var(--ply-label);
+        max-inline-size: calc(100% - var(--ply-space-4) * 2);
+        margin: 0;
+        padding-block: 0.125rem;
+        padding-inline: var(--ply-space-2);
+        background: var(--ply-lane-accent)
+          linear-gradient(
+            176deg,
+            color-mix(in srgb, var(--ply-lane-accent) 84%, white),
+            var(--ply-lane-accent) 55%,
+            color-mix(in srgb, var(--ply-lane-accent) 90%, black)
+          );
+        box-shadow: var(--ply-shadow-control-primary);
+        color: var(--ply-surface);
+        font-size: var(--ply-small);
         font-weight: 600;
-        line-height: var(--ply-label-leading);
+        line-height: var(--ply-small-leading);
+        letter-spacing: 0.04em;
         overflow-wrap: anywhere;
-        &::after {
-          content: "";
-          flex: 1 1 1rem;
-          block-size: var(--ply-stroke-width);
-          background: var(--ply-border);
-        }
-        & > .label {
-          display: inline-flex;
-          align-items: center;
-          gap: var(--ply-space-2);
-          min-inline-size: 0;
-          &::before {
-            content: "";
-            flex: 0 0 auto;
-            inline-size: 0.5rem;
-            block-size: 0.5rem;
-            border-radius: 50%;
-            background: var(--ply-lane-accent);
-          }
-        }
         & > small {
-          color: var(--ply-muted);
-          font-size: var(--ply-small);
+          font-size: inherit;
           font-weight: 400;
           font-variant-numeric: tabular-nums;
+          opacity: 0.85;
         }
       }
       & > .empty {

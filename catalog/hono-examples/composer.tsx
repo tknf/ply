@@ -14,6 +14,21 @@ export default () => (
       required
     />
     <Composer
+      id="composer-editor"
+      label="メモ"
+      name="memo"
+      submitLabel="保存する"
+      editor={
+        <div
+          contenteditable
+          role="textbox"
+          aria-multiline="true"
+          aria-label="メモの本文"
+          data-placeholder="ここに書いた内容は、利用側の編集部品が送信用の値へ移します。"
+        />
+      }
+    />
+    <Composer
       id="composer-error"
       label="返信"
       name="reply"
