@@ -78,11 +78,8 @@
       overflow: hidden;
       border-radius: var(--ply-radius-surface);
       background:
-        linear-gradient(
-            color-mix(in srgb, var(--ply-coral) 45%, var(--ply-surface)),
-            color-mix(in srgb, var(--ply-coral) 45%, var(--ply-surface))
-          )
-          var(--ply-task-margin) 0 / var(--ply-stroke-width) 100% no-repeat,
+        linear-gradient(var(--ply-margin-line), var(--ply-margin-line)) var(--ply-task-margin) 0 /
+          var(--ply-stroke-width) 100% no-repeat,
         var(--ply-fill-paper),
         var(--ply-surface);
       box-shadow: var(--ply-shadow-paper);

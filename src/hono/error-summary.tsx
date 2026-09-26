@@ -1,10 +1,11 @@
 import { classes, type ElementProps } from "./types";
-import { Notice } from "./notice";
+import { Icon } from "./icon";
 
 export type ErrorSummaryProps = ElementProps<"aside"> & {
   title?: string;
   errors: readonly { label: string; href: string }[];
 };
+/** 直すところを、校正の余白のように朱の余白線の外へ番号を振って並べる。 */
 export const ErrorSummary = ({
   title = "入力内容を確認してください",
   errors,
@@ -12,14 +13,16 @@ export const ErrorSummary = ({
   ...attributes
 }: ErrorSummaryProps) =>
   errors.length === 0 ? null : (
-    <Notice
+    <aside
       {...attributes}
       class={classes("ply-error-summary", className)}
-      tone="danger"
-      label={title}
-      heading
+      aria-label={title}
       tabindex={-1}
     >
+      <h2 class="title">
+        <Icon name="x-circle" />
+        <span>{title}</span>
+      </h2>
       <ul>
         {errors.map((error, index) => (
           <li>
@@ -27,10 +30,10 @@ export const ErrorSummary = ({
               <span class="number" aria-hidden="true">
                 {index + 1}
               </span>
-              <span>{error.label}</span>
+              <span class="label">{error.label}</span>
             </a>
           </li>
         ))}
       </ul>
-    </Notice>
+    </aside>
   );

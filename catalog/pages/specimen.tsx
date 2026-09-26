@@ -242,6 +242,9 @@ const changed = [
   ["code-block", "CodeBlock：枠線なし、面の色"],
   ["tabs", "Tabs：墨のつまみ"],
   ["badge", "Badge：貼ったシールと丸シール、台紙のままの下書き、ゴム印"],
+  ["error-summary", "ErrorSummary：添削用紙（危険の色の札、朱の余白線と赤ペンの番号）"],
+  ["empty-state", "EmptyState：重ねた紙（白紙・罫線の便箋・ペンで描くチェック）"],
+  ["progress", "Progress：定規の溝と目盛り、インクの帯"],
   ["button", "Button：ピル"],
 ] as const;
 

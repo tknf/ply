@@ -34,7 +34,7 @@
         inset-block: 0;
         inset-inline-start: var(--ply-space-4);
         inline-size: var(--ply-stroke-width);
-        background: color-mix(in srgb, var(--ply-coral) 45%, var(--ply-surface));
+        background: var(--ply-margin-line);
       }
       /* リンクの行は、指を載せると短冊を少し引き出す。 */
       &:has(> .body > a.title:hover) {

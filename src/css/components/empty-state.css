@@ -15,6 +15,10 @@
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     overflow-wrap: anywhere;
+    /*
+      図は重ねた紙（まだ何もない）。枠線を引かず、紙の影と後ろの紙で厚みを見せ、少し傾けて置く。
+      紙の種類で場面を分ける：見つからない時は白紙、初めては罫線の便箋、終わった時は罫線の紙にペンでチェック。
+    */
     & > .symbol {
       grid-column: 1;
       grid-row: 1 / span 3;
@@ -25,14 +29,12 @@
       inline-size: min(3.5rem, 100%);
       block-size: 4rem;
       margin-block-start: var(--ply-space-1);
-      border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: 0.5rem 1rem 0.5rem 0.5rem;
-      background: linear-gradient(white, var(--ply-ice));
+      border-radius: var(--ply-radius-control);
+      background: var(--ply-fill-paper), var(--ply-surface);
+      box-shadow: var(--ply-shadow-stack);
       color: var(--ply-link);
       font-size: 1.75rem;
-      box-shadow:
-        -0.25rem 0.25rem 0 var(--ply-cover),
-        -0.3125rem 0.3125rem 0 var(--ply-border);
+      rotate: -3deg;
     }
     & > .title {
       grid-column: 2;
@@ -59,12 +61,23 @@
       gap: var(--ply-space-2);
       margin-block-start: var(--ply-space-1);
     }
-    &[data-kind="start"] > .symbol {
-      background: linear-gradient(white, var(--ply-warning-soft));
+    &:is([data-kind="start"], [data-kind="complete"]) > .symbol {
+      background:
+        linear-gradient(to top, var(--ply-ruled-line) var(--ply-stroke-width), transparent 0) 0
+          0.375rem / 100% 0.625rem,
+        var(--ply-fill-paper),
+        var(--ply-surface);
     }
+    /* 終わった時は、罫線の紙に書き始めの側からペンでチェックを描く。 */
     &[data-kind="complete"] > .symbol {
-      background: linear-gradient(white, var(--ply-success-soft));
+      --ply-empty-state-pen-start: inset(0 100% 0 0);
       color: var(--ply-success);
+      &:dir(rtl) {
+        --ply-empty-state-pen-start: inset(0 0 0 100%);
+      }
+      & > .ply-icon {
+        animation: ply-empty-state-write 0.6s ease-out 0.2s both;
+      }
     }
     @container ply-empty-state (inline-size < 22rem) {
       & > .symbol {
@@ -74,6 +87,23 @@
       & > :is(.title, .body, .actions) {
         grid-column: 1 / -1;
       }
+      /* 縦に積む時は、後ろに重ねた紙が下へ張り出す分（約14px）を題名の上に取り、図と離す。 */
+      & > .title {
+        margin-block-start: var(--ply-space-4);
+      }
+    }
+  }
+  @keyframes ply-empty-state-write {
+    from {
+      clip-path: var(--ply-empty-state-pen-start);
+    }
+    to {
+      clip-path: inset(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ply-empty-state[data-kind="complete"] > .symbol > .ply-icon {
+      animation: none;
     }
   }
 }
