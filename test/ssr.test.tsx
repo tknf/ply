@@ -99,7 +99,7 @@ test("FilterBarの各項目は共通のActionLinkを使う", async () => {
   }
 });
 
-test("月の絞り込み先はURLに対応した現在地と内容を返す", async () => {
+test("予定の事例はURLの月のカレンダーと、その月の表示形式を現在地として返す", async () => {
   for (const [path, month] of [
     ["/examples/schedule/august", 8],
     ["/examples/schedule", 9],
@@ -107,13 +107,13 @@ test("月の絞り込み先はURLに対応した現在地と内容を返す", as
     const response = await app.request(`http://localhost${path}`);
     expect(response.status).toBe(200);
     const result = await response.text();
-    expect(result).toContain(`${month}月の予定`);
-    const currentLink = await render(
-      <ActionLink href={path} aria-current="page" data-current="true">
-        <span>{month}月</span>
-      </ActionLink>,
+    expect(result).toContain(`<h2>2026年${month}月</h2>`);
+    expect(result).toContain(`aria-label="2026年${month}月の日付グリッド"`);
+    expect(result).toMatch(
+      new RegExp(
+        `href="/examples/schedule\\?year=2026&amp;month=${month}&amp;view=month&amp;week=\\d+" aria-current="page"`,
+      ),
     );
-    expect(result).toContain(currentLink);
   }
 });
 
@@ -388,16 +388,16 @@ test("タブの無効・不明な初期値は最初の有効項目へ戻す", as
 
 test("進捗の範囲外値でも表示とnative値を一致させる", async () => {
   expect(await render(<Progress label="超過" value={120} />)).toContain(
-    '<progress value="100" max="100">100%</progress>',
+    '<progress class="ply-visually-hidden" value="100" max="100">100%</progress>',
   );
   expect(await render(<Progress label="負値" value={-1} />)).toContain(
-    '<progress value="0" max="100">0%</progress>',
+    '<progress class="ply-visually-hidden" value="0" max="100">0%</progress>',
   );
   expect(await render(<Progress label="不正な上限" value={1} max={0} />)).toContain(
-    '<progress value="1" max="1">100%</progress>',
+    '<progress class="ply-visually-hidden" value="1" max="1">100%</progress>',
   );
   expect(await render(<Progress label="未確定" value={Number.NaN} />)).toContain(
-    '<progress max="100">処理中</progress>',
+    '<progress class="ply-visually-hidden" max="100">処理中</progress>',
   );
 });
 

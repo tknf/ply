@@ -56,5 +56,6 @@ test("配置・大きさと対応環境用controllerを同じHTMLに持つ", asy
   expect(result).toContain('<footer class="actions">');
   const anchor = result.match(/anchor-name: (--[a-z0-9-]+)/)?.[1];
   expect(anchor).toBeDefined();
-  expect(result).toContain(`position-anchor: ${anchor}`);
+  // 位置の基準はパネルへ変数で渡し、Overlayの共通CSSがposition-anchorへ使う。
+  expect(result).toContain(`--ply-overlay-anchor: ${anchor}`);
 });

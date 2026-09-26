@@ -11,7 +11,7 @@ const render = async (content: Child) => {
 
 test("見出しを初期フォーカスにして本文と操作欄を分離する", async () => {
   const result = await render(
-    <Dialog id="review" title="確認" trigger="開く">
+    <Dialog id="review" title="確認" trigger="開く" actions={<Button>保存する</Button>}>
       <p>本文</p>
     </Dialog>,
   );
@@ -21,6 +21,16 @@ test("見出しを初期フォーカスにして本文と操作欄を分離す�
   expect(result).toContain('aria-haspopup="dialog"');
   expect(result).toContain('closedby="any"');
   expect(result).not.toMatch(/<dialog[^>]*\sopen(?:\s|=|>)/);
+});
+
+test("操作を渡さない時は閉じる操作だけを見出しに置き、空の操作欄を出さない", async () => {
+  const result = await render(
+    <Dialog id="notice" title="お知らせ" trigger="開く">
+      <p>本文</p>
+    </Dialog>,
+  );
+  expect(result).toContain('data-dialog-target="close"');
+  expect(result).not.toContain('<footer class="actions">');
 });
 
 test("フォームの送信先と明示したautofocusを保持する", async () => {
