@@ -73,8 +73,13 @@
         background: var(--ply-link);
         box-shadow: 0 0 0 0.1875rem var(--ply-cover);
       }
-      &[data-state="upcoming"] > .marker {
-        border-color: var(--ply-muted);
+      /* これからの節目は、印ではなくそこから先の線をミシン目にする。小さな円の破線は途切れて見えるため。 */
+      &[data-state="upcoming"] {
+        border-inline-start-style: dashed;
+        border-inline-start-color: var(--ply-perforation);
+        & > .marker {
+          border-color: var(--ply-perforation);
+        }
       }
     }
     &[data-variant="compact"] > li {

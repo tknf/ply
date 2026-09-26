@@ -6,9 +6,10 @@
     justify-self: start;
     max-inline-size: 100%;
     padding-block: 0.125rem;
-    padding-inline: 0.5em;
+    padding-inline: 0.625em;
     border: var(--ply-stroke-width) solid var(--ply-border);
-    border-radius: 0.375rem;
+    /* 分類はピル。 */
+    border-radius: var(--ply-radius-pill);
     background: linear-gradient(
       color-mix(in srgb, var(--ply-tag-fill) 70%, var(--ply-surface)),
       var(--ply-tag-fill)
@@ -61,7 +62,7 @@
     & > .remove {
       flex: none;
       border: 0;
-      border-radius: 0.25rem;
+      border-radius: 50%;
       background: transparent;
       color: var(--ply-muted);
       box-shadow: none;

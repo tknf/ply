@@ -13,6 +13,11 @@
     }
   }
 
+  /* 探す・絞る入力はピル。検索欄を含む枠ごと丸くする。 */
+  .ply-input-group > .control:has(> .ply-input[type="search"]) {
+    padding-inline: 1em;
+    border-radius: var(--ply-radius-pill);
+  }
   .ply-input-group > .control {
     --ply-input-group-size: calc(16em / 7);
     display: flex;

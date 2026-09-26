@@ -39,24 +39,28 @@
         box-shadow: inset 0 0.0625rem 0 rgb(255 255 255 / 28%);
         transition: inline-size var(--ply-duration) ease-out;
       }
+      /* 終わりが分からない処理は、トラック全体を流れる一色の斜線で示す。 */
       &[data-state="indeterminate"] > .fill {
-        inline-size: 35%;
-        animation: ply-progress-travel 1.6s ease-in-out infinite alternate;
+        inline-size: 100%;
+        background: repeating-linear-gradient(
+          135deg,
+          var(--ply-link) 0 0.25rem,
+          transparent 0.25rem 0.5rem
+        );
+        background-size: 0.7071rem 100%;
+        box-shadow: none;
+        animation: ply-progress-flow 0.8s linear infinite;
       }
     }
   }
-  @keyframes ply-progress-travel {
-    from {
-      translate: -100% 0;
-    }
+  @keyframes ply-progress-flow {
     to {
-      translate: 285% 0;
+      background-position-x: 0.7071rem;
     }
   }
   @media (prefers-reduced-motion: reduce) {
     .ply-progress > .track[data-state="indeterminate"] > .fill {
       animation: none;
-      translate: 90% 0;
     }
   }
   @media (forced-colors: active) {

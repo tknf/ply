@@ -2,7 +2,7 @@ import { Badge } from "../../src/hono";
 export default () => (
   <div class="ply-stack" data-space="small">
     <div class="ply-cluster">
-      <Badge>下書き</Badge>
+      <Badge draft>下書き</Badge>
       <Badge tone="info">確認待ち</Badge>
       <Badge tone="success">公開中</Badge>
       <Badge tone="warning">期限が近づいています</Badge>

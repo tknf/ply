@@ -7,6 +7,7 @@
 
   .ply-picker > .label {
     font-size: var(--ply-label);
+    font-weight: var(--ply-label-weight);
     line-height: var(--ply-label-leading);
   }
 

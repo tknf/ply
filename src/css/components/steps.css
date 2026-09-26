@@ -44,5 +44,11 @@
     & > li[data-state="current"] > span:last-child {
       font-weight: 600;
     }
+    /* これからの段階はまだ確定していないので、番号の円をミシン目にする。 */
+    & > li:not([data-state]) > .number,
+    & > li[data-state="upcoming"] > .number {
+      border-style: dashed;
+      border-color: var(--ply-perforation);
+    }
   }
 }

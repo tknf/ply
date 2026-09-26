@@ -105,6 +105,10 @@
     gap: var(--ply-space-2);
   }
 
+  .ply-range > .heading > .label {
+    font-weight: var(--ply-label-weight);
+  }
+
   .ply-range > .heading > .value {
     flex-shrink: 0;
     margin-inline-start: auto;

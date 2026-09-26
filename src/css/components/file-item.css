@@ -21,6 +21,13 @@
       color: var(--ply-link);
       box-shadow: var(--ply-shadow-chip);
     }
+    /* 送信待ちの紙はミシン目の縁。まだ手元に確定していないことを示す。 */
+    &[data-state="pending"] > .icon {
+      border-style: dashed;
+      border-color: var(--ply-perforation);
+      background: var(--ply-surface);
+      box-shadow: none;
+    }
     & > .body {
       grid-column: 2;
       min-inline-size: 0;

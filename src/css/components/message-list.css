@@ -123,6 +123,13 @@
       &[data-state="failed"] > .row > .body > .status {
         color: var(--ply-danger);
       }
+      /* 下書きはミシン目の縁の小さなピルで示す。 */
+      &[data-state="draft"] > .row > .body > .status {
+        display: inline-block;
+        padding-inline: var(--ply-space-2);
+        border: var(--ply-stroke-width) dashed var(--ply-perforation);
+        border-radius: var(--ply-radius-pill);
+      }
     }
     &[data-avatars="true"] > li > .row {
       grid-template-columns: 2rem clamp(6rem, 18cqi, 12rem) minmax(0, 1fr) minmax(0, 8rem);

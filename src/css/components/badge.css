@@ -32,6 +32,12 @@
       border-radius: 50%;
       background: currentColor;
     }
+    /* まだ確定していない状態はミシン目の縁で囲み、面を塗らない。 */
+    &[data-draft="true"] {
+      background: transparent;
+      outline: var(--ply-stroke-width) dashed var(--ply-perforation);
+      outline-offset: calc(var(--ply-stroke-width) * -1);
+    }
     &[data-tone="info"] {
       --ply-badge-ink: var(--ply-info);
     }

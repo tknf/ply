@@ -8,7 +8,7 @@
 
     & > legend {
       font-size: var(--ply-label);
-      font-weight: 400;
+      font-weight: var(--ply-label-weight);
       line-height: var(--ply-label-leading);
       padding: 0;
     }
@@ -268,8 +268,10 @@
       outline-offset: -0.25rem;
     }
 
+    /* 選べない日は斜線。 */
     &:disabled {
-      opacity: 0.45;
+      background-image: var(--ply-hatch);
+      color: var(--ply-muted);
       cursor: not-allowed;
     }
   }

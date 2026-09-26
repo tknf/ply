@@ -16,11 +16,22 @@
     &[data-tone="danger"] {
       --ply-section-accent: var(--ply-danger);
     }
+    /* 見出しから線を伸ばし、ここからまとまりが始まることを示す。操作がある時は線の後に置く。 */
     & > .heading {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: var(--ply-space-2);
+      &::after {
+        content: "";
+        order: 1;
+        flex: 1 1 2rem;
+        block-size: var(--ply-stroke-width);
+        background: var(--ply-border);
+      }
+      & > .actions {
+        order: 2;
+      }
       & > h2 {
         display: flex;
         align-items: center;

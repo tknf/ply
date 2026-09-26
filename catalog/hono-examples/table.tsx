@@ -114,6 +114,7 @@ export default () => (
                         ? "info"
                         : "neutral"
                   }
+                  draft={record.status === "下書き"}
                 >
                   {record.status}
                 </Badge>

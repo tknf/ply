@@ -22,12 +22,12 @@ export default () => (
             {
               value: "guide-admin",
               label: "管理者向け",
-              cells: ["佐藤", <Badge tone="warning">下書き</Badge>],
+              cells: ["佐藤", <Badge draft>下書き</Badge>],
               children: [
                 {
                   value: "guide-admin-access",
                   label: "アクセス権限の設定と確認",
-                  cells: ["佐藤", <Badge tone="warning">下書き</Badge>],
+                  cells: ["佐藤", <Badge draft>下書き</Badge>],
                 },
               ],
             },

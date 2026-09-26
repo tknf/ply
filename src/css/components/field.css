@@ -13,7 +13,7 @@
     & > .heading > label,
     & > .label {
       font-size: var(--ply-label);
-      font-weight: 400;
+      font-weight: var(--ply-label-weight);
       line-height: var(--ply-label-leading);
     }
   }
@@ -214,7 +214,7 @@
     & > legend {
       padding-inline: var(--ply-space-1);
       font-size: var(--ply-label);
-      font-weight: 600;
+      font-weight: var(--ply-label-weight);
       line-height: var(--ply-label-leading);
     }
     & > * + * {
@@ -377,6 +377,11 @@
     }
     &[data-size="short"] {
       max-inline-size: 8rem;
+    }
+    /* 探す・絞る入力はピル。丸い端に文字が寄らないよう左右を少し広げる。 */
+    &[type="search"] {
+      padding-inline: 1em;
+      border-radius: var(--ply-radius-pill);
     }
     &::placeholder {
       color: var(--ply-muted);

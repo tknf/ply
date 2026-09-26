@@ -6,7 +6,7 @@
   }
 
   .ply-editable-property > .label {
-    color: var(--ply-muted);
+    font-weight: var(--ply-label-weight);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
   }
