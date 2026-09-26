@@ -1,45 +1,26 @@
 @layer components {
   /*
-    やることの一覧はメモパッド。一枚の紙の上端に綴じ穴と切り取り線を置き、行はノートの青い罫線で区切る。
+    やることの一覧はメモ。一枚の紙の行をノートの青い罫線で区切る。
     チェックは朱の余白線の外（印を付ける場所）に置き、終えたことはペンで線を引いて消す。
   */
   .ply-task-list {
     --ply-task-margin: 2.75rem;
-    --ply-task-binding: 1.25rem;
     --ply-task-rule: color-mix(in srgb, var(--ply-info) 22%, var(--ply-surface));
     container: ply-task-list / inline-size;
     overflow: hidden;
-    padding-block-start: var(--ply-task-binding);
     border-radius: var(--ply-radius-surface);
     background:
-      radial-gradient(
-          circle,
-          color-mix(in srgb, var(--ply-ink) 22%, var(--ply-background))
-            calc(var(--ply-punch-hole) * 2),
-          transparent calc(var(--ply-punch-hole) * 2 + var(--ply-stroke-width) / 2)
-        )
-        var(--ply-space-3) 0 / var(--ply-space-6) calc(var(--ply-task-binding) - var(--ply-space-1))
-        repeat-x,
-      repeating-linear-gradient(
-          to right,
-          var(--ply-perforation) 0 var(--ply-dash),
-          transparent var(--ply-dash) calc(var(--ply-dash) + var(--ply-dash-gap))
-        )
-        0 calc(var(--ply-task-binding) - var(--ply-stroke-width)) / 100% var(--ply-stroke-width)
-        no-repeat,
       linear-gradient(
           color-mix(in srgb, var(--ply-coral) 45%, var(--ply-surface)),
           color-mix(in srgb, var(--ply-coral) 45%, var(--ply-surface))
         )
-        var(--ply-task-margin) var(--ply-task-binding) / var(--ply-stroke-width) 100% no-repeat,
+        var(--ply-task-margin) 0 / var(--ply-stroke-width) 100% no-repeat,
       var(--ply-fill-paper),
       var(--ply-surface);
     box-shadow: var(--ply-shadow-paper);
     &:dir(rtl) {
       background-position:
-        var(--ply-space-3) 0,
-        0 calc(var(--ply-task-binding) - var(--ply-stroke-width)),
-        calc(100% - var(--ply-task-margin)) var(--ply-task-binding),
+        calc(100% - var(--ply-task-margin)) 0,
         0 0,
         0 0;
     }
