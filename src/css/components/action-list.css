@@ -1,39 +1,93 @@
 @layer components {
-  /* 作業面に書かれた操作の一覧。項目ごとに浮かせず、一つの枠に行を並べる。 */
+  /*
+    道具への入口は切符。左の半券に道具の印と色を置き、本体とはミシン目（切り離せる）で分ける。
+    ミシン目の上下の端は半円に切り欠く。切り欠きはmaskで抜くため、影はdrop-shadowで形に沿わせる。
+  */
   .ply-action-list {
     display: grid;
-    gap: 0;
+    gap: var(--ply-space-2);
     min-inline-size: 0;
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    border: 0;
-    border-block: var(--ply-stroke-width) solid var(--ply-border);
-    border-radius: 0;
-    background: transparent;
     list-style: none;
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     & > li {
+      --ply-ticket-stub: 3rem;
+      --ply-ticket-notch: 0.4375rem;
       min-inline-size: 0;
-      & + li {
-        border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+      filter: drop-shadow(0 0 var(--ply-stroke-width) rgb(36 57 70 / 14%))
+        drop-shadow(0 0.1875rem 0.25rem rgb(36 57 70 / 7%));
+      transition: filter var(--ply-duration) ease;
+      &:has(> a:hover) {
+        filter: drop-shadow(0 0 var(--ply-stroke-width) rgb(36 57 70 / 16%))
+          drop-shadow(0 0.375rem 0.625rem rgb(36 57 70 / 10%));
       }
       & > a {
+        --ply-ticket-accent: var(--ply-link);
         display: grid;
-        grid-template-columns: 1.5rem minmax(0, 1fr) 1rem;
+        grid-template-columns: var(--ply-ticket-stub) minmax(0, 1fr) 1rem;
         align-content: start;
         align-items: start;
-        gap: 0.125rem var(--ply-space-2);
+        gap: 0.125rem var(--ply-space-4);
         block-size: 100%;
         min-inline-size: 0;
-        padding-block: var(--ply-space-2);
-        padding-inline: var(--ply-space-4);
-        background: var(--ply-surface);
+        padding-block: var(--ply-space-3);
+        padding-inline: 0 var(--ply-space-4);
+        border-radius: var(--ply-radius-surface);
+        background:
+          repeating-linear-gradient(
+              to bottom,
+              var(--ply-perforation) 0 var(--ply-dash),
+              transparent var(--ply-dash) calc(var(--ply-dash) + var(--ply-dash-gap))
+            )
+            var(--ply-ticket-stub) 0 / var(--ply-stroke-width) 100% no-repeat,
+          linear-gradient(
+              color-mix(in srgb, var(--ply-ticket-accent) 9%, var(--ply-surface)),
+              color-mix(in srgb, var(--ply-ticket-accent) 9%, var(--ply-surface))
+            )
+            0 0 / var(--ply-ticket-stub) 100% no-repeat,
+          var(--ply-fill-paper),
+          var(--ply-surface);
+        box-shadow: inset 0 var(--ply-stroke-width) 0 rgb(255 255 255 / 90%);
         text-decoration: none;
         color: inherit;
         overflow-wrap: anywhere;
+        mask:
+          radial-gradient(
+              circle at var(--ply-ticket-stub) 0,
+              transparent var(--ply-ticket-notch),
+              #000 calc(var(--ply-ticket-notch) + var(--ply-stroke-width))
+            )
+            0 0 / 100% 51% no-repeat,
+          radial-gradient(
+              circle at var(--ply-ticket-stub) 100%,
+              transparent var(--ply-ticket-notch),
+              #000 calc(var(--ply-ticket-notch) + var(--ply-stroke-width))
+            )
+            0 100% / 100% 51% no-repeat;
+        transition: translate var(--ply-duration) ease;
+        &:dir(rtl) {
+          background-position:
+            calc(100% - var(--ply-ticket-stub)) 0,
+            100% 0,
+            0 0,
+            0 0;
+          mask:
+            radial-gradient(
+                circle at calc(100% - var(--ply-ticket-stub)) 0,
+                transparent var(--ply-ticket-notch),
+                #000 calc(var(--ply-ticket-notch) + var(--ply-stroke-width))
+              )
+              0 0 / 100% 51% no-repeat,
+            radial-gradient(
+                circle at calc(100% - var(--ply-ticket-stub)) 100%,
+                transparent var(--ply-ticket-notch),
+                #000 calc(var(--ply-ticket-notch) + var(--ply-stroke-width))
+              )
+              0 100% / 100% 51% no-repeat;
+        }
         & > .title {
           grid-column: 2;
           font-weight: 600;
@@ -44,25 +98,24 @@
           font-size: var(--ply-small);
           line-height: var(--ply-small-leading);
         }
+        /* 半券の印。道具の色で、半券の上下の中央に置く。 */
         & > .icon {
           grid-column: 1;
-          grid-row: 1;
+          grid-row: 1 / span 3;
+          align-self: center;
+          justify-self: center;
           display: grid;
           place-items: center;
-          inline-size: 1.5rem;
-          block-size: 1.5rem;
-          border: var(--ply-stroke-width) solid var(--ply-border);
-          border-radius: 50%;
-          background: var(--ply-surface);
-          color: var(--ply-link);
+          color: var(--ply-ticket-accent);
           & > .ply-icon {
-            font-size: 0.875rem;
+            font-size: 1.125rem;
           }
         }
         & > .arrow {
           grid-column: 3;
           grid-row: 1;
           color: var(--ply-muted);
+          transition: translate var(--ply-duration) ease;
         }
         & > .preview {
           grid-column: 2;
@@ -73,8 +126,12 @@
             margin-block-start: var(--ply-space-1);
           }
         }
+        /* 印のない入口は半券を持たない、ただの紙の札にする。 */
         &:not(:has(> .icon)) {
           grid-template-columns: minmax(0, 1fr) 1rem;
+          padding-inline: var(--ply-space-4);
+          background: var(--ply-fill-paper), var(--ply-surface);
+          mask: none;
           & > :is(.title, .description, .preview) {
             grid-column: 1;
           }
@@ -82,49 +139,60 @@
             grid-column: 2;
           }
         }
-        &:hover {
-          background: color-mix(in srgb, var(--ply-background) 65%, var(--ply-surface));
+        &:hover > .arrow {
+          translate: var(--ply-space-1) 0;
         }
+        &:hover:dir(rtl) > .arrow {
+          translate: calc(var(--ply-space-1) * -1) 0;
+        }
+        &:active {
+          translate: 0 var(--ply-stroke-width);
+        }
+        /* 切り欠きのmaskで外側の輪が切れるため、フォーカスは内側の輪で示す。 */
         &:focus-visible {
-          outline: 0.125rem solid var(--ply-link);
-          outline-offset: -0.125rem;
+          outline: none;
+          box-shadow:
+            inset 0 0 0 0.125rem var(--ply-link),
+            inset 0 var(--ply-stroke-width) 0 rgb(255 255 255 / 90%);
         }
-        &[data-accent="amber"] > .icon {
-          color: var(--ply-amber);
+        &[data-accent="amber"] {
+          --ply-ticket-accent: var(--ply-amber);
         }
-        &[data-accent="green"] > .icon {
-          color: var(--ply-success);
+        &[data-accent="green"] {
+          --ply-ticket-accent: var(--ply-success);
         }
-        &[data-accent="coral"] > .icon {
-          color: var(--ply-coral-dark);
+        &[data-accent="coral"] {
+          --ply-ticket-accent: var(--ply-coral-dark);
         }
       }
     }
-    /* 格子でも一つの枠を保ち、隣との境を1pxの線で引く。 */
     &[data-layout="grid"] {
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-      gap: var(--ply-stroke-width);
-      background: var(--ply-border);
-      & > li {
-        & + li {
-          border-block-start: 0;
+      gap: var(--ply-space-3);
+      & > li > a {
+        & > .preview {
+          grid-column: 2 / -1;
         }
-        & > a {
-          & > .preview {
-            grid-column: 2 / -1;
-          }
-          &:not(:has(> .icon)) > .preview {
-            grid-column: 1 / -1;
-          }
+        &:not(:has(> .icon)) > .preview {
+          grid-column: 1 / -1;
         }
       }
     }
   }
   @media (forced-colors: active) {
-    .ply-action-list > li > a,
-    .ply-action-list > li > a > .icon {
-      background: Canvas;
-      box-shadow: none;
+    .ply-action-list > li {
+      filter: none;
+      & > a {
+        border: var(--ply-stroke-width) solid CanvasText;
+        background: Canvas;
+        box-shadow: none;
+        mask: none;
+      }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ply-action-list > li > a:active {
+      translate: none;
     }
   }
 }

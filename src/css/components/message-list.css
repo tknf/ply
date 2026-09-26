@@ -1,6 +1,19 @@
 @layer components {
+  /*
+    受け取った連絡は手紙の束。一枚の紙の上に行を並べる。
+    まだ開けていない手紙には封蝋を押し、題名と差出人を太字にする。
+  */
   .ply-message-list {
     container: ply-message-list / inline-size;
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: var(--ply-radius-surface);
+    background: var(--ply-surface) var(--ply-fill-paper);
+    box-shadow: var(--ply-shadow-paper);
+    list-style: none;
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
@@ -80,32 +93,48 @@
           }
         }
         & > .meta {
-          display: grid;
-          justify-items: end;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: end;
+          align-items: center;
           align-content: start;
-          gap: var(--ply-space-1);
+          gap: var(--ply-space-1) var(--ply-space-2);
           max-inline-size: 10em;
           text-align: end;
           overflow-wrap: anywhere;
           font-size: var(--ply-small);
           color: var(--ply-muted);
+          /*
+            封蝋。封筒の切手と同じ右上に押す。少し歪んだ丸に、押し型の縁の盛り上がりと、
+            光の当たる上・沈む下の陰影を付ける。
+          */
           & > .unread {
             display: block;
-            color: var(--ply-link);
-            inline-size: 0.375rem;
-            block-size: 0.375rem;
-            border-radius: 50%;
-            background: currentColor;
+            order: -1;
+            inline-size: 1.125rem;
+            block-size: 1.125rem;
+            border-radius: 60% 40% 55% 45% / 45% 58% 42% 55%;
+            background: radial-gradient(
+              circle at 40% 35%,
+              color-mix(in srgb, var(--ply-link) 85%, white) 0 20%,
+              var(--ply-link) 55%,
+              color-mix(in srgb, var(--ply-link) 80%, black) 100%
+            );
+            box-shadow:
+              inset 0 0 0 0.1875rem color-mix(in srgb, var(--ply-link) 80%, black),
+              inset 0 0 0 0.25rem color-mix(in srgb, var(--ply-link) 55%, white),
+              inset 0 -0.125rem 0.125rem rgb(0 0 0 / 20%),
+              0 var(--ply-stroke-width) 0.125rem rgb(36 57 70 / 30%);
+            rotate: -8deg;
           }
           & > .attachment {
+            flex-basis: 100%;
+            justify-content: end;
             display: inline-flex;
             align-items: center;
             gap: var(--ply-space-1);
           }
         }
-      }
-      &[data-unread="true"] {
-        background: color-mix(in srgb, var(--ply-cover) 28%, var(--ply-surface));
       }
       /* 現在地は、縁から離して内側に置く青いバー。縁に沿った線にしない。 */
       &[data-current="true"] {
@@ -172,6 +201,17 @@
         & > .meta {
           grid-column: 3;
         }
+      }
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-message-list {
+      border: var(--ply-stroke-width) solid CanvasText;
+      background: Canvas;
+      box-shadow: none;
+      & > li > .row > .meta > .unread {
+        background: CanvasText;
+        box-shadow: none;
       }
     }
   }
