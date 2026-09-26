@@ -19,5 +19,6 @@
   "mail": "envelope-simple",
   "chat": "chat-circle",
   "grid": "squares-four",
-  "grip": "dots-six-vertical"
+  "grip": "dots-six-vertical",
+  "equals": "equals"
 }

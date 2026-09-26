@@ -31,6 +31,7 @@
       }
     }
     & > .pair {
+      --ply-comparison-badge: 1.5rem;
       position: relative;
       display: grid;
       grid-template-columns: minmax(0, 1fr);
@@ -68,23 +69,25 @@
       & > .after {
         position: relative;
         border-block-start: var(--ply-stroke-width) solid var(--ply-border);
-        /* 境目をまたぐ丸い札。狭い幅では上の境目に下向きの矢印を載せる。 */
-        &::before {
-          content: "↓" / "";
+        /* 境目をまたぐ丸い札と、その中のアイコン。狭い幅では上の境目に下向きの矢印を載せる。 */
+        &::before,
+        &::after {
+          content: "";
           position: absolute;
-          inset-block-start: calc(-0.75rem - var(--ply-stroke-width) / 2);
-          inset-inline-start: calc(50% - 0.75rem);
-          display: grid;
-          place-items: center;
-          inline-size: 1.5rem;
-          block-size: 1.5rem;
+          inset-block-start: calc(var(--ply-comparison-badge) / -2 - var(--ply-stroke-width) / 2);
+          inset-inline-start: calc(50% - var(--ply-comparison-badge) / 2);
+          inline-size: var(--ply-comparison-badge);
+          block-size: var(--ply-comparison-badge);
+        }
+        &::before {
           border-radius: 50%;
           background: var(--ply-surface) var(--ply-fill-control);
           box-shadow: var(--ply-shadow-control);
-          color: var(--ply-ink);
-          font-size: var(--ply-small);
-          font-weight: 600;
-          line-height: 1;
+        }
+        &::after {
+          background: var(--ply-ink);
+          mask: url("../assets/arrow.svg") center / 0.875rem no-repeat;
+          rotate: 90deg;
         }
       }
     }
@@ -105,8 +108,9 @@
         background: transparent;
         color: inherit;
       }
-      & > .after::before {
-        content: "＝" / "";
+      & > .after::after {
+        mask-image: url("../assets/equals.svg");
+        rotate: none;
       }
     }
     @container ply-comparison (inline-size >= 30rem) {
@@ -115,18 +119,23 @@
         & > .after {
           border-block-start: 0;
           border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
+          &::before,
+          &::after {
+            inset-block-start: var(--ply-space-3);
+            inset-inline-start: calc(
+              var(--ply-comparison-badge) / -2 - var(--ply-stroke-width) / 2
+            );
+          }
+          &::after {
+            rotate: none;
+          }
         }
-        & > .after::before {
-          content: "→" / "";
-          inset-block-start: var(--ply-space-3);
-          inset-inline-start: calc(-0.75rem - var(--ply-stroke-width) / 2);
-        }
-        &:dir(rtl) > .after::before {
-          content: "←" / "";
+        &:dir(rtl) > .after::after {
+          rotate: 180deg;
         }
       }
-      &[data-changed="false"] > .pair > .after::before {
-        content: "＝" / "";
+      &[data-changed="false"] > .pair > .after::after {
+        rotate: none;
       }
     }
   }

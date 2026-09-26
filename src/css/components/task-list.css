@@ -7,7 +7,9 @@
     --ply-task-margin: 2.75rem;
     --ply-task-rule: color-mix(in srgb, var(--ply-info) 22%, var(--ply-surface));
     container: ply-task-list / inline-size;
+    position: relative;
     overflow: hidden;
+    counter-reset: ply-task-done ply-task-total;
     border-radius: var(--ply-radius-surface);
     background:
       linear-gradient(
@@ -24,6 +26,23 @@
         0 0,
         0 0;
     }
+    /* 終えた数と全体の数。チェックの状態から数えるので、操作に合わせて変わる。 */
+    & > li:not(.heading) {
+      counter-increment: ply-task-total;
+    }
+    & > li:has(> .ply-choice > input:checked) {
+      counter-increment: ply-task-total ply-task-done;
+    }
+    &:has(> .heading)::after {
+      content: counter(ply-task-done) "/" counter(ply-task-total) / "";
+      position: absolute;
+      inset-block-start: calc(var(--ply-space-3) + 0.25rem);
+      inset-inline-end: var(--ply-space-4);
+      color: var(--ply-muted);
+      font-size: var(--ply-small);
+      line-height: var(--ply-small-leading);
+      font-variant-numeric: tabular-nums;
+    }
     & > li {
       display: grid;
       grid-template-columns: minmax(0, 1fr) fit-content(40%);
@@ -31,8 +50,29 @@
       gap: var(--ply-space-3);
       min-inline-size: 0;
       border-block-start: var(--ply-stroke-width) solid var(--ply-task-rule);
-      &:first-child {
+      &:first-child,
+      &.heading + li {
         border-block-start: 0;
+      }
+      /* 題名は余白線の内側に書き、下に二重の罫線を引いて行と分ける。終えた数を隣に添える。 */
+      &.heading {
+        display: flex;
+        align-items: baseline;
+        gap: var(--ply-space-2);
+        padding-block: var(--ply-space-3) var(--ply-space-2);
+        padding-inline: calc(var(--ply-task-margin) + var(--ply-space-3)) var(--ply-space-4);
+        border-block-end: calc(var(--ply-stroke-width) * 3) double var(--ply-task-rule);
+        & > .title {
+          margin: 0;
+          font-size: var(--ply-section-title);
+          font-weight: 600;
+          line-height: 1.4;
+        }
+        & > .progress {
+          color: var(--ply-muted);
+          font-size: var(--ply-small);
+          font-variant-numeric: tabular-nums;
+        }
       }
       & > .end {
         display: flex;
