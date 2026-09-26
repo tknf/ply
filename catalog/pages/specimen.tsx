@@ -193,7 +193,7 @@ const Choices = () => (
         </figure>
         <figure>
           <figcaption>
-            2. 短冊＋朱の余白線：余白線は印を付ける場所。今の行は余白線の上に青いバーが乗る
+            2. 短冊＋朱の余白線：余白線は印を付ける場所。今の行は余白線が青く太くなる
           </figcaption>
           <DataList class="specimen-list-margin" items={listItems} />
         </figure>

@@ -19,26 +19,20 @@
       align-items: start;
       min-inline-size: 0;
       padding-block: var(--ply-space-3);
-      padding-inline: var(--ply-space-5) var(--ply-space-4);
+      padding-inline: var(--ply-space-4);
       border-radius: var(--ply-radius-surface);
       background: var(--ply-surface) var(--ply-fill-paper);
       box-shadow: var(--ply-shadow-paper);
-      transition:
-        box-shadow var(--ply-duration) ease,
-        translate var(--ply-duration) ease;
+      transition: box-shadow var(--ply-duration) ease;
       &:has(> .body > a.title:hover) {
         box-shadow: var(--ply-shadow-paper-lift);
       }
       &:focus-within {
         box-shadow: var(--ply-shadow-paper-lift);
       }
-      /* 現在地は持ち上げた短冊と、縁から離して内側に置く青いバー。縁に沿った線にしない。 */
+      /* 現在地は持ち上げた短冊と、縁から離して内側に置く青いバー。縁に沿った線にしない。並びの端はずらさない。 */
       &[data-current="true"] {
         box-shadow: var(--ply-shadow-paper-lift);
-        translate: var(--ply-space-1) 0;
-        &:dir(rtl) {
-          translate: calc(var(--ply-space-1) * -1) 0;
-        }
         &::before {
           content: "";
           position: absolute;
