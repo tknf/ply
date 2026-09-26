@@ -18,28 +18,41 @@
       gap: var(--ply-space-2) var(--ply-space-3);
       align-items: start;
       min-inline-size: 0;
+      /* 縁から余白線まで、余白線から文字まで、右の余白を同じ16pxにそろえる。 */
       padding-block: var(--ply-space-3);
-      padding-inline: var(--ply-space-4);
+      padding-inline: calc(var(--ply-space-4) * 2 + var(--ply-stroke-width)) var(--ply-space-4);
       border-radius: var(--ply-radius-surface);
       background: var(--ply-surface) var(--ply-fill-paper);
       box-shadow: var(--ply-shadow-paper);
-      transition: box-shadow var(--ply-duration) ease;
+      transition:
+        box-shadow var(--ply-duration) ease,
+        translate var(--ply-duration) ease;
+      /* 朱の余白線は、印を付ける場所。 */
+      &::before {
+        content: "";
+        position: absolute;
+        inset-block: 0;
+        inset-inline-start: var(--ply-space-4);
+        inline-size: var(--ply-stroke-width);
+        background: color-mix(in srgb, var(--ply-coral) 45%, var(--ply-surface));
+      }
+      /* リンクの行は、指を載せると短冊を少し引き出す。 */
       &:has(> .body > a.title:hover) {
         box-shadow: var(--ply-shadow-paper-lift);
+        translate: var(--ply-space-1) 0;
+        &:dir(rtl) {
+          translate: calc(var(--ply-space-1) * -1) 0;
+        }
       }
       &:focus-within {
         box-shadow: var(--ply-shadow-paper-lift);
       }
-      /* 現在地は持ち上げた短冊と、縁から離して内側に置く青いバー。縁に沿った線にしない。並びの端はずらさない。 */
+      /* 今、隣で開いている行は、余白線そのものを青く太くし、短冊を持ち上げる。線は重ねない。 */
       &[data-current="true"] {
         box-shadow: var(--ply-shadow-paper-lift);
         &::before {
-          content: "";
-          position: absolute;
-          inset-block: var(--ply-space-2);
-          inset-inline-start: var(--ply-space-1);
+          inset-inline-start: calc(var(--ply-space-4) - var(--ply-stroke-width) / 2);
           inline-size: var(--ply-frame-width);
-          border-radius: var(--ply-radius-pill);
           background: var(--ply-link);
         }
       }

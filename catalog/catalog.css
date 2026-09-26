@@ -708,28 +708,4 @@
   .specimen-example {
     padding-block: var(--ply-space-4);
   }
-  /* DataList案2：短冊に朱の余白線を引く。余白線は印を付ける場所で、今の行は線の上に青いバーが乗る。 */
-  .ply-data-list.specimen-list-margin > li {
-    /* 余白線までと、余白線から文字までと、右の余白を同じ16pxにそろえる。 */
-    padding-inline-start: calc(var(--ply-space-4) * 2 + var(--ply-stroke-width));
-    &::after {
-      content: "";
-      position: absolute;
-      inset-block: 0;
-      inset-inline-start: var(--ply-space-4);
-      inline-size: var(--ply-stroke-width);
-      background: color-mix(in srgb, var(--ply-coral) 45%, var(--ply-surface));
-    }
-    /* 今の行は余白線そのものを青く太くし、線を重ねない。 */
-    &[data-current="true"] {
-      &::before {
-        content: none;
-      }
-      &::after {
-        inset-inline-start: calc(var(--ply-space-4) - var(--ply-stroke-width) / 2);
-        inline-size: var(--ply-frame-width);
-        background: var(--ply-link);
-      }
-    }
-  }
 }

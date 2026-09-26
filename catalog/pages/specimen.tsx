@@ -183,19 +183,18 @@ const Choices = () => (
     <Section title="Card：上端をまたぐつまみ・固定・重ねた紙" count={2}>
       <div class="specimen-choices">{cardSamples()}</div>
     </Section>
-    <Section title="案：DataList" count={2}>
+    <Section title="DataList：紙の短冊と朱の余白線">
       <div class="specimen-choices">
         <figure>
           <figcaption>
-            1. 紙の短冊（採用）：一行ずつの紙。今の行は持ち上げ、内側に青いバー
+            余白線は印を付ける場所。今、隣で開いている行は余白線が青く太くなり、リンクの行は指を載せると少し引き出される
           </figcaption>
-          <DataList items={listItems} />
-        </figure>
-        <figure>
-          <figcaption>
-            2. 短冊＋朱の余白線：余白線は印を付ける場所。今の行は余白線が青く太くなる
-          </figcaption>
-          <DataList class="specimen-list-margin" items={listItems} />
+          <DataList
+            items={listItems.map((item, index) => ({
+              ...item,
+              href: `/review/specimen#item-${index}`,
+            }))}
+          />
         </figure>
       </div>
     </Section>

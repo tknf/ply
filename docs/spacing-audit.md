@@ -4,7 +4,7 @@
 
 ## 読み方と対象
 
-- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は871件です。省略した状態別・メディア・コンテナ条件はありません。
+- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は873件です。省略した状態別・メディア・コンテナ条件はありません。
 - CSSの生の宣言、ネストしたセレクタの階層、条件、ソース位置を掲載します。→は親ルールから子ルールへの経路であり、結合済みCSSセレクタではありません。
 - 換算はroot 16pxのremだけです。emはその要素の文字サイズ、lhはその要素の行高、%は包含ブロック、autoは残り幅に依存します。条件外の値や文字拡大時まで同じpxと断定しません。gap二値は縦・横、論理padding二値は開始・終了の順です。
 - 同じ要素の状態別上書きを足し合わせないでください。最終値はレイヤー・詳細度・条件・記述順で決まります。0も、追加しない判断として全件掲載します。
@@ -511,22 +511,26 @@ ClickUpの実測に合わせる。月のセルは上4px・下8px・左右4px、�
 
 ## data-list
 
-一覧行の内側8px。人物・内容・末尾の役割間は横12px、狭幅の折り返しは8px。本文と補足4px。複数列の対応が必要な配置では16px。一覧のインデントは0で、各行が内側を所有する。
+一行ずつの短冊。短冊の間8px、内側は上下12px。縁から余白線まで、余白線から文字まで、右の余白を同じ16pxにそろえる。人物・内容・末尾の役割間は横12px、狭幅の折り返しは8px。本文と補足4px。複数列の対応が必要な配置では16px。一覧のインデントは0で、各行が内側を所有する。
 
 対象: [src/css/components/data-list.css](../src/css/components/data-list.css)
 
-| ソース                                         | セレクタの階層                                                 | 条件                                            | 宣言値                                       | root 16pxでremを換算 | 値の扱い                                                             |
-| ---------------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------- | -------------------------------------------- | -------------------- | -------------------------------------------------------------------- |
-| [L11](../src/css/components/data-list.css#L11) | `.ply-data-list → & > li`                                      | 常時                                            | `gap: var(--ply-space-2) var(--ply-space-3)` | `8px 12px`           | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L14](../src/css/components/data-list.css#L14) | `.ply-data-list → & > li`                                      | 常時                                            | `padding-block: var(--ply-space-2)`          | `8px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L15](../src/css/components/data-list.css#L15) | `.ply-data-list → & > li`                                      | 常時                                            | `padding-inline: var(--ply-space-4)`         | `16px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L28](../src/css/components/data-list.css#L28) | `.ply-data-list → & > li → &[data-current="true"] → &::before` | 常時                                            | `inset-block: var(--ply-space-2)`            | `8px`                | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
-| [L29](../src/css/components/data-list.css#L29) | `.ply-data-list → & > li → &[data-current="true"] → &::before` | 常時                                            | `inset-inline-start: var(--ply-space-1)`     | `4px`                | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
-| [L40](../src/css/components/data-list.css#L40) | `.ply-data-list → & > li → & > .start`                         | 常時                                            | `gap: var(--ply-space-2)`                    | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L65](../src/css/components/data-list.css#L65) | `.ply-data-list → & > li → & > .body → & > .description`       | 常時                                            | `margin-block-start: var(--ply-space-1)`     | `4px`                | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
-| [L70](../src/css/components/data-list.css#L70) | `.ply-data-list → & > li → & > .body → & > .meta`              | 常時                                            | `margin-block-start: var(--ply-space-1)`     | `4px`                | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
-| [L80](../src/css/components/data-list.css#L80) | `.ply-data-list → & > li → & > .end`                           | 常時                                            | `gap: var(--ply-space-2)`                    | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L97](../src/css/components/data-list.css#L97) | `.ply-data-list → & > li`                                      | @container ply-data-list (inline-size >= 28rem) | `column-gap: var(--ply-space-4)`             | `16px`               | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| ソース                                           | セレクタの階層                                                 | 条件                                            | 宣言値                                                                                      | root 16pxでremを換算                            | 値の扱い                                                             |
+| ------------------------------------------------ | -------------------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------- |
+| [L6](../src/css/components/data-list.css#L6)     | `.ply-data-list`                                               | 常時                                            | `gap: var(--ply-space-2)`                                                                   | `8px`                                           | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L8](../src/css/components/data-list.css#L8)     | `.ply-data-list`                                               | 常時                                            | `margin: 0`                                                                                 | `0`                                             | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L9](../src/css/components/data-list.css#L9)     | `.ply-data-list`                                               | 常時                                            | `padding: 0`                                                                                | `0`                                             | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L18](../src/css/components/data-list.css#L18)   | `.ply-data-list → & > li`                                      | 常時                                            | `gap: var(--ply-space-2) var(--ply-space-3)`                                                | `8px 12px`                                      | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L22](../src/css/components/data-list.css#L22)   | `.ply-data-list → & > li`                                      | 常時                                            | `padding-block: var(--ply-space-3)`                                                         | `12px`                                          | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L23](../src/css/components/data-list.css#L23)   | `.ply-data-list → & > li`                                      | 常時                                            | `padding-inline: calc(var(--ply-space-4) * 2 + var(--ply-stroke-width)) var(--ply-space-4)` | `calc(16px * 2 + var(--ply-stroke-width)) 16px` | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L34](../src/css/components/data-list.css#L34)   | `.ply-data-list → & > li → &::before`                          | 常時                                            | `inset-block: 0`                                                                            | `0`                                             | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L35](../src/css/components/data-list.css#L35)   | `.ply-data-list → & > li → &::before`                          | 常時                                            | `inset-inline-start: var(--ply-space-4)`                                                    | `16px`                                          | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
+| [L54](../src/css/components/data-list.css#L54)   | `.ply-data-list → & > li → &[data-current="true"] → &::before` | 常時                                            | `inset-inline-start: calc(var(--ply-space-4) - var(--ply-stroke-width) / 2)`                | `calc(16px - var(--ply-stroke-width) / 2)`      | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
+| [L64](../src/css/components/data-list.css#L64)   | `.ply-data-list → & > li → & > .start`                         | 常時                                            | `gap: var(--ply-space-2)`                                                                   | `8px`                                           | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L89](../src/css/components/data-list.css#L89)   | `.ply-data-list → & > li → & > .body → & > .description`       | 常時                                            | `margin-block-start: var(--ply-space-1)`                                                    | `4px`                                           | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L94](../src/css/components/data-list.css#L94)   | `.ply-data-list → & > li → & > .body → & > .meta`              | 常時                                            | `margin-block-start: var(--ply-space-1)`                                                    | `4px`                                           | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L104](../src/css/components/data-list.css#L104) | `.ply-data-list → & > li → & > .end`                           | 常時                                            | `gap: var(--ply-space-2)`                                                                   | `8px`                                           | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L121](../src/css/components/data-list.css#L121) | `.ply-data-list → & > li`                                      | @container ply-data-list (inline-size >= 28rem) | `column-gap: var(--ply-space-4)`                                                            | `16px`                                          | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
 
 ## date-picker
 
@@ -904,10 +908,10 @@ TaskList・DataList・MessageListのリスト既定marginとpaddingを0にする
 
 対象: [src/css/components/list-frame.css](../src/css/components/list-frame.css)
 
-| ソース                                        | セレクタの階層                                           | 条件 | 宣言値       | root 16pxでremを換算 | 値の扱い                                           |
-| --------------------------------------------- | -------------------------------------------------------- | ---- | ------------ | -------------------- | -------------------------------------------------- |
-| [L4](../src/css/components/list-frame.css#L4) | `:is(.ply-task-list, .ply-data-list, .ply-message-list)` | 常時 | `margin: 0`  | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
-| [L5](../src/css/components/list-frame.css#L5) | `:is(.ply-task-list, .ply-data-list, .ply-message-list)` | 常時 | `padding: 0` | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
+| ソース                                        | セレクタの階層                           | 条件 | 宣言値       | root 16pxでremを換算 | 値の扱い                                           |
+| --------------------------------------------- | ---------------------------------------- | ---- | ------------ | -------------------- | -------------------------------------------------- |
+| [L4](../src/css/components/list-frame.css#L4) | `:is(.ply-task-list, .ply-message-list)` | 常時 | `margin: 0`  | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
+| [L5](../src/css/components/list-frame.css#L5) | `:is(.ply-task-list, .ply-message-list)` | 常時 | `padding: 0` | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
 
 ## loading
 
@@ -1626,11 +1630,9 @@ gap・margin・padding・insetの宣言はありません。
 | [L685](../catalog/catalog.css#L685) | `.specimen-cards`                                               | 常時                      | `padding-block: var(--ply-space-4)`                     | `16px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
 | [L694](../catalog/catalog.css#L694) | `.specimen-choices`                                             | 常時                      | `gap: var(--ply-space-8) var(--ply-space-6)`            | `32px 24px`          | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
 | [L695](../catalog/catalog.css#L695) | `.specimen-choices`                                             | 常時                      | `padding-block: var(--ply-space-4)`                     | `16px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L699](../catalog/catalog.css#L699) | `.specimen-choices → & > figure`                                | 常時                      | `gap: var(--ply-space-8)`                               | `32px`               | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L699](../catalog/catalog.css#L699) | `.specimen-choices → & > figure`                                | 常時                      | `gap: var(--ply-space-3)`                               | `12px`               | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
 | [L700](../catalog/catalog.css#L700) | `.specimen-choices → & > figure`                                | 常時                      | `margin: 0`                                             | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
 | [L709](../catalog/catalog.css#L709) | `.specimen-example`                                             | 常時                      | `padding-block: var(--ply-space-4)`                     | `16px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L721](../catalog/catalog.css#L721) | `.ply-data-list.specimen-list-note → & > li`                    | 常時                      | `padding-inline-start: 3.25rem`                         | `52px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L734](../catalog/catalog.css#L734) | `.ply-data-list.specimen-list-strips`                           | 常時                      | `gap: var(--ply-space-2)`                               | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
 
 ## カタログ例に重なる配置の余白
 
