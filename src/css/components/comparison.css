@@ -1,4 +1,8 @@
 @layer components {
+  /*
+    比較は差し替えの紙。一枚の紙を左右に分け、「現在」は古いくすんだ紙、「変更後」は新しい白い紙にする。
+    境目には線をまたぐ丸い札を載せ、変わる時は矢印、変わらない時は等号を出す。変わる時は変更後の見出しに蛍光ペンを引く。
+  */
   .ply-comparison {
     container: ply-comparison / inline-size;
     min-inline-size: 0;
@@ -27,23 +31,26 @@
       }
     }
     & > .pair {
+      position: relative;
       display: grid;
       grid-template-columns: minmax(0, 1fr);
       gap: 0;
       margin-block-start: var(--ply-space-2);
+      overflow: hidden;
       border: 0;
-      border-block: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: 0;
-      background: transparent;
+      border-radius: var(--ply-radius-surface);
+      background: var(--ply-surface) var(--ply-fill-paper);
+      box-shadow: var(--ply-shadow-paper);
       & > :is(.before, .after) {
         min-inline-size: 0;
-        padding-block: var(--ply-space-3);
-        padding-inline: var(--ply-space-4);
+        padding-block: var(--ply-space-3) var(--ply-space-4);
+        padding-inline: var(--ply-space-5);
         & > h4 {
+          inline-size: fit-content;
           margin: 0;
           color: var(--ply-muted);
           font-size: var(--ply-small);
-          font-weight: 400;
+          font-weight: var(--ply-label-weight);
           line-height: var(--ply-small-leading);
         }
         & > .body {
@@ -53,13 +60,54 @@
           }
         }
       }
+      /* 現在は、差し替えられる古い紙。 */
+      & > .before {
+        background: color-mix(in srgb, var(--ply-soft) 85%, var(--ply-background));
+        color: var(--ply-muted);
+      }
       & > .after {
+        position: relative;
         border-block-start: var(--ply-stroke-width) solid var(--ply-border);
-        border-inline-start: 0 solid var(--ply-border);
+        /* 境目をまたぐ丸い札。狭い幅では上の境目に下向きの矢印を載せる。 */
+        &::before {
+          content: "↓" / "";
+          position: absolute;
+          inset-block-start: calc(-0.75rem - var(--ply-stroke-width) / 2);
+          inset-inline-start: calc(50% - 0.75rem);
+          display: grid;
+          place-items: center;
+          inline-size: 1.5rem;
+          block-size: 1.5rem;
+          border-radius: 50%;
+          background: var(--ply-surface) var(--ply-fill-control);
+          box-shadow: var(--ply-shadow-control);
+          color: var(--ply-ink);
+          font-size: var(--ply-small);
+          font-weight: 600;
+          line-height: 1;
+        }
       }
     }
-    &[data-changed="true"] > .title > .state {
-      color: var(--ply-info);
+    /* 変わる時は、変更後の見出しに蛍光ペンを引く。 */
+    &[data-changed="true"] {
+      & > .title > .state {
+        color: var(--ply-info);
+      }
+      & > .pair > .after > h4 {
+        padding-inline: 0.15em;
+        background: var(--ply-highlighter) 0 75% / 100% 0.7em no-repeat;
+        color: var(--ply-text);
+      }
+    }
+    /* 変わらない時は、両方を同じ白い紙にし、境目の札を等号にする。 */
+    &[data-changed="false"] > .pair {
+      & > .before {
+        background: transparent;
+        color: inherit;
+      }
+      & > .after::before {
+        content: "＝" / "";
+      }
     }
     @container ply-comparison (inline-size >= 30rem) {
       & > .pair {
@@ -68,13 +116,28 @@
           border-block-start: 0;
           border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
         }
+        & > .after::before {
+          content: "→" / "";
+          inset-block-start: var(--ply-space-3);
+          inset-inline-start: calc(-0.75rem - var(--ply-stroke-width) / 2);
+        }
+        &:dir(rtl) > .after::before {
+          content: "←" / "";
+        }
+      }
+      &[data-changed="false"] > .pair > .after::before {
+        content: "＝" / "";
       }
     }
   }
   @media (forced-colors: active) {
     .ply-comparison > .pair {
+      border: var(--ply-stroke-width) solid CanvasText;
       background: Canvas;
       box-shadow: none;
+      & > .before {
+        background: Canvas;
+      }
     }
   }
 }

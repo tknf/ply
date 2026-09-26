@@ -1,20 +1,9 @@
 @layer components {
+  /* 一覧の既定のmarginとpaddingと行頭記号を外す。紙の見た目と各行の内側はTaskList自身が所有する。 */
   .ply-task-list {
     min-inline-size: 0;
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    /* 作業面に書かれた一覧は枠で囲まず、始まりと終わりの罫線と行の罫線だけにする。 */
-    border: 0;
-    border-block: var(--ply-stroke-width) solid var(--ply-border);
-    border-radius: 0;
-    background: transparent;
     list-style: none;
-  }
-  @media (forced-colors: active) {
-    .ply-task-list {
-      background: Canvas;
-      box-shadow: none;
-    }
   }
 }

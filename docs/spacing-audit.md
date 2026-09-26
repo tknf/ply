@@ -4,7 +4,7 @@
 
 ## 読み方と対象
 
-- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は890件です。省略した状態別・メディア・コンテナ条件はありません。
+- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は897件です。省略した状態別・メディア・コンテナ条件はありません。
 - CSSの生の宣言、ネストしたセレクタの階層、条件、ソース位置を掲載します。→は親ルールから子ルールへの経路であり、結合済みCSSセレクタではありません。
 - 換算はroot 16pxのremだけです。emはその要素の文字サイズ、lhはその要素の行高、%は包含ブロック、autoは残り幅に依存します。条件外の値や文字拡大時まで同じpxと断定しません。gap二値は縦・横、論理padding二値は開始・終了の順です。
 - 同じ要素の状態別上書きを足し合わせないでください。最終値はレイヤー・詳細度・条件・記述順で決まります。0も、追加しない判断として全件掲載します。
@@ -450,20 +450,25 @@ ClickUpの実測に合わせる。月のセルは上4px・下8px・左右4px、�
 
 ## comparison
 
-比較の両側へ同じ12pxを入れ、変更の有無でpaddingを変えない。共有枠内の列間gapは0、境界線で区切る。題名と比較枠8px、現在/変更後ラベルと値4px。入れ子も同じ基準で、幅に応じて縦へ並べる。
+差し替えの一枚の紙。両側は上12px・下16px・左右20pxで、変更の有無でpaddingを変えない。列間gapは0、境界線で区切り、境目の札（24px）は線の上に中心を置く。題名と比較の紙8px、現在/変更後ラベルと値4px。入れ子も同じ基準で、幅に応じて縦へ並べる。
 
 対象: [src/css/components/comparison.css](../src/css/components/comparison.css)
 
-| ソース                                          | セレクタの階層                                                                   | 条件 | 宣言値                                       | root 16pxでremを換算 | 値の扱い                                                             |
-| ----------------------------------------------- | -------------------------------------------------------------------------------- | ---- | -------------------------------------------- | -------------------- | -------------------------------------------------------------------- |
-| [L14](../src/css/components/comparison.css#L14) | `.ply-comparison → & > .title`                                                   | 常時 | `gap: var(--ply-space-1) var(--ply-space-2)` | `4px 8px`            | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L32](../src/css/components/comparison.css#L32) | `.ply-comparison → & > .pair`                                                    | 常時 | `gap: 0`                                     | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
-| [L33](../src/css/components/comparison.css#L33) | `.ply-comparison → & > .pair`                                                    | 常時 | `margin-block-start: var(--ply-space-2)`     | `8px`                | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
-| [L40](../src/css/components/comparison.css#L40) | `.ply-comparison → & > .pair → & > :is(.before, .after)`                         | 常時 | `padding-block: var(--ply-space-3)`          | `12px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L41](../src/css/components/comparison.css#L41) | `.ply-comparison → & > .pair → & > :is(.before, .after)`                         | 常時 | `padding-inline: var(--ply-space-4)`         | `16px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L43](../src/css/components/comparison.css#L43) | `.ply-comparison → & > .pair → & > :is(.before, .after) → & > h4`                | 常時 | `margin: 0`                                  | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
-| [L50](../src/css/components/comparison.css#L50) | `.ply-comparison → & > .pair → & > :is(.before, .after) → & > .body`             | 常時 | `margin-block-start: var(--ply-space-1)`     | `4px`                | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
-| [L52](../src/css/components/comparison.css#L52) | `.ply-comparison → & > .pair → & > :is(.before, .after) → & > .body → & > * + *` | 常時 | `margin-block-start: var(--ply-space-2)`     | `8px`                | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| ソース                                            | セレクタの階層                                                                   | 条件                                             | 宣言値                                                             | root 16pxでremを換算                        | 値の扱い                                                             |
+| ------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------- | -------------------------------------------------------------------- |
+| [L18](../src/css/components/comparison.css#L18)   | `.ply-comparison → & > .title`                                                   | 常時                                             | `gap: var(--ply-space-1) var(--ply-space-2)`                       | `4px 8px`                                   | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L37](../src/css/components/comparison.css#L37)   | `.ply-comparison → & > .pair`                                                    | 常時                                             | `gap: 0`                                                           | `0`                                         | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L38](../src/css/components/comparison.css#L38)   | `.ply-comparison → & > .pair`                                                    | 常時                                             | `margin-block-start: var(--ply-space-2)`                           | `8px`                                       | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L46](../src/css/components/comparison.css#L46)   | `.ply-comparison → & > .pair → & > :is(.before, .after)`                         | 常時                                             | `padding-block: var(--ply-space-3) var(--ply-space-4)`             | `12px 16px`                                 | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L47](../src/css/components/comparison.css#L47)   | `.ply-comparison → & > .pair → & > :is(.before, .after)`                         | 常時                                             | `padding-inline: var(--ply-space-5)`                               | `20px`                                      | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L50](../src/css/components/comparison.css#L50)   | `.ply-comparison → & > .pair → & > :is(.before, .after) → & > h4`                | 常時                                             | `margin: 0`                                                        | `0`                                         | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L57](../src/css/components/comparison.css#L57)   | `.ply-comparison → & > .pair → & > :is(.before, .after) → & > .body`             | 常時                                             | `margin-block-start: var(--ply-space-1)`                           | `4px`                                       | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L59](../src/css/components/comparison.css#L59)   | `.ply-comparison → & > .pair → & > :is(.before, .after) → & > .body → & > * + *` | 常時                                             | `margin-block-start: var(--ply-space-2)`                           | `8px`                                       | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L75](../src/css/components/comparison.css#L75)   | `.ply-comparison → & > .pair → & > .after → &::before`                           | 常時                                             | `inset-block-start: calc(-0.75rem - var(--ply-stroke-width) / 2)`  | `calc(-12px - var(--ply-stroke-width) / 2)` | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
+| [L76](../src/css/components/comparison.css#L76)   | `.ply-comparison → & > .pair → & > .after → &::before`                           | 常時                                             | `inset-inline-start: calc(50% - 0.75rem)`                          | `calc(50% - 12px)`                          | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
+| [L97](../src/css/components/comparison.css#L97)   | `.ply-comparison → &[data-changed="true"] → & > .pair > .after > h4`             | 常時                                             | `padding-inline: 0.15em`                                           | `0.15em`                                    | 文字サイズまたは行高に追従する比率。式を保持する。                   |
+| [L121](../src/css/components/comparison.css#L121) | `.ply-comparison → & > .pair → & > .after::before`                               | @container ply-comparison (inline-size >= 30rem) | `inset-block-start: var(--ply-space-3)`                            | `12px`                                      | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
+| [L122](../src/css/components/comparison.css#L122) | `.ply-comparison → & > .pair → & > .after::before`                               | @container ply-comparison (inline-size >= 30rem) | `inset-inline-start: calc(-0.75rem - var(--ply-stroke-width) / 2)` | `calc(-12px - var(--ply-stroke-width) / 2)` | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
 
 ## composer
 
@@ -907,14 +912,14 @@ gap・margin・padding・insetの宣言はありません。
 
 ## list-frame
 
-TaskList・DataList・MessageListのリスト既定marginとpaddingを0にする。各行の内側と行間はそれぞれのコンポーネントが所有し、親で重ねない。
+TaskListのリスト既定marginとpaddingを0にする。紙の見た目と各行の内側はTaskListが所有し、親で重ねない。
 
 対象: [src/css/components/list-frame.css](../src/css/components/list-frame.css)
 
 | ソース                                        | セレクタの階層   | 条件 | 宣言値       | root 16pxでremを換算 | 値の扱い                                           |
 | --------------------------------------------- | ---------------- | ---- | ------------ | -------------------- | -------------------------------------------------- |
-| [L4](../src/css/components/list-frame.css#L4) | `.ply-task-list` | 常時 | `margin: 0`  | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
-| [L5](../src/css/components/list-frame.css#L5) | `.ply-task-list` | 常時 | `padding: 0` | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
+| [L5](../src/css/components/list-frame.css#L5) | `.ply-task-list` | 常時 | `margin: 0`  | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
+| [L6](../src/css/components/list-frame.css#L6) | `.ply-task-list` | 常時 | `padding: 0` | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
 
 ## loading
 
@@ -1334,20 +1339,22 @@ gap・margin・padding・insetの宣言はありません。
 
 ## task-list
 
-行内8px、チェックと本文12px。狭幅の補足はチェック列を除いた2.25rem位置へ置く。親子の項目間に二重gapを作らず、子リストの上marginは0。末尾8pxは操作と隣の行の接触を防ぐ。
+メモパッドの一枚の紙。上端の綴じは20pxで、24px間隔の綴じ穴と切り取り線を置く。チェックは幅44pxの余白線の外で中央に置き、余白線から本文まで12px。行の上下8px、右12px、末尾の補足は右16px。狭幅の補足は余白線と本文の間を除いた位置へ置く。親子の項目間に二重gapを作らない。
 
 対象: [src/css/components/task-list.css](../src/css/components/task-list.css)
 
-| ソース                                         | セレクタの階層                              | 条件                                           | 宣言値                                   | root 16pxでremを換算 | 値の扱い                                                             |
-| ---------------------------------------------- | ------------------------------------------- | ---------------------------------------------- | ---------------------------------------- | -------------------- | -------------------------------------------------------------------- |
-| [L8](../src/css/components/task-list.css#L8)   | `.ply-task-list → & > li`                   | 常時                                           | `gap: var(--ply-space-3)`                | `12px`               | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L17](../src/css/components/task-list.css#L17) | `.ply-task-list → & > li → & > .end`        | 常時                                           | `gap: var(--ply-space-2)`                | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L18](../src/css/components/task-list.css#L18) | `.ply-task-list → & > li → & > .end`        | 常時                                           | `padding-inline-end: var(--ply-space-3)` | `12px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L24](../src/css/components/task-list.css#L24) | `.ply-task-list → & > li → & > .ply-choice` | 常時                                           | `padding-block: var(--ply-space-2)`      | `8px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L25](../src/css/components/task-list.css#L25) | `.ply-task-list → & > li → & > .ply-choice` | 常時                                           | `padding-inline: var(--ply-space-3)`     | `12px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L55](../src/css/components/task-list.css#L55) | `.ply-task-list > li`                       | @container ply-task-list (inline-size < 26rem) | `gap: 0`                                 | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
-| [L57](../src/css/components/task-list.css#L57) | `.ply-task-list > li → & > .end`            | @container ply-task-list (inline-size < 26rem) | `padding-inline-start: 2.25rem`          | `36px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L58](../src/css/components/task-list.css#L58) | `.ply-task-list > li → & > .end`            | @container ply-task-list (inline-size < 26rem) | `padding-block-end: var(--ply-space-2)`  | `8px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| ソース                                           | セレクタの階層                              | 条件                                           | 宣言値                                                                    | root 16pxでremを換算                  | 値の扱い                                                             |
+| ------------------------------------------------ | ------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------- | -------------------------------------------------------------------- |
+| [L12](../src/css/components/task-list.css#L12)   | `.ply-task-list`                            | 常時                                           | `padding-block-start: var(--ply-task-binding)`                            | `var(--ply-task-binding)`             | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L50](../src/css/components/task-list.css#L50)   | `.ply-task-list → & > li`                   | 常時                                           | `gap: var(--ply-space-3)`                                                 | `12px`                                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L60](../src/css/components/task-list.css#L60)   | `.ply-task-list → & > li → & > .end`        | 常時                                           | `gap: var(--ply-space-2)`                                                 | `8px`                                 | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L61](../src/css/components/task-list.css#L61)   | `.ply-task-list → & > li → & > .end`        | 常時                                           | `padding-inline-end: var(--ply-space-4)`                                  | `16px`                                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L67](../src/css/components/task-list.css#L67)   | `.ply-task-list → & > li → & > .ply-choice` | 常時                                           | `column-gap: var(--ply-space-3)`                                          | `12px`                                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L68](../src/css/components/task-list.css#L68)   | `.ply-task-list → & > li → & > .ply-choice` | 常時                                           | `padding-block: var(--ply-space-2)`                                       | `8px`                                 | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L69](../src/css/components/task-list.css#L69)   | `.ply-task-list → & > li → & > .ply-choice` | 常時                                           | `padding-inline: 0 var(--ply-space-3)`                                    | `0 12px`                              | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L100](../src/css/components/task-list.css#L100) | `.ply-task-list > li`                       | @container ply-task-list (inline-size < 26rem) | `gap: 0`                                                                  | `0`                                   | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L102](../src/css/components/task-list.css#L102) | `.ply-task-list > li → & > .end`            | @container ply-task-list (inline-size < 26rem) | `padding-inline-start: calc(var(--ply-task-margin) + var(--ply-space-3))` | `calc(var(--ply-task-margin) + 12px)` | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L103](../src/css/components/task-list.css#L103) | `.ply-task-list > li → & > .end`            | @container ply-task-list (inline-size < 26rem) | `padding-block-end: var(--ply-space-2)`                                   | `8px`                                 | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
 
 ## timeline
 
