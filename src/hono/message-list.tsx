@@ -84,7 +84,7 @@ export const MessageList = ({
                   <span class="sender">{item.sender.trim() || "差出人不明"}</span>
                   <span class="body">
                     <strong class="title">
-                      {item.title.trim() || "（件名なし）"}
+                      <span class="subject">{item.title.trim() || "（件名なし）"}</span>
                       {item.threadCount != null && item.threadCount > 1 && (
                         <span class="count" aria-label={`${item.threadCount}件の会話`}>
                           {item.threadCount}
