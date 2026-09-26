@@ -97,7 +97,7 @@
           );
           box-shadow: inset 0 var(--ply-stroke-width) 0 rgb(255 255 255 / 22%);
         }
-        /* 半券と本体の境目のミシン目。 */
+        /* 半券と本体の境目のミシン目。半券と同じ道具の色で引く。 */
         &::after {
           content: "";
           position: absolute;
@@ -106,7 +106,7 @@
           inline-size: var(--ply-stroke-width);
           background: repeating-linear-gradient(
             to bottom,
-            var(--ply-perforation) 0 var(--ply-dash),
+            color-mix(in srgb, var(--ply-ticket-accent) 60%, var(--ply-surface)) 0 var(--ply-dash),
             transparent var(--ply-dash) calc(var(--ply-dash) + var(--ply-dash-gap))
           );
         }

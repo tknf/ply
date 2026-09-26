@@ -51,13 +51,32 @@
           outline: 0.125rem solid var(--ply-link);
           outline-offset: -0.125rem;
         }
+        /*
+          差出人は切手。白い縁のまわりにミシン目の丸い穴を並べ、顔や頭文字を四角い図柄として収める。
+          一通ずつ少し傾けて貼る。
+        */
         & > .avatar {
           grid-area: avatar;
           align-self: start;
           display: grid;
           place-items: center;
-          block-size: 2rem;
+          inline-size: 2.25rem;
+          block-size: 2.25rem;
+          padding-block: 0.3125rem;
+          padding-inline: 0.3125rem;
+          background: color-mix(in srgb, var(--ply-muted) 16%, var(--ply-surface));
           color: var(--ply-muted);
+          mask:
+            linear-gradient(#000 0 0) 50% / calc(100% - 0.375rem) calc(100% - 0.375rem) no-repeat,
+            radial-gradient(circle, transparent 0.125rem, #000 0.140625rem) -0.1875rem -0.1875rem /
+              0.375rem 0.375rem round;
+          rotate: -3deg;
+          & > .ply-avatar {
+            inline-size: 100%;
+            block-size: 100%;
+            border: 0;
+            border-radius: 0;
+          }
         }
         & > .sender {
           grid-area: sender;
@@ -167,9 +186,12 @@
         border-radius: var(--ply-radius-pill);
       }
     }
-    /* 差出人の顔は左に置き、三段の本文をその右へ並べる。 */
+    /* 差出人の切手は左に置き、三段の本文をその右へ並べる。 */
+    &[data-avatars="true"] > li:nth-child(even) > .row > .avatar {
+      rotate: 2deg;
+    }
     &[data-avatars="true"] > li > .row {
-      grid-template-columns: 2rem minmax(0, 1fr) auto;
+      grid-template-columns: 2.25rem minmax(0, 1fr) auto;
       grid-template-areas:
         "avatar sender meta"
         "avatar body body";
