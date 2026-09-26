@@ -11,11 +11,12 @@
     padding-block: var(--ply-space-4) var(--ply-space-3);
     padding-inline: var(--ply-space-4);
     /*
-      通知は作業面に貼った付箋。役割の色の紙に、上の縁ののりの帯を一段濃く入れ、
-      角の立った紙の下の縁だけを少し浮かせる。
+      通知は作業面に貼った付箋。役割の色の紙に、上の縁ののりの帯を一段濃く入れ、下の縁だけを少し浮かせる。
+      縁は役割の色の点線。ミシン目（未確定）の破線と分けるため、丸い点にする。
     */
-    border: 0;
-    border-radius: var(--ply-radius-mark);
+    border: var(--ply-frame-width) dotted
+      color-mix(in srgb, var(--ply-notice-accent) 40%, var(--ply-notice-paper));
+    border-radius: var(--ply-radius-surface);
     background:
       linear-gradient(
           color-mix(in srgb, var(--ply-notice-paper) 90%, var(--ply-notice-accent)),
