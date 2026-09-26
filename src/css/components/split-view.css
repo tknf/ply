@@ -99,9 +99,9 @@
       place-items: center;
       cursor: col-resize;
       touch-action: none;
+      /* フォーカスは列を囲まず、クリップの輪とのどの青い線で示す。 */
       &:focus-visible {
-        outline: 0.125rem solid var(--ply-link);
-        outline-offset: -0.125rem;
+        outline: none;
       }
       &::before {
         content: "";

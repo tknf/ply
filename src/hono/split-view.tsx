@@ -62,6 +62,20 @@ export const SplitView = ({
         )}
         <div class="secondary">{secondary}</div>
       </div>
+      {/* 持ち手を動かす制御が必要とする標準の範囲入力。操作は持ち手が担うため、見た目からは隠す。 */}
+      {resizable && (
+        <div class="size-control ply-visually-hidden">
+          <label for={`${viewId}-size`}>主領域の幅</label>
+          <input
+            id={`${viewId}-size`}
+            type="range"
+            min={20}
+            max={80}
+            value={size}
+            data-splitter-target="range"
+          />
+        </div>
+      )}
     </div>
   );
 };
