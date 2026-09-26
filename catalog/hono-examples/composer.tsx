@@ -1,4 +1,12 @@
-import { Composer, FileInput } from "../../src/hono";
+import {
+  Composer,
+  FileInput,
+  Avatar,
+  Button,
+  Icon,
+  Disclosure,
+  DisclosureGroup,
+} from "../../src/hono";
 
 export default () => (
   <div class="ply-stack">
@@ -10,30 +18,92 @@ export default () => (
       method="get"
       placeholder="メッセージを書く"
       submitLabel="送信する"
+      to={
+        <>
+          <span>宛先</span>
+          <Avatar name="森 美咲" initials="美" tone="green" size="small" />
+          <span>森 美咲</span>
+        </>
+      }
+      status="下書きを保存しました"
       attachments={<FileInput id="message-file" name="files" label="添付ファイル" multiple />}
       required
     />
-    <Composer
-      id="composer-editor"
-      label="メモ"
-      name="memo"
-      submitLabel="保存する"
-      editor={
-        <div
-          contenteditable
-          role="textbox"
-          aria-multiline="true"
-          aria-label="メモの本文"
-          data-placeholder="ここに書いた内容は、利用側の編集部品が送信用の値へ移します。"
+    <DisclosureGroup label="書き方と状態の違い">
+      <Disclosure summary="書式の操作と下書きの保存" open>
+        <Composer
+          id="composer-actions"
+          label="コメント"
+          name="comment"
+          placeholder="コメントを書く"
+          submitLabel="投稿する"
+          actions={
+            <>
+              <Button size="compact" data-icon-only="true" aria-label="ファイルを添付">
+                <Icon name="file" />
+              </Button>
+              <Button size="compact">下書きに保存</Button>
+            </>
+          }
         />
-      }
-    />
-    <Composer
-      id="composer-error"
-      label="返信"
-      name="reply"
-      submitLabel="再送する"
-      error="送信できませんでした。内容を確認して、もう一度送信してください。"
-    />
+      </Disclosure>
+      <Disclosure summary="リッチテキストの編集部品（ProseMirror・Tiptapの構造）">
+        <Composer
+          id="composer-editor"
+          label="議事録"
+          name="minutes"
+          submitLabel="保存する"
+          status="編集部品が送信用の値を持ちます"
+          editor={
+            <div class="tiptap">
+              <div class="ProseMirror" contenteditable role="textbox" aria-multiline="true">
+                <p>9月の打ち合わせで決まったこと</p>
+                <ul>
+                  <li>カテゴリは5つにまとめる</li>
+                  <li>公開は9月30日</li>
+                </ul>
+                <p>次回は10月7日の14時からです。</p>
+              </div>
+            </div>
+          }
+        />
+      </Disclosure>
+      <Disclosure summary="何も書いていない編集部品">
+        <Composer
+          id="composer-empty-editor"
+          label="メモ"
+          name="memo"
+          submitLabel="保存する"
+          editor={
+            <div
+              contenteditable
+              role="textbox"
+              aria-multiline="true"
+              aria-label="メモの本文"
+              data-placeholder="思いついたことを書き留める"
+            />
+          }
+        />
+      </Disclosure>
+      <Disclosure summary="送信中">
+        <Composer
+          id="composer-busy"
+          label="返信"
+          name="busy-reply"
+          value="資料を確認しました。明日までに戻します。"
+          submitLabel="送信する"
+          busy
+        />
+      </Disclosure>
+      <Disclosure summary="送信できなかったとき">
+        <Composer
+          id="composer-error"
+          label="返信"
+          name="reply"
+          submitLabel="再送する"
+          error="送信できませんでした。内容を確認して、もう一度送信してください。"
+        />
+      </Disclosure>
+    </DisclosureGroup>
   </div>
 );

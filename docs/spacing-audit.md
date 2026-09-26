@@ -4,7 +4,7 @@
 
 ## 読み方と対象
 
-- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は914件です。省略した状態別・メディア・コンテナ条件はありません。
+- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は919件です。省略した状態別・メディア・コンテナ条件はありません。
 - CSSの生の宣言、ネストしたセレクタの階層、条件、ソース位置を掲載します。→は親ルールから子ルールへの経路であり、結合済みCSSセレクタではありません。
 - 換算はroot 16pxのremだけです。emはその要素の文字サイズ、lhはその要素の行高、%は包含ブロック、autoは残り幅に依存します。条件外の値や文字拡大時まで同じpxと断定しません。gap二値は縦・横、論理padding二値は開始・終了の順です。
 - 同じ要素の状態別上書きを足し合わせないでください。最終値はレイヤー・詳細度・条件・記述順で決まります。0も、追加しない判断として全件掲載します。
@@ -476,23 +476,28 @@ ClickUpの実測に合わせる。月のセルは上4px・下8px・左右4px、�
 
 ## composer
 
-便箋の紙は上16px・下12px・左右20px。本文は行の高さを文字の二倍にし、罫線の上に文字を載せるため上下の内側を0にする。本文と添付は区切り線を引かず12px、操作群は8pxで区切り、操作同士も8px。
+便箋の紙は上16px・下12px・左右20px。便箋の頭は名前・宛先・状態を横12px・縦8pxで並べ、下8pxの位置に3pxの二重罫線を引く。宛先の中は4px。本文は行の高さを文字の二倍にし、罫線の上に文字を載せるため上下の内側を0にする。差し替えた編集部品の段落と箇条の上下の余白も0。本文と添付は区切り線を引かず12px、操作群は8pxで区切り、操作同士も8px。
 
 対象: [src/css/components/composer.css](../src/css/components/composer.css)
 
-| ソース                                          | セレクタの階層                                          | 条件                                          | 宣言値                                                 | root 16pxでremを換算 | 値の扱い                                                             |
-| ----------------------------------------------- | ------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------------ | -------------------- | -------------------------------------------------------------------- |
-| [L5](../src/css/components/composer.css#L5)     | `.ply-composer`                                         | 常時                                          | `gap: var(--ply-space-2)`                              | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L7](../src/css/components/composer.css#L7)     | `.ply-composer`                                         | 常時                                          | `padding-block: var(--ply-space-4) var(--ply-space-3)` | `16px 12px`          | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L8](../src/css/components/composer.css#L8)     | `.ply-composer`                                         | 常時                                          | `padding-inline: var(--ply-space-5)`                   | `20px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L36](../src/css/components/composer.css#L36)   | `.ply-composer > .ply-field > :is(.ply-input, .editor)` | 常時                                          | `padding-block: 0`                                     | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
-| [L37](../src/css/components/composer.css#L37)   | `.ply-composer > .ply-field > :is(.ply-input, .editor)` | 常時                                          | `padding-inline: 0`                                    | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
-| [L86](../src/css/components/composer.css#L86)   | `.ply-composer > .attachments`                          | 常時                                          | `gap: var(--ply-space-2)`                              | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L88](../src/css/components/composer.css#L88)   | `.ply-composer > .attachments`                          | 常時                                          | `padding-block-start: var(--ply-space-3)`              | `12px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L96](../src/css/components/composer.css#L96)   | `.ply-composer > .footer`                               | 常時                                          | `gap: var(--ply-space-2)`                              | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L102](../src/css/components/composer.css#L102) | `.ply-composer > .footer > .actions`                    | 常時                                          | `gap: var(--ply-space-2)`                              | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L103](../src/css/components/composer.css#L103) | `.ply-composer > .footer > .actions`                    | 常時                                          | `margin-inline-end: auto`                              | `auto`               | 可変の残り幅を配置へ使う。固定間隔ではない。                         |
-| [L113](../src/css/components/composer.css#L113) | `.ply-composer > .footer > .actions`                    | @container ply-composer (inline-size < 26rem) | `margin-inline-end: 0`                                 | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| ソース                                          | セレクタの階層                                                                                                   | 条件                                          | 宣言値                                                 | root 16pxでremを換算 | 値の扱い                                                             |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------------ | -------------------- | -------------------------------------------------------------------- |
+| [L5](../src/css/components/composer.css#L5)     | `.ply-composer`                                                                                                  | 常時                                          | `gap: var(--ply-space-2)`                              | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L7](../src/css/components/composer.css#L7)     | `.ply-composer`                                                                                                  | 常時                                          | `padding-block: var(--ply-space-4) var(--ply-space-3)` | `16px 12px`          | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L8](../src/css/components/composer.css#L8)     | `.ply-composer`                                                                                                  | 常時                                          | `padding-inline: var(--ply-space-5)`                   | `20px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L35](../src/css/components/composer.css#L35)   | `.ply-composer > .ply-field > .heading`                                                                          | 常時                                          | `gap: var(--ply-space-2) var(--ply-space-3)`           | `8px 12px`           | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L36](../src/css/components/composer.css#L36)   | `.ply-composer > .ply-field > .heading`                                                                          | 常時                                          | `padding-block-end: var(--ply-space-2)`                | `8px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L47](../src/css/components/composer.css#L47)   | `.ply-composer > .ply-field > .heading → & > .to`                                                                | 常時                                          | `gap: var(--ply-space-1)`                              | `4px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L53](../src/css/components/composer.css#L53)   | `.ply-composer > .ply-field > .heading → & > .status`                                                            | 常時                                          | `margin-inline-start: auto`                            | `auto`               | 可変の残り幅を配置へ使う。固定間隔ではない。                         |
+| [L65](../src/css/components/composer.css#L65)   | `.ply-composer > .ply-field > :is(.ply-input, .editor)`                                                          | 常時                                          | `padding-block: 0`                                     | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L66](../src/css/components/composer.css#L66)   | `.ply-composer > .ply-field > :is(.ply-input, .editor)`                                                          | 常時                                          | `padding-inline: 0`                                    | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L104](../src/css/components/composer.css#L104) | `.ply-composer > .ply-field > .editor → & [contenteditable] → & :is(p, ul, ol, blockquote, h1, h2, h3, h4, pre)` | 常時                                          | `margin: 0`                                            | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L121](../src/css/components/composer.css#L121) | `.ply-composer > .attachments`                                                                                   | 常時                                          | `gap: var(--ply-space-2)`                              | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L123](../src/css/components/composer.css#L123) | `.ply-composer > .attachments`                                                                                   | 常時                                          | `padding-block-start: var(--ply-space-3)`              | `12px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L131](../src/css/components/composer.css#L131) | `.ply-composer > .footer`                                                                                        | 常時                                          | `gap: var(--ply-space-2)`                              | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L137](../src/css/components/composer.css#L137) | `.ply-composer > .footer > .actions`                                                                             | 常時                                          | `gap: var(--ply-space-2)`                              | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L138](../src/css/components/composer.css#L138) | `.ply-composer > .footer > .actions`                                                                             | 常時                                          | `margin-inline-end: auto`                              | `auto`               | 可変の残り幅を配置へ使う。固定間隔ではない。                         |
+| [L148](../src/css/components/composer.css#L148) | `.ply-composer > .footer > .actions`                                                                             | @container ply-composer (inline-size < 26rem) | `margin-inline-end: 0`                                 | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
 
 ## context-bar
 
@@ -1706,7 +1711,7 @@ gap・margin・padding・insetの宣言はありません。
 | [color-picker.tsx:13](../catalog/hono-examples/color-picker.tsx#L13)         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [command-menu.tsx:3](../catalog/hono-examples/command-menu.tsx#L3)           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [comparison.tsx:4](../catalog/hono-examples/comparison.tsx#L4)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [composer.tsx:4](../catalog/hono-examples/composer.tsx#L4)                   | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [composer.tsx:12](../catalog/hono-examples/composer.tsx#L12)                 | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [context-bar.tsx:17](../catalog/hono-examples/context-bar.tsx#L17)           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [context-bar.tsx:18](../catalog/hono-examples/context-bar.tsx#L18)           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [context-bar.tsx:22](../catalog/hono-examples/context-bar.tsx#L22)           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |

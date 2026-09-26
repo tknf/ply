@@ -27,6 +27,35 @@
     }
   }
 
+  /* 便箋の頭。名前・宛先・状態を一行に並べ、下に二重の罫線を引いて本文と分ける。 */
+  .ply-composer > .ply-field > .heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ply-space-2) var(--ply-space-3);
+    padding-block-end: var(--ply-space-2);
+    border-block-end: calc(var(--ply-stroke-width) * 3) double var(--ply-ruled-line);
+    & > :is(label, .label) {
+      font-size: var(--ply-body);
+      font-weight: 600;
+      line-height: var(--ply-control-leading);
+    }
+    & > .to {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--ply-space-1);
+      min-inline-size: 0;
+      color: var(--ply-muted);
+      font-size: var(--ply-small);
+    }
+    & > .status {
+      margin-inline-start: auto;
+      color: var(--ply-muted);
+      font-size: var(--ply-small);
+    }
+  }
+
   /*
     本文は便箋。行の高さを文字の二倍にして罫線の間にゆとりを取り、罫線は行の高さごとに引いて文字と一緒にスクロールする。
     field-sizingに対応するブラウザでは、書いた分だけ紙が伸びる。
@@ -62,16 +91,22 @@
     }
   }
 
-  /* 差し替えた編集部品の中身は、便箋の行に文字を載せる。 */
+  /*
+    差し替えた編集部品（ProseMirror・Tiptap・Lexxyなど）の書く場所は、深さによらず便箋の行に文字を載せる。
+    段落や箇条の上下の余白は0にし、罫線と行をずらさない。
+  */
   .ply-composer > .ply-field > .editor {
-    & > * {
-      min-block-size: inherit;
+    & [contenteditable] {
+      min-block-size: 4lh;
       outline: none;
       line-height: inherit;
-    }
-    & > [contenteditable]:empty::before {
-      content: attr(data-placeholder);
-      color: var(--ply-muted);
+      & :is(p, ul, ol, blockquote, h1, h2, h3, h4, pre) {
+        margin: 0;
+      }
+      &:empty::before {
+        content: attr(data-placeholder);
+        color: var(--ply-muted);
+      }
     }
   }
 
