@@ -30,7 +30,9 @@
       flex-wrap: nowrap;
       gap: 0;
       max-inline-size: 100%;
+      /* 一行に並べ続けるので、丸いのは両端だけ。間の項目は左右を1emに抑える。 */
       & > a {
+        padding-inline: 1em;
         border-radius: 0;
       }
       & > a:first-child {

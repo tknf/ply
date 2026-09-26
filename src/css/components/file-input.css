@@ -77,7 +77,7 @@
         margin-inline-end: var(--ply-space-2);
         border: var(--ply-stroke-width) solid var(--ply-border);
         border-radius: var(--ply-radius-pill);
-        background: var(--ply-surface);
+        background: var(--ply-surface) var(--ply-fill-control);
         box-shadow: var(--ply-shadow-control);
         color: var(--ply-text);
         font: inherit;

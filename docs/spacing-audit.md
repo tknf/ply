@@ -4,7 +4,7 @@
 
 ## 読み方と対象
 
-- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は847件です。省略した状態別・メディア・コンテナ条件はありません。
+- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は848件です。省略した状態別・メディア・コンテナ条件はありません。
 - CSSの生の宣言、ネストしたセレクタの階層、条件、ソース位置を掲載します。→は親ルールから子ルールへの経路であり、結合済みCSSセレクタではありません。
 - 換算はroot 16pxのremだけです。emはその要素の文字サイズ、lhはその要素の行高、%は包含ブロック、autoは残り幅に依存します。条件外の値や文字拡大時まで同じpxと断定しません。gap二値は縦・横、論理padding二値は開始・終了の順です。
 - 同じ要素の状態別上書きを足し合わせないでください。最終値はレイヤー・詳細度・条件・記述順で決まります。0も、追加しない判断として全件掲載します。
@@ -172,11 +172,11 @@ DropdownMenu・DatePickerの位置計算は起点から4px、画面端から8px�
 | [L10](../src/css/components/button.css#L10)   | `.ply-button,   :where(.ply-filter-bar > a)`                            | 常時 | `gap: calc(2em / 7)`            | `calc(2em / 7)`      | 文字サイズまたは行高に追従する比率。式を保持する。 |
 | [L14](../src/css/components/button.css#L14)   | `.ply-button,   :where(.ply-filter-bar > a)`                            | 常時 | `padding-block: 0`              | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
 | [L16](../src/css/components/button.css#L16)   | `.ply-button,   :where(.ply-filter-bar > a)`                            | 常時 | `padding-inline: 1.25em`        | `1.25em`             | 文字サイズまたは行高に追従する比率。式を保持する。 |
-| [L47](../src/css/components/button.css#L47)   | `.ply-button,   :where(.ply-filter-bar > a) → &[data-size="compact"]`   | 常時 | `padding-inline: 0.875em`       | `0.875em`            | 文字サイズまたは行高に追従する比率。式を保持する。 |
-| [L51](../src/css/components/button.css#L51)   | `.ply-button,   :where(.ply-filter-bar > a) → &[data-size="large"]`     | 常時 | `padding-inline: 1.375em`       | `1.375em`            | 文字サイズまたは行高に追従する比率。式を保持する。 |
-| [L87](../src/css/components/button.css#L87)   | `.ply-button,   :where(.ply-filter-bar > a) → &[data-variant="link"]`   | 常時 | `padding-inline: calc(4em / 7)` | `calc(4em / 7)`      | 文字サイズまたは行高に追従する比率。式を保持する。 |
-| [L112](../src/css/components/button.css#L112) | `.ply-button,   :where(.ply-filter-bar > a) → &[data-icon-only="true"]` | 常時 | `padding-block: 0`              | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
-| [L113](../src/css/components/button.css#L113) | `.ply-button,   :where(.ply-filter-bar > a) → &[data-icon-only="true"]` | 常時 | `padding-inline: 0`             | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
+| [L48](../src/css/components/button.css#L48)   | `.ply-button,   :where(.ply-filter-bar > a) → &[data-size="compact"]`   | 常時 | `padding-inline: 0.875em`       | `0.875em`            | 文字サイズまたは行高に追従する比率。式を保持する。 |
+| [L52](../src/css/components/button.css#L52)   | `.ply-button,   :where(.ply-filter-bar > a) → &[data-size="large"]`     | 常時 | `padding-inline: 1.375em`       | `1.375em`            | 文字サイズまたは行高に追従する比率。式を保持する。 |
+| [L88](../src/css/components/button.css#L88)   | `.ply-button,   :where(.ply-filter-bar > a) → &[data-variant="link"]`   | 常時 | `padding-inline: calc(4em / 7)` | `calc(4em / 7)`      | 文字サイズまたは行高に追従する比率。式を保持する。 |
+| [L113](../src/css/components/button.css#L113) | `.ply-button,   :where(.ply-filter-bar > a) → &[data-icon-only="true"]` | 常時 | `padding-block: 0`              | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
+| [L114](../src/css/components/button.css#L114) | `.ply-button,   :where(.ply-filter-bar > a) → &[data-icon-only="true"]` | 常時 | `padding-inline: 0`             | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
 
 ## calendar
 
@@ -778,7 +778,8 @@ Fieldのラベル・入力・メッセージは6px。補助メッセージ同士
 | ----------------------------------------------- | ---------------------------------------------------------------------------- | ---- | --------------------------------------------------------- | ------------------------------------ | -------------------------------------------------------------------- |
 | [L7](../src/css/components/filter-bar.css#L7)   | `.ply-filter-bar`                                                            | 常時 | `gap: var(--ply-space-1)`                                 | `4px`                                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
 | [L31](../src/css/components/filter-bar.css#L31) | `.ply-filter-bar → &[data-appearance="segmented"]`                           | 常時 | `gap: 0`                                                  | `0`                                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
-| [L45](../src/css/components/filter-bar.css#L45) | `.ply-filter-bar → &[data-appearance="segmented"] → & > a:not(:first-child)` | 常時 | `margin-inline-start: calc(var(--ply-stroke-width) * -1)` | `calc(var(--ply-stroke-width) * -1)` | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L35](../src/css/components/filter-bar.css#L35) | `.ply-filter-bar → &[data-appearance="segmented"] → & > a`                   | 常時 | `padding-inline: 1em`                                     | `1em`                                | 文字サイズまたは行高に追従する比率。式を保持する。                   |
+| [L47](../src/css/components/filter-bar.css#L47) | `.ply-filter-bar → &[data-appearance="segmented"] → & > a:not(:first-child)` | 常時 | `margin-inline-start: calc(var(--ply-stroke-width) * -1)` | `calc(var(--ply-stroke-width) * -1)` | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
 
 ## grid
 

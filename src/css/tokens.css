@@ -120,9 +120,17 @@
     --ply-stroke-width: 0.0625rem;
     --ply-ink: var(--ply-black);
     /*
-      グラデーションは「ここを見て」の面だけに使う。形は役割の色からその淡い対への135度の一つだけ。
+      グラデーションは二つの用途だけに使う。
+      - 押す物の手触り（--ply-fill-control）：分かるか分からないかくらいの縦の陰影。Button、選択肢、持ち手など。
+      - 「ここを見て」の面（--ply-emphasis-*、主操作の--ply-fill-primary）：役割の色からその淡い対への135度。
       一覧・本文・情報の面は平らな--ply-surfaceにする。
     */
+    --ply-fill-control: linear-gradient(
+      176deg,
+      var(--ply-surface) 0%,
+      color-mix(in srgb, var(--ply-surface) 99%, var(--ply-ink)) 48%,
+      color-mix(in srgb, var(--ply-surface) 96%, var(--ply-ink)) 100%
+    );
     --ply-fill-primary: linear-gradient(
       135deg,
       color-mix(in srgb, var(--ply-link) 84%, white) 0%,

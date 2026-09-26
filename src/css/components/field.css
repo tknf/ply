@@ -336,7 +336,7 @@
       padding-inline: var(--ply-space-4);
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: calc(4em / 7);
-      background: var(--ply-surface);
+      background: var(--ply-surface) var(--ply-fill-control);
       box-shadow: var(--ply-shadow-control);
       transition:
         border-color var(--ply-duration) ease,
