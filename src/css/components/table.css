@@ -66,6 +66,7 @@
         background: var(--ply-fill-raised);
         color: var(--ply-muted);
         font-size: var(--ply-small);
+        font-weight: var(--ply-label-weight);
         line-height: var(--ply-small-leading);
         border-block-end-color: var(--ply-border);
         white-space: nowrap;
@@ -100,6 +101,7 @@
         background: transparent;
         color: inherit;
         box-shadow: none;
+        font-weight: inherit;
         &::before {
           content: "";
           position: absolute;

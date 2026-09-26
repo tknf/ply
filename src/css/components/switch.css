@@ -55,7 +55,7 @@
     }
 
     & > input:disabled {
-      background: var(--ply-background);
+      background: var(--ply-hatch), var(--ply-surface);
       border-color: var(--ply-border);
       color: var(--ply-border);
     }

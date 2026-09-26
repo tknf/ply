@@ -97,9 +97,10 @@
       }
     }
 
+    /* 使えない操作は斜線。薄くするだけでは押せる操作と区別しにくい。 */
     &:disabled:not([data-busy="true"]) {
       border-color: var(--ply-border);
-      background: var(--ply-background);
+      background: var(--ply-hatch), var(--ply-surface);
       color: var(--ply-muted);
       cursor: not-allowed;
       box-shadow: none;

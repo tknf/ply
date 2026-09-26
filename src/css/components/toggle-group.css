@@ -8,6 +8,13 @@
     &[data-orientation="vertical"] {
       flex-direction: column;
     }
+    /* 状態を選ぶ操作はピル。押して実行するButtonの角と分ける。 */
+    & > .ply-button {
+      border-radius: var(--ply-radius-pill);
+    }
+    & > .ply-button:not([data-icon-only="true"]) {
+      padding-inline: 1em;
+    }
     & > .ply-button[data-state="on"] {
       border-color: var(--ply-link);
       background: linear-gradient(var(--ply-surface), var(--ply-info-soft));

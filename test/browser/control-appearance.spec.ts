@@ -106,6 +106,7 @@ test("選択中のButtonを無効にした場合も通常の無効状態とし�
     .evaluate((element) => ({
       background: getComputedStyle(element).backgroundColor,
       color: getComputedStyle(element).color,
+      image: getComputedStyle(element).backgroundImage,
     }));
   await expect
     .poll(() =>
@@ -119,6 +120,8 @@ test("選択中のButtonを無効にした場合も通常の無効状態とし�
         };
       }),
     )
-    .toEqual({ ...expected, image: "none", shadow: "none" });
+    .toEqual({ ...expected, shadow: "none" });
+  // 使えない操作は斜線で示す。
+  expect(expected.image).toContain("repeating-linear-gradient");
   await expect(button).toBeDisabled();
 });

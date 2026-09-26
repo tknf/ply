@@ -4,7 +4,7 @@
 
 ## 読み方と対象
 
-- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は844件です。省略した状態別・メディア・コンテナ条件はありません。
+- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は845件です。省略した状態別・メディア・コンテナ条件はありません。
 - CSSの生の宣言、ネストしたセレクタの階層、条件、ソース位置を掲載します。→は親ルールから子ルールへの経路であり、結合済みCSSセレクタではありません。
 - 換算はroot 16pxのremだけです。emはその要素の文字サイズ、lhはその要素の行高、%は包含ブロック、autoは残り幅に依存します。条件外の値や文字拡大時まで同じpxと断定しません。gap二値は縦・横、論理padding二値は開始・終了の順です。
 - 同じ要素の状態別上書きを足し合わせないでください。最終値はレイヤー・詳細度・条件・記述順で決まります。0も、追加しない判断として全件掲載します。
@@ -178,8 +178,8 @@ DropdownMenu・DatePickerの位置計算は起点から4px、画面端から8px�
 | [L51](../src/css/components/button.css#L51)   | `.ply-button,   :where(.ply-filter-bar > a) → &[data-shape="pill"]`     | 常時 | `padding-inline: 1.25em`        | `1.25em`             | 文字サイズまたは行高に追従する比率。式を保持する。 |
 | [L56](../src/css/components/button.css#L56)   | `.ply-button,   :where(.ply-filter-bar > a) → &[data-size="large"]`     | 常時 | `padding-inline: 1.1em`         | `1.1em`              | 文字サイズまたは行高に追従する比率。式を保持する。 |
 | [L92](../src/css/components/button.css#L92)   | `.ply-button,   :where(.ply-filter-bar > a) → &[data-variant="link"]`   | 常時 | `padding-inline: calc(4em / 7)` | `calc(4em / 7)`      | 文字サイズまたは行高に追従する比率。式を保持する。 |
-| [L116](../src/css/components/button.css#L116) | `.ply-button,   :where(.ply-filter-bar > a) → &[data-icon-only="true"]` | 常時 | `padding-block: 0`              | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
-| [L117](../src/css/components/button.css#L117) | `.ply-button,   :where(.ply-filter-bar > a) → &[data-icon-only="true"]` | 常時 | `padding-inline: 0`             | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
+| [L117](../src/css/components/button.css#L117) | `.ply-button,   :where(.ply-filter-bar > a) → &[data-icon-only="true"]` | 常時 | `padding-block: 0`              | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
+| [L118](../src/css/components/button.css#L118) | `.ply-button,   :where(.ply-filter-bar > a) → &[data-icon-only="true"]` | 常時 | `padding-inline: 0`             | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。 |
 
 ## calendar
 
@@ -730,14 +730,14 @@ Fieldのラベル・入力・メッセージは6px。補助メッセージ同士
 | [L359](../src/css/components/field.css#L359) | `.ply-input`                                                                                   | 常時                                              | `padding-block: calc(5em / 14)`                         | `calc(5em / 14)`     | 文字サイズまたは行高に追従する比率。式を保持する。                   |
 | [L360](../src/css/components/field.css#L360) | `.ply-input`                                                                                   | 常時                                              | `padding-inline: 0.75em`                                | `0.75em`             | 文字サイズまたは行高に追従する比率。式を保持する。                   |
 | [L383](../src/css/components/field.css#L383) | `.ply-input → &[type="search"]`                                                                | 常時                                              | `padding-inline: 1em`                                   | `1em`                | 文字サイズまたは行高に追従する比率。式を保持する。                   |
-| [L405](../src/css/components/field.css#L405) | `.ply-input → &:where([data-size="large"])`                                                    | 常時                                              | `padding-block: 0.4375em`                               | `0.4375em`           | 文字サイズまたは行高に追従する比率。式を保持する。                   |
-| [L406](../src/css/components/field.css#L406) | `.ply-input → &:where([data-size="large"])`                                                    | 常時                                              | `padding-inline: 0.5em`                                 | `0.5em`              | 文字サイズまたは行高に追従する比率。式を保持する。                   |
-| [L439](../src/css/components/field.css#L439) | `input.ply-input → &:where(:not([type="file"]))`                                               | 常時                                              | `padding-block: 0`                                      | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
-| [L452](../src/css/components/field.css#L452) | `select.ply-input:not([multiple]):not([size])`                                                 | 常時                                              | `padding-inline-end: 2.5em`                             | `2.5em`              | 文字サイズまたは行高に追従する比率。式を保持する。                   |
-| [L462](../src/css/components/field.css#L462) | `.ply-input[type="file"]`                                                                      | 常時                                              | `padding-block: var(--ply-space-2)`                     | `8px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L467](../src/css/components/field.css#L467) | `.ply-input[type="file"] → &::file-selector-button`                                            | 常時                                              | `padding-block: var(--ply-space-1)`                     | `4px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L468](../src/css/components/field.css#L468) | `.ply-input[type="file"] → &::file-selector-button`                                            | 常時                                              | `padding-inline: var(--ply-space-2) var(--ply-space-3)` | `8px 12px`           | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L469](../src/css/components/field.css#L469) | `.ply-input[type="file"] → &::file-selector-button`                                            | 常時                                              | `margin-inline-end: var(--ply-space-3)`                 | `12px`               | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L407](../src/css/components/field.css#L407) | `.ply-input → &:where([data-size="large"])`                                                    | 常時                                              | `padding-block: 0.4375em`                               | `0.4375em`           | 文字サイズまたは行高に追従する比率。式を保持する。                   |
+| [L408](../src/css/components/field.css#L408) | `.ply-input → &:where([data-size="large"])`                                                    | 常時                                              | `padding-inline: 0.5em`                                 | `0.5em`              | 文字サイズまたは行高に追従する比率。式を保持する。                   |
+| [L441](../src/css/components/field.css#L441) | `input.ply-input → &:where(:not([type="file"]))`                                               | 常時                                              | `padding-block: 0`                                      | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L454](../src/css/components/field.css#L454) | `select.ply-input:not([multiple]):not([size])`                                                 | 常時                                              | `padding-inline-end: 2.5em`                             | `2.5em`              | 文字サイズまたは行高に追従する比率。式を保持する。                   |
+| [L477](../src/css/components/field.css#L477) | `.ply-input[type="file"]`                                                                      | 常時                                              | `padding-block: var(--ply-space-2)`                     | `8px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L482](../src/css/components/field.css#L482) | `.ply-input[type="file"] → &::file-selector-button`                                            | 常時                                              | `padding-block: var(--ply-space-1)`                     | `4px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L483](../src/css/components/field.css#L483) | `.ply-input[type="file"] → &::file-selector-button`                                            | 常時                                              | `padding-inline: var(--ply-space-2) var(--ply-space-3)` | `8px 12px`           | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L484](../src/css/components/field.css#L484) | `.ply-input[type="file"] → &::file-selector-button`                                            | 常時                                              | `margin-inline-end: var(--ply-space-3)`                 | `12px`               | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
 
 ## file-input
 
@@ -1350,13 +1350,14 @@ gap・margin・padding・insetの宣言はありません。
 
 ## toggle-group
 
-隣接する切替操作の間は4px。押下面の内側・文字位置・高さは共通Buttonが所有する。
+隣接する切替操作の間は4px。状態を選ぶ操作はピルにし、丸い端に文字が寄らないよう文字のあるButtonだけ左右を1em=14pxへ広げる。押下面の上下・文字位置・高さは共通Buttonが所有する。
 
 対象: [src/css/components/toggle-group.css](../src/css/components/toggle-group.css)
 
-| ソース                                          | セレクタの階層      | 条件 | 宣言値                    | root 16pxでremを換算 | 値の扱い                                                             |
-| ----------------------------------------------- | ------------------- | ---- | ------------------------- | -------------------- | -------------------------------------------------------------------- |
-| [L6](../src/css/components/toggle-group.css#L6) | `.ply-toggle-group` | 常時 | `gap: var(--ply-space-1)` | `4px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| ソース                                            | セレクタの階層                                                     | 条件 | 宣言値                    | root 16pxでremを換算 | 値の扱い                                                             |
+| ------------------------------------------------- | ------------------------------------------------------------------ | ---- | ------------------------- | -------------------- | -------------------------------------------------------------------- |
+| [L6](../src/css/components/toggle-group.css#L6)   | `.ply-toggle-group`                                                | 常時 | `gap: var(--ply-space-1)` | `4px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L16](../src/css/components/toggle-group.css#L16) | `.ply-toggle-group → & > .ply-button:not([data-icon-only="true"])` | 常時 | `padding-inline: 1em`     | `1em`                | 文字サイズまたは行高に追従する比率。式を保持する。                   |
 
 ## toolbar
 

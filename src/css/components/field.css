@@ -312,7 +312,7 @@
     }
     & > span > strong {
       display: block;
-      font-weight: 400;
+      font-weight: var(--ply-label-weight);
     }
     & > span > small {
       display: block;
@@ -346,7 +346,7 @@
       background: var(--ply-info-soft);
     }
     &[data-kind="option"]:has(> input:disabled) {
-      background: var(--ply-background);
+      background: var(--ply-hatch), var(--ply-surface);
       box-shadow: none;
     }
   }
@@ -392,13 +392,15 @@
       border-color: var(--ply-danger);
     }
 
-    &:disabled,
+    /* 読み取り専用は値を読めるので面の色だけ変える。使えない入力は斜線にする。 */
     &[readonly] {
       background: var(--ply-background);
     }
 
     &:disabled {
+      background: var(--ply-hatch), var(--ply-surface);
       color: var(--ply-muted);
+      box-shadow: none;
     }
     &:where([data-size="large"]) {
       --ply-input-size: 2.5em;
@@ -456,6 +458,19 @@
     background-position: right 0.75em center;
     &:dir(rtl) {
       background-position: left 0.75em center;
+    }
+    &:disabled {
+      background-image: url("../assets/caret.svg"), var(--ply-hatch);
+      background-repeat: no-repeat, repeat;
+      background-size: calc(6em / 7), auto;
+      background-position:
+        right 0.75em center,
+        0 0;
+      &:dir(rtl) {
+        background-position:
+          left 0.75em center,
+          0 0;
+      }
     }
   }
   .ply-input[type="file"] {
