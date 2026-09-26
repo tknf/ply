@@ -9,7 +9,7 @@
     /* Cardは紙。枠線を使わず、紙の影と大きな角丸で見せる。 */
     border: 0;
     border-radius: var(--ply-radius-surface);
-    background: var(--ply-surface);
+    background: var(--ply-surface) var(--ply-fill-control);
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
@@ -66,22 +66,27 @@
         block-size: auto;
       }
     }
-    /* 分類のつまみは墨で塗った札。紙の外へ出す位置は利用側の配置に合わせて決める。 */
+    /* 分類のつまみは墨の札。紙の上端をまたいで貼り、かすかな陰影で紙から浮かせる。 */
+    &:has(> .tab) {
+      position: relative;
+      padding-block-start: var(--ply-space-5);
+    }
     & > .tab {
-      inline-size: fit-content;
-      max-inline-size: 100%;
+      position: absolute;
+      inset-block-start: calc(-0.5lh - 0.125rem);
+      inset-inline-start: var(--ply-space-5);
+      max-inline-size: calc(100% - var(--ply-space-5) * 2);
       padding-block: 0.125rem;
       padding-inline: var(--ply-space-2);
-      background: var(--ply-ink);
+      border-radius: var(--ply-radius-mark);
+      background: var(--ply-ink) var(--ply-fill-ink);
+      box-shadow: var(--ply-shadow-control-primary);
       color: var(--ply-surface);
       font-size: var(--ply-small);
       font-weight: 600;
       line-height: var(--ply-small-leading);
       letter-spacing: 0.04em;
       overflow-wrap: anywhere;
-      & + * {
-        margin-block-start: var(--ply-space-2);
-      }
     }
     & > .eyebrow {
       display: flex;

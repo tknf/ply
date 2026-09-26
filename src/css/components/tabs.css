@@ -59,7 +59,8 @@
         }
         /* 今のつまみはインデックスの見出し。墨で塗った四角いつまみにし、下の線とつなげる。 */
         &[data-state="active"] {
-          background: var(--ply-ink);
+          background: var(--ply-ink) var(--ply-fill-ink);
+          box-shadow: var(--ply-shadow-control-primary);
           color: var(--ply-surface);
           font-weight: 600;
           & > .count {

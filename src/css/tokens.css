@@ -161,6 +161,13 @@
       color-mix(in srgb, var(--ply-button-hover) 84%, white) 0%,
       var(--ply-button-hover) 100%
     );
+    /* 墨で塗る札（今のタブ、Cardのつまみ）の手触り。主操作と同じく、べた塗りにせずかすかな陰影を付ける。 */
+    --ply-fill-ink: linear-gradient(
+      176deg,
+      color-mix(in srgb, var(--ply-ink) 82%, white) 0%,
+      var(--ply-ink) 55%,
+      color-mix(in srgb, var(--ply-ink) 92%, black) 100%
+    );
     --ply-emphasis-neutral: linear-gradient(
       135deg,
       var(--ply-surface) 0%,

@@ -117,10 +117,9 @@ const List = () => (
   </div>
 );
 
-const cardSamples = (variant: string) => (
+const cardSamples = () => (
   <>
     <Card
-      class={`specimen-tab-${variant}`}
       title="秋の読書会"
       tab="イベント"
       pinned
@@ -134,7 +133,6 @@ const cardSamples = (variant: string) => (
       <p>最近読んだ本を一冊持ち寄って、小さな感想を交換する会です。</p>
     </Card>
     <Card
-      class={`specimen-tab-${variant}`}
       title="受付の手順についての相談"
       tab="スレッド"
       stacked
@@ -182,21 +180,8 @@ const listItems = [
 /** まだ決めていない形を並べて選ぶ。採用した案だけコンポーネントへ移す。 */
 const Choices = () => (
   <div class="ply-stack">
-    <Section title="案：Cardのつまみの位置" count={3}>
-      <div class="specimen-choices">
-        <figure>
-          <figcaption>1. 上端をまたぐ</figcaption>
-          {cardSamples("straddle")}
-        </figure>
-        <figure>
-          <figcaption>2. 左上の外に出す</figcaption>
-          {cardSamples("above")}
-        </figure>
-        <figure>
-          <figcaption>3. 側面から出る縦のつまみ</figcaption>
-          {cardSamples("side")}
-        </figure>
-      </div>
+    <Section title="Card：上端をまたぐつまみ・固定・重ねた紙" count={2}>
+      <div class="specimen-choices">{cardSamples()}</div>
     </Section>
     <Section title="案：DataList" count={3}>
       <div class="specimen-choices">

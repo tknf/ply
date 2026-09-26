@@ -10,6 +10,7 @@
       padding-inline: var(--ply-space-4);
     }
     & > li {
+      position: relative;
       min-inline-size: 0;
       & + li:not(.divider) {
         border-block-start: var(--ply-stroke-width) solid var(--ply-border);
@@ -106,11 +107,16 @@
       &[data-unread="true"] {
         background: color-mix(in srgb, var(--ply-cover) 28%, var(--ply-surface));
       }
-      /* 現在地はインクの太字と開始側の青い2pxの印。 */
+      /* 現在地は、縁から離して内側に置く青いバー。縁に沿った線にしない。 */
       &[data-current="true"] {
-        box-shadow: inset 0.125rem 0 var(--ply-link);
-        &:dir(rtl) {
-          box-shadow: inset -0.125rem 0 var(--ply-link);
+        &::before {
+          content: "";
+          position: absolute;
+          inset-block: var(--ply-space-2);
+          inset-inline-start: var(--ply-space-1);
+          inline-size: var(--ply-frame-width);
+          border-radius: var(--ply-radius-pill);
+          background: var(--ply-link);
         }
       }
       &[data-unread="true"] > .row > .sender,

@@ -66,9 +66,9 @@
         &::before {
           content: "";
           position: absolute;
-          inset-block: 0.375rem;
-          inset-inline-start: 0;
-          inline-size: 0.125rem;
+          inset-block: var(--ply-space-2);
+          inset-inline-start: var(--ply-space-1);
+          inline-size: var(--ply-frame-width);
           border-radius: var(--ply-radius-pill);
           background: var(--ply-link);
         }
