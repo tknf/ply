@@ -8,21 +8,23 @@
     align-items: start;
     gap: var(--ply-space-1) var(--ply-space-2);
     min-inline-size: 0;
-    padding-block: var(--ply-space-4) var(--ply-space-3);
-    padding-inline: var(--ply-space-4);
+    /* 縁の荒い破線は紙の縁そのものに描くので、その幅を余白に足す。 */
+    padding-block: calc(var(--ply-space-4) + var(--ply-frame-width))
+      calc(var(--ply-space-3) + var(--ply-frame-width));
+    padding-inline: calc(var(--ply-space-4) + var(--ply-frame-width));
     /*
       通知は作業面に貼った付箋。役割の色の紙に、上の縁ののりの帯を一段濃く入れ、下の縁だけを少し浮かせる。
       縁は役割の色の荒い破線。ミシン目（未確定）の細かい破線と分ける。
+      破線は紙の縁に重ねて描き、付箋の影の内側の光を破線の下に隠す（縁と紙の間に明るい隙間を作らない）。
     */
     position: relative;
-    border: var(--ply-frame-width) solid transparent;
     border-radius: var(--ply-radius-surface);
     background:
       linear-gradient(
           color-mix(in srgb, var(--ply-notice-paper) 90%, var(--ply-notice-accent)),
           color-mix(in srgb, var(--ply-notice-paper) 90%, var(--ply-notice-accent))
         )
-        0 0 / 100% var(--ply-space-2) no-repeat,
+        0 0 / 100% calc(var(--ply-space-2) + var(--ply-frame-width)) no-repeat,
       linear-gradient(
         176deg,
         var(--ply-notice-paper),
@@ -36,7 +38,7 @@
     &::after {
       content: "";
       position: absolute;
-      inset: calc(var(--ply-frame-width) * -1);
+      inset: 0;
       border-radius: inherit;
       background: color-mix(in srgb, var(--ply-notice-accent) 40%, var(--ply-notice-paper));
       mask: var(--ply-dashed-frame);
@@ -102,6 +104,8 @@
   }
   @media (forced-colors: active) {
     .ply-notice {
+      outline: var(--ply-frame-width) solid CanvasText;
+      outline-offset: calc(var(--ply-frame-width) * -1);
       background: Canvas;
       box-shadow: none;
     }
