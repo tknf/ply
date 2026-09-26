@@ -708,4 +708,11 @@
   .specimen-example {
     padding-block: var(--ply-space-4);
   }
+  /* Notice案2：付箋を一枚ずつ少し傾けて貼る。 */
+  .specimen-notes-tilted > .ply-notice {
+    rotate: -0.4deg;
+    &:nth-child(even) {
+      rotate: 0.35deg;
+    }
+  }
 }

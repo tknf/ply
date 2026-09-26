@@ -2,18 +2,32 @@
   .ply-notice {
     container: ply-notice / inline-size;
     --ply-notice-accent: var(--ply-info);
-    --ply-notice-fill: var(--ply-emphasis-info);
+    --ply-notice-paper: color-mix(in srgb, var(--ply-blue) 11%, var(--ply-surface));
     display: grid;
     grid-template-columns: minmax(0, 1.5rem) minmax(0, 1fr);
     align-items: start;
     gap: var(--ply-space-1) var(--ply-space-2);
     min-inline-size: 0;
-    padding-block: var(--ply-space-3) var(--ply-space-2);
+    padding-block: var(--ply-space-4) var(--ply-space-3);
     padding-inline: var(--ply-space-4);
-    /* 通知は作業面に書かれた「ここを見て」。枠線を使わず、役割の色の強調の面だけで示す。 */
+    /*
+      通知は作業面に貼った付箋。役割の色の紙に、上の縁ののりの帯を一段濃く入れ、
+      角の立った紙の下の縁だけを少し浮かせる。
+    */
     border: 0;
-    border-radius: var(--ply-radius-field);
-    background: var(--ply-notice-fill);
+    border-radius: var(--ply-radius-mark);
+    background:
+      linear-gradient(
+          color-mix(in srgb, var(--ply-notice-paper) 90%, var(--ply-notice-accent)),
+          color-mix(in srgb, var(--ply-notice-paper) 90%, var(--ply-notice-accent))
+        )
+        0 0 / 100% var(--ply-space-2) no-repeat,
+      linear-gradient(
+        176deg,
+        var(--ply-notice-paper),
+        color-mix(in srgb, var(--ply-notice-paper) 97%, var(--ply-ink))
+      );
+    box-shadow: var(--ply-shadow-note);
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
@@ -52,15 +66,15 @@
     }
     &[data-tone="success"] {
       --ply-notice-accent: var(--ply-success);
-      --ply-notice-fill: var(--ply-emphasis-success);
+      --ply-notice-paper: color-mix(in srgb, var(--ply-green) 12%, var(--ply-surface));
     }
     &[data-tone="warning"] {
       --ply-notice-accent: var(--ply-warning);
-      --ply-notice-fill: var(--ply-emphasis-warning);
+      --ply-notice-paper: var(--ply-butter);
     }
     &[data-tone="danger"] {
       --ply-notice-accent: var(--ply-danger);
-      --ply-notice-fill: var(--ply-emphasis-danger);
+      --ply-notice-paper: color-mix(in srgb, var(--ply-coral) 15%, var(--ply-surface));
     }
     @container ply-notice (inline-size < 24rem) {
       & > .symbol {

@@ -183,6 +183,33 @@ const Choices = () => (
     <Section title="Card：上端をまたぐつまみ・固定・重ねた紙" count={2}>
       <div class="specimen-choices">{cardSamples()}</div>
     </Section>
+    <Section title="案：Notice（付箋）" count={2}>
+      <div class="specimen-choices">
+        {(["straight", "tilted"] as const).map((variant) => (
+          <figure>
+            <figcaption>
+              {variant === "straight"
+                ? "1. まっすぐ貼る"
+                : "2. 少し傾けて貼る（一枚ずつ向きを変える）"}
+            </figcaption>
+            <div class={`ply-stack specimen-notes-${variant}`}>
+              <Notice label="公開期限は明日です" tone="warning">
+                <p>9月16日を過ぎると、共有リンクから記事を閲覧できなくなります。</p>
+              </Notice>
+              <Notice label="変更は保存後に反映されます">
+                <p>入力を終えたら、このページの「設定を保存」を押してください。</p>
+              </Notice>
+              <Notice label="招待を送りました" tone="success">
+                <p>相手が参加すると、メンバーの一覧に表示されます。</p>
+              </Notice>
+              <Notice label="添付ファイルを送信できませんでした" tone="danger">
+                <p>入力した内容は残っています。接続を確認してから、もう一度送信してください。</p>
+              </Notice>
+            </div>
+          </figure>
+        ))}
+      </div>
+    </Section>
     <Section title="DataList：紙の短冊と朱の余白線">
       <div class="specimen-choices">
         <figure>
