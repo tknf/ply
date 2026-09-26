@@ -241,7 +241,7 @@ const changed = [
   ["editable-property", "EditableProperty：値は記入線の上"],
   ["code-block", "CodeBlock：枠線なし、面の色"],
   ["tabs", "Tabs：墨のつまみ"],
-  ["badge", "Badge：ゴム印とミシン目"],
+  ["badge", "Badge：貼ったシールと丸シール、台紙のままの下書き、ゴム印"],
   ["button", "Button：ピル"],
 ] as const;
 

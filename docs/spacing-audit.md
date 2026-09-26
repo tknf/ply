@@ -4,7 +4,7 @@
 
 ## 読み方と対象
 
-- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は945件です。省略した状態別・メディア・コンテナ条件はありません。
+- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は947件です。省略した状態別・メディア・コンテナ条件はありません。
 - CSSの生の宣言、ネストしたセレクタの階層、条件、ソース位置を掲載します。→は親ルールから子ルールへの経路であり、結合済みCSSセレクタではありません。
 - 換算はroot 16pxのremだけです。emはその要素の文字サイズ、lhはその要素の行高、%は包含ブロック、autoは残り幅に依存します。条件外の値や文字拡大時まで同じpxと断定しません。gap二値は縦・横、論理padding二値は開始・終了の順です。
 - 同じ要素の状態別上書きを足し合わせないでください。最終値はレイヤー・詳細度・条件・記述順で決まります。0も、追加しない判断として全件掲載します。
@@ -90,17 +90,19 @@ DropdownMenu・DatePickerの位置計算は起点から4px、画面端から8px�
 
 ## badge
 
-13px/20pxの短い状態表示。上下2pxで高さ24px、左右8pxで短い文言を囲む。印と文言は6px。印の上余白は(行高−印の高さ)/2で先頭行の中心へ置き、複数行でも全体の中央へ移動しない。ゴム印（stamped）は印を消し、2pxの枠の内側に左右7pxを取る。
+13pxの短い状態表示で、一行の高さは24px。折り返した行の間（行の余り2つ分）と上下の縁から文字まで（余白＋行の余り）を同じにするため、行高を24pxと文字の大きさの中間（18.5px）にし、残りを上下2.75pxずつに取る。左右12pxで短い文言を囲む。左右を角丸に近く取り、折り返しても文字を角のカーブに寄せない。日本語は文節の切れ目で折り返す。角丸は紙と同じ16pxで、一行では高さの半分に収まってピルになり、折り返すと16pxの角になって荒い破線の角と合う。丸シール（またはパンチ穴）は文字の0.625倍、文言とは6px。印の上余白は(行高−印の高さ)/2で先頭行の中心へ置き、複数行でも全体の中央へ移動しない。下書きは同じ大きさの切れ目を荒い破線で描き、寸法は変えない。ゴム印（stamped）は印を消し、2pxの枠の内側に左右7pxを取る。傾けた角が張り出す分として、外側の左右に行高の1/8（2.5px）を取る。
 
 対象: [src/css/components/badge.css](../src/css/components/badge.css)
 
-| ソース                                     | セレクタの階層                        | 条件 | 宣言値                                        | root 16pxでremを換算      | 値の扱い                                                             |
-| ------------------------------------------ | ------------------------------------- | ---- | --------------------------------------------- | ------------------------- | -------------------------------------------------------------------- |
-| [L9](../src/css/components/badge.css#L9)   | `.ply-badge`                          | 常時 | `gap: 0.375rem`                               | `6px`                     | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L11](../src/css/components/badge.css#L11) | `.ply-badge`                          | 常時 | `padding-block: 0.125rem`                     | `2px`                     | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L12](../src/css/components/badge.css#L12) | `.ply-badge`                          | 常時 | `padding-inline: 0.5rem`                      | `8px`                     | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L25](../src/css/components/badge.css#L25) | `.ply-badge → &::before`              | 常時 | `margin-block-start: calc((1lh - 0.4em) / 2)` | `calc((1lh - 0.4em) / 2)` | 最初の行の高さと印の高さの差から揃える。                             |
-| [L39](../src/css/components/badge.css#L39) | `.ply-badge → &[data-stamped="true"]` | 常時 | `padding-inline: 0.4375rem`                   | `7px`                     | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| ソース                                     | セレクタの階層                                 | 条件 | 宣言値                                          | root 16pxでremを換算        | 値の扱い                                                             |
+| ------------------------------------------ | ---------------------------------------------- | ---- | ----------------------------------------------- | --------------------------- | -------------------------------------------------------------------- |
+| [L15](../src/css/components/badge.css#L15) | `.ply-badge`                                   | 常時 | `gap: 0.375rem`                                 | `6px`                       | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L21](../src/css/components/badge.css#L21) | `.ply-badge`                                   | 常時 | `padding-block: calc((1.5rem - 1lh) / 2)`       | `calc((24px - 1lh) / 2)`    | 最初の行の高さと印の高さの差から揃える。                             |
+| [L23](../src/css/components/badge.css#L23) | `.ply-badge`                                   | 常時 | `padding-inline: 0.75rem`                       | `12px`                      | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L42](../src/css/components/badge.css#L42) | `.ply-badge → &::before`                       | 常時 | `margin-block-start: calc((1lh - 0.625em) / 2)` | `calc((1lh - 0.625em) / 2)` | 最初の行の高さと印の高さの差から揃える。                             |
+| [L63](../src/css/components/badge.css#L63) | `.ply-badge → &[data-draft="true"] → &::after` | 常時 | `inset: 0`                                      | `0`                         | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L75](../src/css/components/badge.css#L75) | `.ply-badge → &[data-stamped="true"]`          | 常時 | `margin-inline: 0.125lh`                        | `0.125lh`                   | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L76](../src/css/components/badge.css#L76) | `.ply-badge → &[data-stamped="true"]`          | 常時 | `padding-inline: 0.4375rem`                     | `7px`                       | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
 
 ## board-item
 
@@ -1715,6 +1717,11 @@ gap・margin・padding・insetの宣言はありません。
 | [avatar.tsx:3](../catalog/hono-examples/avatar.tsx#L3)                         | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [badge.tsx:3](../catalog/hono-examples/badge.tsx#L3)                           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [badge.tsx:4](../catalog/hono-examples/badge.tsx#L4)                           | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [badge.tsx:21](../catalog/hono-examples/badge.tsx#L21)                         | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [badge.tsx:30](../catalog/hono-examples/badge.tsx#L30)                         | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [badge.tsx:47](../catalog/hono-examples/badge.tsx#L47)                         | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [badge.tsx:64](../catalog/hono-examples/badge.tsx#L64)                         | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [badge.tsx:74](../catalog/hono-examples/badge.tsx#L74)                         | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [board.tsx:26](../catalog/hono-examples/board.tsx#L26)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [button.tsx:4](../catalog/hono-examples/button.tsx#L4)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [button.tsx:5](../catalog/hono-examples/button.tsx#L5)                         | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
