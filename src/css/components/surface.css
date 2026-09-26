@@ -29,7 +29,7 @@
       background: var(--ply-info-soft);
     }
     &[data-kind="panel"] {
-      border-radius: var(--ply-radius-control);
+      border-radius: var(--ply-radius-surface);
       box-shadow: var(--ply-shadow-control);
     }
     &[data-layout="document"] > .body {

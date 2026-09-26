@@ -3,7 +3,7 @@
     min-inline-size: 0;
     margin: 0;
     border: var(--ply-stroke-width) solid var(--ply-border);
-    border-radius: var(--ply-radius-control);
+    border-radius: var(--ply-radius-surface);
     color: var(--ply-text);
     & > figcaption {
       display: flex;

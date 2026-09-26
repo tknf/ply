@@ -6,7 +6,12 @@ export default () => (
         <p>利用時間とキャンセル条件を見直します。</p>
         <Badge tone="info">確認待ち</Badge>
       </Card>
-      <Card title="秋の読書会" href="/reservation" footer={<span>9月25日 18:00 · あと4席</span>}>
+      <Card
+        title="秋の読書会"
+        href="/reservation"
+        pinned
+        footer={<span>9月25日 18:00 · あと4席</span>}
+      >
         <p>最近読んだ本を一冊持ち寄って、小さな感想を交換する会です。</p>
         <Badge tone="success">受付中</Badge>
       </Card>

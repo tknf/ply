@@ -5,6 +5,9 @@ export default () => (
       <Badge draft>下書き</Badge>
       <Badge tone="info">確認待ち</Badge>
       <Badge tone="success">公開中</Badge>
+      <Badge tone="success" stamped>
+        承認済み
+      </Badge>
       <Badge tone="warning">期限が近づいています</Badge>
       <Badge tone="danger">送信失敗</Badge>
     </div>

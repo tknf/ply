@@ -11,7 +11,7 @@
       gap: var(--ply-space-2);
       padding-block: var(--ply-space-2);
       padding-inline: 0;
-      border-radius: 0.375rem;
+      border-radius: var(--ply-radius-control);
       font-family: var(--ply-control-font-family);
       font-size: var(--ply-body);
       font-weight: 400;

@@ -223,7 +223,7 @@
       align-items: stretch;
       gap: var(--ply-space-1);
       min-inline-size: 0;
-      border-radius: 0.25rem;
+      border-radius: var(--ply-radius-mark);
       color: var(--ply-text);
       font-size: var(--ply-small);
       line-height: 1rem;
@@ -530,7 +530,7 @@
                 padding-block: 0.1875rem;
                 padding-inline: 0.625rem 0.25rem;
                 overflow: hidden;
-                border-radius: 0.375rem;
+                border-radius: var(--ply-radius-mark);
                 background: var(--ply-calendar-event-fill);
                 color: var(--ply-calendar-event-color);
                 font-size: var(--ply-calendar-meta-size);

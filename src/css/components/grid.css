@@ -12,7 +12,7 @@
       min-inline-size: 100%;
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-spacing: 0;
-      border-radius: var(--ply-radius-control);
+      border-radius: var(--ply-radius-surface);
       background: var(--ply-surface);
 
       & > caption {
@@ -86,7 +86,7 @@
       padding-block: var(--ply-space-3);
       padding-inline: var(--ply-space-4);
       border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-control);
+      border-radius: var(--ply-radius-surface);
       background: var(--ply-surface);
       color: var(--ply-muted);
     }

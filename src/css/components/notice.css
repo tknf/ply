@@ -13,7 +13,7 @@
     /* 通知は作業面に書かれた「ここを見て」。影で浮かせず、役割の色の強調の面と淡い枠で示す。 */
     border: var(--ply-stroke-width) solid
       color-mix(in srgb, var(--ply-notice-accent) 22%, var(--ply-surface));
-    border-radius: var(--ply-radius-control);
+    border-radius: var(--ply-radius-surface);
     background: var(--ply-notice-fill);
     color: var(--ply-text);
     font-size: var(--ply-label);

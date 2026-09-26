@@ -17,6 +17,37 @@
     transition:
       border-color var(--ply-duration) ease,
       box-shadow var(--ply-duration) ease;
+    /* 固定した項目は、上端をマスキングテープで留める。端はちぎったように少しぎざぎざにする。 */
+    &[data-pinned="true"] {
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        inset-block-start: -0.5rem;
+        inset-inline-start: calc(50% - 2.25rem);
+        inline-size: 4.5rem;
+        block-size: 1.125rem;
+        background: color-mix(in srgb, var(--ply-butter) 78%, transparent);
+        clip-path: polygon(
+          0 12%,
+          4% 0,
+          96% 0,
+          100% 14%,
+          97% 32%,
+          100% 50%,
+          97% 68%,
+          100% 86%,
+          96% 100%,
+          4% 100%,
+          0 88%,
+          3% 68%,
+          0 50%,
+          3% 32%
+        );
+        rotate: -2deg;
+        pointer-events: none;
+      }
+    }
     &:has(> .title > a:hover) {
       border-color: color-mix(in srgb, var(--ply-link) 32%, var(--ply-border));
       box-shadow: var(--ply-shadow-control-hover);

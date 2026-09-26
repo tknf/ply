@@ -182,6 +182,11 @@
     --ply-leading: 1.625;
     --ply-label-leading: calc(10 / 7);
     --ply-small-leading: calc(20 / 13);
+    /*
+      角丸は役割で四つだけ。押す物はピル、箱（欄・枠・面・メニュー）は--ply-radius-surface、
+      箱の内側の行は同心の--ply-radius-control、小さな札（チェック・キー・予定）は--ply-radius-mark。
+    */
+    --ply-radius-mark: 0.25rem;
     --ply-radius-control: 0.5rem;
     --ply-radius-surface: 0.75rem;
     --ply-radius-pill: 999rem;
@@ -204,6 +209,14 @@
       135deg,
       color-mix(in srgb, var(--ply-muted) 18%, var(--ply-surface)) 0 var(--ply-stroke-width),
       transparent var(--ply-stroke-width) calc(var(--ply-hatch-step) * 0.7071068)
+    );
+    /* 蛍光ペン。文字の下半分に、端が少し斜めに切れた帯を引く。 */
+    --ply-highlighter: linear-gradient(
+      100deg,
+      transparent 0.15em,
+      color-mix(in srgb, var(--ply-mark) 90%, transparent) 0.35em,
+      color-mix(in srgb, var(--ply-mark) 75%, transparent) calc(100% - 0.35em),
+      transparent calc(100% - 0.15em)
     );
     --ply-frame-width: 0.125rem;
     --ply-frame-color: color-mix(in srgb, var(--ply-text) 32%, var(--ply-surface));

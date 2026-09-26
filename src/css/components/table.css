@@ -34,7 +34,7 @@
       padding-block: var(--ply-space-2);
       padding-inline: var(--ply-space-3);
       border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-control);
+      border-radius: var(--ply-radius-surface);
       border-color: color-mix(in srgb, var(--ply-info) 22%, var(--ply-surface));
       background: var(--ply-emphasis-info);
     }

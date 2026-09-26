@@ -14,7 +14,7 @@
       padding-inline: 0.35em;
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-block-end-width: 0.125rem;
-      border-radius: 0.25rem;
+      border-radius: var(--ply-radius-mark);
       background: var(--ply-surface);
       color: var(--ply-muted);
       font: inherit;

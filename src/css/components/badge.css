@@ -33,6 +33,23 @@
       outline: var(--ply-stroke-width) dashed var(--ply-perforation);
       outline-offset: calc(var(--ply-stroke-width) * -1);
     }
+    /* 確定した状態はゴム印。二重の枠と少しの傾きで、押した跡に見せる。 */
+    &[data-stamped="true"] {
+      grid-template-columns: minmax(0, 1fr);
+      padding-inline: 0.4375rem;
+      border: var(--ply-frame-width) solid currentColor;
+      border-radius: var(--ply-radius-mark);
+      background: transparent;
+      box-shadow:
+        inset 0 0 0 var(--ply-stroke-width) var(--ply-surface),
+        inset 0 0 0 calc(var(--ply-stroke-width) * 2) currentColor;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      rotate: -3deg;
+      &::before {
+        display: none;
+      }
+    }
     &[data-tone="info"] {
       --ply-badge-ink: var(--ply-info);
     }

@@ -16,6 +16,7 @@ import { formatExample } from "./code-format";
 import { componentGroups } from "./component-groups";
 import { redesignedComponentIds } from "./redesigned-components";
 import { AppPatterns } from "./pages/app-patterns";
+import { Specimen } from "./pages/specimen";
 import { WorkspaceProject } from "./pages/workspace";
 import { WorkspaceMail } from "./pages/inbox";
 import { examples } from "./examples";
@@ -51,6 +52,7 @@ export const paths = [
   "/review/components",
   ...componentGroups.map((_, index) => `/review/components/group-${index}`),
   "/review/applications",
+  "/review/specimen",
   "/review/workspace",
   "/review/mail",
   "/review/mail/meeting",
@@ -131,6 +133,15 @@ for (const mailPath of [
     ),
   );
 app.get("/review/studio", (c) => c.redirect("/review/components"));
+app.get("/review/specimen", (c) =>
+  c.html(
+    html`<!doctype html>${(
+        <Document title="規則の見本">
+          <Specimen />
+        </Document>
+      )}`,
+  ),
+);
 app.get("/review/applications", (c) =>
   c.html(
     html`<!doctype html>${(

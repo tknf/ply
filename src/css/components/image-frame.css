@@ -10,7 +10,7 @@
       aspect-ratio: 5 / 7;
       overflow: hidden;
       border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-control);
+      border-radius: var(--ply-radius-surface);
       background: var(--ply-background);
       & > img {
         position: absolute;
