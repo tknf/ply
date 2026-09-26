@@ -78,7 +78,7 @@ export const MessageList = ({
                 <Row class="row" href={item.href} aria-current={item.current ? "page" : undefined}>
                   {avatars && (
                     <span class="avatar" aria-hidden="true">
-                      {item.avatar ?? <Icon name="mail" />}
+                      <span class="stamp">{item.avatar ?? <Icon name="mail" />}</span>
                     </span>
                   )}
                   <span class="sender">{item.sender.trim() || "差出人不明"}</span>
@@ -88,6 +88,12 @@ export const MessageList = ({
                       {item.threadCount != null && item.threadCount > 1 && (
                         <span class="count" aria-label={`${item.threadCount}件の会話`}>
                           {item.threadCount}
+                        </span>
+                      )}
+                      {item.attachments != null && item.attachments > 0 && (
+                        <span class="attachment" aria-label={`添付ファイル${item.attachments}件`}>
+                          <Icon name="file" />
+                          {item.attachments}
                         </span>
                       )}
                     </strong>
@@ -110,12 +116,6 @@ export const MessageList = ({
                       ) : (
                         <span>{item.time}</span>
                       ))}
-                    {item.attachments != null && item.attachments > 0 && (
-                      <span class="attachment" aria-label={`添付ファイル${item.attachments}件`}>
-                        <Icon name="file" />
-                        {item.attachments}
-                      </span>
-                    )}
                     <span class="unread" hidden={!item.unread}>
                       <span class="ply-visually-hidden">未読</span>
                     </span>

@@ -97,18 +97,34 @@
           );
           box-shadow: inset 0 var(--ply-stroke-width) 0 rgb(255 255 255 / 22%);
         }
-        /* 半券と本体の境目のミシン目。半券と同じ道具の色で引く。 */
+        /*
+          半券と本体の境目のミシン目。一本の破線を境目にまたがらせ、色の付いた半券の側は白、
+          本体の側は道具の色で引く。
+        */
         &::after {
           content: "";
           position: absolute;
           inset-block: 0;
-          inset-inline-start: var(--ply-ticket-stub);
-          inline-size: var(--ply-stroke-width);
-          background: repeating-linear-gradient(
-            to bottom,
-            color-mix(in srgb, var(--ply-ticket-accent) 60%, var(--ply-surface)) 0 var(--ply-dash),
-            transparent var(--ply-dash) calc(var(--ply-dash) + var(--ply-dash-gap))
-          );
+          inset-inline-start: calc(var(--ply-ticket-stub) - var(--ply-stroke-width));
+          inline-size: calc(var(--ply-stroke-width) * 2);
+          background:
+            repeating-linear-gradient(
+                to bottom,
+                rgb(255 255 255 / 85%) 0 var(--ply-dash),
+                transparent var(--ply-dash) calc(var(--ply-dash) + var(--ply-dash-gap))
+              )
+              0 0 / 50% 100% no-repeat,
+            repeating-linear-gradient(
+                to bottom,
+                var(--ply-ticket-accent) 0 var(--ply-dash),
+                transparent var(--ply-dash) calc(var(--ply-dash) + var(--ply-dash-gap))
+              )
+              100% 0 / 50% 100% no-repeat;
+        }
+        &:dir(rtl)::after {
+          background-position:
+            100% 0,
+            0 0;
         }
         & > .title {
           grid-column: 2;
