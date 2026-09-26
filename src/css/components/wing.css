@@ -21,10 +21,11 @@
         position: relative;
         min-inline-size: 0;
         overflow: hidden;
-        border: var(--ply-stroke-width) solid var(--ply-border);
+        /* Wingは作業面の後ろの紙。寸法を保つため枠の幅は残し、線は見せずに紙の影で縁取る。 */
+        border: var(--ply-stroke-width) solid transparent;
         border-radius: var(--ply-radius-surface);
         background: color-mix(in srgb, var(--ply-surface) 97%, var(--ply-ink));
-        box-shadow: var(--ply-shadow-surface);
+        box-shadow: var(--ply-shadow-paper);
         color: var(--ply-text);
         & > summary {
           display: flex;
