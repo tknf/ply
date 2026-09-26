@@ -243,6 +243,9 @@
     --ply-dash: 0.375rem;
     --ply-dash-gap: 0.25rem;
     --ply-perforation: color-mix(in srgb, var(--ply-muted) 55%, var(--ply-surface));
+    /* 切り離せる紙（切手・切符）のパンチ穴。穴の半径と並びの間隔。 */
+    --ply-punch-hole: 0.125rem;
+    --ply-punch-pitch: 0.375rem;
     --ply-wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 6'%3E%3Cpath d='M0 3 Q3 0.5 6 3 T12 3' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E");
     --ply-wave-size: 0.75rem 0.375rem;
     /*

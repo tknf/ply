@@ -33,7 +33,7 @@ export const MessageList = ({
   items,
   state = "ready",
   stateContent,
-  previewLines = 2,
+  previewLines = 1,
   newSince,
   class: className,
   ...attributes
@@ -81,7 +81,6 @@ export const MessageList = ({
                       <span class="stamp">{item.avatar ?? <Icon name="mail" />}</span>
                     </span>
                   )}
-                  <span class="sender">{item.sender.trim() || "差出人不明"}</span>
                   <span class="body">
                     <strong class="title">
                       <span class="subject">{item.title.trim() || "（件名なし）"}</span>
@@ -97,7 +96,10 @@ export const MessageList = ({
                         </span>
                       )}
                     </strong>
-                    {item.preview && <span class="preview">{item.preview}</span>}
+                    <span class="summary">
+                      <span class="sender">{item.sender.trim() || "差出人不明"}</span>
+                      {item.preview && <span class="preview">{item.preview}</span>}
+                    </span>
                     {(item.state || item.unavailableReason) && (
                       <span class="status">
                         {item.unavailableReason ??

@@ -15,7 +15,6 @@
     line-height: var(--ply-label-leading);
     & > li {
       --ply-ticket-stub: 2.5rem;
-      --ply-ticket-notch: 0.375rem;
       min-inline-size: 0;
       /* 押す物と同じく、接地から遠方まで濃度を減らす影。切り欠きの形に沿わせる。 */
       filter: drop-shadow(0 0 var(--ply-stroke-width) rgb(36 57 70 / 16%))
@@ -52,34 +51,35 @@
         text-decoration: none;
         color: inherit;
         overflow-wrap: anywhere;
+        /* 半券と本体の境目に、切手と同じパンチ穴を縦に並べて抜く。上下の端の穴は半分に切れて切り欠きになる。 */
         mask:
           radial-gradient(
-              circle at var(--ply-ticket-stub) 0,
-              transparent var(--ply-ticket-notch),
-              #000 calc(var(--ply-ticket-notch) + var(--ply-stroke-width))
+              circle,
+              transparent var(--ply-punch-hole),
+              #000 calc(var(--ply-punch-hole) + var(--ply-stroke-width) / 4)
             )
-            0 0 / 100% 51% no-repeat,
-          radial-gradient(
-              circle at var(--ply-ticket-stub) 100%,
-              transparent var(--ply-ticket-notch),
-              #000 calc(var(--ply-ticket-notch) + var(--ply-stroke-width))
-            )
-            0 100% / 100% 51% no-repeat;
+            calc(var(--ply-ticket-stub) - var(--ply-punch-pitch) / 2)
+            calc(var(--ply-punch-pitch) / -2) / var(--ply-punch-pitch) var(--ply-punch-pitch)
+            repeat-y,
+          linear-gradient(#000 0 0) 0 0 / calc(var(--ply-ticket-stub) - var(--ply-punch-pitch) / 2)
+            100% no-repeat,
+          linear-gradient(#000 0 0) 100% 0 /
+            calc(100% - var(--ply-ticket-stub) - var(--ply-punch-pitch) / 2) 100% no-repeat;
         transition: translate var(--ply-duration) ease;
         &:dir(rtl) {
           mask:
             radial-gradient(
-                circle at calc(100% - var(--ply-ticket-stub)) 0,
-                transparent var(--ply-ticket-notch),
-                #000 calc(var(--ply-ticket-notch) + var(--ply-stroke-width))
+                circle,
+                transparent var(--ply-punch-hole),
+                #000 calc(var(--ply-punch-hole) + var(--ply-stroke-width) / 4)
               )
-              0 0 / 100% 51% no-repeat,
-            radial-gradient(
-                circle at calc(100% - var(--ply-ticket-stub)) 100%,
-                transparent var(--ply-ticket-notch),
-                #000 calc(var(--ply-ticket-notch) + var(--ply-stroke-width))
-              )
-              0 100% / 100% 51% no-repeat;
+              calc(100% - (var(--ply-ticket-stub) - var(--ply-punch-pitch) / 2))
+              calc(var(--ply-punch-pitch) / -2) / var(--ply-punch-pitch) var(--ply-punch-pitch)
+              repeat-y,
+            linear-gradient(#000 0 0) 0 0 /
+              calc(100% - var(--ply-ticket-stub) - var(--ply-punch-pitch) / 2) 100% no-repeat,
+            linear-gradient(#000 0 0) 100% 0 /
+              calc(var(--ply-ticket-stub) - var(--ply-punch-pitch) / 2) 100% no-repeat;
         }
         /* 半券。道具の色で塗り、押す物と同じかすかな陰影を付ける。 */
         &::before {
@@ -96,35 +96,6 @@
             color-mix(in srgb, var(--ply-ticket-accent) 90%, black) 100%
           );
           box-shadow: inset 0 var(--ply-stroke-width) 0 rgb(255 255 255 / 22%);
-        }
-        /*
-          半券と本体の境目のミシン目。一本の破線を境目にまたがらせ、色の付いた半券の側は白、
-          本体の側は道具の色で引く。
-        */
-        &::after {
-          content: "";
-          position: absolute;
-          inset-block: 0;
-          inset-inline-start: calc(var(--ply-ticket-stub) - var(--ply-stroke-width));
-          inline-size: calc(var(--ply-stroke-width) * 2);
-          background:
-            repeating-linear-gradient(
-                to bottom,
-                rgb(255 255 255 / 85%) 0 var(--ply-dash),
-                transparent var(--ply-dash) calc(var(--ply-dash) + var(--ply-dash-gap))
-              )
-              0 0 / 50% 100% no-repeat,
-            repeating-linear-gradient(
-                to bottom,
-                var(--ply-ticket-accent) 0 var(--ply-dash),
-                transparent var(--ply-dash) calc(var(--ply-dash) + var(--ply-dash-gap))
-              )
-              100% 0 / 50% 100% no-repeat;
-        }
-        &:dir(rtl)::after {
-          background-position:
-            100% 0,
-            0 0;
         }
         & > .title {
           grid-column: 2;
@@ -169,8 +140,7 @@
           grid-template-columns: minmax(0, 1fr) 1rem;
           padding-inline: var(--ply-space-4);
           mask: none;
-          &::before,
-          &::after {
+          &::before {
             display: none;
           }
           & > :is(.title, .description, .preview) {

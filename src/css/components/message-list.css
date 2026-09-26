@@ -32,13 +32,12 @@
         border-block-start: 0;
       }
       & > .row {
+        /* 行は二段だけ。件名と「差出人 – 書き出し」を左に、時刻と封蝋を右の上下中央に置く。 */
         display: grid;
         grid-template-columns: minmax(0, 1fr) auto;
-        grid-template-areas:
-          "sender meta"
-          "body body";
-        align-items: baseline;
-        gap: 0.125rem var(--ply-space-3);
+        grid-template-areas: "body meta";
+        align-items: center;
+        gap: var(--ply-space-3);
         min-inline-size: 0;
         padding-block: var(--ply-space-3);
         padding-inline: var(--ply-space-5);
@@ -57,7 +56,7 @@
         */
         & > .avatar {
           grid-area: avatar;
-          align-self: start;
+          align-self: center;
           inline-size: 2.25rem;
           block-size: 2.25rem;
           color: var(--ply-muted);
@@ -73,9 +72,15 @@
             padding-inline: 0.3125rem;
             background: var(--ply-surface);
             mask:
-              linear-gradient(#000 0 0) 50% / calc(100% - 0.375rem) calc(100% - 0.375rem) no-repeat,
-              radial-gradient(circle, transparent 0.125rem, #000 0.140625rem) -0.1875rem -0.1875rem
-                / 0.375rem 0.375rem round;
+              linear-gradient(#000 0 0) 50% / calc(100% - var(--ply-punch-pitch))
+                calc(100% - var(--ply-punch-pitch)) no-repeat,
+              radial-gradient(
+                  circle,
+                  transparent var(--ply-punch-hole),
+                  #000 calc(var(--ply-punch-hole) + var(--ply-stroke-width) / 4)
+                )
+                calc(var(--ply-punch-pitch) / -2) calc(var(--ply-punch-pitch) / -2) /
+                var(--ply-punch-pitch) var(--ply-punch-pitch) round;
             & > .ply-avatar {
               inline-size: 100%;
               block-size: 100%;
@@ -84,26 +89,25 @@
             }
           }
         }
-        /* 差出人は二行まで折り返し、それより長い名前だけを省略する。狭い幅でも誰からの手紙かを読めるようにする。 */
-        & > .sender {
-          grid-area: sender;
-          display: -webkit-box;
-          min-inline-size: 0;
-          overflow: hidden;
-          color: var(--ply-text);
-          overflow-wrap: anywhere;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 2;
-        }
         & > .body {
           grid-area: body;
+          display: grid;
+          gap: 0.125rem;
           min-inline-size: 0;
           & > .title {
-            display: block;
+            display: flex;
+            align-items: baseline;
+            min-inline-size: 0;
             font-weight: 400;
-            overflow-wrap: anywhere;
+            & > .subject {
+              min-inline-size: 0;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
             & > :is(.count, .attachment) {
               display: inline-flex;
+              flex: none;
               align-items: center;
               gap: 0.125rem;
               margin-inline-start: var(--ply-space-2);
@@ -113,18 +117,36 @@
               font-variant-numeric: tabular-nums;
             }
           }
-          & > .preview {
-            display: block;
-            overflow: hidden;
-            max-block-size: 2lh;
-            margin-block-start: 0.125rem;
-            overflow-wrap: anywhere;
+          /* 差出人と書き出しは一行にまとめ、はみ出す分は書き出しの側で省略する。 */
+          & > .summary {
+            display: flex;
+            align-items: baseline;
+            min-inline-size: 0;
             color: var(--ply-muted);
             font-size: var(--ply-small);
             line-height: var(--ply-small-leading);
+            white-space: nowrap;
+            & > .sender {
+              flex: 0 1 auto;
+              min-inline-size: 0;
+              max-inline-size: 60%;
+              overflow: hidden;
+              color: var(--ply-text);
+              text-overflow: ellipsis;
+            }
+            & > .preview {
+              flex: 1 1 0;
+              min-inline-size: 0;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              &::before {
+                content: "–";
+                margin-inline: 0.375em;
+              }
+            }
           }
           & > .status {
-            display: inline-block;
+            justify-self: start;
             margin-block-start: var(--ply-space-1);
             color: var(--ply-muted);
             font-size: var(--ply-small);
@@ -165,8 +187,8 @@
           }
         }
       }
-      &[data-unread="true"] > .row > .sender,
-      &[data-unread="true"] > .row > .body > .title {
+      &[data-unread="true"] > .row > .body > .title,
+      &[data-unread="true"] > .row > .body > .summary > .sender {
         font-weight: 600;
       }
       /* 今、隣で開いている手紙は、縁から離して内側に置く青いバー。 */
@@ -192,20 +214,55 @@
         border-radius: var(--ply-radius-pill);
       }
     }
-    /* 差出人の切手は左に置き、三段の本文をその右へ並べる。 */
+    /* 差出人の切手は左に置き、二段の本文をその右へ並べる。 */
     &[data-avatars="true"] > li:nth-child(even) > .row > .avatar {
       rotate: 2deg;
     }
     &[data-avatars="true"] > li > .row {
       grid-template-columns: 2.25rem minmax(0, 1fr) auto;
-      grid-template-areas:
-        "avatar sender meta"
-        "avatar body body";
+      grid-template-areas: "avatar body meta";
     }
-    &[data-preview-lines="1"] > li > .row > .body > .preview {
-      max-block-size: 1lh;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+    /* 書き出しを二行にする指定では、差出人の下で折り返す。 */
+    &[data-preview-lines="2"] > li > .row > .body > .summary {
+      flex-wrap: wrap;
+      white-space: normal;
+      & > .preview {
+        flex-basis: 100%;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        &::before {
+          content: none;
+        }
+      }
+    }
+    /* 狭い幅では、時刻を件名の行だけに置き、「差出人 – 書き出し」は下の段で幅いっぱいに使う。 */
+    @container ply-message-list (inline-size < 30rem) {
+      & > li > .row {
+        grid-template-areas:
+          "title meta"
+          "summary summary"
+          "status status";
+        row-gap: 0.125rem;
+        & > .body {
+          display: contents;
+          & > .title {
+            grid-area: title;
+          }
+          & > .summary {
+            grid-area: summary;
+          }
+          & > .status {
+            grid-area: status;
+          }
+        }
+      }
+      &[data-avatars="true"] > li > .row {
+        grid-template-areas:
+          "avatar title meta"
+          "avatar summary summary"
+          "avatar status status";
+      }
     }
     /* 状態は語彙で示す。空は重ねた紙、読み込み中は斜線の行、失敗は付箋。 */
     & > .state {
