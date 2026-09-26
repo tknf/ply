@@ -47,7 +47,7 @@
       aspect-ratio: 8 / 5;
       overflow: hidden;
       padding: 0;
-      border-radius: calc(var(--ply-radius-surface) - 0.1875rem);
+      border-radius: var(--ply-radius-control);
       background:
         linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent),
         var(--color-picker-hue-color, var(--ply-link));
