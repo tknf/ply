@@ -4,7 +4,7 @@
 
 ## 読み方と対象
 
-- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は910件です。省略した状態別・メディア・コンテナ条件はありません。
+- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は914件です。省略した状態別・メディア・コンテナ条件はありません。
 - CSSの生の宣言、ネストしたセレクタの階層、条件、ソース位置を掲載します。→は親ルールから子ルールへの経路であり、結合済みCSSセレクタではありません。
 - 換算はroot 16pxのremだけです。emはその要素の文字サイズ、lhはその要素の行高、%は包含ブロック、autoは残り幅に依存します。条件外の値や文字拡大時まで同じpxと断定しません。gap二値は縦・横、論理padding二値は開始・終了の順です。
 - 同じ要素の状態別上書きを足し合わせないでください。最終値はレイヤー・詳細度・条件・記述順で決まります。0も、追加しない判断として全件掲載します。
@@ -1158,18 +1158,22 @@ gap・margin・padding・insetの宣言はありません。
 
 ## split-view
 
-見開きの各ページは上16px・下20px・左右24px。狭い面では左右20pxにして本文幅を残す。のどへ向かう陰影は24px（広い配置では32px）で消え、のどの線で左右を分ける。縦積みでもページの内側比率を保つ。操作用rangeはページの外で幅を調整する。
+見開きの各ページは上16px・下20px・左右24px。狭い面では左右20pxにして本文幅を残す。のどへ向かう陰影は24px（広い配置では32px）で消え、のどの線で左右を分ける。縦積みでもページの内側比率を保つ。幅を変えられる時は、ページを一続きのままにし、幅24pxの持ち手をのどの上に重ねる。しおり紐は幅12px・長さ52pxで紙の上端から垂らす。操作用の範囲入力は見た目から隠す。
 
 対象: [src/css/components/split-view.css](../src/css/components/split-view.css)
 
-| ソース                                            | セレクタの階層                                                    | 条件                                             | 宣言値                                                        | root 16pxでremを換算                      | 値の扱い                                                   |
-| ------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------- | ----------------------------------------- | ---------------------------------------------------------- |
-| [L23](../src/css/components/split-view.css#L23)   | `.ply-split-view → & > .panes → & > :is(.primary, .secondary)`    | 常時                                             | `padding-block: var(--ply-space-4) var(--ply-space-5)`        | `16px 20px`                               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。 |
-| [L24](../src/css/components/split-view.css#L24)   | `.ply-split-view → & > .panes → & > :is(.primary, .secondary)`    | 常時                                             | `padding-inline: var(--ply-space-6)`                          | `24px`                                    | この要素自身の内側。上記の領域・操作高・境界の計算を適用。 |
-| [L41](../src/css/components/split-view.css#L41)   | `.ply-split-view → & > .panes > :is(.primary, .secondary)`        | @container ply-split-view (inline-size < 32rem)  | `padding-inline: var(--ply-space-5)`                          | `20px`                                    | この要素自身の内側。上記の領域・操作高・境界の計算を適用。 |
-| [L85](../src/css/components/split-view.css#L85)   | `.ply-split-view → &[data-resizable="true"][data-state] > .panes` | @container ply-split-view (inline-size >= 52rem) | `gap: 0`                                                      | `0`                                       | この位置では余白を足さない。上記の所有範囲に従う。         |
-| [L109](../src/css/components/split-view.css#L109) | `.ply-split-view → & > .panes > .handle → &::before`              | 常時                                             | `inset-block: 0`                                              | `0`                                       | この位置では余白を足さない。上記の所有範囲に従う。         |
-| [L110](../src/css/components/split-view.css#L110) | `.ply-split-view → & > .panes > .handle → &::before`              | 常時                                             | `inset-inline-start: calc(50% - var(--ply-stroke-width) / 2)` | `calc(50% - var(--ply-stroke-width) / 2)` | 通常フローの余白ではなく、固定・絶対配置の端からの距離。   |
+| ソース                                            | セレクタの階層                                                   | 条件                                            | 宣言値                                                                   | root 16pxでremを換算                              | 値の扱い                                                   |
+| ------------------------------------------------- | ---------------------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------- | ---------------------------------------------------------- |
+| [L23](../src/css/components/split-view.css#L23)   | `.ply-split-view → & > .panes → & > :is(.primary, .secondary)`   | 常時                                            | `padding-block: var(--ply-space-4) var(--ply-space-5)`                   | `16px 20px`                                       | この要素自身の内側。上記の領域・操作高・境界の計算を適用。 |
+| [L24](../src/css/components/split-view.css#L24)   | `.ply-split-view → & > .panes → & > :is(.primary, .secondary)`   | 常時                                            | `padding-inline: var(--ply-space-6)`                                     | `24px`                                            | この要素自身の内側。上記の領域・操作高・境界の計算を適用。 |
+| [L41](../src/css/components/split-view.css#L41)   | `.ply-split-view → & > .panes > :is(.primary, .secondary)`       | @container ply-split-view (inline-size < 32rem) | `padding-inline: var(--ply-space-5)`                                     | `20px`                                            | この要素自身の内側。上記の領域・操作高・境界の計算を適用。 |
+| [L100](../src/css/components/split-view.css#L100) | `.ply-split-view → & > .panes > .handle`                         | 常時                                            | `inset-block: 0`                                                         | `0`                                               | この位置では余白を足さない。上記の所有範囲に従う。         |
+| [L101](../src/css/components/split-view.css#L101) | `.ply-split-view → & > .panes > .handle`                         | 常時                                            | `inset-inline-start: calc(100% * var(--splitter-value) / 100 - 0.75rem)` | `calc(100% * var(--splitter-value) / 100 - 12px)` | 通常フローの余白ではなく、固定・絶対配置の端からの距離。   |
+| [L111](../src/css/components/split-view.css#L111) | `.ply-split-view → & > .panes > .handle → &::before`             | 常時                                            | `inset-block: 0`                                                         | `0`                                               | この位置では余白を足さない。上記の所有範囲に従う。         |
+| [L112](../src/css/components/split-view.css#L112) | `.ply-split-view → & > .panes > .handle → &::before`             | 常時                                            | `inset-inline-start: calc(50% - var(--ply-stroke-width) / 2)`            | `calc(50% - var(--ply-stroke-width) / 2)`         | 通常フローの余白ではなく、固定・絶対配置の端からの距離。   |
+| [L119](../src/css/components/split-view.css#L119) | `.ply-split-view → & > .panes > .handle → & > .grip`             | 常時                                            | `inset-block-start: 0`                                                   | `0`                                               | この位置では余白を足さない。上記の所有範囲に従う。         |
+| [L120](../src/css/components/split-view.css#L120) | `.ply-split-view → & > .panes > .handle → & > .grip`             | 常時                                            | `inset-inline-start: calc(50% - 0.375rem)`                               | `calc(50% - 6px)`                                 | 通常フローの余白ではなく、固定・絶対配置の端からの距離。   |
+| [L128](../src/css/components/split-view.css#L128) | `.ply-split-view → & > .panes > .handle → & > .grip → &::before` | 常時                                            | `inset: 0`                                                               | `0`                                               | この位置では余白を足さない。上記の所有範囲に従う。         |
 
 ## statistic
 
@@ -1772,7 +1776,8 @@ gap・margin・padding・insetの宣言はありません。
 | [progress.tsx:3](../catalog/hono-examples/progress.tsx#L3)                   | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [range.tsx:4](../catalog/hono-examples/range.tsx#L4)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [range.tsx:25](../catalog/hono-examples/range.tsx#L25)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [split-view.tsx:14](../catalog/hono-examples/split-view.tsx#L14)             | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [split-view.tsx:22](../catalog/hono-examples/split-view.tsx#L22)             | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [split-view.tsx:31](../catalog/hono-examples/split-view.tsx#L31)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [statistic.tsx:3](../catalog/hono-examples/statistic.tsx#L3)                 | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [suggestion.tsx:4](../catalog/hono-examples/suggestion.tsx#L4)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [suggestion.tsx:17](../catalog/hono-examples/suggestion.tsx#L17)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |

@@ -1,5 +1,4 @@
 import { useId, type Child } from "hono/jsx";
-import { Icon } from "./icon";
 import { classes, type ElementProps } from "./types";
 
 export type SplitViewProps = ElementProps<"div"> & {
@@ -55,9 +54,7 @@ export const SplitView = ({
             aria-orientation="vertical"
             data-splitter-target="handle"
           >
-            <span class="grip" aria-hidden="true">
-              <Icon name="grip" />
-            </span>
+            <span class="grip" aria-hidden="true" />
           </div>
         )}
         <div class="secondary">{secondary}</div>
