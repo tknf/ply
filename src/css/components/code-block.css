@@ -1,58 +1,129 @@
 @layer components {
+  /*
+    コードは方眼ノートに書く。等幅の文字を升目に沿わせ、行の高さと升目の大きさをそろえる。
+    名前はCardの分類のつまみと同じ墨の札で、紙の上端をまたいで貼る。
+    目印の行には蛍光ペンを引き、行番号は余白に小さく書いてコピーには含めない。
+  */
   .ply-code-block {
+    --ply-code-grid: color-mix(in srgb, var(--ply-ruled-line) 50%, transparent);
+    /* 札とコピーの行の高さの半分。紙はこの分だけ下から始め、行の中心を紙の上端に重ねる。 */
+    --ply-code-straddle: 1rem;
+    position: relative;
+    isolation: isolate;
     min-inline-size: 0;
     margin: 0;
-    /* 色を敷いたトレイに、コードを書いた白い紙を載せる。紙の角はトレイと同心にする。 */
-    padding-block-end: var(--ply-space-1);
-    padding-inline: var(--ply-space-1);
-    border: 0;
-    border-radius: var(--ply-radius-field);
-    background: color-mix(in srgb, var(--ply-background) 60%, var(--ply-surface));
     color: var(--ply-text);
+    /* 紙は後ろの層に描く。札の行が折り返して高くなっても、紙の始まりは一行目の中心のまま。 */
+    &::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: var(--ply-code-straddle) 0 0;
+      border-radius: var(--ply-radius-surface);
+      background: var(--ply-surface) var(--ply-fill-paper);
+      box-shadow: var(--ply-shadow-paper);
+    }
+    /* 名前の札とコピーの操作は、紙の上端をまたいで並べる。 */
     & > figcaption {
       display: flex;
+      /* 文字を大きくして札とButtonが並ばない時だけ、Buttonを次の行へ送る。 */
       flex-wrap: wrap;
       align-items: center;
+      justify-content: space-between;
       gap: var(--ply-space-2);
-      padding-block: var(--ply-space-2);
-      padding-inline: var(--ply-space-2);
+      min-block-size: calc(var(--ply-code-straddle) * 2);
+      padding-inline: var(--ply-space-5) var(--ply-space-3);
       font-size: var(--ply-small);
       line-height: var(--ply-small-leading);
-      color: var(--ply-muted);
-      &[data-copy="true"] {
-        min-block-size: 3rem;
-      }
       & > .label {
-        flex: 1;
         min-inline-size: 0;
-        font-weight: var(--ply-label-weight);
+        padding-block: 0.125rem;
+        padding-inline: var(--ply-space-2);
+        border-radius: 0;
+        background: var(--ply-ink) var(--ply-fill-ink);
+        box-shadow: var(--ply-shadow-control-primary);
+        color: var(--ply-surface);
+        font-weight: 600;
+        letter-spacing: 0.04em;
         overflow-wrap: anywhere;
       }
     }
     & > pre {
+      /* 長い行は中でスクロールする。行の長さで外側の幅を押し広げないよう、横の大きさを内容から切り離す。 */
+      contain: inline-size;
       max-inline-size: 100%;
       max-block-size: 28rem;
       overflow: auto;
       margin: 0;
-      padding-block: var(--ply-space-3);
-      padding-inline: var(--ply-space-4);
-      border-radius: var(--ply-radius-control);
-      background: var(--ply-surface);
+      padding-block: var(--ply-space-2) var(--ply-space-4);
+      padding-inline: var(--ply-space-5);
+      border-radius: 0 0 var(--ply-radius-surface) var(--ply-radius-surface);
+      /* 升目は行の高さと同じ大きさ。本文の始まりから数え、スクロールしても文字と一緒に動く。 */
+      background:
+        linear-gradient(to bottom, var(--ply-code-grid) var(--ply-stroke-width), transparent 0),
+        linear-gradient(to right, var(--ply-code-grid) var(--ply-stroke-width), transparent 0);
+      background-size: 1lh 1lh;
+      background-origin: content-box;
+      background-attachment: local;
       font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
       font-size: var(--ply-small);
       line-height: var(--ply-small-leading);
       tab-size: 2;
+      /* コードは右から左に読むページでも、左から右に書く。 */
+      direction: ltr;
+      text-align: start;
       overscroll-behavior-inline: contain;
       &:focus-visible {
         outline-offset: -0.125rem;
       }
       & > code {
+        display: block;
+        inline-size: max-content;
+        min-inline-size: 100%;
         font: inherit;
+        counter-reset: ply-code-line;
+        & > .line {
+          display: block;
+          &[data-highlighted="true"] {
+            background: var(--ply-highlighter);
+          }
+        }
       }
     }
-    @media (pointer: coarse) {
-      & > figcaption[data-copy="true"] {
-        min-block-size: 3.75rem;
+    /* 行番号は、左の余白に小さく書く。横にスクロールしても余白に残る。 */
+    &[data-line-numbers="true"] > pre > code > .line::before {
+      content: counter(ply-code-line);
+      counter-increment: ply-code-line;
+      position: sticky;
+      inset-inline-start: 0;
+      display: inline-block;
+      min-inline-size: 3ch;
+      margin-inline-end: var(--ply-space-4);
+      padding-inline-end: var(--ply-space-2);
+      background: linear-gradient(to right, var(--ply-surface) 85%, transparent);
+      color: var(--ply-muted);
+      text-align: end;
+      user-select: none;
+    }
+  }
+  @media (pointer: coarse) {
+    .ply-code-block {
+      --ply-code-straddle: 1.375rem;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-code-block {
+      &::before {
+        border: var(--ply-stroke-width) solid CanvasText;
+        background: Canvas;
+        box-shadow: none;
+      }
+      & > pre {
+        background: Canvas;
+      }
+      & > pre > code > .line[data-highlighted="true"] {
+        background: Mark;
+        color: MarkText;
       }
     }
   }

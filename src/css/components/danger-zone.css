@@ -1,31 +1,62 @@
 @layer components {
+  /*
+    取り返しのつかない操作は「取扱注意」の紙に載せる。
+    枠で囲まず、紙の影で作業面から浮かせ、始まりの側の端に危険の色の縞を貼る。
+    縞はCalendarの予定の帯と同じく端に置き、紙の角に沿わせる。
+  */
   .ply-danger-zone {
+    position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: var(--ply-space-3);
     min-inline-size: 0;
-    padding-block: var(--ply-space-4) var(--ply-space-3);
-    padding-inline: var(--ply-space-5);
-    /* 作業面から切り離す区画。影で浮かせず、危険の色のミシン目で囲む。 */
-    border: var(--ply-stroke-width) dashed
-      color-mix(in srgb, var(--ply-danger) 45%, var(--ply-surface));
-    border-radius: var(--ply-radius-field);
-    background: var(--ply-surface);
+    padding-block: var(--ply-space-4);
+    padding-inline: calc(var(--ply-space-5) + 0.625rem) var(--ply-space-5);
+    border: 0;
+    border-radius: var(--ply-radius-surface);
+    background: var(--ply-surface) var(--ply-fill-paper);
+    box-shadow: var(--ply-shadow-paper);
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     overflow-wrap: anywhere;
+    /*
+      縞は紙と同じ大きさの層の、始まりの側の縁（border）にだけ見せる。
+      縞だけを細い要素にすると角丸が縮むため、紙の外周の角をそのまま使う。
+    */
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 0;
+      border-inline-start: 0.625rem solid transparent;
+      border-radius: inherit;
+      /* 貼った縞の紙にも、上から下へわずかな陰影を重ねて厚みを見せる。 */
+      background:
+        linear-gradient(to bottom, rgb(255 255 255 / 18%), transparent 30%, rgb(36 57 70 / 12%))
+          border-box,
+        var(--ply-caution-stripe) border-box;
+      mask:
+        linear-gradient(black 0 0) border-box exclude,
+        linear-gradient(black 0 0) padding-box;
+      pointer-events: none;
+    }
   }
 
   .ply-danger-zone > .heading {
     display: grid;
-    gap: var(--ply-space-2);
+    gap: var(--ply-space-1);
     min-inline-size: 0;
     & > h2 {
+      margin: 0;
       color: var(--ply-danger);
       font-size: var(--ply-body);
       font-weight: 600;
       line-height: var(--ply-control-leading);
+    }
+    & > p {
+      margin: 0;
+      color: var(--ply-muted);
     }
   }
 
@@ -33,6 +64,9 @@
     display: grid;
     gap: var(--ply-space-2);
     min-inline-size: 0;
+    & > * {
+      margin: 0;
+    }
     &:empty {
       display: none;
     }
@@ -55,8 +89,12 @@
   }
   @media (forced-colors: active) {
     .ply-danger-zone {
+      border: var(--ply-stroke-width) solid CanvasText;
       background: Canvas;
       box-shadow: none;
+      &::before {
+        background: CanvasText;
+      }
     }
   }
 }

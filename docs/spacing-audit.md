@@ -4,7 +4,7 @@
 
 ## 読み方と対象
 
-- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は933件です。省略した状態別・メディア・コンテナ条件はありません。
+- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は939件です。省略した状態別・メディア・コンテナ条件はありません。
 - CSSの生の宣言、ネストしたセレクタの階層、条件、ソース位置を掲載します。→は親ルールから子ルールへの経路であり、結合済みCSSセレクタではありません。
 - 換算はroot 16pxのremだけです。emはその要素の文字サイズ、lhはその要素の行高、%は包含ブロック、autoは残り幅に依存します。条件外の値や文字拡大時まで同じpxと断定しません。gap二値は縦・横、論理padding二値は開始・終了の順です。
 - 同じ要素の状態別上書きを足し合わせないでください。最終値はレイヤー・詳細度・条件・記述順で決まります。0も、追加しない判断として全件掲載します。
@@ -382,21 +382,24 @@ ClickUpの実測に合わせる。月のセルは上4px・下8px・左右4px、�
 
 ## code-block
 
-外枠は1px、角丸8px。見出しは上下8px・左右12px、ラベルと操作のgap8px。コピーありの行はButton32px＋上下16px＝48px、タッチ時は44＋16＝60pxをJS起動前にも予約する。コード本文は上下12px・左右16px、既定marginは0。見出しと本文を1pxの境界で分け、28remを超える長文と長い行は領域内でスクロールする。コピー結果は共通Toastで浮かせ、本文へ余白を足さない。
+方眼ノートの紙。名前の札とコピーの行は高さ32px（タッチ時44px）をJS起動前にも予約し、紙はその半分の16px（タッチ時22px）下から始めて行の中心を紙の上端に重ねる。行の左右は20px・12px、札とButtonのgap8px。文字を大きくして並ばない時だけButtonを次の行へ送り、紙の始まりは一行目の中心のまま。コード本文は上8px・下16px・左右20px（16pxの角丸に文字が寄らない幅）。升目は行の高さと同じ大きさで本文の始まりから数える。行番号は3文字分と右8px、本文まで16px。28remを超える長文と長い行は領域内でスクロールし、行の長さで外側の幅を広げない。コピー結果は共通Toastで浮かせ、本文へ余白を足さない。
 
 対象: [src/css/components/code-block.css](../src/css/components/code-block.css)
 
-| ソース                                          | セレクタの階層                     | 条件 | 宣言値                                  | root 16pxでremを換算 | 値の扱い                                                             |
-| ----------------------------------------------- | ---------------------------------- | ---- | --------------------------------------- | -------------------- | -------------------------------------------------------------------- |
-| [L4](../src/css/components/code-block.css#L4)   | `.ply-code-block`                  | 常時 | `margin: 0`                             | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
-| [L6](../src/css/components/code-block.css#L6)   | `.ply-code-block`                  | 常時 | `padding-block-end: var(--ply-space-1)` | `4px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L7](../src/css/components/code-block.css#L7)   | `.ply-code-block`                  | 常時 | `padding-inline: var(--ply-space-1)`    | `4px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L16](../src/css/components/code-block.css#L16) | `.ply-code-block → & > figcaption` | 常時 | `gap: var(--ply-space-2)`               | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L17](../src/css/components/code-block.css#L17) | `.ply-code-block → & > figcaption` | 常時 | `padding-block: var(--ply-space-2)`     | `8px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L18](../src/css/components/code-block.css#L18) | `.ply-code-block → & > figcaption` | 常時 | `padding-inline: var(--ply-space-2)`    | `8px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L36](../src/css/components/code-block.css#L36) | `.ply-code-block → & > pre`        | 常時 | `margin: 0`                             | `0`                  | この位置では余白を足さない。上記の所有範囲に従う。                   |
-| [L37](../src/css/components/code-block.css#L37) | `.ply-code-block → & > pre`        | 常時 | `padding-block: var(--ply-space-3)`     | `12px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L38](../src/css/components/code-block.css#L38) | `.ply-code-block → & > pre`        | 常時 | `padding-inline: var(--ply-space-4)`    | `16px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| ソース                                            | セレクタの階層                                                               | 条件 | 宣言値                                                  | root 16pxでremを換算           | 値の扱い                                                             |
+| ------------------------------------------------- | ---------------------------------------------------------------------------- | ---- | ------------------------------------------------------- | ------------------------------ | -------------------------------------------------------------------- |
+| [L14](../src/css/components/code-block.css#L14)   | `.ply-code-block`                                                            | 常時 | `margin: 0`                                             | `0`                            | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L21](../src/css/components/code-block.css#L21)   | `.ply-code-block → &::before`                                                | 常時 | `inset: var(--ply-code-straddle) 0 0`                   | `var(--ply-code-straddle) 0 0` | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
+| [L33](../src/css/components/code-block.css#L33)   | `.ply-code-block → & > figcaption`                                           | 常時 | `gap: var(--ply-space-2)`                               | `8px`                          | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L35](../src/css/components/code-block.css#L35)   | `.ply-code-block → & > figcaption`                                           | 常時 | `padding-inline: var(--ply-space-5) var(--ply-space-3)` | `20px 12px`                    | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L40](../src/css/components/code-block.css#L40)   | `.ply-code-block → & > figcaption → & > .label`                              | 常時 | `padding-block: 0.125rem`                               | `2px`                          | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L41](../src/css/components/code-block.css#L41)   | `.ply-code-block → & > figcaption → & > .label`                              | 常時 | `padding-inline: var(--ply-space-2)`                    | `8px`                          | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L57](../src/css/components/code-block.css#L57)   | `.ply-code-block → & > pre`                                                  | 常時 | `margin: 0`                                             | `0`                            | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L58](../src/css/components/code-block.css#L58)   | `.ply-code-block → & > pre`                                                  | 常時 | `padding-block: var(--ply-space-2) var(--ply-space-4)`  | `8px 16px`                     | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L59](../src/css/components/code-block.css#L59)   | `.ply-code-block → & > pre`                                                  | 常時 | `padding-inline: var(--ply-space-5)`                    | `20px`                         | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L98](../src/css/components/code-block.css#L98)   | `.ply-code-block → &[data-line-numbers="true"] > pre > code > .line::before` | 常時 | `inset-inline-start: 0`                                 | `0`                            | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L101](../src/css/components/code-block.css#L101) | `.ply-code-block → &[data-line-numbers="true"] > pre > code > .line::before` | 常時 | `margin-inline-end: var(--ply-space-4)`                 | `16px`                         | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L102](../src/css/components/code-block.css#L102) | `.ply-code-block → &[data-line-numbers="true"] > pre > code > .line::before` | 常時 | `padding-inline-end: var(--ply-space-2)`                | `8px`                          | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
 
 ## color-picker
 
@@ -529,18 +532,22 @@ ClickUpの実測に合わせる。月のセルは上4px・下8px・左右4px、�
 
 ## danger-zone
 
-通常領域との境界の後16px。影響の説明と操作は12pxで区切り、同じ操作群の中は8px。重大な操作だからといって操作コンポーネント自体の文字や高さを変えない。
+取扱注意の紙として上下16px・左右20px。始まりの側は縞の10pxを足して30px。見出しと説明は4pxで結び、見出し・本文・操作は12pxで区切り、同じ操作群の中は8px。重大な操作だからといって操作コンポーネント自体の文字や高さを変えない。
 
 対象: [src/css/components/danger-zone.css](../src/css/components/danger-zone.css)
 
-| ソース                                           | セレクタの階層                | 条件 | 宣言値                                                 | root 16pxでremを換算 | 値の扱い                                                             |
-| ------------------------------------------------ | ----------------------------- | ---- | ------------------------------------------------------ | -------------------- | -------------------------------------------------------------------- |
-| [L5](../src/css/components/danger-zone.css#L5)   | `.ply-danger-zone`            | 常時 | `gap: var(--ply-space-3)`                              | `12px`               | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L7](../src/css/components/danger-zone.css#L7)   | `.ply-danger-zone`            | 常時 | `padding-block: var(--ply-space-4) var(--ply-space-3)` | `16px 12px`          | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L8](../src/css/components/danger-zone.css#L8)   | `.ply-danger-zone`            | 常時 | `padding-inline: var(--ply-space-5)`                   | `20px`               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L22](../src/css/components/danger-zone.css#L22) | `.ply-danger-zone > .heading` | 常時 | `gap: var(--ply-space-2)`                              | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L34](../src/css/components/danger-zone.css#L34) | `.ply-danger-zone > .body`    | 常時 | `gap: var(--ply-space-2)`                              | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L46](../src/css/components/danger-zone.css#L46) | `.ply-danger-zone > .actions` | 常時 | `gap: var(--ply-space-2)`                              | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| ソース                                           | セレクタの階層                         | 条件 | 宣言値                                                                   | root 16pxでremを換算     | 値の扱い                                                             |
+| ------------------------------------------------ | -------------------------------------- | ---- | ------------------------------------------------------------------------ | ------------------------ | -------------------------------------------------------------------- |
+| [L11](../src/css/components/danger-zone.css#L11) | `.ply-danger-zone`                     | 常時 | `gap: var(--ply-space-3)`                                                | `12px`                   | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L13](../src/css/components/danger-zone.css#L13) | `.ply-danger-zone`                     | 常時 | `padding-block: var(--ply-space-4)`                                      | `16px`                   | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L14](../src/css/components/danger-zone.css#L14) | `.ply-danger-zone`                     | 常時 | `padding-inline: calc(var(--ply-space-5) + 0.625rem) var(--ply-space-5)` | `calc(20px + 10px) 20px` | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L30](../src/css/components/danger-zone.css#L30) | `.ply-danger-zone → &::before`         | 常時 | `inset: 0`                                                               | `0`                      | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L48](../src/css/components/danger-zone.css#L48) | `.ply-danger-zone > .heading`          | 常時 | `gap: var(--ply-space-1)`                                                | `4px`                    | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L51](../src/css/components/danger-zone.css#L51) | `.ply-danger-zone > .heading → & > h2` | 常時 | `margin: 0`                                                              | `0`                      | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L58](../src/css/components/danger-zone.css#L58) | `.ply-danger-zone > .heading → & > p`  | 常時 | `margin: 0`                                                              | `0`                      | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L65](../src/css/components/danger-zone.css#L65) | `.ply-danger-zone > .body`             | 常時 | `gap: var(--ply-space-2)`                                                | `8px`                    | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L68](../src/css/components/danger-zone.css#L68) | `.ply-danger-zone > .body → & > *`     | 常時 | `margin: 0`                                                              | `0`                      | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L80](../src/css/components/danger-zone.css#L80) | `.ply-danger-zone > .actions`          | 常時 | `gap: var(--ply-space-2)`                                                | `8px`                    | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
 
 ## data-list
 
@@ -684,20 +691,19 @@ ClickUpの実測に合わせる。月のセルは上4px・下8px・左右4px、�
 
 ## editable-property
 
-属性名と値は4pxで結び、表示から編集へ変わっても行の内側2px・左右8pxを保つ。複数操作の間は8px。Buttonの文字・高さは共通定義が所有する。編集中は2pxの濃い太枠の内側8pxで入力と操作を囲み、今ここを書き換えていることを示す。
+属性名と値は4pxで結ぶ。値の行は上下2px、書き始めは編集中の欄の文字と同じ位置（欄の左右0.75emと枠1px）、終わりは2px。書き終えた印は値の後8px。編集中は罫線の位置に欄と確定・取消を8pxで並べ、欄の外に枠や余白を足さない。Buttonの文字・高さは共通定義が所有する。
 
 対象: [src/css/components/editable-property.css](../src/css/components/editable-property.css)
 
-| ソース                                                 | セレクタの階層                                | 条件 | 宣言値                                        | root 16pxでremを換算 | 値の扱い                                                             |
-| ------------------------------------------------------ | --------------------------------------------- | ---- | --------------------------------------------- | -------------------- | -------------------------------------------------------------------- |
-| [L4](../src/css/components/editable-property.css#L4)   | `.ply-editable-property`                      | 常時 | `gap: var(--ply-space-1)`                     | `4px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L17](../src/css/components/editable-property.css#L17) | `.ply-editable-property > .preview`           | 常時 | `gap: var(--ply-space-2)`                     | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L20](../src/css/components/editable-property.css#L20) | `.ply-editable-property > .preview`           | 常時 | `padding-block: 0.125rem`                     | `2px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L21](../src/css/components/editable-property.css#L21) | `.ply-editable-property > .preview`           | 常時 | `padding-inline: var(--ply-space-2) 0.125rem` | `8px 2px`            | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L50](../src/css/components/editable-property.css#L50) | `.ply-editable-property > .editor`            | 常時 | `gap: var(--ply-space-2)`                     | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L53](../src/css/components/editable-property.css#L53) | `.ply-editable-property > .editor`            | 常時 | `padding-block: var(--ply-space-2)`           | `8px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L54](../src/css/components/editable-property.css#L54) | `.ply-editable-property > .editor`            | 常時 | `padding-inline: var(--ply-space-2)`          | `8px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L66](../src/css/components/editable-property.css#L66) | `.ply-editable-property > .editor > .actions` | 常時 | `gap: var(--ply-space-2)`                     | `8px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| ソース                                                   | セレクタの階層                                          | 条件 | 宣言値                                                                             | root 16pxでremを換算                                          | 値の扱い                                                             |
+| -------------------------------------------------------- | ------------------------------------------------------- | ---- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------------- |
+| [L8](../src/css/components/editable-property.css#L8)     | `.ply-editable-property`                                | 常時 | `gap: var(--ply-space-1)`                                                          | `4px`                                                         | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L21](../src/css/components/editable-property.css#L21)   | `.ply-editable-property > .preview`                     | 常時 | `gap: var(--ply-space-2)`                                                          | `8px`                                                         | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L24](../src/css/components/editable-property.css#L24)   | `.ply-editable-property > .preview`                     | 常時 | `padding-block: 0.125rem`                                                          | `2px`                                                         | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L26](../src/css/components/editable-property.css#L26)   | `.ply-editable-property > .preview`                     | 常時 | `padding-inline: calc(var(--ply-label) * 0.75 + var(--ply-stroke-width)) 0.125rem` | `calc(var(--ply-label) * 0.75 + var(--ply-stroke-width)) 2px` | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L63](../src/css/components/editable-property.css#L63)   | `.ply-editable-property > .preview > .value → &::after` | 常時 | `margin-inline-start: var(--ply-space-2)`                                          | `8px`                                                         | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L91](../src/css/components/editable-property.css#L91)   | `.ply-editable-property > .editor`                      | 常時 | `gap: var(--ply-space-2)`                                                          | `8px`                                                         | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L104](../src/css/components/editable-property.css#L104) | `.ply-editable-property > .editor > .actions`           | 常時 | `gap: var(--ply-space-2)`                                                          | `8px`                                                         | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
 
 ## empty-state
 
@@ -1697,133 +1703,137 @@ gap・margin・padding・insetの宣言はありません。
 
 コンポーネントのCSSだけでなく、この配置も見た目へ加算されます。TagにはTagGroup、連続DisclosureにはDisclosureGroupを使います。汎用Stack/Clusterを使う例は以下の全箇所です。
 
-| ソース                                                                       | 配置          | data-space | 所有元                                                               |
-| ---------------------------------------------------------------------------- | ------------- | ---------- | -------------------------------------------------------------------- |
-| [action-list.tsx:3](../catalog/hono-examples/action-list.tsx#L3)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [avatar.tsx:3](../catalog/hono-examples/avatar.tsx#L3)                       | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [badge.tsx:3](../catalog/hono-examples/badge.tsx#L3)                         | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [badge.tsx:4](../catalog/hono-examples/badge.tsx#L4)                         | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [board.tsx:26](../catalog/hono-examples/board.tsx#L26)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [button.tsx:4](../catalog/hono-examples/button.tsx#L4)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [button.tsx:5](../catalog/hono-examples/button.tsx#L5)                       | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [button.tsx:9](../catalog/hono-examples/button.tsx#L9)                       | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [button.tsx:15](../catalog/hono-examples/button.tsx#L15)                     | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [button.tsx:21](../catalog/hono-examples/button.tsx#L21)                     | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [button.tsx:37](../catalog/hono-examples/button.tsx#L37)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [button.tsx:40](../catalog/hono-examples/button.tsx#L40)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [button.tsx:42](../catalog/hono-examples/button.tsx#L42)                     | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [button.tsx:70](../catalog/hono-examples/button.tsx#L70)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [button.tsx:72](../catalog/hono-examples/button.tsx#L72)                     | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [button.tsx:98](../catalog/hono-examples/button.tsx#L98)                     | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [calendar.tsx:129](../catalog/hono-examples/calendar.tsx#L129)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [card.tsx:3](../catalog/hono-examples/card.tsx#L3)                           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [card.tsx:4](../catalog/hono-examples/card.tsx#L4)                           | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [card.tsx:24](../catalog/hono-examples/card.tsx#L24)                         | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [carousel.tsx:4](../catalog/hono-examples/carousel.tsx#L4)                   | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [code-block.tsx:17](../catalog/hono-examples/code-block.tsx#L17)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [color-picker.tsx:4](../catalog/hono-examples/color-picker.tsx#L4)           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [color-picker.tsx:13](../catalog/hono-examples/color-picker.tsx#L13)         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [command-menu.tsx:3](../catalog/hono-examples/command-menu.tsx#L3)           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [comparison.tsx:4](../catalog/hono-examples/comparison.tsx#L4)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [composer.tsx:12](../catalog/hono-examples/composer.tsx#L12)                 | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [context-bar.tsx:17](../catalog/hono-examples/context-bar.tsx#L17)           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [context-bar.tsx:18](../catalog/hono-examples/context-bar.tsx#L18)           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [context-bar.tsx:22](../catalog/hono-examples/context-bar.tsx#L22)           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [context-bar.tsx:31](../catalog/hono-examples/context-bar.tsx#L31)           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [context-bar.tsx:49](../catalog/hono-examples/context-bar.tsx#L49)           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [context-bar.tsx:70](../catalog/hono-examples/context-bar.tsx#L70)           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [context-bar.tsx:91](../catalog/hono-examples/context-bar.tsx#L91)           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [context-bar.tsx:126](../catalog/hono-examples/context-bar.tsx#L126)         | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [context-bar.tsx:141](../catalog/hono-examples/context-bar.tsx#L141)         | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [context-bar.tsx:144](../catalog/hono-examples/context-bar.tsx#L144)         | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [danger-zone.tsx:4](../catalog/hono-examples/danger-zone.tsx#L4)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [danger-zone.tsx:84](../catalog/hono-examples/danger-zone.tsx#L84)           | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [date-picker.tsx:4](../catalog/hono-examples/date-picker.tsx#L4)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [date-picker.tsx:76](../catalog/hono-examples/date-picker.tsx#L76)           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [dialog.tsx:4](../catalog/hono-examples/dialog.tsx#L4)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [dialog.tsx:63](../catalog/hono-examples/dialog.tsx#L63)                     | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [dialog.tsx:78](../catalog/hono-examples/dialog.tsx#L78)                     | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [dialog.tsx:118](../catalog/hono-examples/dialog.tsx#L118)                   | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [disclosure.tsx:4](../catalog/hono-examples/disclosure.tsx#L4)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [disclosure.tsx:14](../catalog/hono-examples/disclosure.tsx#L14)             | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [disclosure.tsx:25](../catalog/hono-examples/disclosure.tsx#L25)             | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [disclosure.tsx:52](../catalog/hono-examples/disclosure.tsx#L52)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [disclosure.tsx:56](../catalog/hono-examples/disclosure.tsx#L56)             | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [divider.tsx:4](../catalog/hono-examples/divider.tsx#L4)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [dropdown-menu.tsx:11](../catalog/hono-examples/dropdown-menu.tsx#L11)       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [dropdown-menu.tsx:131](../catalog/hono-examples/dropdown-menu.tsx#L131)     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [dropdown-menu.tsx:168](../catalog/hono-examples/dropdown-menu.tsx#L168)     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [dropdown-menu.tsx:183](../catalog/hono-examples/dropdown-menu.tsx#L183)     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [editable-property.tsx:4](../catalog/hono-examples/editable-property.tsx#L4) | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [empty-state.tsx:3](../catalog/hono-examples/empty-state.tsx#L3)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [error-summary.tsx:3](../catalog/hono-examples/error-summary.tsx#L3)         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [field-group.tsx:4](../catalog/hono-examples/field-group.tsx#L4)             | `ply-form`    | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [field.tsx:19](../catalog/hono-examples/field.tsx#L19)                       | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [field.tsx:45](../catalog/hono-examples/field.tsx#L45)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [field.tsx:89](../catalog/hono-examples/field.tsx#L89)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [field.tsx:179](../catalog/hono-examples/field.tsx#L179)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [file-input.tsx:4](../catalog/hono-examples/file-input.tsx#L4)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [file-input.tsx:17](../catalog/hono-examples/file-input.tsx#L17)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [filter-bar.tsx:4](../catalog/hono-examples/filter-bar.tsx#L4)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [filter-bar.tsx:5](../catalog/hono-examples/filter-bar.tsx#L5)               | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [filter-bar.tsx:15](../catalog/hono-examples/filter-bar.tsx#L15)             | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [filter-bar.tsx:29](../catalog/hono-examples/filter-bar.tsx#L29)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [grid.tsx:14](../catalog/hono-examples/grid.tsx#L14)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [hover-card.tsx:4](../catalog/hono-examples/hover-card.tsx#L4)               | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [icon.tsx:3](../catalog/hono-examples/icon.tsx#L3)                           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [icon.tsx:4](../catalog/hono-examples/icon.tsx#L4)                           | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [icon.tsx:17](../catalog/hono-examples/icon.tsx#L17)                         | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [icon.tsx:25](../catalog/hono-examples/icon.tsx#L25)                         | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [image-cropper.tsx:4](../catalog/hono-examples/image-cropper.tsx#L4)         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [image-cropper.tsx:15](../catalog/hono-examples/image-cropper.tsx#L15)       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [image-frame.tsx:4](../catalog/hono-examples/image-frame.tsx#L4)             | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [image-frame.tsx:6](../catalog/hono-examples/image-frame.tsx#L6)             | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [input-group.tsx:4](../catalog/hono-examples/input-group.tsx#L4)             | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [input-group.tsx:58](../catalog/hono-examples/input-group.tsx#L58)           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [keycap.tsx:3](../catalog/hono-examples/keycap.tsx#L3)                       | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [loading.tsx:3](../catalog/hono-examples/loading.tsx#L3)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [loading.tsx:14](../catalog/hono-examples/loading.tsx#L14)                   | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [message-list.tsx:3](../catalog/hono-examples/message-list.tsx#L3)           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [notice.tsx:3](../catalog/hono-examples/notice.tsx#L3)                       | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [page-header.tsx:4](../catalog/hono-examples/page-header.tsx#L4)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [picker.tsx:11](../catalog/hono-examples/picker.tsx#L11)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [popover.tsx:4](../catalog/hono-examples/popover.tsx#L4)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [popover.tsx:10](../catalog/hono-examples/popover.tsx#L10)                   | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [popover.tsx:63](../catalog/hono-examples/popover.tsx#L63)                   | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [popover.tsx:88](../catalog/hono-examples/popover.tsx#L88)                   | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [popover.tsx:110](../catalog/hono-examples/popover.tsx#L110)                 | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [progress.tsx:3](../catalog/hono-examples/progress.tsx#L3)                   | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [range.tsx:4](../catalog/hono-examples/range.tsx#L4)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [range.tsx:25](../catalog/hono-examples/range.tsx#L25)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [split-view.tsx:22](../catalog/hono-examples/split-view.tsx#L22)             | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [split-view.tsx:31](../catalog/hono-examples/split-view.tsx#L31)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [statistic.tsx:3](../catalog/hono-examples/statistic.tsx#L3)                 | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [suggestion.tsx:4](../catalog/hono-examples/suggestion.tsx#L4)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [suggestion.tsx:17](../catalog/hono-examples/suggestion.tsx#L17)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [surface.tsx:3](../catalog/hono-examples/surface.tsx#L3)                     | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [switch.tsx:4](../catalog/hono-examples/switch.tsx#L4)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [switch.tsx:17](../catalog/hono-examples/switch.tsx#L17)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [table-of-contents.tsx:4](../catalog/hono-examples/table-of-contents.tsx#L4) | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [table.tsx:57](../catalog/hono-examples/table.tsx#L57)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [tabs.tsx:4](../catalog/hono-examples/tabs.tsx#L4)                           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [tag-input.tsx:4](../catalog/hono-examples/tag-input.tsx#L4)                 | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [timeline.tsx:4](../catalog/hono-examples/timeline.tsx#L4)                   | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [timeline.tsx:5](../catalog/hono-examples/timeline.tsx#L5)                   | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [timeline.tsx:25](../catalog/hono-examples/timeline.tsx#L25)                 | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [timeline.tsx:37](../catalog/hono-examples/timeline.tsx#L37)                 | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [toast.tsx:4](../catalog/hono-examples/toast.tsx#L4)                         | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [toggle-group.tsx:4](../catalog/hono-examples/toggle-group.tsx#L4)           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [toolbar.tsx:4](../catalog/hono-examples/toolbar.tsx#L4)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [toolbar.tsx:5](../catalog/hono-examples/toolbar.tsx#L5)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [toolbar.tsx:36](../catalog/hono-examples/toolbar.tsx#L36)                   | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [tooltip.tsx:4](../catalog/hono-examples/tooltip.tsx#L4)                     | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [tree.tsx:4](../catalog/hono-examples/tree.tsx#L4)                           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [treegrid.tsx:4](../catalog/hono-examples/treegrid.tsx#L4)                   | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [wing.tsx:34](../catalog/hono-examples/wing.tsx#L34)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [wing.tsx:47](../catalog/hono-examples/wing.tsx#L47)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [wing.tsx:48](../catalog/hono-examples/wing.tsx#L48)                         | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [wing.tsx:59](../catalog/hono-examples/wing.tsx#L59)                         | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [wing.tsx:73](../catalog/hono-examples/wing.tsx#L73)                         | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [wing.tsx:82](../catalog/hono-examples/wing.tsx#L82)                         | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [wing.tsx:86](../catalog/hono-examples/wing.tsx#L86)                         | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
-| [wing.tsx:95](../catalog/hono-examples/wing.tsx#L95)                         | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| ソース                                                                         | 配置          | data-space | 所有元                                                               |
+| ------------------------------------------------------------------------------ | ------------- | ---------- | -------------------------------------------------------------------- |
+| [action-list.tsx:3](../catalog/hono-examples/action-list.tsx#L3)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [avatar.tsx:3](../catalog/hono-examples/avatar.tsx#L3)                         | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [badge.tsx:3](../catalog/hono-examples/badge.tsx#L3)                           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [badge.tsx:4](../catalog/hono-examples/badge.tsx#L4)                           | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [board.tsx:26](../catalog/hono-examples/board.tsx#L26)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [button.tsx:4](../catalog/hono-examples/button.tsx#L4)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [button.tsx:5](../catalog/hono-examples/button.tsx#L5)                         | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [button.tsx:9](../catalog/hono-examples/button.tsx#L9)                         | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [button.tsx:15](../catalog/hono-examples/button.tsx#L15)                       | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [button.tsx:21](../catalog/hono-examples/button.tsx#L21)                       | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [button.tsx:37](../catalog/hono-examples/button.tsx#L37)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [button.tsx:40](../catalog/hono-examples/button.tsx#L40)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [button.tsx:42](../catalog/hono-examples/button.tsx#L42)                       | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [button.tsx:70](../catalog/hono-examples/button.tsx#L70)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [button.tsx:72](../catalog/hono-examples/button.tsx#L72)                       | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [button.tsx:98](../catalog/hono-examples/button.tsx#L98)                       | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [calendar.tsx:129](../catalog/hono-examples/calendar.tsx#L129)                 | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [card.tsx:3](../catalog/hono-examples/card.tsx#L3)                             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [card.tsx:4](../catalog/hono-examples/card.tsx#L4)                             | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [card.tsx:24](../catalog/hono-examples/card.tsx#L24)                           | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [carousel.tsx:4](../catalog/hono-examples/carousel.tsx#L4)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [code-block.tsx:42](../catalog/hono-examples/code-block.tsx#L42)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [color-picker.tsx:4](../catalog/hono-examples/color-picker.tsx#L4)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [color-picker.tsx:13](../catalog/hono-examples/color-picker.tsx#L13)           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [command-menu.tsx:3](../catalog/hono-examples/command-menu.tsx#L3)             | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [comparison.tsx:4](../catalog/hono-examples/comparison.tsx#L4)                 | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [composer.tsx:12](../catalog/hono-examples/composer.tsx#L12)                   | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [context-bar.tsx:17](../catalog/hono-examples/context-bar.tsx#L17)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [context-bar.tsx:18](../catalog/hono-examples/context-bar.tsx#L18)             | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [context-bar.tsx:22](../catalog/hono-examples/context-bar.tsx#L22)             | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [context-bar.tsx:31](../catalog/hono-examples/context-bar.tsx#L31)             | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [context-bar.tsx:49](../catalog/hono-examples/context-bar.tsx#L49)             | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [context-bar.tsx:70](../catalog/hono-examples/context-bar.tsx#L70)             | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [context-bar.tsx:91](../catalog/hono-examples/context-bar.tsx#L91)             | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [context-bar.tsx:126](../catalog/hono-examples/context-bar.tsx#L126)           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [context-bar.tsx:141](../catalog/hono-examples/context-bar.tsx#L141)           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [context-bar.tsx:144](../catalog/hono-examples/context-bar.tsx#L144)           | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [danger-zone.tsx:14](../catalog/hono-examples/danger-zone.tsx#L14)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [danger-zone.tsx:40](../catalog/hono-examples/danger-zone.tsx#L40)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [danger-zone.tsx:142](../catalog/hono-examples/danger-zone.tsx#L142)           | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [date-picker.tsx:4](../catalog/hono-examples/date-picker.tsx#L4)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [date-picker.tsx:76](../catalog/hono-examples/date-picker.tsx#L76)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [dialog.tsx:4](../catalog/hono-examples/dialog.tsx#L4)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [dialog.tsx:63](../catalog/hono-examples/dialog.tsx#L63)                       | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [dialog.tsx:78](../catalog/hono-examples/dialog.tsx#L78)                       | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [dialog.tsx:118](../catalog/hono-examples/dialog.tsx#L118)                     | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [disclosure.tsx:4](../catalog/hono-examples/disclosure.tsx#L4)                 | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [disclosure.tsx:14](../catalog/hono-examples/disclosure.tsx#L14)               | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [disclosure.tsx:25](../catalog/hono-examples/disclosure.tsx#L25)               | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [disclosure.tsx:52](../catalog/hono-examples/disclosure.tsx#L52)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [disclosure.tsx:56](../catalog/hono-examples/disclosure.tsx#L56)               | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [divider.tsx:4](../catalog/hono-examples/divider.tsx#L4)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [dropdown-menu.tsx:11](../catalog/hono-examples/dropdown-menu.tsx#L11)         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [dropdown-menu.tsx:131](../catalog/hono-examples/dropdown-menu.tsx#L131)       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [dropdown-menu.tsx:168](../catalog/hono-examples/dropdown-menu.tsx#L168)       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [dropdown-menu.tsx:183](../catalog/hono-examples/dropdown-menu.tsx#L183)       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [editable-property.tsx:4](../catalog/hono-examples/editable-property.tsx#L4)   | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [editable-property.tsx:12](../catalog/hono-examples/editable-property.tsx#L12) | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [editable-property.tsx:58](../catalog/hono-examples/editable-property.tsx#L58) | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [editable-property.tsx:66](../catalog/hono-examples/editable-property.tsx#L66) | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [empty-state.tsx:3](../catalog/hono-examples/empty-state.tsx#L3)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [error-summary.tsx:3](../catalog/hono-examples/error-summary.tsx#L3)           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [field-group.tsx:4](../catalog/hono-examples/field-group.tsx#L4)               | `ply-form`    | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [field.tsx:19](../catalog/hono-examples/field.tsx#L19)                         | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [field.tsx:45](../catalog/hono-examples/field.tsx#L45)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [field.tsx:89](../catalog/hono-examples/field.tsx#L89)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [field.tsx:179](../catalog/hono-examples/field.tsx#L179)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [file-input.tsx:4](../catalog/hono-examples/file-input.tsx#L4)                 | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [file-input.tsx:17](../catalog/hono-examples/file-input.tsx#L17)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [filter-bar.tsx:4](../catalog/hono-examples/filter-bar.tsx#L4)                 | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [filter-bar.tsx:5](../catalog/hono-examples/filter-bar.tsx#L5)                 | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [filter-bar.tsx:15](../catalog/hono-examples/filter-bar.tsx#L15)               | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [filter-bar.tsx:29](../catalog/hono-examples/filter-bar.tsx#L29)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [grid.tsx:14](../catalog/hono-examples/grid.tsx#L14)                           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [hover-card.tsx:4](../catalog/hono-examples/hover-card.tsx#L4)                 | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [icon.tsx:3](../catalog/hono-examples/icon.tsx#L3)                             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [icon.tsx:4](../catalog/hono-examples/icon.tsx#L4)                             | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [icon.tsx:17](../catalog/hono-examples/icon.tsx#L17)                           | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [icon.tsx:25](../catalog/hono-examples/icon.tsx#L25)                           | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [image-cropper.tsx:4](../catalog/hono-examples/image-cropper.tsx#L4)           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [image-cropper.tsx:15](../catalog/hono-examples/image-cropper.tsx#L15)         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [image-frame.tsx:4](../catalog/hono-examples/image-frame.tsx#L4)               | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [image-frame.tsx:6](../catalog/hono-examples/image-frame.tsx#L6)               | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [input-group.tsx:4](../catalog/hono-examples/input-group.tsx#L4)               | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [input-group.tsx:58](../catalog/hono-examples/input-group.tsx#L58)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [keycap.tsx:3](../catalog/hono-examples/keycap.tsx#L3)                         | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [loading.tsx:3](../catalog/hono-examples/loading.tsx#L3)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [loading.tsx:14](../catalog/hono-examples/loading.tsx#L14)                     | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [message-list.tsx:3](../catalog/hono-examples/message-list.tsx#L3)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [notice.tsx:3](../catalog/hono-examples/notice.tsx#L3)                         | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [page-header.tsx:4](../catalog/hono-examples/page-header.tsx#L4)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [picker.tsx:11](../catalog/hono-examples/picker.tsx#L11)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [popover.tsx:4](../catalog/hono-examples/popover.tsx#L4)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [popover.tsx:10](../catalog/hono-examples/popover.tsx#L10)                     | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [popover.tsx:63](../catalog/hono-examples/popover.tsx#L63)                     | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [popover.tsx:88](../catalog/hono-examples/popover.tsx#L88)                     | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [popover.tsx:110](../catalog/hono-examples/popover.tsx#L110)                   | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [progress.tsx:3](../catalog/hono-examples/progress.tsx#L3)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [range.tsx:4](../catalog/hono-examples/range.tsx#L4)                           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [range.tsx:25](../catalog/hono-examples/range.tsx#L25)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [split-view.tsx:22](../catalog/hono-examples/split-view.tsx#L22)               | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [split-view.tsx:31](../catalog/hono-examples/split-view.tsx#L31)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [statistic.tsx:3](../catalog/hono-examples/statistic.tsx#L3)                   | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [suggestion.tsx:4](../catalog/hono-examples/suggestion.tsx#L4)                 | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [suggestion.tsx:17](../catalog/hono-examples/suggestion.tsx#L17)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [surface.tsx:3](../catalog/hono-examples/surface.tsx#L3)                       | `ply-split`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [switch.tsx:4](../catalog/hono-examples/switch.tsx#L4)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [switch.tsx:17](../catalog/hono-examples/switch.tsx#L17)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [table-of-contents.tsx:4](../catalog/hono-examples/table-of-contents.tsx#L4)   | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [table.tsx:57](../catalog/hono-examples/table.tsx#L57)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [tabs.tsx:4](../catalog/hono-examples/tabs.tsx#L4)                             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [tag-input.tsx:4](../catalog/hono-examples/tag-input.tsx#L4)                   | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [timeline.tsx:4](../catalog/hono-examples/timeline.tsx#L4)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [timeline.tsx:5](../catalog/hono-examples/timeline.tsx#L5)                     | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [timeline.tsx:25](../catalog/hono-examples/timeline.tsx#L25)                   | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [timeline.tsx:37](../catalog/hono-examples/timeline.tsx#L37)                   | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [toast.tsx:4](../catalog/hono-examples/toast.tsx#L4)                           | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [toggle-group.tsx:4](../catalog/hono-examples/toggle-group.tsx#L4)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [toolbar.tsx:4](../catalog/hono-examples/toolbar.tsx#L4)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [toolbar.tsx:5](../catalog/hono-examples/toolbar.tsx#L5)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [toolbar.tsx:36](../catalog/hono-examples/toolbar.tsx#L36)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [tooltip.tsx:4](../catalog/hono-examples/tooltip.tsx#L4)                       | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [tree.tsx:4](../catalog/hono-examples/tree.tsx#L4)                             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [treegrid.tsx:4](../catalog/hono-examples/treegrid.tsx#L4)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [wing.tsx:34](../catalog/hono-examples/wing.tsx#L34)                           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [wing.tsx:47](../catalog/hono-examples/wing.tsx#L47)                           | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [wing.tsx:48](../catalog/hono-examples/wing.tsx#L48)                           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [wing.tsx:59](../catalog/hono-examples/wing.tsx#L59)                           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [wing.tsx:73](../catalog/hono-examples/wing.tsx#L73)                           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [wing.tsx:82](../catalog/hono-examples/wing.tsx#L82)                           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [wing.tsx:86](../catalog/hono-examples/wing.tsx#L86)                           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [wing.tsx:95](../catalog/hono-examples/wing.tsx#L95)                           | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |

@@ -29,14 +29,18 @@ export const EditableProperty = ({
   <div
     class="ply-editable-property"
     data-controller="editable editable-property"
-    data-action="editable:commit->editable-property#sync"
+    data-action="editable:commit->editable-property#commit"
     data-editable-property-empty-value={emptyLabel}
   >
     <span class="label" id={`${id}-label`}>
       {label}
     </span>
     <div class="preview" data-editable-target="preview" hidden>
-      <span class="value" data-editable-property-target="value">
+      <span
+        class="value"
+        data-editable-property-target="value"
+        data-empty={value ? undefined : "true"}
+      >
         {value || emptyLabel}
       </span>
       <Button

@@ -142,6 +142,25 @@ test("月カレンダーは狭幅でも日付の列を保ちキーボードで�
   await expect.poll(() => viewport.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
 });
 
+test("EditablePropertyは確定した時だけ書き終えた印を描き、未登録の色を値に合わせる", async ({
+  page,
+}) => {
+  await page.goto("/components/editable-property");
+  const property = page.locator('[data-example="hono"] .ply-editable-property').nth(1);
+  const value = property.locator(".value");
+  await expect(value).toHaveAttribute("data-empty", "true");
+  await property.getByRole("button", { name: "メモを編集" }).click();
+  await page.keyboard.type("9月中に確認");
+  await page.keyboard.press("Enter");
+  await expect(value).toHaveText("9月中に確認");
+  await expect(value).not.toHaveAttribute("data-empty");
+  await expect(property).toHaveAttribute("data-saved", "true");
+  await expect(property).not.toHaveAttribute("data-saved", { timeout: 3000 });
+  await property.getByRole("button", { name: "メモを編集" }).click();
+  await page.keyboard.press("Escape");
+  await expect(property).not.toHaveAttribute("data-saved");
+});
+
 test("Boardのゴム印は紙を運んだ列の印に押し直され、たたんだ列は札の幅になる", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/components/board");

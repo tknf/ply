@@ -26,3 +26,25 @@ test("着色したHTMLも文字として表示し、異なるコードのトー�
   expect(String(mismatch)).not.toContain("別のコード");
   expect(String(mismatch)).toContain("&lt;script&gt;");
 });
+
+test("行ごとに分けても文字は元のコードと同じで、行番号を文字に含めず目印の行に印を付ける", async () => {
+  const code = "const a = 1;\n\nconst b = 2;";
+  const tokens = [
+    { content: "const", color: "#d73a49" },
+    { content: " a = 1;\n\n" },
+    { content: "const", color: "#d73a49" },
+    { content: " b = 2;" },
+  ];
+  const markup = String(
+    await html`${<CodeBlock label="例" code={code} tokens={tokens} lineNumbers highlight={[3]} />}`,
+  );
+  const text = markup
+    .match(/<code[^>]*>([\s\S]*)<\/code>/)?.[1]
+    ?.replace(/<[^>]+>/g, "")
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">");
+  expect(text).toBe(code);
+  expect(markup.match(/class="line"/g)).toHaveLength(3);
+  expect(markup.match(/data-highlighted="true"/g)).toHaveLength(1);
+  expect(markup).toContain('data-line-numbers="true"');
+});

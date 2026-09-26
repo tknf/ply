@@ -1,4 +1,8 @@
 @layer components {
+  /*
+    帳票の記入欄。値は青い罫線の上に書いた文字で、Composerの本文と同じ罫線を使う。
+    鉛筆を取ると、その罫線の位置が欄になる。確定すると、書き終えた印をペンで描く。
+  */
   .ply-editable-property {
     display: grid;
     gap: var(--ply-space-1);
@@ -18,12 +22,20 @@
     min-inline-size: 0;
     inline-size: min(100%, 28rem);
     padding-block: 0.125rem;
-    padding-inline: var(--ply-space-2) 0.125rem;
-    /* 値は記入線の上に書かれた文字。編集を始めた時だけ欄になる。 */
+    /* 書き始めの位置は、編集中の欄の文字と同じ（欄の左右0.75emと枠の幅）。 */
+    padding-inline: calc(var(--ply-label) * 0.75 + var(--ply-stroke-width)) 0.125rem;
     border: 0;
-    border-block-end: var(--ply-stroke-width) solid var(--ply-border);
+    border-block-end: var(--ply-frame-width) solid var(--ply-ruled-line);
     border-radius: 0;
     background: transparent;
+    transition: border-color var(--ply-duration) ease;
+    /* 鉛筆に指を載せると、書き込む罫線が濃くなり、鉛筆を少し傾けて持ち上げる。 */
+    &:has(> .edit:hover:enabled) {
+      border-block-end-color: color-mix(in srgb, var(--ply-link) 55%, var(--ply-ruled-line));
+      & > .edit svg {
+        rotate: -18deg;
+      }
+    }
   }
 
   .ply-editable-property > .preview[hidden],
@@ -37,27 +49,53 @@
     overflow-wrap: anywhere;
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
+    --ply-editable-pen-start: inset(0 100% 0 0);
+    /* 未登録は、罫線の上にまだ何も書いていない状態として控えめな色にする。 */
+    &[data-empty="true"] {
+      color: var(--ply-muted);
+    }
+    /* 書き終えた印。チェックボックスと同じく、書き始めの側からペンで描く。 */
+    &::after {
+      content: "";
+      display: inline-block;
+      inline-size: 1em;
+      block-size: 1em;
+      margin-inline-start: var(--ply-space-2);
+      vertical-align: -0.125em;
+      background: var(--ply-success);
+      mask: url("../assets/check.svg") center / contain no-repeat;
+      clip-path: var(--ply-editable-pen-start);
+      opacity: 0;
+    }
+    &:dir(rtl) {
+      --ply-editable-pen-start: inset(0 0 0 100%);
+    }
+  }
+
+  .ply-editable-property[data-saved="true"] > .preview > .value::after {
+    animation: ply-editable-property-saved 1.6s ease-out forwards;
   }
 
   .ply-editable-property > .preview > .edit {
     flex: none;
+    & svg {
+      transition: rotate var(--ply-duration) ease;
+    }
   }
 
-  /* 編集中は濃い太枠で囲み、今ここを書き換えていることを示す。 */
+  /* 書いている間は、罫線の位置に欄と確定・取消を並べる。欄の外に枠は重ねない。 */
   .ply-editable-property > .editor {
-    display: grid;
-    justify-items: start;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     gap: var(--ply-space-2);
     min-inline-size: 0;
     inline-size: min(100%, 28rem);
-    padding-block: var(--ply-space-2);
-    padding-inline: var(--ply-space-2);
-    border: var(--ply-frame-width) solid var(--ply-frame-color);
-    border-radius: var(--ply-radius-field);
   }
 
   .ply-editable-property > .editor > .ply-input {
-    inline-size: 100%;
+    flex: 1 1 12rem;
+    inline-size: auto;
   }
 
   .ply-editable-property > .editor > .actions {
@@ -69,10 +107,34 @@
   .ply-editable-property:not([data-state]) > .editor > .actions {
     display: none;
   }
+  @media (prefers-reduced-motion: reduce) {
+    .ply-editable-property[data-saved="true"] > .preview > .value::after {
+      animation: none;
+      clip-path: inset(0);
+      opacity: 1;
+    }
+  }
   @media (forced-colors: active) {
     .ply-editable-property > .preview {
-      background: Canvas;
-      box-shadow: none;
+      border-block-end-color: CanvasText;
+    }
+    .ply-editable-property > .preview > .value::after {
+      background: CanvasText;
+    }
+  }
+  @keyframes ply-editable-property-saved {
+    0% {
+      clip-path: var(--ply-editable-pen-start);
+      opacity: 1;
+    }
+    30%,
+    75% {
+      clip-path: inset(0);
+      opacity: 1;
+    }
+    100% {
+      clip-path: inset(0);
+      opacity: 0;
     }
   }
 }
