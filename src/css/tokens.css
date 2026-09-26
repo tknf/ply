@@ -100,9 +100,13 @@
       持ち上げた紙はlift、後ろに続きがある紙はstack（重ねた紙）。
     */
     --ply-shadow-paper:
+      inset 0 var(--ply-stroke-width) 0 rgb(255 255 255 / 90%),
+      inset 0 calc(var(--ply-stroke-width) * -2) 0 rgb(36 57 70 / 4%),
       0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 7%), 0 0.125rem 0.25rem rgb(36 57 70 / 5%),
       0 0.375rem 0.75rem rgb(36 57 70 / 5%), 0 0.75rem 1.5rem rgb(36 57 70 / 4%);
     --ply-shadow-paper-lift:
+      inset 0 var(--ply-stroke-width) 0 rgb(255 255 255 / 90%),
+      inset 0 calc(var(--ply-stroke-width) * -2) 0 rgb(36 57 70 / 4%),
       0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 9%), 0 0.25rem 0.5rem rgb(36 57 70 / 7%),
       0 0.75rem 1.5rem rgb(36 57 70 / 6%), 0 1.5rem 3rem rgb(36 57 70 / 4%);
     --ply-shadow-stack:
@@ -145,6 +149,12 @@
       - 「ここを見て」の面（--ply-emphasis-*、主操作の--ply-fill-primary）：役割の色からその淡い対への135度。
       一覧・本文・情報の面は平らな--ply-surfaceにする。
     */
+    /* 紙の面。陰影はごく浅くし、厚みは--ply-shadow-paperの内側の影で出す。 */
+    --ply-fill-paper: linear-gradient(
+      176deg,
+      var(--ply-surface) 0%,
+      color-mix(in srgb, var(--ply-surface) 98.5%, var(--ply-ink)) 100%
+    );
     --ply-fill-control: linear-gradient(
       176deg,
       var(--ply-surface) 0%,

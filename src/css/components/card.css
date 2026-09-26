@@ -9,7 +9,7 @@
     /* Cardは紙。枠線を使わず、紙の影と大きな角丸で見せる。 */
     border: 0;
     border-radius: var(--ply-radius-surface);
-    background: var(--ply-surface) var(--ply-fill-control);
+    background: var(--ply-surface) var(--ply-fill-paper);
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
@@ -78,7 +78,7 @@
       max-inline-size: calc(100% - var(--ply-space-5) * 2);
       padding-block: 0.125rem;
       padding-inline: var(--ply-space-2);
-      border-radius: var(--ply-radius-mark);
+      border-radius: 0;
       background: var(--ply-ink) var(--ply-fill-ink);
       box-shadow: var(--ply-shadow-control-primary);
       color: var(--ply-surface);

@@ -690,13 +690,13 @@
 @layer overrides {
   .specimen-choices {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--ply-space-8) var(--ply-space-6);
     padding-block: var(--ply-space-4);
     & > figure {
       display: grid;
       align-content: start;
-      gap: var(--ply-space-8);
+      gap: var(--ply-space-3);
       margin: 0;
       & > figcaption {
         color: var(--ply-muted);
@@ -708,43 +708,22 @@
   .specimen-example {
     padding-block: var(--ply-space-4);
   }
-  /* DataList2：ノート。朱の余白線を縦に引き、行は青い罫線。 */
-  .ply-data-list.specimen-list-note {
-    border-block-start: 0;
-    background: linear-gradient(
-        color-mix(in srgb, var(--ply-coral) 55%, var(--ply-surface)),
-        color-mix(in srgb, var(--ply-coral) 55%, var(--ply-surface))
-      )
-      2.5rem 0 / var(--ply-stroke-width) 100% no-repeat;
-    border-block-end-color: color-mix(in srgb, var(--ply-info) 22%, var(--ply-surface));
-    & > li {
-      padding-inline-start: 3.25rem;
-      & + li {
-        border-block-start-color: color-mix(in srgb, var(--ply-info) 22%, var(--ply-surface));
-      }
-      &:first-child {
-        border-block-start: var(--ply-stroke-width) solid
-          color-mix(in srgb, var(--ply-info) 22%, var(--ply-surface));
-      }
+  /* DataList案2：短冊に朱の余白線を引く。余白線は印を付ける場所で、今の行は線の上に青いバーが乗る。 */
+  .ply-data-list.specimen-list-margin > li {
+    padding-inline-start: calc(var(--ply-space-6) + var(--ply-space-4));
+    &::after {
+      content: "";
+      position: absolute;
+      inset-block: 0;
+      inset-inline-start: var(--ply-space-6);
+      inline-size: var(--ply-stroke-width);
+      background: color-mix(in srgb, var(--ply-coral) 45%, var(--ply-surface));
     }
-  }
-  /* DataList3：紙の短冊。一行ずつの紙を少し間をあけて重ね、今の行だけ持ち上げる。 */
-  .ply-data-list.specimen-list-strips {
-    display: grid;
-    gap: var(--ply-space-2);
-    overflow: visible;
-    border: 0;
-    & > li {
-      border-radius: var(--ply-radius-field);
-      background: var(--ply-surface);
-      box-shadow: var(--ply-shadow-paper);
-      & + li {
-        border-block-start: 0;
-      }
-      &[data-current="true"] {
-        box-shadow: var(--ply-shadow-paper-lift);
-        translate: 0.25rem 0;
-      }
+    &::before {
+      z-index: 1;
+      inset-inline-start: calc(
+        var(--ply-space-6) - var(--ply-frame-width) / 2 + var(--ply-stroke-width) / 2
+      );
     }
   }
 }
