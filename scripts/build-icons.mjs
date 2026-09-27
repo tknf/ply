@@ -14,6 +14,16 @@ for (const [name, file] of Object.entries(manifest)) {
   symbols.push(
     `<symbol id="ply-${name}" viewBox="0 0 256 256" fill="currentColor">${content}</symbol>`,
   );
+  // 縦並びの一覧など、HEYのように太く塗ったアイコンで項目を見分ける場所のための塗りつぶしの版。
+  const filled = await readFile(
+    `node_modules/@phosphor-icons/core/assets/fill/${file}-fill.svg`,
+    "utf8",
+  );
+  const filledContent = filled.match(/<svg[^>]+>([\s\S]+)<\/svg>/)?.[1];
+  if (!filledContent) throw new Error(`SVGを読み取れません: ${file}-fill`);
+  symbols.push(
+    `<symbol id="ply-${name}-fill" viewBox="0 0 256 256" fill="currentColor">${filledContent}</symbol>`,
+  );
   // 同じ素材をSVG useとCSS background/maskのどちらからも使えるようにする。
   await writeFile(`src/css/assets/${name}.svg`, svg);
 }

@@ -4,6 +4,8 @@ import { classes } from "./types";
 export type { IconName } from "../internal/icon-manifest-types";
 export type IconProps = {
   name: IconName;
+  /** 塗りつぶしの版。縦並びの一覧など、HEYのように太いアイコンで項目を見分ける場所で使う。 */
+  fill?: boolean;
   sprite?: string;
   class?: string;
   "data-size"?: "small";
@@ -11,6 +13,7 @@ export type IconProps = {
 /** 装飾アイコン。意味と操作名は隣の文言または操作コンポーネントのaria-labelで伝える。 */
 export const Icon = ({
   name,
+  fill = false,
   sprite = "/assets/ply-icons.svg",
   class: className,
   ...attributes
@@ -23,6 +26,6 @@ export const Icon = ({
     aria-hidden="true"
     focusable="false"
   >
-    <use href={`${sprite}#ply-${name}`} />
+    <use href={`${sprite}#ply-${name}${fill ? "-fill" : ""}`} />
   </svg>
 );

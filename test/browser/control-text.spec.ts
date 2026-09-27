@@ -8,17 +8,18 @@ const measureControls = async (page: Page) => {
     const root = document.createElement("section");
     root.id = "control-text-fixture";
     root.style.cssText =
-      "display:grid;grid-template-columns:repeat(4,180px);gap:12px;padding:24px;background:white;width:780px;font-weight:700";
+      "display:grid;grid-template-columns:repeat(4,240px);gap:12px;padding:24px;background:white;width:1044px;font-weight:700";
     document.body.replaceChildren(root);
     const positions = [];
-    for (const size of [14, 16]) {
+    // 通常は14px、largeは16px。どちらも製品のCSSの大きさのまま測る。
+    for (const size of ["通常", "large"] as const) {
       for (const wrapped of [false, true]) {
         for (const tag of ["button", "input"]) {
           const control = document.createElement(tag);
           control.className = tag === "button" ? "ply-button" : "ply-input";
-          if (size === 16) control.dataset.size = "large";
+          if (size === "large") control.dataset.size = "large";
           // 色だけを揃え、継承・フォント・行高・寸法は製品のCSSをそのまま使う。
-          control.style.cssText = "color:black;background:white;width:180px";
+          control.style.cssText = "color:black;background:white;width:240px";
           if (control instanceof HTMLInputElement) {
             if (wrapped) control.placeholder = "日本語を確認する";
             else control.value = "日本語を確認する";
@@ -90,7 +91,7 @@ test.beforeEach(async ({ page }) => {
   test.skip(!localFont, "macOSのHiraginoを使う描画位置の検査");
 });
 
-test("Button・Inputの14pxと16pxで直書き・子要素・placeholderが上ずれない", async ({ page }) => {
+test("Button・Inputの通常とlargeで直書き・子要素・placeholderが上ずれない", async ({ page }) => {
   for (const metric of await measureControls(page)) {
     expect(metric.weight, "親の太字を操作コンポーネントへ引き継がない").toBe("400");
     expect(
@@ -113,7 +114,7 @@ test("旧フォント指定へ戻すとWebKitの入力文字の上ずれを実�
   );
   const metrics = await measureControls(page);
   const input = metrics.find(
-    ({ tag, size, wrapped }) => tag === "input" && size === 14 && !wrapped,
+    ({ tag, size, wrapped }) => tag === "input" && size === "通常" && !wrapped,
   );
   expect(input).toBeDefined();
   expect(input?.delta).toBeLessThan(-0.5);

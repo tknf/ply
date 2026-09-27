@@ -1,10 +1,17 @@
 @layer base {
   :root {
     color-scheme: light;
+    /* スクロールバーは細く淡い親指だけにし、溝は透明にする。色は子へ引き継がれる。 */
+    scrollbar-color: color-mix(in srgb, var(--ply-muted) 40%, transparent) transparent;
+  }
+
+  * {
+    scrollbar-width: thin;
   }
 
   body {
-    background: var(--ply-background);
+    /* HEYと同じく地は白。作業面は縁取りではなく影で浮かせる。 */
+    background: var(--ply-surface);
     color: var(--ply-text);
     font-family: var(--ply-control-font-family);
     font-size: var(--ply-body);
@@ -23,10 +30,11 @@
     outline-offset: 0.1875rem;
   }
 
-  /* 見つけた所・目印は蛍光ペン。行をまたいでも各行に帯を引く。 */
+  /* 見つけた所・目印は平らな淡い黄色の地。行をまたいでも各行に同じ地を敷く。 */
   mark {
     padding-inline: 0.15em;
-    background: var(--ply-highlighter) 0 75% / 100% 0.7em no-repeat;
+    border-radius: 0.2em;
+    background: color-mix(in srgb, var(--ply-mark) 55%, transparent);
     color: inherit;
     box-decoration-break: clone;
   }

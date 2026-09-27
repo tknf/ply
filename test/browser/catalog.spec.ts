@@ -176,7 +176,7 @@ test("動作コンポーネントのフォーカスがforced-colorsでも見え�
   }
 });
 
-test("primaryのhoverで背景が変わり各操作のfocusで輪郭が見える", async ({ page }) => {
+test("塗った操作は色を保ったまま影で応え、各操作のfocusで輪郭が見える", async ({ page }) => {
   await page.goto("/components/button");
   const buttons = page.locator('[data-example="hono"] .ply-button:not(:disabled)');
   for (const button of await buttons.all()) {
@@ -189,19 +189,27 @@ test("primaryのhoverで背景が変わり各操作のfocusで輪郭が見える
           border: style.borderInlineStartColor,
         };
       });
+    const shadow = () => button.evaluate((element) => getComputedStyle(element).boxShadow);
     await page.mouse.move(0, 0);
     const before = await colors();
+    const restingShadow = await shadow();
     await button.hover();
     const hovered = await colors();
-    if ((await button.getAttribute("data-variant")) === "primary") {
-      expect(hovered.background).not.toBe(before.background);
-      expect(hovered.color).toBe(before.color);
+    // 主操作と危険も白い操作と同じく、塗りの色は変えず、指を載せると影が広がり、押すと内側へ移る。
+    expect(hovered).toEqual(before);
+    const variant = await button.getAttribute("data-variant");
+    if (variant === "primary" || variant === "danger") {
+      const hoveredShadow = await shadow();
+      expect(hoveredShadow).not.toBe(restingShadow);
       await page.mouse.down();
-      expect((await colors()).background).not.toBe(hovered.background);
+      expect(await colors()).toEqual(hovered);
+      const pressedShadow = await shadow();
+      expect(pressedShadow).not.toBe(hoveredShadow);
+      expect(pressedShadow.split("),")[0]).toContain("inset");
       await page.mouse.move(0, 0);
       await page.mouse.up();
       await button.hover();
-    } else expect(hovered).toEqual(before);
+    }
     await button.focus();
     expect(await colors()).toEqual(hovered);
     await page.keyboard.press("Tab");

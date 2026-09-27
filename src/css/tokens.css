@@ -1,9 +1,37 @@
 @layer tokens {
+  /*
+    浮かぶ物の出入りの設定（overlay.cssの共通の定義が読む）。支点から現れる時と消える時の大きさと、滑らせる時間。
+    コンポーネントが自分の上でだけ変えられるよう継承させない。下に付くDialogの中で開いたメニューが膨らみを失わない。
+  */
+  @property --ply-motion-scale-in {
+    syntax: "<number>";
+    inherits: false;
+    initial-value: 0.85;
+  }
+  @property --ply-motion-scale-out {
+    syntax: "<number>";
+    inherits: false;
+    initial-value: 0.94;
+  }
+  @property --ply-motion-slide {
+    syntax: "<time>";
+    inherits: false;
+    initial-value: 0s;
+  }
   /* 同じローカル書体の行メトリクスを揃える。字形や字幅、コンポーネントごとの余白は変えない。 */
   @font-face {
     font-family: "Ply UI Latin";
     src: local("HelveticaNeue");
     font-weight: 400;
+    ascent-override: 89%;
+    descent-override: 11%;
+    line-gap-override: 0%;
+  }
+  /* HEYの一覧の行や操作と同じMedium（500）。欧文はHelvetica Neue Medium、日本語はヒラギノ角ゴ W5。 */
+  @font-face {
+    font-family: "Ply UI Latin";
+    src: local("HelveticaNeue-Medium");
+    font-weight: 500;
     ascent-override: 89%;
     descent-override: 11%;
     line-gap-override: 0%;
@@ -20,6 +48,14 @@
     font-family: "Ply UI Japanese";
     src: local("HiraginoSans-W3");
     font-weight: 400;
+    ascent-override: 89%;
+    descent-override: 11%;
+    line-gap-override: 0%;
+  }
+  @font-face {
+    font-family: "Ply UI Japanese";
+    src: local("HiraginoSans-W5");
+    font-weight: 500;
     ascent-override: 89%;
     descent-override: 11%;
     line-gap-override: 0%;
@@ -51,17 +87,25 @@
       inset 0 0.0625rem 0 rgb(255 255 255 / 82%), inset 0 -0.0625rem 0 rgb(36 57 70 / 3%),
       0 0.0625rem 0.125rem rgb(36 57 70 / 8%), 0 0.125rem 0.25rem rgb(36 57 70 / 6%),
       0 0.25rem 0.5rem rgb(36 57 70 / 4%), 0 0.5rem 1rem rgb(36 57 70 / 2%);
+    /*
+      色で塗った押す物（主操作・危険・オン）の影。外側の影は白い押す物（--ply-shadow-control）と同じにし、
+      上端の光だけを色の上で強すぎない濃さにする。指を載せると影が広がり、押すと影が内側へ移る流れも白と同じ。
+    */
     --ply-shadow-control-primary:
-      inset 0 0.0625rem 0 rgb(255 255 255 / 20%), inset 0 -0.0625rem 0 rgb(0 33 75 / 10%),
-      0 0.03125rem 0.0625rem rgb(36 57 70 / 9%), 0 0.09375rem 0.1875rem rgb(36 57 70 / 7%),
+      inset 0 0.0625rem 0 rgb(255 255 255 / 20%), inset 0 -0.0625rem 0 rgb(0 0 0 / 8%),
+      0 0.03125rem 0.0625rem rgb(36 57 70 / 8%), 0 0.09375rem 0.1875rem rgb(36 57 70 / 6%),
       0 0.1875rem 0.375rem rgb(36 57 70 / 4%), 0 0.375rem 0.75rem rgb(36 57 70 / 2%);
     --ply-shadow-control-primary-hover:
-      inset 0 0.0625rem 0 rgb(255 255 255 / 24%), inset 0 -0.0625rem 0 rgb(0 33 75 / 10%),
-      0 0.0625rem 0.125rem rgb(36 57 70 / 9%), 0 0.125rem 0.25rem rgb(36 57 70 / 7%),
+      inset 0 0.0625rem 0 rgb(255 255 255 / 24%), inset 0 -0.0625rem 0 rgb(0 0 0 / 8%),
+      0 0.0625rem 0.125rem rgb(36 57 70 / 8%), 0 0.125rem 0.25rem rgb(36 57 70 / 6%),
       0 0.25rem 0.5rem rgb(36 57 70 / 4%), 0 0.5rem 1rem rgb(36 57 70 / 2%);
     --ply-shadow-control-pressed:
       inset 0 0.0625rem 0.1875rem rgb(36 57 70 / 14%),
       inset 0 0.1875rem 0.375rem rgb(36 57 70 / 4%), 0 0.03125rem 0.0625rem rgb(36 57 70 / 2%);
+    /* 色の地は白より暗いため、同じ沈み方に見えるよう内側の影を濃くする。 */
+    --ply-shadow-control-primary-pressed:
+      inset 0 0.0625rem 0.1875rem rgb(0 0 0 / 28%), inset 0 0.1875rem 0.375rem rgb(0 0 0 / 8%),
+      0 0.03125rem 0.0625rem rgb(36 57 70 / 2%);
     --ply-shadow-surface:
       inset 0 0.0625rem 0 rgb(255 255 255 / 72%), inset 0 -0.0625rem 0 rgb(36 57 70 / 2%),
       0 0.0625rem 0.125rem rgb(36 57 70 / 6%), 0 0.125rem 0.25rem rgb(36 57 70 / 4%),
@@ -96,55 +140,29 @@
     --ply-warning-soft: #fff6dc;
     --ply-danger-soft: #fff0ed;
     /*
-      紙の影。枠線を使わず、1pxの輪郭と同じ濃さで広がる三段の影で、机に置いた紙に見せる。
-      持ち上げた紙はlift、後ろに続きがある紙はstack（重ねた紙）。
+      紙の影。HEYの面と同じく縁取り（1pxの輪郭や縁の光の線）を持たず、やわらかく広がる影だけで浮かせる。
+      近くの濃い影で置いた位置を、遠くの薄い影で厚みを見せる。持ち上げた紙（運ぶ・指を載せた紙）はlift。
     */
     --ply-shadow-paper:
-      inset 0 var(--ply-stroke-width) 0 rgb(255 255 255 / 90%),
-      inset 0 calc(var(--ply-stroke-width) * -2) 0 rgb(36 57 70 / 4%),
-      0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 7%), 0 0.125rem 0.25rem rgb(36 57 70 / 5%),
-      0 0.375rem 0.75rem rgb(36 57 70 / 5%), 0 0.75rem 1.5rem rgb(36 57 70 / 4%);
-    /* 付箋の影。貼った上の縁は面に沿い、下の縁だけ少し浮いて影が落ちる。 */
-    --ply-shadow-note:
-      inset 0 var(--ply-stroke-width) 0 rgb(255 255 255 / 60%),
-      0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 6%), 0 0.0625rem 0.125rem rgb(36 57 70 / 6%),
-      0 0.625rem 0.5rem -0.5rem rgb(36 57 70 / 22%);
-    /* 貼ったシールの影。紙より薄いので輪郭の線は引かず、上の縁の光と下に落ちる細い影だけで厚みを見せる。 */
-    --ply-shadow-sticker:
-      inset 0 var(--ply-stroke-width) 0 rgb(255 255 255 / 70%),
-      inset 0 calc(var(--ply-stroke-width) * -1) 0 rgb(36 57 70 / 6%),
-      0 var(--ply-stroke-width) var(--ply-stroke-width) rgb(36 57 70 / 10%),
-      0 0.125rem 0.25rem rgb(36 57 70 / 6%);
-    /* 紙に沈んだ溝や書類トレイの内側。上の縁から内側へ影が落ち、下の縁に光が乗る。 */
+      0 0.0625rem 0.1875rem rgb(36 57 70 / 7%), 0 0.25rem 0.75rem rgb(36 57 70 / 6%),
+      0 0.75rem 2rem rgb(36 57 70 / 6%);
+    /* 紙に沈んだ溝（Progress）。上の縁から内側へ影が落ち、下の縁に光が乗る。 */
     --ply-shadow-sunken:
       inset 0 0.125rem 0.25rem rgb(36 57 70 / 8%),
       inset 0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 5%),
       0 var(--ply-stroke-width) 0 rgb(255 255 255 / 80%);
     --ply-shadow-paper-lift:
-      inset 0 var(--ply-stroke-width) 0 rgb(255 255 255 / 90%),
-      inset 0 calc(var(--ply-stroke-width) * -2) 0 rgb(36 57 70 / 4%),
-      0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 9%), 0 0.25rem 0.5rem rgb(36 57 70 / 7%),
-      0 0.75rem 1.5rem rgb(36 57 70 / 6%), 0 1.5rem 3rem rgb(36 57 70 / 4%);
-    /* 後ろの紙もそれぞれ縁と、下の紙へ落ちるやわらかい影を持たせ、一枚ずつの厚みを見せる。 */
-    --ply-shadow-stack:
-      var(--ply-shadow-paper),
-      0.375rem 0.4375rem 0 calc(var(--ply-stroke-width) * -1)
-        color-mix(in srgb, var(--ply-soft) 80%, var(--ply-surface)),
-      0.375rem 0.4375rem 0 0 rgb(36 57 70 / 10%), 0.375rem 0.625rem 0.5rem 0 rgb(36 57 70 / 8%),
-      0.75rem 0.875rem 0 calc(var(--ply-stroke-width) * -2)
-        color-mix(in srgb, var(--ply-soft) 90%, var(--ply-surface)),
-      0.75rem 0.875rem 0 calc(var(--ply-stroke-width) * -1) rgb(36 57 70 / 8%),
-      0.75rem 1.0625rem 0.625rem 0 rgb(36 57 70 / 7%);
-    --ply-shadow-sheet:
-      0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 8%), inset 0 0.0625rem 0 rgb(255 255 255 / 78%),
-      0 0.0625rem 0.125rem rgb(36 57 70 / 8%), 0 0.1875rem 0.375rem rgb(36 57 70 / 6%),
-      0 0.5rem 1rem rgb(36 57 70 / 4%), 0 1rem 2rem rgb(36 57 70 / 3%),
-      0 2rem 4rem rgb(36 57 70 / 2%);
+      0 0.125rem 0.375rem rgb(36 57 70 / 8%), 0 0.5rem 1.25rem rgb(36 57 70 / 8%),
+      0 1.5rem 3rem rgb(36 57 70 / 7%);
+    /*
+      作業面（sheet）の影。HEYの面（rgba(226,221,215,.5) 0 0 33px）のように、白い地の上で四方へ淡くぼかす。
+      Plyの墨の色で、下へわずかに寄せて置いた紙に見せる。
+    */
+    --ply-shadow-sheet: 0 0 2rem rgb(36 57 70 / 6%), 0 0.5rem 2.5rem rgb(36 57 70 / 5%);
+    /* 浮かぶ物（メニュー・ダイアログ・Toast）。縁取りを持たず、紙より遠くまで影を落とす。 */
     --ply-shadow-menu:
-      0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 8%), inset 0 0.0625rem 0 rgb(255 255 255 / 78%),
-      0 0.0625rem 0.125rem rgb(36 57 70 / 8%), 0 0.1875rem 0.375rem rgb(36 57 70 / 6%),
-      0 0.5rem 1rem rgb(36 57 70 / 5%), 0 1rem 2rem rgb(36 57 70 / 4%),
-      0 2rem 3rem rgb(36 57 70 / 2%);
+      0 0.0625rem 0.25rem rgb(36 57 70 / 8%), 0 0.5rem 1.5rem rgb(36 57 70 / 10%),
+      0 1.5rem 3.5rem rgb(36 57 70 / 10%);
     --ply-space-1: 0.25rem;
     --ply-space-2: 0.5rem;
     --ply-space-3: 0.75rem;
@@ -187,17 +205,29 @@
       color-mix(in srgb, var(--ply-link) 84%, white) 0%,
       var(--ply-link) 100%
     );
-    --ply-fill-primary-hover: linear-gradient(
+    /*
+      操作のメニューの面。HEYのメニューと同じく、白い紙ではなく色の面に白い文字で出す。
+      Plyの青から、わずかに紫へ寄せた深い青への135度。
+    */
+    --ply-fill-menu: linear-gradient(
       135deg,
-      color-mix(in srgb, var(--ply-button-hover) 84%, white) 0%,
-      var(--ply-button-hover) 100%
+      color-mix(in srgb, var(--ply-link) 92%, white) 0%,
+      color-mix(in srgb, var(--ply-link) 70%, var(--ply-plum)) 100%
     );
-    /* 墨で塗る札（今のタブ、Cardのつまみ）の手触り。主操作と同じく、べた塗りにせずかすかな陰影を付ける。 */
-    --ply-fill-ink: linear-gradient(
-      176deg,
-      color-mix(in srgb, var(--ply-ink) 82%, white) 0%,
-      var(--ply-ink) 55%,
-      color-mix(in srgb, var(--ply-ink) 92%, black) 100%
+    --ply-fill-success: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--ply-success) 84%, white) 0%,
+      var(--ply-success) 100%
+    );
+    --ply-fill-warning: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--ply-warning) 84%, white) 0%,
+      var(--ply-warning) 100%
+    );
+    --ply-fill-danger: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--ply-danger) 84%, white) 0%,
+      var(--ply-danger) 100%
     );
     --ply-emphasis-neutral: linear-gradient(
       135deg,
@@ -229,14 +259,29 @@
     --ply-success: var(--ply-green);
     --ply-warning: var(--ply-amber);
     --ply-danger: var(--ply-red);
+    /*
+      書く・選ぶ欄のフォーカスの輪。HEYの欄（#a4d2ffの2pxの輪）と同じく、青い縁の外に淡い青を広げる。
+      forced-colorsでは影が消えるため、欄は透明なoutlineを併せて持つ。
+    */
+    --ply-focus-ring: color-mix(in srgb, var(--ply-link) 36%, var(--ply-surface));
     --ply-font: "Hiragino Sans", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
     --ply-control-font-family:
       "Ply UI Latin", "Ply UI Japanese", "Helvetica Neue", Arial, var(--ply-font);
+    /*
+      文字の段はHEYとFizzyの実測から決めた（docs/references/hey-fizzy-20260927）。
+      見出しはHEYに寄せて大きく、普通の文字はFizzyの操作と題名に合わせる。
+      320pxから1280pxの画面幅で、下限から上限へ連続して追従する。
+      - 補足・日時 --ply-small：12.5→13px（Fizzy メタ11.9〜14.25px）
+      - 操作・ラベル --ply-label：13.5→14px（Fizzy 14.25px、HEY 15.4〜17.6px）
+      - 本文・一覧の題名 --ply-body：15→16px（Fizzy 16.15px）
+      - 小見出し --ply-section-title：20→22px（HEY 22px、Fizzy 20.9px）
+      - 画面の見出し --ply-title：28→36px（HEY 44px、Fizzy 28.5〜34.2px）
+    */
     --ply-body: clamp(0.9375rem, calc(0.9rem + 0.15625vw), 1rem);
     --ply-label: clamp(0.84375rem, calc(0.833333rem + 0.052083vw), 0.875rem);
     --ply-small: clamp(0.78125rem, calc(0.770833rem + 0.052083vw), 0.8125rem);
-    --ply-title: clamp(1.5rem, calc(1.35rem + 0.625vw), 1.75rem);
-    --ply-section-title: clamp(1.0625rem, calc(1.025rem + 0.15625vw), 1.125rem);
+    --ply-title: clamp(1.75rem, calc(1.583333rem + 0.833333vw), 2.25rem);
+    --ply-section-title: clamp(1.25rem, calc(1.208333rem + 0.208333vw), 1.375rem);
     --ply-leading: 1.625;
     --ply-label-leading: calc(10 / 7);
     --ply-small-leading: calc(20 / 13);
@@ -249,52 +294,16 @@
     --ply-radius-control: 0.5rem;
     --ply-radius-field: 0.75rem;
     --ply-radius-surface: 1rem;
+    /* 作業面（sheet）だけの大きな角丸。HEYの面は29.7px。 */
+    --ply-radius-sheet: 1.875rem;
     --ply-radius-pill: 999rem;
     /*
-      語彙の線と模様。ミシン目（破線）はまだ確定していないもの、波線はここから新しいもの、
+      状態を示す線と模様。破線は「ここに置ける」ドロップ先と「これから」のStepsやTimeline、
       斜線は使えない枠、太枠は今・編集中を示す。寸法をここで一つにし、各コンポーネントで描き直さない。
     */
     --ply-dash: 0.375rem;
     --ply-dash-gap: 0.25rem;
     --ply-perforation: color-mix(in srgb, var(--ply-muted) 55%, var(--ply-surface));
-    /* 朱の余白線。紙の始まりの側に引き、印を付ける場所・直すところの番号を書く場所を示す。 */
-    --ply-margin-line: color-mix(in srgb, var(--ply-coral) 45%, var(--ply-surface));
-    /* ノートや便箋の罫線。行を区切り、書く位置を示す。 */
-    --ply-ruled-line: color-mix(in srgb, var(--ply-info) 22%, var(--ply-surface));
-    /* 切り離せる紙（切手・切符）のパンチ穴。穴の半径と並びの間隔。 */
-    --ply-punch-hole: 0.125rem;
-    --ply-punch-pitch: 0.375rem;
-    /* 取扱注意の縞。取り返しのつかない操作の紙の端に貼る、危険の色と白の斜めの縞。 */
-    --ply-caution-stripe: repeating-linear-gradient(
-      -45deg,
-      var(--ply-danger) 0 0.3125rem,
-      color-mix(in srgb, var(--ply-danger) 8%, var(--ply-surface)) 0.3125rem 0.625rem
-    );
-    /* マスキングテープ。半透明の黄色の帯で、両端はちぎったように少しぎざぎざにする。 */
-    --ply-tape: color-mix(in srgb, var(--ply-butter) 78%, transparent);
-    --ply-tape-edge: polygon(
-      0 12%,
-      4% 0,
-      96% 0,
-      100% 14%,
-      97% 32%,
-      100% 50%,
-      97% 68%,
-      100% 86%,
-      96% 100%,
-      4% 100%,
-      0 88%,
-      3% 68%,
-      0 50%,
-      3% 32%
-    );
-    --ply-wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 6'%3E%3Cpath d='M0 3 Q3 0.5 6 3 T12 3' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E");
-    --ply-wave-size: 0.75rem 0.375rem;
-    /*
-      紙の縁の荒い破線。枠線のdashedは破線の長さを決められないため、角丸の四角をSVGで描いてmaskに使う。
-      四角は要素と同じ大きさで、線の外側の半分は切れて内側の2pxだけが見える。角丸は紙の16px。
-    */
-    --ply-dashed-frame: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' rx='16' fill='none' stroke='black' stroke-width='4' stroke-dasharray='6 4'/%3E%3C/svg%3E");
     /*
       斜線は地を塗らず、面の上に一色の線だけを引く。
       線の横の間隔（--ply-hatch-step）を整数pxにし、全ての線を同じ画素の位置と濃さで描く。
@@ -306,30 +315,32 @@
       color-mix(in srgb, var(--ply-muted) 11%, var(--ply-surface)) 0 var(--ply-stroke-width),
       transparent var(--ply-stroke-width) calc(var(--ply-hatch-step) * 0.7071068)
     );
-    /* 蛍光ペン。文字の下半分に、端が少し斜めに切れた帯を引く。 */
-    --ply-highlighter: linear-gradient(
-      100deg,
-      transparent 0.15em,
-      color-mix(in srgb, var(--ply-mark) 90%, transparent) 0.35em,
-      color-mix(in srgb, var(--ply-mark) 75%, transparent) calc(100% - 0.35em),
-      transparent calc(100% - 0.15em)
-    );
     --ply-frame-width: 0.125rem;
     --ply-frame-color: color-mix(in srgb, var(--ply-text) 32%, var(--ply-surface));
     /* 何を入れるか・何の値かを示す項目名の太さ。選択肢や値そのものは通常の太さのまま。 */
     --ply-label-weight: 600;
     --ply-duration: 150ms;
+    /*
+      浮かぶ物の出入り（定義はoverlay.cssの一か所）。HEYのpop-openのように、支点から小さく現れて一瞬膨らんでから収まり、
+      閉じる時は同じ支点へ少し縮みながら速く消える。HEYの0.1秒に近い、目で追える最短の速さにする。
+    */
+    --ply-duration-pop: calc(var(--ply-duration) * 1.1);
+    --ply-duration-fade: calc(var(--ply-duration) * 0.6);
+    --ply-duration-out: calc(var(--ply-duration) * 0.7);
+    --ply-ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* 画面の端から差し出す物（下に付くDialog・Toast）は、行き過ぎずに速く止まる。 */
+    --ply-ease-slide: cubic-bezier(0.2, 0.8, 0.2, 1);
     --ply-measure: 40rem;
-    --ply-page: 64rem;
+    /* 作業面の幅。HEYの面は幅1078px。 */
+    --ply-page: 68rem;
     --ply-control-size: 2.25rem;
     --ply-control-compact: 2.25rem;
     --ply-control-font: var(--ply-label);
     --ply-control-leading: 1.5;
     --ply-control-weight: 400;
     --ply-button-font: var(--ply-label);
-    --ply-button-hover: color-mix(in srgb, var(--ply-link) 88%, var(--ply-ink));
-    --ply-button-active: color-mix(in srgb, var(--ply-link) 76%, var(--ply-ink));
-    --ply-button-size: calc(16em / 7);
+    /* Buttonは14pxの文字で高さ36px、largeは16pxの文字で40px（Fizzy 35.8px、HEY 37.2px）。 */
+    --ply-button-size: calc(18em / 7);
     --ply-button-large: 2.5em;
     --ply-z-menu: 20;
   }

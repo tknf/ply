@@ -128,3 +128,20 @@
     border: 0;
   }
 }
+
+@layer layout {
+  /*
+    作業面（sheet）の見た目。SurfaceとAppShellの作業面は同じ一枚の白い面で、ここだけで定義する。
+    白い地の上で、縁取りを持たずやわらかな影で浮かせる。詳細度を持たせず、各コンポーネントの指定を妨げない。
+    どの部品のCSSでも読み込むlayout.cssに置き、AppShellだけを使う画面でも欠けないようにする。
+  */
+  :where(
+    .ply-surface,
+    .ply-app-shell > .workspace,
+    .ply-app-shell > .ply-wing > .layout > .main > .workspace
+  ) {
+    border-radius: var(--ply-radius-sheet);
+    background: var(--ply-surface);
+    box-shadow: var(--ply-shadow-sheet);
+  }
+}

@@ -58,7 +58,7 @@ test("選択済みCheckboxは状態だけでなく白いcheckを実際に描画�
   expect(white).toBeGreaterThanOrEqual(4);
 });
 
-test("基本色を変えてもhover・押下が旧色へ戻らず文字の位置を保つ", async ({ page }) => {
+test("基本色を変えてもhover・押下が旧色へ戻らず、塗りと文字の位置を保つ", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/components/button");
   await page.evaluate(() => document.documentElement.style.setProperty("--ply-brand", "#146f53"));
@@ -87,9 +87,9 @@ test("基本色を変えてもhover・押下が旧色へ戻らず文字の位置
     expect(green).toBeGreaterThan(red);
     expect(green).toBeGreaterThan(blue);
   }
-  const sum = (channels: number[]) => channels.reduce((total, channel) => total + channel, 0);
-  expect(sum(hover)).toBeLessThan(sum(normal));
-  expect(sum(active)).toBeLessThan(sum(hover));
+  // 塗りの色は指を載せても押しても変えず、影だけで応える。
+  expect(hover).toEqual(normal);
+  expect(active).toEqual(normal);
 });
 
 test("選択中のButtonを無効にした場合も通常の無効状態として見分けられる", async ({ page }) => {
