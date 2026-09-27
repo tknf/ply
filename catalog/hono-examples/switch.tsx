@@ -2,7 +2,7 @@ import { Disclosure, Button, Switch } from "../../src/hono";
 
 export default () => (
   <form class="ply-stack" aria-label="通知と表示の設定">
-    <div class="list">
+    <div class="ply-stack" data-space="small">
       <Switch
         id="hono-switch-digest"
         label="週次のまとめ"

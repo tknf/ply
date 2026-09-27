@@ -1,24 +1,23 @@
 @layer components {
+  /*
+    書く面は一枚の紙。紙そのものを欄にし、本文の欄は枠で囲まない。
+    書いている間は紙全体に輪を出す。
+  */
   .ply-composer {
     container: ply-composer / inline-size;
     display: grid;
-    gap: var(--ply-space-2);
+    gap: var(--ply-space-4);
     min-inline-size: 0;
-    padding-block: var(--ply-space-4) var(--ply-space-3);
-    padding-inline: var(--ply-space-5);
-    /*
-      書く紙は便箋。紙そのものを欄にし、本文には便箋の罫線を引く。
-      本文の欄は枠で囲まず、書いている間は紙全体に輪を出す。
-    */
-    border: 0;
+    padding-block: var(--ply-space-5) var(--ply-space-4);
+    padding-inline: var(--ply-space-6);
     border-radius: var(--ply-radius-surface);
     background: var(--ply-surface) var(--ply-fill-paper);
     box-shadow: var(--ply-shadow-paper);
     transition: box-shadow var(--ply-duration) ease;
     &:has(> .ply-field > .ply-input:focus-visible, > .ply-field > .editor:focus-within) {
       box-shadow:
-        0 0 0 0.125rem var(--ply-link),
-        var(--ply-shadow-paper-lift);
+        0 0 0 var(--ply-frame-width) var(--ply-link),
+        var(--ply-shadow-paper);
     }
     &:has(> .ply-field > .ply-input[data-invalid="true"]) {
       box-shadow:
@@ -27,14 +26,16 @@
     }
   }
 
-  /* 便箋の頭。名前・宛先・状態を一行に並べ、下に二重の罫線を引いて本文と分ける。 */
+  .ply-composer > .ply-field {
+    gap: var(--ply-space-3);
+  }
+
+  /* 名前・宛先・状態を一行に並べる。名前は本文と同じ大きさの太字、宛先と状態は補足の文字。 */
   .ply-composer > .ply-field > .heading {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: var(--ply-space-2) var(--ply-space-3);
-    padding-block-end: var(--ply-space-2);
-    border-block-end: calc(var(--ply-stroke-width) * 3) double var(--ply-ruled-line);
     & > :is(label, .label) {
       font-size: var(--ply-body);
       font-weight: 600;
@@ -44,7 +45,7 @@
       display: inline-flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: var(--ply-space-1);
+      gap: var(--ply-space-2);
       min-inline-size: 0;
       color: var(--ply-muted);
       font-size: var(--ply-small);
@@ -56,27 +57,17 @@
     }
   }
 
-  /*
-    本文は便箋。行の高さを文字の二倍にして罫線の間にゆとりを取り、罫線は行の高さごとに引いて文字と一緒にスクロールする。
-    field-sizingに対応するブラウザでは、書いた分だけ紙が伸びる。
-  */
+  /* 本文は本文の大きさと行間で書く。field-sizingに対応するブラウザでは、書いた分だけ紙が伸びる。 */
   .ply-composer > .ply-field > :is(.ply-input, .editor) {
     min-block-size: 4lh;
     padding-block: 0;
     padding-inline: 0;
     border: 0;
     border-radius: 0;
-    background: linear-gradient(
-        to top,
-        var(--ply-ruled-line) var(--ply-stroke-width),
-        transparent 0
-      )
-      0 0 / 100% 1lh;
-    background-origin: content-box;
-    background-attachment: local;
+    background: transparent;
     box-shadow: none;
     font-size: var(--ply-body);
-    line-height: 2;
+    line-height: var(--ply-leading);
   }
 
   .ply-composer > .ply-field > .ply-input {
@@ -92,8 +83,8 @@
   }
 
   /*
-    差し替えた編集部品（ProseMirror・Tiptap・Lexxyなど）の書く場所は、深さによらず便箋の行に文字を載せる。
-    段落や箇条の上下の余白は0にし、罫線と行をずらさない。
+    差し替えた編集部品（ProseMirror・Tiptap・Lexxyなど）の書く場所は、深さによらず本文と同じ文字で書く。
+    段落や箇条の間は、本文の欄と同じく一定の間隔にする。
   */
   .ply-composer > .ply-field > .editor {
     & [contenteditable] {
@@ -102,6 +93,11 @@
       line-height: inherit;
       & :is(p, ul, ol, blockquote, h1, h2, h3, h4, pre) {
         margin: 0;
+      }
+      &
+        :is(p, ul, ol, blockquote, h1, h2, h3, h4, pre)
+        + :is(p, ul, ol, blockquote, h1, h2, h3, h4, pre) {
+        margin-block-start: var(--ply-space-2);
       }
       &:empty::before {
         content: attr(data-placeholder);
@@ -120,7 +116,6 @@
     display: grid;
     gap: var(--ply-space-2);
     min-inline-size: 0;
-    padding-block-start: var(--ply-space-3);
   }
 
   .ply-composer > .footer {

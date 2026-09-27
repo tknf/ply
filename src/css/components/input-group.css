@@ -14,7 +14,7 @@
   }
 
   .ply-input-group > .control {
-    --ply-input-group-size: calc(16em / 7);
+    --ply-input-group-size: var(--ply-button-size);
     display: flex;
     align-items: stretch;
     column-gap: 0.375rem;
@@ -23,7 +23,7 @@
     min-block-size: var(--ply-input-group-size);
     padding-inline: 0.75em;
     border: var(--ply-stroke-width) solid var(--ply-border);
-    border-radius: var(--ply-radius-field);
+    border-radius: var(--ply-radius-control);
     background: var(--ply-surface);
     box-shadow: var(--ply-shadow-input);
     color: var(--ply-muted);
@@ -51,8 +51,11 @@
 
     &:has(> .ply-input:focus-visible) {
       border-color: var(--ply-link);
-      outline: 0.125rem solid var(--ply-link);
+      outline: 0.125rem solid transparent;
       outline-offset: 0;
+      box-shadow:
+        0 0 0 0.125rem var(--ply-focus-ring),
+        var(--ply-shadow-input);
     }
 
     &:has(> .ply-input[data-invalid="true"]) {
@@ -66,7 +69,6 @@
 
     &[data-size="large"] {
       --ply-input-group-size: 2.5em;
-      border-radius: var(--ply-radius-field);
       font-size: var(--ply-body);
       line-height: var(--ply-control-leading);
     }

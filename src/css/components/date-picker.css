@@ -1,6 +1,6 @@
 @layer components {
   .ply-date-picker {
-    --ply-date-picker-control-size: calc(16em / 7);
+    --ply-date-picker-control-size: calc(18em / 7);
     display: grid;
     min-inline-size: 0;
     border: 0;
@@ -86,6 +86,8 @@
   }
   .ply-date-picker > .panel {
     position: fixed;
+    /* 出入りの動きはoverlay.cssの共通の定義。欄の下の開始側の角から膨らむ。 */
+    transform-origin: top left;
     inset-block: 0 auto;
     inset-inline: 0 auto;
     margin: 0;
@@ -105,6 +107,9 @@
     letter-spacing: 0;
     box-shadow: var(--ply-shadow-menu);
 
+    &:dir(rtl) {
+      transform-origin: top right;
+    }
     &:popover-open {
       display: grid;
       gap: var(--ply-space-2);

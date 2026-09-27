@@ -6,7 +6,7 @@
     padding-block: var(--ply-space-3);
     padding-inline: var(--ply-space-4);
     min-inline-size: 0;
-    /* 受け入れ先はミシン目で囲む。 */
+    /* 受け入れ先は「ここに置ける」目印の細い破線で囲む。 */
     border: var(--ply-stroke-width) dashed var(--ply-perforation);
     border-radius: var(--ply-radius-field);
     background: color-mix(in srgb, var(--ply-background) 50%, var(--ply-surface));
@@ -66,7 +66,7 @@
       background: transparent;
       box-shadow: none;
       font-size: inherit;
-      line-height: calc(16em / 7);
+      line-height: var(--ply-button-size);
 
       &::file-selector-button {
         box-sizing: border-box;

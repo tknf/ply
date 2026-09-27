@@ -21,7 +21,7 @@ export default () => (
       to={
         <>
           <span>宛先</span>
-          <Avatar name="森 美咲" initials="美" tone="green" size="small" />
+          <Avatar name="森 美咲" initials="美" tone="green" />
           <span>森 美咲</span>
         </>
       }
@@ -103,6 +103,37 @@ export default () => (
           submitLabel="再送する"
           error="送信できませんでした。内容を確認して、もう一度送信してください。"
         />
+      </Disclosure>
+      <Disclosure summary="狭い場所：操作が折り返す">
+        <div style="max-inline-size: 22rem">
+          <Composer
+            id="composer-narrow"
+            label="返信"
+            name="narrow-reply"
+            placeholder="返信を書く"
+            submitLabel="送信する"
+            to={
+              <>
+                <span>宛先</span>
+                <span>海外拠点の予約窓口チーム（review-abcdefghijklmnopqrstuvwxyz）</span>
+              </>
+            }
+            status="下書きを保存しました"
+            actions={<Button size="compact">下書きに保存</Button>}
+          />
+        </div>
+      </Disclosure>
+      <Disclosure summary="右から左へ書く言語">
+        <div dir="rtl" lang="ar">
+          <Composer
+            id="composer-rtl"
+            label="رسالة"
+            name="rtl-body"
+            placeholder="اكتب رسالة"
+            submitLabel="إرسال"
+            status="تم حفظ المسودة"
+          />
+        </div>
       </Disclosure>
     </DisclosureGroup>
   </div>

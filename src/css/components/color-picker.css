@@ -28,9 +28,10 @@
       min-inline-size: 0;
       padding-block: 0.875rem 0.75rem;
       padding-inline: 1.125rem;
-      border: var(--ply-stroke-width) solid var(--ply-border);
+      /* Navigationの板と同じく、枠線を引かず淡い面の上に色の面と調整を載せる。 */
+      border: var(--ply-stroke-width) solid transparent;
       border-radius: var(--ply-radius-field);
-      background: var(--ply-surface);
+      background: var(--ply-background);
     }
 
     & > .editor > .visual,
@@ -202,7 +203,7 @@
     }
 
     &:disabled > .editor {
-      background: var(--ply-hatch), var(--ply-surface);
+      background: var(--ply-hatch), var(--ply-background);
     }
 
     &:disabled > .editor > .visual {

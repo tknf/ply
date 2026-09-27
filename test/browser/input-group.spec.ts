@@ -59,7 +59,7 @@ for (const width of [375, 1280]) {
     await page.getByText("エラー・閲覧専用・利用不可・大きい入力", { exact: true }).click();
     const example = page.locator('[data-example="hono"]');
     for (const [name, height] of [
-      ["記事を検索", 32],
+      ["記事を検索", 36],
       ["記事を検索（大きい入力）", 40],
     ] as const) {
       const input = page.getByRole("searchbox", { name, exact: true });

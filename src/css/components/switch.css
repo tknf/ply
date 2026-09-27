@@ -1,7 +1,11 @@
 @layer components {
+  /*
+    HEYのスイッチと同じく枠線を持たず、切っている溝は墨の淡い色、入れた溝は青にする。
+    溝は内側の影で沈め、つまみは押す物の影で浮かせる。高さは一行（20px）、つまみは高さの8割。
+  */
   .ply-switch {
     display: grid;
-    grid-template-columns: calc(17em / 7) minmax(0, 1fr);
+    grid-template-columns: calc(18em / 7) minmax(0, 1fr);
     align-items: start;
     column-gap: var(--ply-space-2);
     min-inline-size: 0;
@@ -12,13 +16,13 @@
     & > input {
       appearance: none;
       display: grid;
-      grid-template-columns: 0fr 1em 1fr;
+      grid-template-columns: 0fr calc(8em / 7) 1fr;
       align-items: center;
-      inline-size: calc(17em / 7);
+      inline-size: calc(18em / 7);
       block-size: calc(10em / 7);
-      border: var(--ply-stroke-width) solid var(--ply-border);
+      border: 0;
       border-radius: var(--ply-radius-pill);
-      background: var(--ply-background);
+      background: color-mix(in srgb, var(--ply-ink) 14%, var(--ply-surface));
       color: var(--ply-muted);
       box-shadow: var(--ply-shadow-input);
       padding-block: calc(1em / 7);
@@ -31,32 +35,35 @@
     & > input::before {
       content: "";
       grid-column: 2;
-      inline-size: 1em;
-      block-size: 1em;
+      inline-size: calc(8em / 7);
+      block-size: calc(8em / 7);
       border-radius: 50%;
       background: var(--ply-surface);
       box-shadow: var(--ply-shadow-hardware);
     }
 
     & > input:checked {
-      grid-template-columns: 1fr 1em 0fr;
+      grid-template-columns: 1fr calc(8em / 7) 0fr;
       background: var(--ply-fill-primary);
-      border-color: var(--ply-link);
       color: var(--ply-surface);
     }
 
-    &:hover > input:not(:disabled) {
-      border-color: var(--ply-link);
+    &:hover > input:not(:disabled, :checked) {
+      background: color-mix(in srgb, var(--ply-ink) 20%, var(--ply-surface));
     }
 
+    /* 欄と同じく、青い縁の外に淡い青の輪を広げる。溝には枠線がないため、縁は影で描く。 */
     & > input:focus-visible {
-      outline: 0.125rem solid var(--ply-link);
-      outline-offset: 0.1875rem;
+      outline: 0.125rem solid var(--ply-focus-ring);
+      outline-offset: var(--ply-stroke-width);
+      box-shadow:
+        0 0 0 var(--ply-stroke-width) var(--ply-link),
+        var(--ply-shadow-input);
     }
 
     & > input:disabled {
-      background: var(--ply-hatch), var(--ply-surface);
-      border-color: var(--ply-border);
+      background: var(--ply-hatch), var(--ply-background);
+      box-shadow: none;
       color: var(--ply-border);
     }
 

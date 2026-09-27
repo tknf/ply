@@ -26,7 +26,7 @@
       font-size: var(--ply-small);
       line-height: var(--ply-small-leading);
     }
-    /* 直す所は赤ペンの波線。欄のすぐ下の文に、赤ペンで引いたような波線を添える。 */
+    /* 直す所は、欄のすぐ下に危険の色の文字とアイコンで書く。 */
     & > .error {
       display: grid;
       grid-template-columns: 1em minmax(0, 1fr);
@@ -35,9 +35,6 @@
       color: var(--ply-danger);
       font-size: var(--ply-label);
       line-height: var(--ply-label-leading);
-      text-decoration: underline wavy color-mix(in srgb, var(--ply-danger) 55%, transparent);
-      text-decoration-thickness: var(--ply-stroke-width);
-      text-underline-offset: 0.3em;
     }
     & > .error > .ply-icon {
       inline-size: 1em;
@@ -71,11 +68,11 @@
     inset-inline-end: 0.0625rem;
     display: grid;
     place-items: center;
-    inline-size: calc(16em / 7 - 0.125rem);
+    inline-size: calc(var(--ply-button-size) - 0.125rem);
     block-size: calc(100% - 0.125rem);
     padding: 0;
     border: 0;
-    border-radius: calc(var(--ply-radius-field) - var(--ply-stroke-width));
+    border-radius: calc(var(--ply-radius-control) - var(--ply-stroke-width));
     background: transparent;
     color: var(--ply-muted);
     font-family: var(--ply-control-font-family);
@@ -129,7 +126,7 @@
     margin-block-start: var(--ply-space-1);
     padding-block: var(--ply-space-1);
     padding-inline: var(--ply-space-1);
-    border: var(--ply-stroke-width) solid var(--ply-border);
+    border: var(--ply-stroke-width) solid transparent;
     border-radius: var(--ply-radius-field);
     background: var(--ply-surface);
     color: var(--ply-text);
@@ -173,12 +170,11 @@
       padding: 0;
     }
   }
+  /* まとまりの見出しはSectionと同じく名前だけにし、見出しから線は伸ばさない。 */
   .ply-field-group {
     container: ply-field-group / inline-size;
     border: 0;
-    border-block-start: var(--ply-stroke-width) solid var(--ply-border);
     & > legend {
-      padding-inline-end: var(--ply-space-3);
       font-size: var(--ply-body);
       font-weight: 600;
       line-height: 1.5;
@@ -209,14 +205,13 @@
       }
     }
   }
-  /* 選択肢の束は枠で囲み、見出しを枠線の上に載せる。 */
+  /*
+    選択肢の束はFieldと同じく、名前のラベルの下に選択肢を並べる。枠で囲まない。
+    行の間はHEYの設定の行のように、文字の高さより広めに空ける。
+  */
   .ply-choice-group {
-    padding-block: var(--ply-space-1) var(--ply-space-3);
-    padding-inline: var(--ply-space-3);
-    border: var(--ply-stroke-width) solid var(--ply-border);
-    border-radius: var(--ply-radius-field);
+    border: 0;
     & > legend {
-      padding-inline: var(--ply-space-1);
       font-size: var(--ply-label);
       font-weight: var(--ply-label-weight);
       line-height: var(--ply-label-leading);
@@ -226,7 +221,7 @@
     }
     & > .list {
       display: grid;
-      gap: var(--ply-space-2);
+      gap: var(--ply-space-3);
       min-inline-size: 0;
     }
   }
@@ -242,7 +237,7 @@
   }
   .ply-choice {
     display: grid;
-    grid-template-columns: calc(9em / 7) minmax(0, 1fr);
+    grid-template-columns: calc(10em / 7) minmax(0, 1fr);
     align-items: start;
     gap: 0.5em;
     font-size: var(--ply-label);
@@ -252,10 +247,10 @@
       appearance: none;
       display: grid;
       place-items: center;
-      inline-size: calc(9em / 7);
-      block-size: calc(9em / 7);
+      /* 印は一行の高さと同じ大きさにし、名前の一行目と上下を揃える。 */
+      inline-size: calc(10em / 7);
+      block-size: calc(10em / 7);
       margin: 0;
-      margin-block-start: calc(1em / 14);
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: var(--ply-radius-mark);
       background: linear-gradient(
@@ -311,8 +306,9 @@
         color: var(--ply-muted);
       }
       &:focus-visible {
-        outline: 0.125rem solid var(--ply-link);
-        outline-offset: 0.1875rem;
+        outline: 0.125rem solid var(--ply-focus-ring);
+        outline-offset: 0;
+        border-color: var(--ply-link);
       }
     }
     & > span {
@@ -339,23 +335,27 @@
       color: var(--ply-muted);
       cursor: not-allowed;
     }
+    /*
+      説明を伴う選択肢は、押す物と同じ縦の陰影と影の面。枠線は引かない。
+      選んだ面は淡い青にし、影を内側へ移して押し込んだ状態にする。
+    */
     &[data-kind="option"] {
       padding-block: var(--ply-space-3);
       padding-inline: var(--ply-space-4);
-      border: var(--ply-stroke-width) solid var(--ply-border);
+      border: var(--ply-stroke-width) solid transparent;
       border-radius: var(--ply-radius-field);
       background: var(--ply-surface) var(--ply-fill-control);
       box-shadow: var(--ply-shadow-control);
       transition:
-        border-color var(--ply-duration) ease,
+        background-color var(--ply-duration) ease,
         box-shadow var(--ply-duration) ease;
     }
     &[data-kind="option"]:hover:not(:has(> input:disabled)) {
       box-shadow: var(--ply-shadow-control-hover);
     }
     &[data-kind="option"]:has(> input:checked) {
-      border-color: var(--ply-link);
       background: var(--ply-info-soft);
+      box-shadow: var(--ply-shadow-control-pressed);
     }
     &[data-kind="option"]:has(> input:disabled) {
       background: var(--ply-hatch), var(--ply-surface);
@@ -363,15 +363,16 @@
     }
   }
   .ply-input {
-    --ply-input-size: calc(16em / 7);
+    /* Buttonと同じ高さ。上下の余白は高さから行高と枠を引いた残りを半分ずつにし、文字を中央に置く。 */
+    --ply-input-size: calc(18em / 7);
     --ply-input-border-size: var(--ply-stroke-width);
     inline-size: 100%;
     min-inline-size: 0;
     min-block-size: var(--ply-input-size);
-    padding-block: calc(5em / 14);
+    padding-block: calc((var(--ply-input-size) - 10em / 7 - 2 * var(--ply-input-border-size)) / 2);
     padding-inline: 0.75em;
     border: var(--ply-input-border-size) solid var(--ply-border);
-    border-radius: var(--ply-radius-field);
+    border-radius: var(--ply-radius-control);
     background: var(--ply-surface);
     color: var(--ply-text);
     box-shadow: var(--ply-shadow-input);
@@ -382,10 +383,14 @@
     transition:
       border-color var(--ply-duration) ease,
       box-shadow var(--ply-duration) ease;
+    /* HEYの欄と同じく、青い縁の外に淡い青の輪を広げる。 */
     &:focus-visible {
-      outline: 0.125rem solid var(--ply-link);
+      outline: 0.125rem solid transparent;
       outline-offset: 0;
       border-color: var(--ply-link);
+      box-shadow:
+        0 0 0 0.125rem var(--ply-focus-ring),
+        var(--ply-shadow-input);
     }
     &[data-size="short"] {
       max-inline-size: 8rem;
@@ -411,9 +416,8 @@
     }
     &:where([data-size="large"]) {
       --ply-input-size: 2.5em;
-      padding-block: 0.4375em;
+      padding-block: calc((var(--ply-input-size) - 1.5em - 2 * var(--ply-input-border-size)) / 2);
       padding-inline: 0.5em;
-      border-radius: var(--ply-radius-field);
       font-size: var(--ply-body);
       line-height: var(--ply-control-leading);
     }
@@ -434,6 +438,7 @@
     &:focus-visible {
       border-color: var(--ply-link);
       background: var(--ply-surface);
+      box-shadow: 0 0 0 0.125rem var(--ply-focus-ring);
     }
     &:disabled {
       cursor: not-allowed;

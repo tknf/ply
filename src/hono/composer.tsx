@@ -16,19 +16,19 @@ export type ComposerProps = Omit<ElementProps<"form">, "children"> & {
   error?: string;
   attachments?: Child;
   actions?: Child;
-  /** 便箋の頭に、名前の隣へ置く宛先（人やチャンネル）。 */
+  /** 見出しで、名前の隣へ置く宛先（人やチャンネル）。 */
   to?: Child;
-  /** 便箋の頭の右端に置く状態（下書きの保存など）。 */
+  /** 見出しの右端に置く状態（下書きの保存など）。 */
   status?: Child;
   /**
    * 本文の欄の代わりに置く編集部品（リッチテキストの編集部品やcontenteditableなど）。
-   * 渡すと便箋の罫線と紙全体の輪はこの部品にかかり、送信する値の受け渡しは部品の側で行う。
+   * 渡すと本文の文字と紙全体の輪はこの部品にかかり、送信する値の受け渡しは部品の側で行う。
    */
   editor?: Child;
 };
 
-/** 便箋の頭の、宛先と状態。 */
-const letterhead = (to: Child, status: Child) => (
+/** 見出しに並べる、宛先と状態。 */
+const headingExtras = (to: Child, status: Child) => (
   <>
     {to != null && to !== false && <span class="to">{to}</span>}
     {status != null && status !== false && <span class="status">{status}</span>}
@@ -62,14 +62,14 @@ export const Composer = ({
           <span class="label" id={`${id}-body-label`}>
             {label}
           </span>
-          {letterhead(to, status)}
+          {headingExtras(to, status)}
         </div>
         <div class="editor" role="group" aria-labelledby={`${id}-body-label`}>
           {editor}
         </div>
       </div>
     ) : (
-      <Field id={`${id}-body`} label={label} error={error} status={letterhead(to, status)}>
+      <Field id={`${id}-body`} label={label} error={error} status={headingExtras(to, status)}>
         {(field) => (
           <Textarea
             {...field}
