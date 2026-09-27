@@ -1,4 +1,4 @@
-import { Loading, Button, Progress } from "../../src/hono";
+import { Loading, Button, Progress, Disclosure, DisclosureGroup } from "../../src/hono";
 export default () => (
   <div class="ply-stack">
     <Loading label="次の記事を読み込んでいます…" />
@@ -18,5 +18,37 @@ export default () => (
       <span>操作の待ち時間は、その操作のそばに表示します。</span>
     </div>
     <Progress label="添付ファイルの処理量を確認しています" />
+    <DisclosureGroup label="動きと置き場所の違い">
+      <Disclosure summary="三つの動き（ページをめくる・点を書く・丸を描く）" open>
+        <div class="ply-stack" data-space="small">
+          <Loading variant="orbit" label="ページをめくる：次のページを読み込んでいます…" />
+          <Loading variant="wave" label="点を書く：返信を書いています…" />
+          <Loading variant="halo" label="丸を描く：確認しています…" />
+        </div>
+      </Disclosure>
+      <Disclosure summary="この領域で待つ">
+        <div class="ply-stack" data-space="small">
+          <Loading variant="orbit" layout="region" label="記事の一覧を読み込んでいます…" />
+          <Loading variant="wave" layout="region" label="コメントを読み込んでいます…" />
+        </div>
+      </Disclosure>
+      <Disclosure summary="狭い場所で折り返す">
+        <div class="ply-stack" data-space="small" style="max-inline-size: 14rem">
+          <Loading label="秋の読書会の資料と参加者名簿を読み込んでいます…" />
+          <Loading
+            variant="halo"
+            layout="region"
+            label="https://example.com/articles/autumn-reading-club-2026 を確認しています…"
+          />
+        </div>
+      </Disclosure>
+      <Disclosure summary="右から左に読む場合">
+        <div class="ply-stack" data-space="small" dir="rtl" lang="ar">
+          <Loading variant="orbit" label="جارٍ تحميل الصفحة التالية…" />
+          <Loading variant="wave" label="جارٍ كتابة الرد…" />
+          <Loading variant="halo" layout="region" label="جارٍ التحقق…" />
+        </div>
+      </Disclosure>
+    </DisclosureGroup>
   </div>
 );

@@ -4,7 +4,7 @@
 
 ## 読み方と対象
 
-- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は958件です。省略した状態別・メディア・コンテナ条件はありません。
+- 全83 CSSファイルのgap、row-gap、column-gap、margin、padding、scroll-margin、scroll-padding、border-spacing、insetを抽出しました。該当宣言は967件です。省略した状態別・メディア・コンテナ条件はありません。
 - CSSの生の宣言、ネストしたセレクタの階層、条件、ソース位置を掲載します。→は親ルールから子ルールへの経路であり、結合済みCSSセレクタではありません。
 - 換算はroot 16pxのremだけです。emはその要素の文字サイズ、lhはその要素の行高、%は包含ブロック、autoは残り幅に依存します。条件外の値や文字拡大時まで同じpxと断定しません。gap二値は縦・横、論理padding二値は開始・終了の順です。
 - 同じ要素の状態別上書きを足し合わせないでください。最終値はレイヤー・詳細度・条件・記述順で決まります。0も、追加しない判断として全件掲載します。
@@ -970,21 +970,25 @@ gap・margin・padding・insetの宣言はありません。
 
 ## loading
 
-回転する印と文言は8px。印の上余白は(行高−16px)/2で先頭行の中心へ揃える。文言が複数行になっても印を全体の中央へ下げない。
+文具の印と文言は8px。印は16pxの枠に収め、上余白は(行高−16px)/2で先頭行の中心へ揃える。文言が複数行になっても印を全体の中央へ下げない。ページをめくる印は幅14px・高さ12pxの開いた本で、左右1pxを空けて16pxの枠に置き、上下は先頭行の中心に揃える。めくる紙は本の中に収める。この領域で待つ時は沈んだトレイの内側に上11px・下10px・左右15pxを取る。
 
 対象: [src/css/components/loading.css](../src/css/components/loading.css)
 
-| ソース                                       | セレクタの階層                                                   | 条件 | 宣言値                                       | root 16pxでremを換算     | 値の扱い                                                             |
-| -------------------------------------------- | ---------------------------------------------------------------- | ---- | -------------------------------------------- | ------------------------ | -------------------------------------------------------------------- |
-| [L5](../src/css/components/loading.css#L5)   | `.ply-loading`                                                   | 常時 | `gap: var(--ply-space-2)`                    | `8px`                    | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L15](../src/css/components/loading.css#L15) | `.ply-loading → & > .indicator`                                  | 常時 | `gap: 0.125rem`                              | `2px`                    | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L18](../src/css/components/loading.css#L18) | `.ply-loading → & > .indicator`                                  | 常時 | `margin-block-start: calc((1lh - 1rem) / 2)` | `calc((1lh - 16px) / 2)` | 最初の行の高さと印の高さの差から揃える。                             |
-| [L26](../src/css/components/loading.css#L26) | `.ply-loading → &[data-layout="region"]`                         | 常時 | `padding-block: 0.6875rem 0.625rem`          | `11px 10px`              | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L27](../src/css/components/loading.css#L27) | `.ply-loading → &[data-layout="region"]`                         | 常時 | `padding-inline: 0.9375rem`                  | `15px`                   | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L39](../src/css/components/loading.css#L39) | `.ply-loading → &[data-variant="orbit"] > .indicator → &::after` | 常時 | `inset-block-start: -0.1875rem`              | `-3px`                   | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
-| [L40](../src/css/components/loading.css#L40) | `.ply-loading → &[data-variant="orbit"] > .indicator → &::after` | 常時 | `inset-inline-start: calc(50% - 0.1875rem)`  | `calc(50% - 3px)`        | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
-| [L64](../src/css/components/loading.css#L64) | `.ply-loading → &[data-variant="halo"] > .indicator → &::before` | 常時 | `inset: 0.0625rem`                           | `1px`                    | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
-| [L75](../src/css/components/loading.css#L75) | `.ply-loading → &[data-variant="halo"] > .indicator → &::after`  | 常時 | `inset: calc(50% - 0.15625rem)`              | `calc(50% - 2.5px)`      | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
+| ソース                                         | セレクタの階層                                                    | 条件 | 宣言値                                                        | root 16pxでremを換算                      | 値の扱い                                                             |
+| ---------------------------------------------- | ----------------------------------------------------------------- | ---- | ------------------------------------------------------------- | ----------------------------------------- | -------------------------------------------------------------------- |
+| [L15](../src/css/components/loading.css#L15)   | `.ply-loading`                                                    | 常時 | `gap: var(--ply-space-2)`                                     | `8px`                                     | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L25](../src/css/components/loading.css#L25)   | `.ply-loading → & > .indicator`                                   | 常時 | `gap: 0.125rem`                                               | `2px`                                     | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L28](../src/css/components/loading.css#L28)   | `.ply-loading → & > .indicator`                                   | 常時 | `margin-block-start: calc((1lh - 1rem) / 2)`                  | `calc((1lh - 16px) / 2)`                  | 最初の行の高さと印の高さの差から揃える。                             |
+| [L36](../src/css/components/loading.css#L36)   | `.ply-loading → &[data-layout="region"]`                          | 常時 | `padding-block: 0.6875rem 0.625rem`                           | `11px 10px`                               | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L37](../src/css/components/loading.css#L37)   | `.ply-loading → &[data-layout="region"]`                          | 常時 | `padding-inline: 0.9375rem`                                   | `15px`                                    | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L59](../src/css/components/loading.css#L59)   | `.ply-loading → &[data-variant="orbit"] > .indicator`             | 常時 | `margin-inline: 0.0625rem`                                    | `1px`                                     | 前後または隣の要素との関係。上記の段落・区画・境界の規則を適用。     |
+| [L60](../src/css/components/loading.css#L60)   | `.ply-loading → &[data-variant="orbit"] > .indicator`             | 常時 | `margin-block-start: calc((1lh - 0.75rem) / 2)`               | `calc((1lh - 12px) / 2)`                  | 最初の行の高さと印の高さの差から揃える。                             |
+| [L74](../src/css/components/loading.css#L74)   | `.ply-loading → &[data-variant="orbit"] > .indicator → &::before` | 常時 | `inset-block: 0`                                              | `0`                                       | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L75](../src/css/components/loading.css#L75)   | `.ply-loading → &[data-variant="orbit"] > .indicator → &::before` | 常時 | `inset-inline-start: calc(50% - var(--ply-stroke-width) / 2)` | `calc(50% - var(--ply-stroke-width) / 2)` | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
+| [L82](../src/css/components/loading.css#L82)   | `.ply-loading → &[data-variant="orbit"] > .indicator → &::after`  | 常時 | `inset-block: 0`                                              | `0`                                       | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L83](../src/css/components/loading.css#L83)   | `.ply-loading → &[data-variant="orbit"] > .indicator → &::after`  | 常時 | `inset-inline-start: 50%`                                     | `50%`                                     | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
+| [L97](../src/css/components/loading.css#L97)   | `.ply-loading → &[data-variant="wave"] > .indicator`              | 常時 | `padding-block-end: 0.1875rem`                                | `3px`                                     | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L117](../src/css/components/loading.css#L117) | `.ply-loading → &[data-variant="halo"] > .indicator::before`      | 常時 | `inset: 0.125rem`                                             | `2px`                                     | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
 
 ## message-list
 
@@ -1377,16 +1381,19 @@ gap・margin・padding・insetの宣言はありません。
 
 ## tag
 
-13px/20pxの分類ラベル。上下1pxと境界2pxで24px、ピルの丸い端に文字が寄らないよう横0.625emで約8px。タッチリンクは上下11pxと行20px・境界2pxで44px。隣のタグとの間隔はTagGroupが所有する。
+13px/20pxの分類の荷札。上下2pxで高さ24px。始まりの側は角を0.6em落とし、紐の穴（中心0.7em、半径0.17em、補強のリング0.3em）の後ろに0.375em空けて書き始める。終わりは0.625em。隣のタグとの間隔はTagGroupが所有する。
 
 対象: [src/css/components/tag.css](../src/css/components/tag.css)
 
-| ソース                                   | セレクタの階層       | 条件 | 宣言値                         | root 16pxでremを換算 | 値の扱い                                                             |
-| ---------------------------------------- | -------------------- | ---- | ------------------------------ | -------------------- | -------------------------------------------------------------------- |
-| [L8](../src/css/components/tag.css#L8)   | `.ply-tag`           | 常時 | `padding-block: 0.125rem`      | `2px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
-| [L9](../src/css/components/tag.css#L9)   | `.ply-tag`           | 常時 | `padding-inline: 0.625em`      | `0.625em`            | 文字サイズまたは行高に追従する比率。式を保持する。                   |
-| [L55](../src/css/components/tag.css#L55) | `.ply-tag.removable` | 常時 | `gap: 0.125rem`                | `2px`                | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
-| [L57](../src/css/components/tag.css#L57) | `.ply-tag.removable` | 常時 | `padding-inline-end: 0.125rem` | `2px`                | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| ソース                                     | セレクタの階層         | 条件 | 宣言値                                                                                     | root 16pxでremを換算                                                       | 値の扱い                                                             |
+| ------------------------------------------ | ---------------------- | ---- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| [L19](../src/css/components/tag.css#L19)   | `.ply-tag`             | 常時 | `padding-block: 0.125rem`                                                                  | `2px`                                                                      | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
+| [L20](../src/css/components/tag.css#L20)   | `.ply-tag`             | 常時 | `padding-inline: calc(var(--ply-tag-hole-center) + var(--ply-tag-hole) + 0.375em) 0.625em` | `calc(var(--ply-tag-hole-center) + var(--ply-tag-hole) + 0.375em) 0.625em` | 文字サイズまたは行高に追従する比率。式を保持する。                   |
+| [L33](../src/css/components/tag.css#L33)   | `.ply-tag → &::before` | 常時 | `inset: 0`                                                                                 | `0`                                                                        | この位置では余白を足さない。上記の所有範囲に従う。                   |
+| [L54](../src/css/components/tag.css#L54)   | `.ply-tag → &::after`  | 常時 | `inset-block-start: calc(50% - var(--ply-tag-eyelet))`                                     | `calc(50% - var(--ply-tag-eyelet))`                                        | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
+| [L55](../src/css/components/tag.css#L55)   | `.ply-tag → &::after`  | 常時 | `inset-inline-start: calc(var(--ply-tag-hole-center) - var(--ply-tag-eyelet))`             | `calc(var(--ply-tag-hole-center) - var(--ply-tag-eyelet))`                 | 通常フローの余白ではなく、固定・絶対配置の端からの距離。             |
+| [L128](../src/css/components/tag.css#L128) | `.ply-tag.removable`   | 常時 | `gap: 0.125rem`                                                                            | `2px`                                                                      | 並ぶ子の間隔。二値は行・列の順。上記のコンポーネント内の役割を適用。 |
+| [L130](../src/css/components/tag.css#L130) | `.ply-tag.removable`   | 常時 | `padding-inline-end: 0.125rem`                                                             | `2px`                                                                      | この要素自身の内側。上記の領域・操作高・境界の計算を適用。           |
 
 ## task-list
 
@@ -1441,18 +1448,20 @@ gap・margin・padding・insetの宣言はありません。
 
 ## toast
 
-通知内側12px、本文と閉じるボタンの横12px。操作行まで8px、操作同士8px。閉じる操作は独立した列の先頭に固定し、折り返した操作群へ混ぜない。画面端16pxとsafe areaを残し、左右autoで中央へ置く。
+通知内側12px、本文と閉じるボタンの横12px。操作行まで8px、操作同士8px。閉じる操作は独立した列の先頭に固定し、折り返した操作群へ混ぜない。上端の切り取り線はパンチ穴の半径（2px）だけ内側を下げて文字にかからないようにする。画面端16pxとsafe areaを残し、左右autoで中央へ置く。
 
 対象: [src/css/components/toast.css](../src/css/components/toast.css)
 
-| ソース                                     | セレクタの階層 | 条件 | 宣言値                                                                  | root 16pxでremを換算                     | 値の扱い                                                 |
-| ------------------------------------------ | -------------- | ---- | ----------------------------------------------------------------------- | ---------------------------------------- | -------------------------------------------------------- |
-| [L4](../src/css/components/toast.css#L4)   | `.ply-toast`   | 常時 | `inset-block-start: auto`                                               | `auto`                                   | 可変の残り幅を配置へ使う。固定間隔ではない。             |
-| [L5](../src/css/components/toast.css#L5)   | `.ply-toast`   | 常時 | `inset-block-end: max(var(--ply-space-4), env(safe-area-inset-bottom))` | `max(16px, env(safe-area-inset-bottom))` | 通常フローの余白ではなく、固定・絶対配置の端からの距離。 |
-| [L6](../src/css/components/toast.css#L6)   | `.ply-toast`   | 常時 | `inset-inline: var(--ply-space-4)`                                      | `16px`                                   | 通常フローの余白ではなく、固定・絶対配置の端からの距離。 |
-| [L11](../src/css/components/toast.css#L11) | `.ply-toast`   | 常時 | `margin: 0`                                                             | `0`                                      | この位置では余白を足さない。上記の所有範囲に従う。       |
-| [L12](../src/css/components/toast.css#L12) | `.ply-toast`   | 常時 | `margin-inline: auto`                                                   | `auto`                                   | 可変の残り幅を配置へ使う。固定間隔ではない。             |
-| [L13](../src/css/components/toast.css#L13) | `.ply-toast`   | 常時 | `padding: 0`                                                            | `0`                                      | この位置では余白を足さない。上記の所有範囲に従う。       |
+| ソース                                     | セレクタの階層           | 条件 | 宣言値                                                                  | root 16pxでremを換算                     | 値の扱い                                                   |
+| ------------------------------------------ | ------------------------ | ---- | ----------------------------------------------------------------------- | ---------------------------------------- | ---------------------------------------------------------- |
+| [L11](../src/css/components/toast.css#L11) | `.ply-toast`             | 常時 | `inset-block-start: auto`                                               | `auto`                                   | 可変の残り幅を配置へ使う。固定間隔ではない。               |
+| [L12](../src/css/components/toast.css#L12) | `.ply-toast`             | 常時 | `inset-block-end: max(var(--ply-space-4), env(safe-area-inset-bottom))` | `max(16px, env(safe-area-inset-bottom))` | 通常フローの余白ではなく、固定・絶対配置の端からの距離。   |
+| [L13](../src/css/components/toast.css#L13) | `.ply-toast`             | 常時 | `inset-inline: var(--ply-space-4)`                                      | `16px`                                   | 通常フローの余白ではなく、固定・絶対配置の端からの距離。   |
+| [L18](../src/css/components/toast.css#L18) | `.ply-toast`             | 常時 | `margin: 0`                                                             | `0`                                      | この位置では余白を足さない。上記の所有範囲に従う。         |
+| [L19](../src/css/components/toast.css#L19) | `.ply-toast`             | 常時 | `margin-inline: auto`                                                   | `auto`                                   | 可変の残り幅を配置へ使う。固定間隔ではない。               |
+| [L20](../src/css/components/toast.css#L20) | `.ply-toast`             | 常時 | `padding: 0`                                                            | `0`                                      | この位置では余白を足さない。上記の所有範囲に従う。         |
+| [L21](../src/css/components/toast.css#L21) | `.ply-toast`             | 常時 | `padding-block-start: var(--ply-punch-hole)`                            | `var(--ply-punch-hole)`                  | この要素自身の内側。上記の領域・操作高・境界の計算を適用。 |
+| [L34](../src/css/components/toast.css#L34) | `.ply-toast → &::before` | 常時 | `inset: 0`                                                              | `0`                                      | この位置では余白を足さない。上記の所有範囲に従う。         |
 
 ## toggle-group
 
@@ -1819,6 +1828,10 @@ gap・margin・padding・insetの宣言はありません。
 | [keycap.tsx:3](../catalog/hono-examples/keycap.tsx#L3)                         | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [loading.tsx:3](../catalog/hono-examples/loading.tsx#L3)                       | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [loading.tsx:14](../catalog/hono-examples/loading.tsx#L14)                     | `ply-cluster` | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [loading.tsx:23](../catalog/hono-examples/loading.tsx#L23)                     | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [loading.tsx:30](../catalog/hono-examples/loading.tsx#L30)                     | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [loading.tsx:36](../catalog/hono-examples/loading.tsx#L36)                     | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [loading.tsx:46](../catalog/hono-examples/loading.tsx#L46)                     | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [message-list.tsx:3](../catalog/hono-examples/message-list.tsx#L3)             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [notice.tsx:3](../catalog/hono-examples/notice.tsx#L3)                         | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [page-header.tsx:4](../catalog/hono-examples/page-header.tsx#L4)               | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
@@ -1845,6 +1858,7 @@ gap・margin・padding・insetの宣言はありません。
 | [table.tsx:57](../catalog/hono-examples/table.tsx#L57)                         | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [tabs.tsx:4](../catalog/hono-examples/tabs.tsx#L4)                             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [tag-input.tsx:4](../catalog/hono-examples/tag-input.tsx#L4)                   | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
+| [tag.tsx:15](../catalog/hono-examples/tag.tsx#L15)                             | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [timeline.tsx:4](../catalog/hono-examples/timeline.tsx#L4)                     | `ply-stack`   | `default`  | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [timeline.tsx:5](../catalog/hono-examples/timeline.tsx#L5)                     | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |
 | [timeline.tsx:25](../catalog/hono-examples/timeline.tsx#L25)                   | `ply-stack`   | `small`    | layout.cssの該当宣言。コンポーネント内の余白に加算される配置側の値。 |

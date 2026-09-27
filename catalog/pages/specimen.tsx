@@ -245,6 +245,9 @@ const changed = [
   ["error-summary", "ErrorSummary：添削用紙（危険の色の札、朱の余白線と赤ペンの番号）"],
   ["empty-state", "EmptyState：重ねた紙（白紙・罫線の便箋・ペンで描くチェック）"],
   ["progress", "Progress：定規の溝と目盛り、インクの帯"],
+  ["tag", "Tag：荷札（落とした角、紐の穴と補強のリング）"],
+  ["loading", "Loading：ページをめくる・ペンで点を書く・鉛筆で丸を描く"],
+  ["toast", "Toast：切り取ったメモ（パンチ穴の切り取り線、下から差し出す）"],
   ["button", "Button：ピル"],
 ] as const;
 
