@@ -4,8 +4,8 @@
     display: flex;
     flex-direction: column;
     min-inline-size: 0;
-    padding-block: var(--ply-space-4);
-    padding-inline: var(--ply-space-5);
+    padding-block: var(--ply-space-5);
+    padding-inline: var(--ply-space-6);
     /* Cardは紙。枠線を使わず、紙の影と大きな角丸で見せる。 */
     border: 0;
     border-radius: var(--ply-radius-surface);
@@ -16,26 +16,6 @@
     overflow-wrap: anywhere;
     box-shadow: var(--ply-shadow-paper);
     transition: box-shadow var(--ply-duration) ease;
-    /* 固定した項目は、上端をマスキングテープで留める。端はちぎったように少しぎざぎざにする。 */
-    &[data-pinned="true"] {
-      position: relative;
-      &::before {
-        content: "";
-        position: absolute;
-        inset-block-start: -0.5rem;
-        inset-inline-start: calc(50% - 2.25rem);
-        inline-size: 4.5rem;
-        block-size: 1.125rem;
-        background: var(--ply-tape);
-        clip-path: var(--ply-tape-edge);
-        rotate: -2deg;
-        pointer-events: none;
-      }
-    }
-    /* 後ろに続きがある（スレッド・フォルダ・子の項目・まとめた通知）Cardは、重ねた紙にする。 */
-    &[data-stacked="true"] {
-      box-shadow: var(--ply-shadow-stack);
-    }
     &:has(> .title > a:hover) {
       box-shadow: var(--ply-shadow-paper-lift);
     }
@@ -43,35 +23,13 @@
       overflow: hidden;
       border-radius: var(--ply-radius-control);
       & + :is(.title, .eyebrow) {
-        margin-block-start: var(--ply-space-3);
+        margin-block-start: var(--ply-space-4);
       }
       & > :is(img, svg:not(.ply-icon)) {
         display: block;
         inline-size: 100%;
         block-size: auto;
       }
-    }
-    /* 分類のつまみは墨の札。紙の上端をまたいで貼り、かすかな陰影で紙から浮かせる。 */
-    &:has(> .tab) {
-      position: relative;
-      padding-block-start: var(--ply-space-5);
-    }
-    & > .tab {
-      position: absolute;
-      inset-block-start: calc(-0.5lh - 0.125rem);
-      inset-inline-start: var(--ply-space-5);
-      max-inline-size: calc(100% - var(--ply-space-5) * 2);
-      padding-block: 0.125rem;
-      padding-inline: var(--ply-space-2);
-      border-radius: 0;
-      background: var(--ply-ink) var(--ply-fill-ink);
-      box-shadow: var(--ply-shadow-control-primary);
-      color: var(--ply-surface);
-      font-size: var(--ply-small);
-      font-weight: 600;
-      line-height: var(--ply-small-leading);
-      letter-spacing: 0.04em;
-      overflow-wrap: anywhere;
     }
     & > .eyebrow {
       display: flex;
@@ -80,16 +38,17 @@
       gap: var(--ply-space-2);
       color: var(--ply-muted);
       font-size: var(--ply-small);
-      font-weight: 600;
+      line-height: var(--ply-small-leading);
       & + .title {
         margin-block-start: var(--ply-space-1);
       }
     }
-    /* 題名は紙の上の見出し。一覧の項目より一段大きくする。 */
+    /* 題名はCardの中でいちばん強い字。補足・札より大きく太くする。 */
     & > .title {
-      font-size: var(--ply-section-title);
+      font-size: var(--ply-body);
       font-weight: 600;
-      line-height: 1.4;
+      line-height: 1.5;
+      word-break: auto-phrase;
       & > a {
         color: inherit;
         text-decoration: none;
@@ -103,22 +62,22 @@
       margin-block-start: var(--ply-space-2);
     }
     & > .body > * + * {
-      margin-block-start: var(--ply-space-2);
+      margin-block-start: var(--ply-space-3);
     }
     & > .meta {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: start;
-      gap: var(--ply-space-2);
+      gap: var(--ply-space-2) var(--ply-space-3);
       margin-block-start: auto;
-      padding-block-start: var(--ply-space-4);
+      padding-block-start: var(--ply-space-5);
       color: var(--ply-muted);
       font-size: var(--ply-small);
       line-height: var(--ply-small-leading);
       /* 並べたメタ情報は縦の罫線で区切る。 */
       & > * + *:not(.end) {
-        padding-inline-start: var(--ply-space-2);
+        padding-inline-start: var(--ply-space-3);
         border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
       }
       & > .end {
@@ -130,27 +89,21 @@
       }
     }
     &:has(> .meta) {
-      padding-block-end: 0.625rem;
+      padding-block-end: var(--ply-space-4);
     }
     &[data-density="compact"] {
-      padding-block: var(--ply-space-2);
-      padding-inline: var(--ply-space-3);
+      padding-block: var(--ply-space-3);
+      padding-inline: var(--ply-space-4);
       &:has(> .meta) {
-        padding-block-end: 0.375rem;
-      }
-      & > .title {
-        font-size: var(--ply-label);
-        font-weight: 400;
-        line-height: var(--ply-label-leading);
+        padding-block-end: var(--ply-space-2);
       }
       & > .meta {
         padding-block-start: var(--ply-space-3);
       }
     }
+    /* 完了は縁取りではなく、淡い成功の色の地で示す。 */
     &[data-state="complete"] {
-      box-shadow:
-        0 0 0 var(--ply-stroke-width) color-mix(in srgb, var(--ply-success) 30%, var(--ply-surface)),
-        var(--ply-shadow-paper);
+      background: color-mix(in srgb, var(--ply-success-soft) 60%, var(--ply-surface));
     }
     &[data-state="new"] {
       animation: ply-card-arrive calc(var(--ply-duration) * 3) ease-out;

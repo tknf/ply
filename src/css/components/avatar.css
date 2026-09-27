@@ -1,36 +1,33 @@
 @layer components {
+  /*
+    人の円はHEYと同じく、中間の濃さで塗った丸に濃いインクの太いイニシャルを置く。
+    淡い地に色の文字では、一覧の中で人が立たない。
+  */
   .ply-avatar {
-    --ply-avatar-fill: var(--ply-cover);
+    --ply-avatar-fill: color-mix(in srgb, var(--ply-blue) 42%, var(--ply-surface));
     position: relative;
     display: inline-grid;
     place-items: center;
-    inline-size: 2rem;
-    block-size: 2rem;
+    inline-size: 2.25rem;
+    block-size: 2.25rem;
     flex: none;
     overflow: hidden;
-    border: var(--ply-stroke-width) solid var(--ply-border);
+    /* HEYの人の円と同じく縁取りを持たず、塗りの円だけにする。 */
     border-radius: 50%;
     background: var(--ply-avatar-fill);
-    color: var(--ply-blue-dark);
+    color: var(--ply-ink);
     font-family: var(--ply-control-font-family);
     font-size: var(--ply-small);
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1;
-    &[data-tone="blue"] {
-      --ply-avatar-fill: var(--ply-cover);
-      color: var(--ply-blue-dark);
-    }
     &[data-tone="green"] {
-      --ply-avatar-fill: var(--ply-success-soft);
-      color: var(--ply-green);
+      --ply-avatar-fill: color-mix(in srgb, var(--ply-green) 42%, var(--ply-surface));
     }
     &[data-tone="amber"] {
-      --ply-avatar-fill: var(--ply-butter);
-      color: var(--ply-amber);
+      --ply-avatar-fill: color-mix(in srgb, var(--ply-gold) 48%, var(--ply-surface));
     }
     &[data-tone="coral"] {
-      --ply-avatar-fill: var(--ply-danger-soft);
-      color: var(--ply-coral-dark);
+      --ply-avatar-fill: color-mix(in srgb, var(--ply-coral) 42%, var(--ply-surface));
     }
     & > .initials {
       max-inline-size: 100%;
@@ -64,13 +61,14 @@
       font-size: 1rem;
     }
     &[data-size="small"] {
-      inline-size: 1.5rem;
-      block-size: 1.5rem;
-      font-size: 0.625rem;
+      inline-size: 1.75rem;
+      block-size: 1.75rem;
+      font-size: 0.75rem;
     }
   }
   @media (forced-colors: active) {
     .ply-avatar {
+      border: var(--ply-stroke-width) solid CanvasText;
       background: Canvas;
       box-shadow: none;
     }

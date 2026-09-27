@@ -1,7 +1,7 @@
 @layer components {
   /*
-    比較は差し替えの紙。一枚の紙を左右に分け、「現在」は古いくすんだ紙、「変更後」は新しい白い紙にする。
-    境目には線をまたぐ丸い札を載せ、変わる時は矢印、変わらない時は等号を出す。変わる時は変更後の見出しに蛍光ペンを引く。
+    比較は、現在と変更後を平らな地に並べ、間に矢印のアイコンだけを置く。
+    現在は弱い文字にし、変更後を読ませる。変わらない時は矢印を等号にし、両方を同じ強さにする。
   */
   .ply-comparison {
     container: ply-comparison / inline-size;
@@ -10,20 +10,15 @@
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     overflow-wrap: anywhere;
-    /* まとまりの見出しはSectionと同じ形。太字の名前・状態・右へ伸びる線の順。 */
+    /* まとまりの見出しはSectionと同じ形。太字の名前・状態の順で、線は伸ばさない。 */
     & > .title {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: var(--ply-space-1) var(--ply-space-2);
+      margin: 0;
       font-size: inherit;
       font-weight: 600;
-      &::after {
-        content: "";
-        flex: 1 1 1rem;
-        block-size: var(--ply-stroke-width);
-        background: var(--ply-border);
-      }
       & > .state {
         color: var(--ply-muted);
         font-size: var(--ply-small);
@@ -31,23 +26,13 @@
       }
     }
     & > .pair {
-      --ply-comparison-badge: 1.5rem;
-      position: relative;
       display: grid;
       grid-template-columns: minmax(0, 1fr);
-      gap: 0;
-      margin-block-start: var(--ply-space-2);
-      overflow: hidden;
-      border: 0;
-      border-radius: var(--ply-radius-surface);
-      background: var(--ply-surface) var(--ply-fill-paper);
-      box-shadow: var(--ply-shadow-paper);
+      gap: var(--ply-space-2);
+      margin-block-start: var(--ply-space-3);
       & > :is(.before, .after) {
         min-inline-size: 0;
-        padding-block: var(--ply-space-3) var(--ply-space-4);
-        padding-inline: var(--ply-space-5);
         & > h4 {
-          inline-size: fit-content;
           margin: 0;
           color: var(--ply-muted);
           font-size: var(--ply-small);
@@ -61,91 +46,70 @@
           }
         }
       }
-      /* 現在は、差し替えられる古い紙。 */
+      /* 現在は弱い文字にする。中の部品も弱い文字で描くよう、文字色のトークンをこの中だけ差し替える。 */
       & > .before {
-        background: color-mix(in srgb, var(--ply-soft) 85%, var(--ply-background));
+        --ply-text: var(--ply-muted);
+        grid-row: 1;
         color: var(--ply-muted);
       }
       & > .after {
-        position: relative;
-        border-block-start: var(--ply-stroke-width) solid var(--ply-border);
-        /* 境目をまたぐ丸い札と、その中のアイコン。狭い幅では上の境目に下向きの矢印を載せる。 */
-        &::before,
-        &::after {
-          content: "";
-          position: absolute;
-          inset-block-start: calc(var(--ply-comparison-badge) / -2 - var(--ply-stroke-width) / 2);
-          inset-inline-start: calc(50% - var(--ply-comparison-badge) / 2);
-          inline-size: var(--ply-comparison-badge);
-          block-size: var(--ply-comparison-badge);
-        }
-        &::before {
-          border-radius: 50%;
-          background: var(--ply-surface) var(--ply-fill-control);
-          box-shadow: var(--ply-shadow-control);
-        }
-        &::after {
-          background: var(--ply-ink);
-          mask: url("../assets/arrow.svg") center / 0.875rem no-repeat;
-          rotate: 90deg;
-        }
+        grid-row: 3;
+      }
+      /* 現在から変更後へ向かう矢印。狭い幅では下を向く。 */
+      &::after {
+        content: "";
+        grid-row: 2;
+        justify-self: start;
+        inline-size: 1rem;
+        block-size: 1rem;
+        background: var(--ply-muted);
+        mask: url("../assets/arrow.svg") center / contain no-repeat;
+        rotate: 90deg;
       }
     }
-    /* 変わる時は、変更後の見出しに蛍光ペンを引く。 */
+    /* 変わる時は、状態を情報の色にし、変更後の見出しを本文の色で読ませる。 */
     &[data-changed="true"] {
       & > .title > .state {
         color: var(--ply-info);
       }
       & > .pair > .after > h4 {
-        padding-inline: 0.15em;
-        background: var(--ply-highlighter) 0 75% / 100% 0.7em no-repeat;
         color: var(--ply-text);
       }
     }
-    /* 変わらない時は、両方を同じ白い紙にし、境目の札を等号にする。 */
     &[data-changed="false"] > .pair {
       & > .before {
-        background: transparent;
+        --ply-text: inherit;
         color: inherit;
       }
-      & > .after::after {
+      &::after {
         mask-image: url("../assets/equals.svg");
         rotate: none;
       }
     }
     @container ply-comparison (inline-size >= 30rem) {
       & > .pair {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        & > .after {
-          border-block-start: 0;
-          border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
-          &::before,
-          &::after {
-            inset-block-start: var(--ply-space-3);
-            inset-inline-start: calc(
-              var(--ply-comparison-badge) / -2 - var(--ply-stroke-width) / 2
-            );
-          }
-          &::after {
-            rotate: none;
-          }
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        gap: var(--ply-space-6);
+        & > :is(.before, .after) {
+          grid-row: 1;
         }
-        &:dir(rtl) > .after::after {
+        & > .after {
+          grid-column: 3;
+        }
+        /* 矢印は、見出しの一行の高さの中央に置く。 */
+        &::after {
+          grid-row: 1;
+          grid-column: 2;
+          block-size: calc(var(--ply-small) * var(--ply-small-leading));
+          mask-size: 1rem;
+          rotate: none;
+        }
+        &:dir(rtl)::after {
           rotate: 180deg;
         }
       }
-      &[data-changed="false"] > .pair > .after::after {
+      &[data-changed="false"] > .pair::after {
         rotate: none;
-      }
-    }
-  }
-  @media (forced-colors: active) {
-    .ply-comparison > .pair {
-      border: var(--ply-stroke-width) solid CanvasText;
-      background: Canvas;
-      box-shadow: none;
-      & > .before {
-        background: Canvas;
       }
     }
   }

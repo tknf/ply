@@ -1,57 +1,38 @@
 @layer components {
-  /* 一覧は紙の短冊。一行ずつを紙にして少し間をあけて並べ、今の行だけ持ち上げる。 */
+  /* 比べる行の一覧。行を枠で囲まず、始まりと終わりに罫線を引き、行の間は淡い線で区切る。 */
   .ply-data-list {
     container: ply-data-list / inline-size;
     display: grid;
-    gap: var(--ply-space-2);
+    gap: 0;
     min-inline-size: 0;
     margin: 0;
     padding: 0;
+    border-block-end: var(--ply-stroke-width) solid var(--ply-border);
     color: var(--ply-text);
-    font-size: var(--ply-label);
+    font-size: var(--ply-body);
     line-height: var(--ply-label-leading);
     list-style: none;
     & > li {
       position: relative;
       display: grid;
       grid-template-columns: minmax(0, 1fr);
-      gap: var(--ply-space-2) var(--ply-space-3);
+      gap: var(--ply-space-2) var(--ply-space-4);
       align-items: start;
       min-inline-size: 0;
-      /* 縁から余白線まで、余白線から文字まで、右の余白を同じ16pxにそろえる。 */
-      padding-block: var(--ply-space-3);
-      padding-inline: calc(var(--ply-space-4) * 2 + var(--ply-stroke-width)) var(--ply-space-4);
-      border-radius: var(--ply-radius-surface);
-      background: var(--ply-surface) var(--ply-fill-paper);
-      box-shadow: var(--ply-shadow-paper);
-      transition:
-        box-shadow var(--ply-duration) ease,
-        translate var(--ply-duration) ease;
-      /* 朱の余白線は、印を付ける場所。 */
-      &::before {
-        content: "";
-        position: absolute;
-        inset-block: 0;
-        inset-inline-start: var(--ply-space-4);
-        inline-size: var(--ply-stroke-width);
-        background: var(--ply-margin-line);
+      padding-block: var(--ply-space-4);
+      padding-inline: var(--ply-space-4);
+      border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+      & + li {
+        border-block-start-color: color-mix(in srgb, var(--ply-ink) 8%, var(--ply-surface));
       }
-      /* リンクの行は、指を載せると短冊を少し引き出す。 */
-      &:has(> .body > a.title:hover) {
-        box-shadow: var(--ply-shadow-paper-lift);
-        translate: var(--ply-space-1) 0;
-        &:dir(rtl) {
-          translate: calc(var(--ply-space-1) * -1) 0;
-        }
-      }
-      &:focus-within {
-        box-shadow: var(--ply-shadow-paper-lift);
-      }
-      /* 今、隣で開いている行は、余白線そのものを青く太くし、短冊を持ち上げる。線は重ねない。 */
+      /* 今、隣で開いている行は、淡い青の面と開始側の青い2pxの印で示す。 */
       &[data-current="true"] {
-        box-shadow: var(--ply-shadow-paper-lift);
+        background: color-mix(in srgb, var(--ply-info-soft) 60%, transparent);
         &::before {
-          inset-inline-start: calc(var(--ply-space-4) - var(--ply-stroke-width) / 2);
+          content: "";
+          position: absolute;
+          inset-block: 0;
+          inset-inline-start: 0;
           inline-size: var(--ply-frame-width);
           background: var(--ply-link);
         }
@@ -69,7 +50,7 @@
         /* 項目の題名は太字。Card・ActionList・BoardのItemと同じ構造にする。 */
         & > .title {
           color: var(--ply-text);
-          font-size: var(--ply-label);
+          font-size: var(--ply-body);
           font-weight: 600;
           line-height: var(--ply-label-leading);
         }
@@ -89,6 +70,7 @@
           margin-block-start: var(--ply-space-1);
           color: var(--ply-muted);
           font-size: var(--ply-small);
+          line-height: var(--ply-small-leading);
         }
         & > .meta {
           margin-block-start: var(--ply-space-1);
@@ -118,7 +100,7 @@
     @container ply-data-list (inline-size >= 28rem) {
       & > li {
         grid-template-columns: minmax(0, 1fr) fit-content(32%);
-        column-gap: var(--ply-space-4);
+        column-gap: var(--ply-space-6);
         & > .end {
           grid-column: 2;
           grid-row: 1;
@@ -133,10 +115,8 @@
     }
   }
   @media (forced-colors: active) {
-    .ply-data-list > li {
-      border: var(--ply-stroke-width) solid CanvasText;
-      background: Canvas;
-      box-shadow: none;
+    .ply-data-list > li[data-current="true"]::before {
+      background: CanvasText;
     }
   }
 }

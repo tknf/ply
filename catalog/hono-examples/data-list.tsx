@@ -9,6 +9,7 @@ export default () => (
         description: "季節の移り変わりを、写真と文章で記録しています。",
         meta: "田中 遥 · 9月15日更新",
         end: <Badge tone="success">公開中</Badge>,
+        current: true,
       },
       {
         title: "初めての予約から当日の受付まで、仕事場を利用する方への詳しいご案内",

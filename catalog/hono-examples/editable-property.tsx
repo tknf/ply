@@ -15,7 +15,7 @@ export default () => (
       鉛筆で書き始め、⌘＋Enter（WindowsなどではCtrl＋Enter）か「確定」で書き終えます。Escapeか「取消」で元の値に戻します。一行でも複数行でも同じで、Enterだけでは確定しません。
     </p>
     <DisclosureGroup label="値と置き場所の違い">
-      <Disclosure summary="記入票に並べる" open>
+      <Disclosure summary="項目を並べる" open>
         <div class="ply-split">
           <EditableProperty
             id="sheet-title"

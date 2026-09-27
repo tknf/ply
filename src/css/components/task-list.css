@@ -1,16 +1,14 @@
 @layer components {
   /*
-    やることの一覧はメモ。外側の見出しに開閉・名前・未完了の数・進み具合を置き、
-    その下の一枚の紙の行をノートの青い罫線で区切る。
-    チェックは朱の余白線の外（印を付ける場所）に置き、終えたことはペンで線を引いて消す。
-    最後の行は、次の空いた罫線に書き足す欄。
+    やることの一覧。外側の見出しに開閉・名前・未完了の数・進み具合を置き、
+    その下の行を罫線で区切る。行の始まりにチェックを置き、終えたことはペンで線を引いて消す。
+    最後の行は、項目を書き足す欄。
   */
   .ply-task-list {
-    --ply-task-margin: 2.75rem;
     --ply-task-progress: 0;
     container: ply-task-list / inline-size;
     display: grid;
-    gap: var(--ply-space-2);
+    gap: var(--ply-space-3);
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
@@ -70,56 +68,39 @@
     &:not([open]):dir(rtl) > summary > .marker {
       rotate: 90deg;
     }
-    /* 一枚の紙。余白線は紙の上から下まで引く。 */
+    /* 行の一覧。枠で囲まず、行の間と一覧の終わりに罫線を引く。 */
     & > .sheet {
       min-inline-size: 0;
       margin: 0;
       padding: 0;
-      overflow: hidden;
-      border-radius: var(--ply-radius-surface);
-      background:
-        linear-gradient(var(--ply-margin-line), var(--ply-margin-line)) var(--ply-task-margin) 0 /
-          var(--ply-stroke-width) 100% no-repeat,
-        var(--ply-fill-paper),
-        var(--ply-surface);
-      box-shadow: var(--ply-shadow-paper);
+      border-block-end: var(--ply-stroke-width) solid var(--ply-border);
       list-style: none;
-      &:dir(rtl) {
-        background-position:
-          calc(100% - var(--ply-task-margin)) 0,
-          0 0,
-          0 0;
-      }
       & > li {
         display: grid;
         grid-template-columns: minmax(0, 1fr) fit-content(40%);
         align-items: center;
-        gap: var(--ply-space-3);
+        gap: var(--ply-space-4);
         min-inline-size: 0;
-        border-block-start: var(--ply-stroke-width) solid var(--ply-ruled-line);
-        &:first-child,
-        &.heading + li {
-          border-block-start: 0;
-        }
-        /* この一覧の名前は余白線の内側に書き、下に二重の罫線を引いて行と分ける。 */
+        border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+        /* この一覧の名前は、最初の罫線の上に書く。 */
         &.heading {
           display: block;
-          padding-block: var(--ply-space-3) var(--ply-space-2);
-          padding-inline: calc(var(--ply-task-margin) + var(--ply-space-3)) var(--ply-space-4);
-          border-block-end: calc(var(--ply-stroke-width) * 3) double var(--ply-ruled-line);
+          padding-block: 0 var(--ply-space-3);
+          border-block-start: 0;
           & > .title {
             margin: 0;
-            font-size: var(--ply-label);
+            font-size: var(--ply-body);
             font-weight: 600;
             line-height: var(--ply-label-leading);
           }
         }
-        /* 書き足す欄は、次の空いた罫線の上に書く。枠を持たず、余白線の外に足す印を置く。 */
+        /* 書き足す欄は、チェックの列に足す印を置き、題名と同じ位置から書く。 */
         &.add {
-          grid-template-columns: var(--ply-task-margin) minmax(0, 1fr);
-          gap: var(--ply-space-3);
-          padding-inline-end: var(--ply-space-3);
+          grid-template-columns: calc(var(--ply-body) * 9 / 7) minmax(0, 1fr);
+          column-gap: calc(var(--ply-body) / 2);
+          padding-block: var(--ply-space-2);
           color: var(--ply-muted);
+          font-size: var(--ply-body);
           & > .plus {
             display: grid;
             place-items: center;
@@ -148,22 +129,13 @@
           flex-wrap: wrap;
           align-items: center;
           gap: var(--ply-space-2);
-          padding-inline-end: var(--ply-space-4);
           color: var(--ply-muted);
           font-size: var(--ply-small);
         }
+        /* 項目の題名は一覧の題名の大きさにする。チェックの四角も文字に合わせて大きくなる。 */
         & > .ply-choice {
-          grid-template-columns: var(--ply-task-margin) minmax(0, 1fr);
-          column-gap: var(--ply-space-3);
-          padding-block: var(--ply-space-2);
-          padding-inline: 0 var(--ply-space-3);
-          transition: background-color var(--ply-duration) ease;
-          &:hover {
-            background: color-mix(in srgb, var(--ply-background) 55%, transparent);
-          }
-          & > input {
-            justify-self: center;
-          }
+          padding-block: var(--ply-space-3);
+          font-size: var(--ply-body);
           & > input:checked::before {
             animation: ply-check-arrive calc(var(--ply-duration) * 1.5) ease-out;
           }
@@ -190,8 +162,8 @@
       grid-template-columns: minmax(0, 1fr);
       gap: 0;
       & > .end {
-        padding-inline-start: calc(var(--ply-task-margin) + var(--ply-space-3));
-        padding-block-end: var(--ply-space-2);
+        padding-inline-start: calc(var(--ply-body) * 9 / 7 + var(--ply-body) / 2);
+        padding-block-end: var(--ply-space-3);
       }
     }
   }
@@ -203,13 +175,6 @@
   @media (prefers-reduced-motion: reduce) {
     .ply-task-list > .sheet > li > .ply-choice > input:checked::before {
       animation: none;
-    }
-  }
-  @media (forced-colors: active) {
-    .ply-task-list > .sheet {
-      border: var(--ply-stroke-width) solid CanvasText;
-      background: Canvas;
-      box-shadow: none;
     }
   }
   @keyframes ply-check-arrive {

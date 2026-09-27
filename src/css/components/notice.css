@@ -1,76 +1,52 @@
 @layer components {
+  /*
+    通知は本文のそばに置く「ここを見て」の面。役割の色の淡い面（135度）に、円の中のアイコン・題名・本文・操作を並べる。
+    枠線と影は使わず、面の色だけで作業面から分ける。
+  */
   .ply-notice {
     container: ply-notice / inline-size;
     --ply-notice-accent: var(--ply-info);
-    --ply-notice-paper: color-mix(in srgb, var(--ply-blue) 11%, var(--ply-surface));
     display: grid;
-    grid-template-columns: minmax(0, 1.5rem) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 2rem) minmax(0, 1fr);
     align-items: start;
-    gap: var(--ply-space-1) var(--ply-space-2);
+    gap: var(--ply-space-2) var(--ply-space-4);
     min-inline-size: 0;
-    /* 縁の荒い破線は紙の縁そのものに描くので、その幅を余白に足す。 */
-    padding-block: calc(var(--ply-space-4) + var(--ply-frame-width))
-      calc(var(--ply-space-3) + var(--ply-frame-width));
-    padding-inline: calc(var(--ply-space-4) + var(--ply-frame-width));
-    /*
-      通知は作業面に貼った付箋。役割の色の紙に、上の縁ののりの帯を一段濃く入れ、下の縁だけを少し浮かせる。
-      縁は役割の色の荒い破線。ミシン目（未確定）の細かい破線と分ける。
-      破線は紙の縁に重ねて描き、付箋の影の内側の光を破線の下に隠す（縁と紙の間に明るい隙間を作らない）。
-    */
-    position: relative;
+    padding-block: var(--ply-space-5);
+    padding-inline: var(--ply-space-5) var(--ply-space-6);
     border-radius: var(--ply-radius-surface);
-    background:
-      linear-gradient(
-          color-mix(in srgb, var(--ply-notice-paper) 90%, var(--ply-notice-accent)),
-          color-mix(in srgb, var(--ply-notice-paper) 90%, var(--ply-notice-accent))
-        )
-        0 0 / 100% calc(var(--ply-space-2) + var(--ply-frame-width)) no-repeat,
-      linear-gradient(
-        176deg,
-        var(--ply-notice-paper),
-        color-mix(in srgb, var(--ply-notice-paper) 97%, var(--ply-ink))
-      );
-    box-shadow: var(--ply-shadow-note);
+    background: var(--ply-emphasis-info);
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     overflow-wrap: anywhere;
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: color-mix(in srgb, var(--ply-notice-accent) 40%, var(--ply-notice-paper));
-      mask: var(--ply-dashed-frame);
-      pointer-events: none;
-    }
+    /* 日本語は文節の切れ目で折り返し、行末に一、二文字だけを残さない。 */
+    word-break: auto-phrase;
+    /* アイコンは円の中に控えめに置き、題名の一行目の中央に揃える。 */
     & > .symbol {
       grid-column: 1;
       grid-row: 1 / span 2;
       display: grid;
       place-items: center;
-      inline-size: min(1.5rem, 100%);
-      block-size: 1.5rem;
+      inline-size: min(2rem, 100%);
+      block-size: 2rem;
+      margin-block-start: calc((var(--ply-body) * 1.5 - 2rem) / 2);
       border-radius: 50%;
-      color: var(--ply-notice-accent);
       background: var(--ply-surface);
+      color: var(--ply-notice-accent);
+      font-size: 1.125rem;
     }
     & > .title {
       grid-column: 2;
-      font-family: var(--ply-control-font-family);
-      font-size: var(--ply-label);
-      font-weight: 600;
-      line-height: var(--ply-label-leading);
-    }
-    & > h2.title {
+      margin: 0;
       font-size: var(--ply-body);
-      line-height: var(--ply-control-leading);
+      font-weight: 600;
+      line-height: 1.5;
     }
     & > .body {
       grid-column: 2;
       min-inline-size: 0;
       & > * + * {
-        margin-block-start: var(--ply-space-2);
+        margin-block-start: var(--ply-space-3);
       }
       &:empty {
         display: none;
@@ -78,15 +54,15 @@
     }
     &[data-tone="success"] {
       --ply-notice-accent: var(--ply-success);
-      --ply-notice-paper: color-mix(in srgb, var(--ply-green) 12%, var(--ply-surface));
+      background: var(--ply-emphasis-success);
     }
     &[data-tone="warning"] {
       --ply-notice-accent: var(--ply-warning);
-      --ply-notice-paper: var(--ply-butter);
+      background: var(--ply-emphasis-warning);
     }
     &[data-tone="danger"] {
       --ply-notice-accent: var(--ply-danger);
-      --ply-notice-paper: color-mix(in srgb, var(--ply-coral) 15%, var(--ply-surface));
+      background: var(--ply-emphasis-danger);
     }
     @container ply-notice (inline-size < 24rem) {
       & > .symbol {
@@ -107,7 +83,6 @@
       outline: var(--ply-frame-width) solid CanvasText;
       outline-offset: calc(var(--ply-frame-width) * -1);
       background: Canvas;
-      box-shadow: none;
     }
   }
 }

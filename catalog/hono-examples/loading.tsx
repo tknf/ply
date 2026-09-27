@@ -19,11 +19,11 @@ export default () => (
     </div>
     <Progress label="添付ファイルの処理量を確認しています" />
     <DisclosureGroup label="動きと置き場所の違い">
-      <Disclosure summary="三つの動き（ページをめくる・点を書く・丸を描く）" open>
+      <Disclosure summary="三つの動き（回る丸・順に灯る点・広がる輪）" open>
         <div class="ply-stack" data-space="small">
-          <Loading variant="orbit" label="ページをめくる：次のページを読み込んでいます…" />
-          <Loading variant="wave" label="点を書く：返信を書いています…" />
-          <Loading variant="halo" label="丸を描く：確認しています…" />
+          <Loading variant="orbit" label="回る丸：次のページを読み込んでいます…" />
+          <Loading variant="wave" label="順に灯る点：返信を読み込んでいます…" />
+          <Loading variant="halo" label="広がる輪：確認しています…" />
         </div>
       </Disclosure>
       <Disclosure summary="この領域で待つ">

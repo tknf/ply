@@ -25,7 +25,7 @@ export type MessageListProps = ElementProps<"ul"> & {
   state?: "ready" | "loading" | "error";
   stateContent?: Child;
   previewLines?: 1 | 2;
-  /** この項目の直前に波線の区切りを置き、ここから新しいことを示す。 */
+  /** この項目の直前に区切りの線とラベルを置き、ここから新しいことを示す。 */
   newSince?: { id: string; label?: string };
 };
 export const MessageList = ({
@@ -66,7 +66,7 @@ export const MessageList = ({
             <>
               {newSince?.id === item.id && (
                 <li class="divider" role="none">
-                  <Divider label={newSince.label ?? "ここから新着"} line="wavy" />
+                  <Divider label={newSince.label ?? "ここから新着"} />
                 </li>
               )}
               <li
@@ -78,7 +78,7 @@ export const MessageList = ({
                 <Row class="row" href={item.href} aria-current={item.current ? "page" : undefined}>
                   {avatars && (
                     <span class="avatar" aria-hidden="true">
-                      <span class="stamp">{item.avatar ?? <Icon name="mail" />}</span>
+                      {item.avatar ?? <Icon name="mail" />}
                     </span>
                   )}
                   <span class="body">

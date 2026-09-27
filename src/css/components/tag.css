@@ -1,119 +1,47 @@
 @layer components {
   /*
-    分類は荷札。始まりの側の角を落とし、紐を通す穴をあける。貼ったシール（Badge＝状態）とは形で分ける。
-    札の紙は後ろの層に描いて形を切り抜き、影は札全体に落とす（切り抜きは影も切るため）。
+    分類はピルの札。HEYのラベルと同じく、はっきりした役割の色の縁と文字にし、地は塗らない。
+    塗った地のBadge（状態）とは、地の有無で分ける。
+    一行の高さは26pxでBadgeと揃える（文字20px＋上下の余白と枠線3pxずつ）。
   */
   .ply-tag {
-    --ply-tag-fill: var(--ply-surface);
-    /* 落とす角の大きさと、紐の穴の中心・半径、穴の周りの補強のリングの半径。 */
-    --ply-tag-corner: 0.6em;
-    --ply-tag-hole: 0.17em;
-    --ply-tag-hole-center: 0.7em;
-    --ply-tag-eyelet: 0.3em;
-    position: relative;
-    isolation: isolate;
     display: inline-block;
     inline-size: fit-content;
     justify-self: start;
     max-inline-size: 100%;
-    padding-block: 0.125rem;
-    padding-inline: calc(var(--ply-tag-hole-center) + var(--ply-tag-hole) + 0.375em) 0.625em;
+    padding-block: calc(0.1875rem - var(--ply-stroke-width));
+    padding-inline: 0.75rem;
+    border: var(--ply-stroke-width) solid color-mix(in srgb, currentColor 72%, transparent);
+    border-radius: var(--ply-radius-surface);
+    background: transparent;
     color: var(--ply-muted);
     font-family: var(--ply-control-font-family);
     font-size: var(--ply-small);
     line-height: var(--ply-small-leading);
     overflow-wrap: anywhere;
     text-decoration: none;
-    filter: drop-shadow(0 0 var(--ply-stroke-width) rgb(36 57 70 / 22%))
-      drop-shadow(0 var(--ply-stroke-width) var(--ply-stroke-width) rgb(36 57 70 / 10%));
-    &::before {
-      content: "";
-      position: absolute;
-      z-index: -1;
-      inset: 0;
-      border-radius: var(--ply-radius-mark);
-      background: var(--ply-fill-paper), var(--ply-tag-fill);
-      clip-path: polygon(
-        var(--ply-tag-corner) 0,
-        100% 0,
-        100% 100%,
-        var(--ply-tag-corner) 100%,
-        0 calc(100% - var(--ply-tag-corner)),
-        0 var(--ply-tag-corner)
-      );
-      mask: radial-gradient(
-        circle at var(--ply-tag-hole-center) 50%,
-        transparent var(--ply-tag-hole),
-        #000 calc(var(--ply-tag-hole) + var(--ply-stroke-width) / 2)
-      );
-    }
-    /* 紐の穴の周りの補強のリング。 */
-    &::after {
-      content: "";
-      position: absolute;
-      inset-block-start: calc(50% - var(--ply-tag-eyelet));
-      inset-inline-start: calc(var(--ply-tag-hole-center) - var(--ply-tag-eyelet));
-      inline-size: calc(var(--ply-tag-eyelet) * 2);
-      block-size: calc(var(--ply-tag-eyelet) * 2);
-      box-sizing: border-box;
-      border: calc(var(--ply-tag-eyelet) - var(--ply-tag-hole)) solid
-        color-mix(in srgb, currentColor 16%, var(--ply-tag-fill));
-      border-radius: 50%;
-      pointer-events: none;
-    }
-    &:dir(rtl)::before {
-      clip-path: polygon(
-        0 0,
-        calc(100% - var(--ply-tag-corner)) 0,
-        100% var(--ply-tag-corner),
-        100% calc(100% - var(--ply-tag-corner)),
-        calc(100% - var(--ply-tag-corner)) 100%,
-        0 100%
-      );
-      mask: radial-gradient(
-        circle at calc(100% - var(--ply-tag-hole-center)) 50%,
-        transparent var(--ply-tag-hole),
-        #000 calc(var(--ply-tag-hole) + var(--ply-stroke-width) / 2)
-      );
-    }
     &[data-accent="blue"] {
-      --ply-tag-fill: var(--ply-cover);
       color: var(--ply-blue-dark);
     }
     &[data-accent="green"] {
-      --ply-tag-fill: var(--ply-success-soft);
       color: var(--ply-green);
     }
     &[data-accent="amber"] {
-      --ply-tag-fill: var(--ply-butter);
       color: var(--ply-amber);
     }
     &[data-accent="coral"] {
-      --ply-tag-fill: var(--ply-danger-soft);
       color: var(--ply-coral-dark);
     }
-    /* 札へ移る分類は、指を載せると紐の穴を支点に札が少し揺れる。 */
+    /* 分類へ移る札は、指を載せると役割の色を淡く敷く。 */
     &:is(a) {
-      transform-origin: var(--ply-tag-hole-center) 50%;
       cursor: pointer;
       transition:
-        rotate var(--ply-duration) ease,
-        filter var(--ply-duration) ease;
-      &:dir(rtl) {
-        transform-origin: calc(100% - var(--ply-tag-hole-center)) 50%;
-      }
+        background-color var(--ply-duration) ease,
+        border-color var(--ply-duration) ease;
       &:hover {
-        rotate: -4deg;
-        filter: drop-shadow(0 0 var(--ply-stroke-width) rgb(36 57 70 / 24%))
-          drop-shadow(0 0.125rem 0.1875rem rgb(36 57 70 / 14%));
+        border-color: currentColor;
+        background: color-mix(in srgb, currentColor 8%, transparent);
         text-decoration: none;
-        &:dir(rtl) {
-          rotate: 4deg;
-        }
-      }
-      &:active {
-        rotate: 0deg;
-        filter: drop-shadow(0 0 var(--ply-stroke-width) rgb(36 57 70 / 22%));
       }
       &:focus-visible {
         outline: 0.125rem solid var(--ply-link);
@@ -127,17 +55,17 @@
     align-items: center;
     gap: 0.125rem;
     min-inline-size: 0;
+    padding-block: 0;
     padding-inline-end: 0.125rem;
     & > .remove {
       flex: none;
       border: 0;
       border-radius: 50%;
       background: transparent;
-      color: var(--ply-muted);
+      color: inherit;
       box-shadow: none;
       &:hover:enabled {
-        background: color-mix(in srgb, currentColor 9%, transparent);
-        color: var(--ply-text);
+        background: color-mix(in srgb, currentColor 12%, transparent);
         box-shadow: none;
       }
       &:active:enabled {
@@ -154,17 +82,6 @@
         background: currentColor;
         mask: url("../assets/x.svg") center / contain no-repeat;
       }
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .ply-tag:is(a):hover {
-      rotate: 0deg;
-    }
-  }
-  @media (forced-colors: active) {
-    .ply-tag {
-      outline: var(--ply-stroke-width) solid CanvasText;
-      filter: none;
     }
   }
 }

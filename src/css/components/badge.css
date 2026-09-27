@@ -1,92 +1,36 @@
 @layer components {
   /*
-    状態を貼って示すシール。役割の色のラベルシールに、色分けの丸シールを添える。
-    役割の色が無いものは、丸シールの代わりにパンチ穴をあけ、下の紙を見せる。
-    下書きは台紙から剥がしていないシールで、切れ目を荒い破線で描く。確定した状態はゴム印。
+    状態はピル。役割の色を淡く混ぜた地に、役割の色で文字を書く。枠線・影・印は付けず、色だけで分ける。
+    役割の色が無いものと、まだ確定していない下書きは、中立の灰色の地に--ply-mutedの文字にする。
   */
   .ply-badge {
     --ply-badge-ink: var(--ply-muted);
-    position: relative;
     display: inline-grid;
     inline-size: fit-content;
     justify-self: start;
-    grid-template-columns: auto minmax(0, 1fr);
     align-items: start;
-    gap: 0.375rem;
     max-inline-size: 100%;
     /*
-      一行の高さは24px。折り返した行の間（行の余り2つ分）と、上下の縁から文字まで（余白＋行の余り）を
+      一行の高さは26px。折り返した行の間（行の余り2つ分）と、上下の縁から文字まで（余白＋行の余り）を
       同じにするため、行の高さを「一行の高さと文字の大きさの間」に詰め、残りを上下に半分ずつ取る。
     */
-    padding-block: calc((1.5rem - 1lh) / 2);
+    padding-block: calc((1.625rem - 1lh) / 2);
     /* 左右は角丸の大きさに近く取り、折り返した時も文字が角のカーブに寄らないようにする。 */
     padding-inline: 0.75rem;
-    /* 一行では高さの半分で止まってピルになり、折り返すと紙と同じ角になる。荒い破線の角とも合う。 */
+    /* 一行では高さの半分で止まってピルになり、折り返すと紙と同じ角になる。 */
     border-radius: var(--ply-radius-surface);
-    background:
-      var(--ply-fill-paper), color-mix(in srgb, var(--ply-badge-ink) 10%, var(--ply-surface));
-    box-shadow: var(--ply-shadow-sticker);
+    background: color-mix(in srgb, var(--ply-badge-ink) 11%, var(--ply-surface));
+    /* 透明な輪郭は、強制カラーで地が消えた時だけ見える縁になる。 */
+    outline: var(--ply-stroke-width) solid transparent;
+    outline-offset: calc(var(--ply-stroke-width) * -1);
     color: var(--ply-badge-ink);
     font-family: var(--ply-control-font-family);
     font-size: var(--ply-small);
     font-weight: 400;
-    line-height: calc((1.5rem + 1em) / 2);
+    line-height: calc((1.625rem + 1em) / 2);
     overflow-wrap: anywhere;
     /* 日本語は文節の切れ目で折り返し、行末に一、二文字だけを残さない。 */
     word-break: auto-phrase;
-    /* 丸シール。光の当たる艶と小さな影で、ラベルの上に重ねて貼った一枚に見せる。 */
-    &::before {
-      content: "";
-      inline-size: 0.625em;
-      block-size: 0.625em;
-      margin-block-start: calc((1lh - 0.625em) / 2);
-      border: var(--ply-stroke-width) solid currentColor;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at 35% 30%, rgb(255 255 255 / 60%) 0 15%, transparent 55%),
-        currentColor;
-      box-shadow: 0 var(--ply-stroke-width) var(--ply-stroke-width) rgb(36 57 70 / 25%);
-    }
-    /* 役割の色が無いものはパンチ穴。穴の奥に下の紙が見え、上の縁に影が落ちる。 */
-    &[data-tone="neutral"]::before {
-      border-color: color-mix(in srgb, currentColor 30%, transparent);
-      background: var(--ply-surface);
-      box-shadow: inset 0 var(--ply-stroke-width) var(--ply-stroke-width) rgb(36 57 70 / 30%);
-    }
-    /* まだ確定していない状態は、台紙から剥がしていないシール。面も影も持たず、切れ目だけが見える。 */
-    &[data-draft="true"] {
-      background: transparent;
-      box-shadow: none;
-      &::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background: var(--ply-perforation);
-        mask: var(--ply-dashed-frame);
-        pointer-events: none;
-      }
-    }
-    /* 確定した状態はゴム印。二重の枠と少しの傾きで、押した跡に見せる。 */
-    &[data-stamped="true"] {
-      grid-template-columns: minmax(0, 1fr);
-      /* 傾けた角が張り出す分を左右に取り、行末や狭い場所でも置き場所からはみ出さない。 */
-      max-inline-size: calc(100% - 0.25lh);
-      margin-inline: 0.125lh;
-      padding-inline: 0.4375rem;
-      border: var(--ply-frame-width) solid currentColor;
-      border-radius: var(--ply-radius-mark);
-      background: transparent;
-      box-shadow:
-        inset 0 0 0 var(--ply-stroke-width) var(--ply-surface),
-        inset 0 0 0 calc(var(--ply-stroke-width) * 2) currentColor;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      rotate: -3deg;
-      &::before {
-        display: none;
-      }
-    }
     &[data-tone="info"] {
       --ply-badge-ink: var(--ply-info);
     }
@@ -95,15 +39,15 @@
     }
     &[data-tone="warning"] {
       --ply-badge-ink: var(--ply-warning);
+      background: var(--ply-butter);
     }
     &[data-tone="danger"] {
       --ply-badge-ink: var(--ply-danger);
     }
-  }
-  @media (forced-colors: active) {
-    .ply-badge[data-draft="true"]::after {
-      forced-color-adjust: none;
-      background: GrayText;
+    /* 下書きは役割の色を持たせず、中立の見た目にする。 */
+    &[data-draft="true"] {
+      --ply-badge-ink: var(--ply-muted);
+      background: color-mix(in srgb, var(--ply-badge-ink) 11%, var(--ply-surface));
     }
   }
 }

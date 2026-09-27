@@ -47,7 +47,7 @@ export default () => (
           errors={[{ label: "記事名を入力してください", href: "#hono-error-title" }]}
         />
       </Disclosure>
-      <Disclosure summary="二桁の番号まで続く">
+      <Disclosure summary="項目が多い">
         <ErrorSummary id="hono-errors-many" errors={manyErrors} />
       </Disclosure>
       <Disclosure summary="狭い場所で折り返す">

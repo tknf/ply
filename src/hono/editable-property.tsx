@@ -12,7 +12,7 @@ export type EditablePropertyProps = {
   disabled?: boolean;
   form?: string;
   maxLength?: number;
-  /** 複数行の値。罫線を引いた便箋の欄で書き、改行はそのまま表示する。 */
+  /** 複数行の値。複数行の欄で書き、改行はそのまま表示する。 */
   multiline?: boolean;
 };
 

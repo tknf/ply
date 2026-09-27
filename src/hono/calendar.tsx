@@ -29,7 +29,7 @@ export type CalendarEvent = {
   /** 終了時刻（HH:MM）。省略すると開始から1時間。 */
   end?: string;
   accent?: Accent;
-  /** 仮の予定。ミシン目の縁と斜線で、まだ確定していないことを示す。 */
+  /** 仮の予定。破線の縁と斜線で、まだ確定していないことを示す。 */
   tentative?: boolean;
 };
 export type CalendarDay = {

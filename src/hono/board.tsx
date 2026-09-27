@@ -12,10 +12,8 @@ type Column = {
   current?: boolean;
   empty?: Child;
   disabled?: boolean;
-  /** たたんだ列。縦書きの細い札になり、中の項目は隠す。移動先にはならない。開閉の状態は利用側が持つ。 */
+  /** たたんだ列。件数と縦書きの名前を載せた縦長のピルになり、中の項目は隠す。移動先にはならない。開閉の状態は利用側が持つ。 */
   collapsed?: boolean;
-  /** この列に置いた紙に押すゴム印の文言（「完了」「承認済み」など）。紙を運ぶと押し直される。 */
-  stamp?: string;
 } & (
   | { items: readonly BoardEntry[]; content?: never; count?: never }
   | { content: Child; count: number; items?: never }
@@ -36,7 +34,7 @@ export const Board = ({
 }: BoardProps) => {
   const generated = useId();
   const boardId = id ?? `board-${generated}`;
-  // たたんだ列だけ細い札にするため、列ごとの幅の決め方を並び順どおりに渡す。
+  // たたんだ列だけピルの幅にするため、列ごとの幅の決め方を並び順どおりに渡す。
   const tracks = columns
     .map((column) => (column.collapsed ? "auto" : "minmax(auto, 1fr)"))
     .join(" ");
@@ -54,6 +52,7 @@ export const Board = ({
       aria-label={label}
       tabindex={0}
       data-controller={movable ? "board" : undefined}
+      data-movable={movable ? "true" : undefined}
     >
       {columns.map((column, index) => (
         <section
@@ -65,7 +64,6 @@ export const Board = ({
           data-current={column.current ? "true" : undefined}
           data-collapsed={column.collapsed ? "true" : undefined}
           data-tone={column.tone ?? "neutral"}
-          style={column.stamp ? `--ply-board-stamp: ${JSON.stringify(column.stamp)}` : undefined}
         >
           <h3 class="title">
             <span class="label">{column.title}</span>

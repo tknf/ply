@@ -5,7 +5,7 @@ export type ErrorSummaryProps = ElementProps<"aside"> & {
   title?: string;
   errors: readonly { label: string; href: string }[];
 };
-/** 直すところを、校正の余白のように朱の余白線の外へ番号を振って並べる。 */
+/** 直すところを、各欄へ移るリンクの一覧にまとめる。 */
 export const ErrorSummary = ({
   title = "入力内容を確認してください",
   errors,
@@ -24,14 +24,9 @@ export const ErrorSummary = ({
         <span>{title}</span>
       </h2>
       <ul>
-        {errors.map((error, index) => (
+        {errors.map((error) => (
           <li>
-            <a href={error.href}>
-              <span class="number" aria-hidden="true">
-                {index + 1}
-              </span>
-              <span class="label">{error.label}</span>
-            </a>
+            <a href={error.href}>{error.label}</a>
           </li>
         ))}
       </ul>

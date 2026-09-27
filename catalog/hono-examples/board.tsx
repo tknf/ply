@@ -75,8 +75,9 @@ export default () => (
               content: (
                 <>
                   <h4>秋の読書会のお知らせ</h4>
-                  <p>
-                    <Avatar name="田中 遥" initials="遥" size="inline" /> 田中 遥 · 9月20日
+                  <p class="ply-cluster">
+                    <Avatar name="田中 遥" initials="遥" />
+                    <span>田中 遥 · 9月20日</span>
                   </p>
                   <Progress label="原稿" value={60} />
                 </>
@@ -93,7 +94,6 @@ export default () => (
           id: "done",
           title: "完了",
           tone: "success",
-          stamp: "完了",
           items: [],
           empty: "終わった項目をここへ",
         },
@@ -101,10 +101,10 @@ export default () => (
     />
     <p class="catalog-footnote">
       右上の持ち手で移動します。Space → 矢印キー →
-      Enterでも操作できます。Escapeで元へ戻します。「完了」へ運んだ紙にはゴム印が押されます。
+      Enterでも操作できます。Escapeで元へ戻します。運んだ項目は、置いた列の色に染まります。
     </p>
     <DisclosureGroup label="列と項目の違い">
-      <Disclosure summary="列の色：状態ごとの札と、今の列" open>
+      <Disclosure summary="列の色：状態ごとの見出しと項目の色、今の列" open>
         <Board
           label="問い合わせの対応"
           columns={[
@@ -130,7 +130,7 @@ export default () => (
           ]}
         />
       </Disclosure>
-      <Disclosure summary="ゴム印の列：置いた紙に印が押される">
+      <Disclosure summary="完了の列：運ぶと置いた列の色に変わる">
         <Board
           label="原稿の承認"
           movable
@@ -144,20 +144,18 @@ export default () => (
               id: "approved",
               title: "承認済み",
               tone: "success",
-              stamp: "承認",
               items: [card("d3", "9月の利用案内", "森 美咲が承認しました。")],
             },
             {
               id: "rejected",
               title: "見送り",
               tone: "danger",
-              stamp: "却下",
               items: [card("d4", "夏の特別料金")],
             },
           ]}
         />
       </Disclosure>
-      <Disclosure summary="たたんだ列：縦書きの札になり、件数だけ見せる">
+      <Disclosure summary="たたんだ列：件数と縦書きの名前のピルになる">
         <Board
           label="採用の進行"
           columns={[
@@ -193,9 +191,9 @@ export default () => (
                   content: (
                     <>
                       <h4>会場の手配</h4>
-                      <p>
-                        <Avatar name="佐藤 健" initials="健" tone="blue" size="inline" /> 佐藤 健 ·
-                        期限 10月1日
+                      <p class="ply-cluster">
+                        <Avatar name="佐藤 健" initials="健" tone="blue" />
+                        <span>佐藤 健 · 期限 10月1日</span>
                       </p>
                       <TagGroup label="分類">
                         <Tag label="会場" accent="green" />
@@ -308,6 +306,34 @@ export default () => (
                 tone: "success",
                 collapsed: true,
                 items: [card("s3a", "取材")],
+              },
+            ]}
+          />
+        </div>
+      </Disclosure>
+      <Disclosure summary="右から左へ書く言語">
+        <div dir="rtl" lang="ar">
+          <Board
+            label="تقدم العمل"
+            movable
+            columns={[
+              {
+                id: "rtl-todo",
+                title: "للقيام",
+                items: [card("r1", "تحديث دليل المكان", "مراجعة الأسعار وشروط الإلغاء.")],
+              },
+              {
+                id: "rtl-doing",
+                title: "قيد التنفيذ",
+                tone: "info",
+                items: [card("r2", "اختيار الصور")],
+              },
+              {
+                id: "rtl-done",
+                title: "مكتمل",
+                tone: "success",
+                collapsed: true,
+                items: [card("r3", "المقابلة")],
               },
             ]}
           />

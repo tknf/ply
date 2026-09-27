@@ -1,52 +1,48 @@
 @layer components {
+  /*
+    まだ何もない場所は、中央に円の中のアイコン・題名・説明・操作をゆったり縦に並べる。
+    図は描かず、アイコンを淡い円に控えめに置く。場面は円の色だけで分ける（終わった時は完了の色）。
+  */
   .ply-empty-state {
-    container: ply-empty-state / inline-size;
     display: grid;
-    grid-template-columns: minmax(0, 4rem) minmax(0, 1fr);
-    align-items: start;
-    gap: var(--ply-space-2) var(--ply-space-4);
+    justify-items: center;
     min-inline-size: 0;
     inline-size: 100%;
-    max-inline-size: 40rem;
+    max-inline-size: 36rem;
     margin-inline: auto;
-    padding-block: var(--ply-space-6) var(--ply-space-5);
-    padding-inline: var(--ply-space-3);
+    padding-block: var(--ply-space-12);
+    padding-inline: var(--ply-space-4);
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
+    text-align: center;
     overflow-wrap: anywhere;
-    /*
-      図は重ねた紙（まだ何もない）。枠線を引かず、紙の影と後ろの紙で厚みを見せ、少し傾けて置く。
-      紙の種類で場面を分ける：見つからない時は白紙、初めては罫線の便箋、終わった時は罫線の紙にペンでチェック。
-    */
+    /* 日本語は文節の切れ目で折り返し、中央に揃えた行の端に一、二文字だけを残さない。 */
+    word-break: auto-phrase;
     & > .symbol {
-      grid-column: 1;
-      grid-row: 1 / span 3;
       display: grid;
       place-items: center;
-      position: relative;
-      isolation: isolate;
-      inline-size: min(3.5rem, 100%);
-      block-size: 4rem;
-      margin-block-start: var(--ply-space-1);
-      border-radius: var(--ply-radius-control);
-      background: var(--ply-fill-paper), var(--ply-surface);
-      box-shadow: var(--ply-shadow-stack);
+      inline-size: 3.5rem;
+      block-size: 3.5rem;
+      border-radius: 50%;
+      background: var(--ply-info-soft);
       color: var(--ply-link);
-      font-size: 1.75rem;
-      rotate: -3deg;
+      font-size: 1.5rem;
     }
     & > .title {
-      grid-column: 2;
-      font-family: var(--ply-control-font-family);
+      margin: 0;
+      margin-block-start: var(--ply-space-5);
       font-size: var(--ply-section-title);
       font-weight: 600;
-      line-height: calc(4 / 3);
+      line-height: 1.4;
+      text-wrap: balance;
     }
     & > .body {
-      grid-column: 2;
       min-inline-size: 0;
+      margin-block-start: var(--ply-space-3);
       color: var(--ply-muted);
+      /* 中央に揃えた説明は行の長さをそろえ、文節の区切りが語の途中になる所（下／書き）で切らない。 */
+      text-wrap: balance;
       & > * + * {
         margin-block-start: var(--ply-space-2);
       }
@@ -55,41 +51,22 @@
       }
     }
     & > .actions {
-      grid-column: 2;
       display: flex;
       flex-wrap: wrap;
-      gap: var(--ply-space-2);
-      margin-block-start: var(--ply-space-1);
+      justify-content: center;
+      gap: var(--ply-space-3);
+      margin-block-start: var(--ply-space-6);
     }
-    &:is([data-kind="start"], [data-kind="complete"]) > .symbol {
-      background:
-        linear-gradient(to top, var(--ply-ruled-line) var(--ply-stroke-width), transparent 0) 0
-          0.375rem / 100% 0.625rem,
-        var(--ply-fill-paper),
-        var(--ply-surface);
-    }
-    /* 終わった時は、罫線の紙に書き始めの側からペンでチェックを描く。 */
+    /* 終わった時は、完了の色の円に書き始めの側からペンでチェックを描く。 */
     &[data-kind="complete"] > .symbol {
       --ply-empty-state-pen-start: inset(0 100% 0 0);
+      background: var(--ply-success-soft);
       color: var(--ply-success);
       &:dir(rtl) {
         --ply-empty-state-pen-start: inset(0 0 0 100%);
       }
       & > .ply-icon {
         animation: ply-empty-state-write 0.6s ease-out 0.2s both;
-      }
-    }
-    @container ply-empty-state (inline-size < 22rem) {
-      & > .symbol {
-        grid-column: 1 / -1;
-        grid-row: auto;
-      }
-      & > :is(.title, .body, .actions) {
-        grid-column: 1 / -1;
-      }
-      /* 縦に積む時は、後ろに重ねた紙が下へ張り出す分（約14px）を題名の上に取り、図と離す。 */
-      & > .title {
-        margin-block-start: var(--ply-space-4);
       }
     }
   }
@@ -104,6 +81,11 @@
   @media (prefers-reduced-motion: reduce) {
     .ply-empty-state[data-kind="complete"] > .symbol > .ply-icon {
       animation: none;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-empty-state > .symbol {
+      outline: var(--ply-stroke-width) solid CanvasText;
     }
   }
 }

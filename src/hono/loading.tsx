@@ -2,6 +2,7 @@ import { classes, type ElementProps } from "./types";
 
 export type LoadingProps = ElementProps<"p"> & {
   label?: string;
+  /** orbitは回る丸、waveは順に灯る三つの点、haloは広がって消える輪。 */
   variant?: "orbit" | "wave" | "halo";
   layout?: "inline" | "region";
 };

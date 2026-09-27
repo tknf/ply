@@ -10,22 +10,24 @@
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
+    /* ファイルの印は枠で囲まず、淡く塗った札に置く。HEYのファイル一覧の小さな見本の代わり。 */
     & > .icon {
       display: grid;
       place-items: center;
       grid-column: 1;
       block-size: 2.5rem;
-      border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: 0.25rem 0.625rem 0.25rem 0.25rem;
-      background: var(--ply-surface);
+      border-radius: var(--ply-radius-control);
+      background: var(--ply-info-soft);
       color: var(--ply-link);
     }
-    /* 送信待ちの紙はミシン目の縁。まだ手元に確定していないことを示す。 */
+    /* 送信待ちは印を控えめな色にし、状態は説明の文言で伝える。 */
     &[data-state="pending"] > .icon {
-      border-style: dashed;
-      border-color: var(--ply-perforation);
-      background: var(--ply-surface);
-      box-shadow: none;
+      background: var(--ply-background);
+      color: var(--ply-muted);
+    }
+    &[data-state="error"] > .icon {
+      background: var(--ply-danger-soft);
+      color: var(--ply-danger);
     }
     & > .body {
       grid-column: 2;
@@ -75,6 +77,7 @@
   }
   @media (forced-colors: active) {
     .ply-file-item > .icon {
+      border: var(--ply-stroke-width) solid CanvasText;
       background: Canvas;
       box-shadow: none;
     }

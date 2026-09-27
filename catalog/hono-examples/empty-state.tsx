@@ -28,7 +28,7 @@ export default () => (
           <p>新しく確認する記事が届いたら、ここに表示します。</p>
         </EmptyState>
       </Disclosure>
-      <Disclosure summary="図を差し替える・操作が二つ">
+      <Disclosure summary="アイコンを差し替える・操作が二つ">
         <EmptyState
           title="予約はまだありません"
           icon={<Icon name="calendar" />}
@@ -47,7 +47,7 @@ export default () => (
       <Disclosure summary="題名だけ">
         <EmptyState title="通知はありません" />
       </Disclosure>
-      <Disclosure summary="狭い場所で縦に積む">
+      <Disclosure summary="狭い場所で折り返す">
         <div style="max-inline-size: 20rem">
           <EmptyState
             kind="start"

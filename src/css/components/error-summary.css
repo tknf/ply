@@ -1,122 +1,60 @@
 @layer components {
   /*
-    直すところをまとめた添削用紙。一枚の紙に、TaskListやDataListと同じ朱の余白線を上から下まで引き、
-    余白線の外に赤ペンで直す順の番号、内側に直すところを墨の色で書く。
-    見出しはCardやCodeBlockと同じく紙の上端をまたぐ札にし、直すところを示す危険の色で塗る。
+    直すところのまとめは、危険の色の淡い面（135度）に見出しと、各欄へ移るリンクの一覧を並べる。
+    枠線と影は使わず、面の色で作業面から分ける。一覧は見出しの文字の書き始めに揃える。
   */
   .ply-error-summary {
-    /* 札の行の高さの半分。紙はこの分だけ下から始め、札の一行目の中心を紙の上端に重ねる。 */
-    --ply-error-summary-straddle: 0.75rem;
-    /* 余白の欄（二桁の番号まで）。紙の縁から12px空けて番号を書き、8px空けて余白線を引く。 */
-    --ply-error-summary-number: 1.25rem;
-    position: relative;
-    isolation: isolate;
     display: grid;
+    gap: var(--ply-space-3);
     min-inline-size: 0;
+    padding-block: var(--ply-space-5);
+    padding-inline: var(--ply-space-5) var(--ply-space-6);
+    border-radius: var(--ply-radius-surface);
+    background: var(--ply-emphasis-danger);
     color: var(--ply-text);
-    font-size: var(--ply-small);
-    line-height: var(--ply-small-leading);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
     overflow-wrap: anywhere;
     /* 日本語は文節の切れ目で折り返し、行末に一、二文字だけを残さない。 */
     word-break: auto-phrase;
-    /* 紙は後ろの層に描く。札が折り返して高くなっても、紙の始まりは札の一行目の中心のまま。 */
-    &::before {
-      content: "";
-      position: absolute;
-      z-index: -1;
-      inset: var(--ply-error-summary-straddle) 0 0;
-      border-radius: var(--ply-radius-surface);
-      background: var(--ply-fill-paper), var(--ply-surface);
-      box-shadow: var(--ply-shadow-paper);
-    }
-    /* 朱の余白線。紙の上端から下端まで引く。 */
-    &::after {
-      content: "";
-      position: absolute;
-      z-index: -1;
-      inset-block: var(--ply-error-summary-straddle) 0;
-      inset-inline-start: calc(
-        var(--ply-space-3) + var(--ply-error-summary-number) + var(--ply-space-2)
-      );
-      inline-size: var(--ply-stroke-width);
-      background: var(--ply-margin-line);
-    }
-    /* 見出しの札は、CardやCodeBlockの札と同じく紙の縁から20pxの位置で上端をまたぐ。 */
     & > .title {
       display: flex;
       align-items: start;
-      gap: var(--ply-space-1);
-      justify-self: start;
-      max-inline-size: calc(100% - var(--ply-space-5) * 2);
+      gap: var(--ply-space-2);
       margin: 0;
-      margin-inline-start: var(--ply-space-5);
-      padding-block: 0.125rem;
-      padding-inline: var(--ply-space-2);
-      background: linear-gradient(
-        176deg,
-        color-mix(in srgb, var(--ply-danger) 82%, white) 0%,
-        var(--ply-danger) 55%,
-        color-mix(in srgb, var(--ply-danger) 92%, black) 100%
-      );
-      box-shadow: var(--ply-shadow-control-primary);
-      color: var(--ply-surface);
-      font-family: var(--ply-control-font-family);
-      font-size: var(--ply-small);
+      color: var(--ply-danger);
+      font-size: var(--ply-body);
       font-weight: 600;
-      line-height: var(--ply-small-leading);
-      letter-spacing: 0.04em;
+      line-height: 1.5;
       & > .ply-icon {
         flex: none;
-        inline-size: 1em;
-        block-size: 1em;
         margin-block-start: calc((1lh - 1em) / 2);
       }
     }
     & > ul {
       display: grid;
-      gap: var(--ply-space-2);
+      gap: var(--ply-space-3);
       margin: 0;
-      padding-block: var(--ply-space-3) var(--ply-space-4);
-      padding-inline: var(--ply-space-3) var(--ply-space-4);
+      padding: 0;
+      padding-inline-start: calc(var(--ply-body) + var(--ply-space-2));
       list-style: none;
       & > li > a {
-        display: grid;
-        grid-template-columns: var(--ply-error-summary-number) minmax(0, 1fr);
-        column-gap: calc(var(--ply-space-2) + var(--ply-stroke-width) + var(--ply-space-4));
-        align-items: start;
-        color: inherit;
-        text-decoration: none;
-        /* 番号は余白線の外に赤ペンで書く。余白線の側へ寄せ、二桁でも文の書き始めを動かさない。 */
-        & > .number {
-          justify-self: end;
-          color: var(--ply-danger);
-          font-family: var(--ply-control-font-family);
-          font-weight: 600;
-          font-variant-numeric: tabular-nums;
-        }
-        & > .label {
-          text-decoration: underline;
-          text-decoration-color: color-mix(in srgb, var(--ply-text) 35%, transparent);
-          text-decoration-thickness: var(--ply-stroke-width);
-          text-underline-offset: 0.25em;
-        }
-        &:hover > .label {
+        color: var(--ply-danger);
+        text-decoration: underline;
+        text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+        text-decoration-thickness: var(--ply-stroke-width);
+        text-underline-offset: 0.25em;
+        &:hover {
           text-decoration-color: currentColor;
         }
       }
     }
   }
   @media (forced-colors: active) {
-    .ply-error-summary::before {
-      outline: var(--ply-stroke-width) solid CanvasText;
-    }
-    .ply-error-summary::after {
-      background: CanvasText;
-    }
-    .ply-error-summary > .title {
-      forced-color-adjust: none;
-      background: CanvasText;
-      color: Canvas;
+    .ply-error-summary {
+      outline: var(--ply-frame-width) solid CanvasText;
+      outline-offset: calc(var(--ply-frame-width) * -1);
+      background: Canvas;
     }
   }
 }

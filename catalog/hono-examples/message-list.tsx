@@ -16,7 +16,7 @@ export default () => (
           unread: true,
           threadCount: 4,
           attachments: 2,
-          avatar: <Avatar name="森 美咲" initials="美" tone="green" size="small" />,
+          avatar: <Avatar name="森 美咲" initials="美" tone="green" />,
         },
         {
           id: "sample-meeting",
@@ -26,7 +26,7 @@ export default () => (
           href: "/review/mail/meeting",
           time: "9:42",
           datetime: "2026-09-15T09:42:00+09:00",
-          avatar: <Avatar name="佐藤 健" initials="健" tone="blue" size="small" />,
+          avatar: <Avatar name="佐藤 健" initials="健" tone="blue" />,
         },
       ]}
     />
@@ -47,7 +47,7 @@ export default () => (
               datetime: "2026-09-15T10:24:00+09:00",
               threadCount: 128,
               unread: true,
-              avatar: <Avatar name="山田" initials="山" size="small" />,
+              avatar: <Avatar name="山田" initials="山" />,
             },
             {
               id: "no-subject",

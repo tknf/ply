@@ -1,92 +1,69 @@
 @layer components {
   /*
-    受け取った連絡は手紙の束。一枚の紙の上に行を並べる。
-    行は「差出人と時刻・件名・書き出し」の三段にし、まだ開けていない手紙には封蝋を押して太字にする。
+    受け取った連絡の一覧。HEYのメールの一覧と同じく、作業面の上に行を平らに並べ、罫線は引かずに行間で区切る。
+    指を載せた行だけ、角丸の淡い面で示す。
+    行は「件名」と「差出人 – 書き出し」の二段にし、差出人の円を左に、時刻と未読の点を右に置く。
+    まだ開けていない連絡は、件名と差出人を太字にして青い点を添える。
   */
   .ply-message-list {
     container: ply-message-list / inline-size;
     min-inline-size: 0;
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    border: 0;
-    border-radius: var(--ply-radius-surface);
-    background: var(--ply-surface) var(--ply-fill-paper);
-    box-shadow: var(--ply-shadow-paper);
     list-style: none;
     color: var(--ply-text);
-    font-size: var(--ply-label);
+    font-size: var(--ply-body);
     line-height: var(--ply-label-leading);
-    /* ここから新しい：波線の区切り。前後の行の線と重ねない。 */
+    /* ここから新しい：青い細い線とラベル。前後の行の線と重ねない。 */
     & > .divider {
-      padding-block: var(--ply-space-3) 0;
-      padding-inline: var(--ply-space-5);
+      padding-block: var(--ply-space-2) 0;
+      padding-inline: var(--ply-space-3);
+      & > .ply-divider {
+        --ply-divider-color: var(--ply-link);
+        & > span {
+          color: var(--ply-link);
+        }
+      }
     }
     & > li {
       position: relative;
       min-inline-size: 0;
-      & + li:not(.divider) {
-        border-block-start: var(--ply-stroke-width) solid var(--ply-border);
-      }
-      &.divider + li {
-        border-block-start: 0;
-      }
       & > .row {
-        /* 行は二段だけ。件名と「差出人 – 書き出し」を左に、時刻と封蝋を右の上下中央に置く。 */
+        /* 行は二段だけ。件名と「差出人 – 書き出し」を左に、時刻と未読の点を右の上下中央に置く。 */
         display: grid;
         grid-template-columns: minmax(0, 1fr) auto;
         grid-template-areas: "body meta";
         align-items: center;
-        gap: var(--ply-space-3);
+        gap: var(--ply-space-4);
         min-inline-size: 0;
         padding-block: var(--ply-space-3);
-        padding-inline: var(--ply-space-5);
+        padding-inline: var(--ply-space-3);
+        border-radius: var(--ply-radius-field);
         color: inherit;
         text-decoration: none;
+        transition: background-color var(--ply-duration) ease;
         &:is(a):hover {
-          background: color-mix(in srgb, var(--ply-background) 55%, transparent);
+          background: color-mix(in srgb, var(--ply-ink) 4%, var(--ply-surface));
         }
         &:focus-visible {
           outline: 0.125rem solid var(--ply-link);
           outline-offset: -0.125rem;
         }
-        /*
-          差出人は切手。白い縁のまわりにミシン目の丸い穴を並べ、顔や頭文字を四角い図柄として収める。
-          穴はmaskで抜くため、影は外側の要素に付けて切手の形に沿わせる。一通ずつ少し傾けて貼る。
-        */
+        /* 差出人は共通のAvatarの円。画像のない行は、同じ大きさの淡い円に手紙の印を置く。 */
         & > .avatar {
           grid-area: avatar;
-          align-self: center;
-          inline-size: 2.25rem;
-          block-size: 2.25rem;
+          display: grid;
+          place-items: center;
+          inline-size: 2.5rem;
+          block-size: 2.5rem;
+          border-radius: 50%;
+          background: var(--ply-background);
           color: var(--ply-muted);
-          filter: drop-shadow(0 0 var(--ply-stroke-width) rgb(36 57 70 / 22%))
-            drop-shadow(0 0.125rem 0.125rem rgb(36 57 70 / 12%));
-          rotate: -3deg;
-          & > .stamp {
-            display: grid;
-            place-items: center;
+          /* 渡されたAvatarの大きさの指定にかかわらず、行の円の大きさとAvatarの既定の文字にそろえる。 */
+          & > .ply-avatar {
             inline-size: 100%;
             block-size: 100%;
-            padding-block: 0.3125rem;
-            padding-inline: 0.3125rem;
-            background: var(--ply-surface);
-            mask:
-              linear-gradient(#000 0 0) 50% / calc(100% - var(--ply-punch-pitch))
-                calc(100% - var(--ply-punch-pitch)) no-repeat,
-              radial-gradient(
-                  circle,
-                  transparent var(--ply-punch-hole),
-                  #000 calc(var(--ply-punch-hole) + var(--ply-stroke-width) / 4)
-                )
-                calc(var(--ply-punch-pitch) / -2) calc(var(--ply-punch-pitch) / -2) /
-                var(--ply-punch-pitch) var(--ply-punch-pitch) round;
-            & > .ply-avatar {
-              inline-size: 100%;
-              block-size: 100%;
-              border: 0;
-              border-radius: 0;
-            }
+            font-size: var(--ply-small);
           }
         }
         & > .body {
@@ -162,28 +139,14 @@
           font-size: var(--ply-small);
           font-variant-numeric: tabular-nums;
           white-space: nowrap;
-          /*
-            封蝋。封筒の切手と同じ右上に押す。少し歪んだ丸に、押し型の縁の盛り上がりと、
-            光の当たる上・沈む下の陰影を付ける。
-          */
+          /* 未読は時刻の後ろに置く小さな青い点。 */
           & > .unread {
             display: block;
             order: 1;
-            inline-size: 1.125rem;
-            block-size: 1.125rem;
-            border-radius: 60% 40% 55% 45% / 45% 58% 42% 55%;
-            background: radial-gradient(
-              circle at 40% 35%,
-              color-mix(in srgb, var(--ply-link) 85%, white) 0 20%,
-              var(--ply-link) 55%,
-              color-mix(in srgb, var(--ply-link) 80%, black) 100%
-            );
-            box-shadow:
-              inset 0 0 0 0.1875rem color-mix(in srgb, var(--ply-link) 80%, black),
-              inset 0 0 0 0.25rem color-mix(in srgb, var(--ply-link) 55%, white),
-              inset 0 -0.125rem 0.125rem rgb(0 0 0 / 20%),
-              0 var(--ply-stroke-width) 0.125rem rgb(36 57 70 / 30%);
-            rotate: -8deg;
+            inline-size: 0.5rem;
+            block-size: 0.5rem;
+            border-radius: 50%;
+            background: var(--ply-link);
           }
         }
       }
@@ -191,35 +154,28 @@
       &[data-unread="true"] > .row > .body > .summary > .sender {
         font-weight: 600;
       }
-      /* 今、隣で開いている手紙は、縁から離して内側に置く青いバー。 */
+      /* 今、隣で開いている連絡は、淡い青の面と開始側の青い2pxの印で示す。 */
       &[data-current="true"] {
         background: color-mix(in srgb, var(--ply-info-soft) 60%, transparent);
         &::before {
           content: "";
           position: absolute;
-          inset-block: var(--ply-space-2);
-          inset-inline-start: var(--ply-space-2);
+          inset-block: 0;
+          inset-inline-start: 0;
           inline-size: var(--ply-frame-width);
-          border-radius: var(--ply-radius-pill);
           background: var(--ply-link);
         }
       }
       &[data-state="failed"] > .row > .body > .status {
         color: var(--ply-danger);
       }
-      /* 下書きはミシン目の縁の小さなピルで示す。 */
       &[data-state="draft"] > .row > .body > .status {
-        padding-inline: var(--ply-space-2);
-        border: var(--ply-stroke-width) dashed var(--ply-perforation);
-        border-radius: var(--ply-radius-pill);
+        font-weight: var(--ply-label-weight);
       }
     }
-    /* 差出人の切手は左に置き、二段の本文をその右へ並べる。 */
-    &[data-avatars="true"] > li:nth-child(even) > .row > .avatar {
-      rotate: 2deg;
-    }
+    /* 差出人の円は左に置き、二段の本文をその右へ並べる。 */
     &[data-avatars="true"] > li > .row {
-      grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+      grid-template-columns: 2.5rem minmax(0, 1fr) auto;
       grid-template-areas: "avatar body meta";
     }
     /* 書き出しを二行にする指定では、差出人の下で折り返す。 */
@@ -243,11 +199,25 @@
           "title meta"
           "summary summary"
           "status status";
+        /* 日時は行の幅の4割までにし、文字を大きくしても本文の列を押し出さず折り返す。 */
+        grid-template-columns: minmax(0, 1fr) fit-content(40%);
+        column-gap: var(--ply-space-3);
         row-gap: 0.125rem;
         & > .body {
           display: contents;
+          /* 件名は一行では数文字しか入らないため、二行まで折り返してから省略する。 */
           & > .title {
             grid-area: title;
+            align-self: first baseline;
+            /* 件数と添付の数が入らない時は、件名の次の行へ回す。 */
+            flex-wrap: wrap;
+            & > .subject {
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 2;
+              white-space: normal;
+              overflow-wrap: anywhere;
+            }
           }
           & > .summary {
             grid-area: summary;
@@ -256,31 +226,59 @@
             grid-area: status;
           }
         }
+        /* 時刻は件名の一行目にそろえる。 */
+        & > .meta {
+          align-self: first baseline;
+          flex-wrap: wrap;
+          justify-content: end;
+          text-align: end;
+          white-space: normal;
+        }
       }
       &[data-avatars="true"] > li > .row {
+        grid-template-columns: 2.5rem minmax(0, 1fr) fit-content(40%);
         grid-template-areas:
           "avatar title meta"
           "avatar summary summary"
           "avatar status status";
       }
     }
-    /* 状態は語彙で示す。空は重ねた紙、読み込み中は斜線の行、失敗は付箋。 */
+    /* さらに狭い時（文字を大きくした時を含む）は、人の円と日時を件名の上下へ回し、件名に幅を残す。 */
+    @container ply-message-list (inline-size < 16rem) {
+      & > li > .row {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+          "title"
+          "summary"
+          "meta"
+          "status";
+        & > .meta {
+          justify-content: start;
+          text-align: start;
+        }
+      }
+      &[data-avatars="true"] > li > .row {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+          "avatar"
+          "title"
+          "summary"
+          "meta"
+          "status";
+        & > .avatar {
+          justify-self: start;
+        }
+      }
+    }
+    /* 0件・読み込み中・失敗は、一覧の場所に文で示す。読み込み中だけ、行の形の斜線を流す。 */
     & > .state {
       display: grid;
       justify-items: center;
       gap: var(--ply-space-3);
       padding-block: var(--ply-space-8);
-      padding-inline: var(--ply-space-5);
+      padding-inline: var(--ply-space-3);
       color: var(--ply-muted);
       text-align: center;
-    }
-    &[data-state="empty"] > .state::before {
-      content: "";
-      inline-size: 2.5rem;
-      block-size: 1.75rem;
-      border-radius: var(--ply-radius-mark);
-      background: var(--ply-surface);
-      box-shadow: var(--ply-shadow-stack);
     }
     &[data-state="loading"] > .state {
       justify-items: stretch;
@@ -304,23 +302,8 @@
         order: -1;
       }
     }
-    &[data-state="error"] {
-      overflow: visible;
-      padding-block: var(--ply-space-4);
-      padding-inline: var(--ply-space-4);
-      & > .state {
-        padding-block: var(--ply-space-4);
-        border-radius: var(--ply-radius-surface);
-        background:
-          linear-gradient(
-              color-mix(in srgb, var(--ply-coral) 22%, var(--ply-surface)),
-              color-mix(in srgb, var(--ply-coral) 22%, var(--ply-surface))
-            )
-            0 0 / 100% var(--ply-space-2) no-repeat,
-          color-mix(in srgb, var(--ply-coral) 15%, var(--ply-surface));
-        box-shadow: var(--ply-shadow-note);
-        color: var(--ply-text);
-      }
+    &[data-state="error"] > .state {
+      color: var(--ply-danger);
     }
   }
   @keyframes ply-message-list-flow {
@@ -335,14 +318,8 @@
     }
   }
   @media (forced-colors: active) {
-    .ply-message-list {
-      border: var(--ply-stroke-width) solid CanvasText;
-      background: Canvas;
-      box-shadow: none;
-      & > li > .row > .meta > .unread {
-        background: CanvasText;
-        box-shadow: none;
-      }
+    .ply-message-list > li > .row > .meta > .unread {
+      background: CanvasText;
     }
   }
 }

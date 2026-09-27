@@ -7,7 +7,7 @@ export type TaskListProps = ElementProps<"div"> & {
   label: string;
   /** 一覧の外側の見出し。開閉でき、未完了の数と進み具合を添える。 */
   heading?: string;
-  /** メモの上に書く、この一覧の名前。 */
+  /** 行の一覧の上に書く、この一覧の名前。 */
   title?: string;
   /** 最後の行に置く、項目を書き足す欄。送信と追加は利用側のフォームで扱う。 */
   add?: { name: string; placeholder: string; form?: string };

@@ -1,7 +1,7 @@
 @layer components {
   /*
-    帳票の記入欄。値は青い罫線の上に書いた文字で、Composerの本文と同じ罫線を使う。
-    鉛筆を取っても箱は出さず、同じ罫線の上にそのまま書く。書いている罫線は青くなる。罫線の太さは一行・複数行ともComposerと同じ。
+    その場で書き換えられる値。値の文字に細い下線を引くだけにし、箱は出さない。
+    書いている間は、同じ位置の欄にフォーカスの輪を出す。値の書き始めの位置と行の高さは、表示と編集で同じ。
     確定すると、新しい値を書き始めの側からペンで書き、書き終えた印を添える。
   */
   .ply-editable-property {
@@ -25,19 +25,11 @@
     min-inline-size: 0;
     inline-size: min(100%, 28rem);
     padding-block: 0.125rem;
-    /* 書き始めの位置は、編集中の欄の文字と同じ（欄の左右0.75emと透明にした枠の幅）。 */
-    padding-inline: calc(var(--ply-label) * 0.75 + var(--ply-stroke-width)) 0.125rem;
-    border: 0;
-    border-block-end: var(--ply-stroke-width) solid var(--ply-ruled-line);
-    border-radius: 0;
-    background: transparent;
-    transition: border-color var(--ply-duration) ease;
-    /* 鉛筆に指を載せると、書き込む罫線が濃くなり、鉛筆を少し傾けて持ち上げる。 */
-    &:has(> .edit:hover:enabled) {
-      border-block-end-color: color-mix(in srgb, var(--ply-link) 55%, var(--ply-ruled-line));
-      & > .edit svg {
-        rotate: -18deg;
-      }
+    /* 書き始めの位置は、名前と編集中の欄の文字にそろえる（透明にした欄の枠の幅だけ内側）。 */
+    padding-inline: var(--ply-stroke-width) 0.125rem;
+    /* 鉛筆に指を載せると、書き換わる値の下線を青くする。 */
+    &:has(> .edit:hover:enabled) > .value {
+      text-decoration-color: var(--ply-link);
     }
   }
 
@@ -53,7 +45,13 @@
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     --ply-editable-pen-start: inset(0 100% 0 0);
-    /* 未登録は、罫線の上にまだ何も書いていない状態として控えめな色にする。 */
+    /* 書き換えられる値の印は、文字に沿う細い下線。 */
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in srgb, var(--ply-muted) 45%, transparent);
+    text-decoration-thickness: var(--ply-stroke-width);
+    text-underline-offset: 0.3em;
+    transition: text-decoration-color var(--ply-duration) ease;
+    /* 未登録は、まだ何も書いていない状態として控えめな色にする。 */
     &[data-empty="true"] {
       color: var(--ply-muted);
     }
@@ -85,49 +83,41 @@
 
   .ply-editable-property > .preview > .edit {
     flex: none;
-    & svg {
-      transition: rotate var(--ply-duration) ease;
-    }
   }
 
-  /*
-    書いている間も同じ罫線の上。欄の枠と影は外し、罫線を書いている印として青くし、
-    罫線の上に淡い青を敷く。行の高さと書き始めの位置は、値を表示している時と同じ。
-  */
+  /* 書いている間も同じ位置。欄の枠と影は外し、フォーカスの輪で書いている所を示す。 */
   .ply-editable-property > .editor {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--ply-space-2);
+    gap: var(--ply-space-3);
     min-inline-size: 0;
     inline-size: min(100%, 28rem);
     padding-block: 0.125rem;
     padding-inline: 0 0.125rem;
-    border-block-end: var(--ply-stroke-width) solid var(--ply-ruled-line);
-    transition:
-      border-color var(--ply-duration) ease,
-      background-color var(--ply-duration) ease;
-    &:has(> .ply-input:focus) {
-      border-block-end-color: var(--ply-link);
-      background-color: color-mix(in srgb, var(--ply-info-soft) 70%, transparent);
-    }
-    &:has(> .ply-input[data-invalid="true"], > .ply-input:user-invalid) {
-      border-block-end-color: var(--ply-danger);
-    }
   }
 
   .ply-editable-property > .editor > .ply-input {
     flex: 1 1 12rem;
     inline-size: auto;
+    /* 文字は名前と同じ位置から書き、フォーカスの輪は文字から離して外側に出す。 */
+    padding-inline: 0;
     border-color: transparent;
-    border-radius: 0;
     background: transparent;
-    box-shadow: none;
+    /* フォーカスが確定・取消へ移っても、書いている欄だと分かるよう表示と同じ色の細い下線を引く。 */
+    box-shadow: inset 0 calc(var(--ply-stroke-width) * -1)
+      color-mix(in srgb, var(--ply-muted) 45%, transparent);
     &:focus-visible {
-      outline: none;
+      outline-offset: var(--ply-space-1);
       border-color: transparent;
+      box-shadow: none;
     }
-    /* 使えない欄は、罫線の上に斜線を引く。 */
+    &[data-invalid="true"],
+    &:user-invalid {
+      outline: 0.125rem solid var(--ply-danger);
+      outline-offset: var(--ply-space-1);
+    }
+    /* 使えない欄は、共通の斜線を引く。 */
     &:disabled {
       background: var(--ply-hatch);
     }
@@ -139,53 +129,25 @@
     gap: var(--ply-space-2);
   }
 
-  /*
-    複数行は便箋の欄。Composerの本文と同じく一行ごとに青い罫線を引き、表示と編集で同じ行の上に書く。
-    書いている間は罫線を青くし、確定・取消は欄の下の終わりの側に置く。
-  */
+  /* 複数行は改行をそのまま表示し、表示と編集で同じ行の上端から書く。確定・取消は欄の下の終わりの側に置く。 */
   .ply-editable-property[data-multiline="true"] {
-    --ply-editable-rule: var(--ply-ruled-line);
-    & > .preview,
-    & > .editor > .ply-input {
-      background: linear-gradient(
-          to top,
-          var(--ply-editable-rule) var(--ply-stroke-width),
-          transparent 0
-        )
-        0 0 / 100% 1lh;
-      background-origin: content-box;
-      font-size: var(--ply-label);
-      line-height: 2;
-    }
     & > .preview {
       align-items: start;
       padding-block: 0;
-      border-block-end: 0;
       & > .value {
-        line-height: inherit;
         white-space: pre-wrap;
       }
     }
     & > .editor {
       padding-block: 0;
-      border-block-end: 0;
-      &:has(> .ply-input:focus) {
-        --ply-editable-rule: var(--ply-link);
-      }
-      &:has(> .ply-input[data-invalid="true"], > .ply-input:user-invalid) {
-        --ply-editable-rule: var(--ply-danger);
-      }
       & > .ply-input {
         flex-basis: 100%;
         min-block-size: 3lh;
         field-sizing: content;
         padding-block: 0;
         border-block-width: 0;
-        background-attachment: local;
+        line-height: var(--ply-label-leading);
         resize: none;
-        &:disabled {
-          background: var(--ply-hatch);
-        }
       }
       & > .actions {
         margin-inline-start: auto;
@@ -207,8 +169,8 @@
     }
   }
   @media (forced-colors: active) {
-    .ply-editable-property > .preview {
-      border-block-end-color: CanvasText;
+    .ply-editable-property > .preview > .value {
+      text-decoration-color: CanvasText;
     }
     .ply-editable-property > .preview > .value::after {
       background: CanvasText;

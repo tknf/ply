@@ -1,14 +1,9 @@
 @layer components {
   /*
-    待っている間の印は、机の上の文具の動き。
-    orbitはページをめくる、waveはペンで「…」の点を順に書く、haloは鉛筆で丸を描いては消す。
-    この領域で待つ時は、紙に沈んだトレイの中に置く。
+    待っている間の印は、文字の横に置く小さな動き。
+    orbitは回る丸、waveは順に灯る三つの点、haloは広がって消える輪。
+    この領域で待つ時は、平らな淡い面の中央に置く。
   */
-  @property --ply-loading-sweep {
-    syntax: "<angle>";
-    inherits: false;
-    initial-value: 0deg;
-  }
   .ply-loading {
     display: flex;
     align-items: start;
@@ -22,85 +17,44 @@
       position: relative;
       align-items: center;
       justify-content: center;
-      gap: 0.125rem;
-      inline-size: 1rem;
-      block-size: 1rem;
-      margin-block-start: calc((1lh - 1rem) / 2);
+      gap: 0.1875em;
+      inline-size: 1em;
+      block-size: 1em;
+      margin-block-start: calc((1lh - 1em) / 2);
       flex: none;
+      /* 回る丸の四角い要素が回転中に外接する四角を広げ、行の端で横にはみ出さないよう、印の枠で切る。 */
+      overflow: clip;
     }
     & > .label {
       min-inline-size: 0;
       overflow-wrap: anywhere;
     }
     &[data-layout="region"] {
-      padding-block: 0.6875rem 0.625rem;
-      padding-inline: 0.9375rem;
-      border: 0;
-      border-radius: var(--ply-radius-surface);
-      background: color-mix(in srgb, var(--ply-background) 60%, var(--ply-surface));
-      box-shadow: var(--ply-shadow-sunken);
+      justify-content: center;
+      padding-block: var(--ply-space-6);
+      padding-inline: var(--ply-space-5);
+      border-radius: var(--ply-radius-field);
+      background: var(--ply-background);
     }
-    /*
-      ページをめくる。開いた小さな本の真ん中の綴じ目を軸に、終わりの側のページを始まりの側へめくる。
-      めくる紙は本の中に収まり、置き場所の外へはみ出さない。
-    */
-    &[data-variant="orbit"] > .indicator {
-      --ply-loading-page:
-        repeating-linear-gradient(
-            to bottom,
-            transparent 0 0.1875rem,
-            var(--ply-ruled-line) 0.1875rem 0.25rem
-          )
-          0 0.0625rem / 100% calc(100% - 0.125rem) no-repeat,
-        var(--ply-surface);
-      --ply-loading-turn: -180deg;
-      inline-size: 0.875rem;
-      block-size: 0.75rem;
-      margin-inline: 0.0625rem;
-      margin-block-start: calc((1lh - 0.75rem) / 2);
-      border-radius: 0.0625rem;
-      background: var(--ply-loading-page);
-      box-shadow:
-        0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 22%),
-        0 var(--ply-stroke-width) 0.125rem rgb(36 57 70 / 14%);
-      perspective: 4rem;
-      &:dir(rtl) {
-        --ply-loading-turn: 180deg;
-      }
-      /* 綴じ目 */
-      &::before {
-        content: "";
-        position: absolute;
-        inset-block: 0;
-        inset-inline-start: calc(50% - var(--ply-stroke-width) / 2);
-        inline-size: var(--ply-stroke-width);
-        background: rgb(36 57 70 / 22%);
-      }
-      &::after {
-        content: "";
-        position: absolute;
-        inset-block: 0;
-        inset-inline-start: 50%;
-        inline-size: 50%;
-        background: var(--ply-loading-page);
-        box-shadow: 0 0 0 var(--ply-stroke-width) rgb(36 57 70 / 22%);
-        transform-origin: 0 50%;
-        animation: ply-loading-turn 1.4s ease-in-out infinite;
-      }
-      &:dir(rtl)::after {
-        transform-origin: 100% 50%;
-      }
+    /* 回る丸。淡い輪の一部だけを濃くし、一定の速さで回す。 */
+    &[data-variant="orbit"] > .indicator::before {
+      content: "";
+      position: absolute;
+      inset: 0.0625em;
+      border: 0.125em solid color-mix(in srgb, var(--ply-link) 20%, transparent);
+      border-block-start-color: var(--ply-link);
+      border-radius: 50%;
+      animation: ply-loading-spin 0.8s linear infinite;
     }
-    /* ペンで「…」を書く。インクの点を書き始めの側から一つずつ置き、書き終えたら消えて繰り返す。 */
+    /* 三つの点を、書き始めの側から順に灯す。 */
     &[data-variant="wave"] > .indicator {
-      align-items: end;
-      padding-block-end: 0.1875rem;
+      inline-size: auto;
       & > i {
-        inline-size: 0.25rem;
-        block-size: 0.25rem;
+        inline-size: 0.25em;
+        block-size: 0.25em;
         border-radius: 50%;
         background: var(--ply-link);
-        animation: ply-loading-dot 1.2s ease-out infinite both;
+        animation: ply-loading-dot 1.2s ease-in-out infinite both;
         &:nth-child(2) {
           animation-delay: 0.2s;
         }
@@ -109,75 +63,44 @@
         }
       }
     }
-    /* 鉛筆で丸を描いては消す。線は書き始めの位置から一周し、描き終えると薄れて描き直す。 */
+    /* 広がって消える輪。中心から外へ広がり、薄れてまた中心から始める。 */
     &[data-variant="halo"] > .indicator::before {
-      --ply-loading-sweep: 0deg;
       content: "";
       position: absolute;
-      inset: 0.125rem;
-      border: 0.125rem solid var(--ply-link);
+      inset: 0.0625em;
+      border: 0.125em solid var(--ply-link);
       border-radius: 50%;
-      mask: conic-gradient(#000 var(--ply-loading-sweep), transparent 0);
-      rotate: -30deg;
-      animation: ply-loading-draw 1.4s ease-in-out infinite;
-    }
-    &[data-variant="halo"] > .indicator:dir(rtl)::before {
-      scale: -1 1;
-      rotate: 30deg;
+      animation: ply-loading-halo 1.4s ease-out infinite;
     }
   }
-  @keyframes ply-loading-turn {
-    0%,
-    15% {
-      transform: rotateY(0deg);
-      opacity: 1;
-    }
-    75% {
-      transform: rotateY(var(--ply-loading-turn));
-      opacity: 1;
-    }
-    100% {
-      transform: rotateY(var(--ply-loading-turn));
-      opacity: 0;
+  @keyframes ply-loading-spin {
+    to {
+      rotate: 1turn;
     }
   }
   @keyframes ply-loading-dot {
-    0% {
-      scale: 0.3;
-      opacity: 0;
-    }
-    15%,
-    65% {
-      scale: 1;
-      opacity: 1;
-    }
-    85%,
+    0%,
     100% {
-      scale: 1;
-      opacity: 0;
+      opacity: 0.25;
+    }
+    40% {
+      opacity: 1;
     }
   }
-  @keyframes ply-loading-draw {
+  @keyframes ply-loading-halo {
     0% {
-      --ply-loading-sweep: 0deg;
-      opacity: 1;
-    }
-    65% {
-      --ply-loading-sweep: 360deg;
+      scale: 0.3;
       opacity: 1;
     }
     100% {
-      --ply-loading-sweep: 360deg;
+      scale: 1;
       opacity: 0;
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .ply-loading[data-variant="orbit"] > .indicator::after,
-    .ply-loading[data-variant="wave"] > .indicator > i {
-      animation: none;
-    }
+    .ply-loading[data-variant="orbit"] > .indicator::before,
+    .ply-loading[data-variant="wave"] > .indicator > i,
     .ply-loading[data-variant="halo"] > .indicator::before {
-      --ply-loading-sweep: 360deg;
       animation: none;
     }
   }
@@ -185,12 +108,10 @@
     .ply-loading[data-layout="region"] {
       outline: var(--ply-stroke-width) solid CanvasText;
       background: Canvas;
-      box-shadow: none;
     }
-    .ply-loading[data-variant="orbit"] > .indicator,
-    .ply-loading[data-variant="orbit"] > .indicator::after {
-      outline: var(--ply-stroke-width) solid CanvasText;
-      background: Canvas;
+    .ply-loading[data-variant="orbit"] > .indicator::before {
+      border-color: GrayText;
+      border-block-start-color: CanvasText;
     }
     .ply-loading[data-variant="wave"] > .indicator > i {
       background: CanvasText;

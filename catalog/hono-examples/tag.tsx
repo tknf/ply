@@ -30,7 +30,7 @@ export default () => (
           <Tag label="要対応" accent="coral" />
         </TagGroup>
       </Disclosure>
-      <Disclosure summary="分類へ移る札（指を載せると揺れる）" open>
+      <Disclosure summary="分類へ移る札" open>
         <TagGroup label="分類から探す">
           <Tag label="仕事場の記事" href="/search?q=仕事場" />
           <Tag label="読書会" accent="blue" href="/search?q=読書会" />

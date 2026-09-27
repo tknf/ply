@@ -6,9 +6,6 @@ export default () => (
       <Badge>保留</Badge>
       <Badge tone="info">確認待ち</Badge>
       <Badge tone="success">公開中</Badge>
-      <Badge tone="success" stamped>
-        承認済み
-      </Badge>
       <Badge tone="warning">期限が近づいています</Badge>
       <Badge tone="danger">送信失敗</Badge>
     </div>
@@ -17,7 +14,7 @@ export default () => (
     </p>
     <Badge tone="info">担当者と管理者による公開前の最終確認を待っています</Badge>
     <DisclosureGroup label="役割と状態の組み合わせ">
-      <Disclosure summary="貼ったシール：役割ごと" open>
+      <Disclosure summary="役割ごと" open>
         <div class="ply-cluster">
           <Badge>保留</Badge>
           <Badge tone="info">確認待ち</Badge>
@@ -26,7 +23,7 @@ export default () => (
           <Badge tone="danger">送信失敗</Badge>
         </div>
       </Disclosure>
-      <Disclosure summary="台紙のままのシール：下書き">
+      <Disclosure summary="下書き：役割の色を持たせない">
         <div class="ply-cluster">
           <Badge draft>下書き</Badge>
           <Badge tone="info" draft>
@@ -43,30 +40,11 @@ export default () => (
           </Badge>
         </div>
       </Disclosure>
-      <Disclosure summary="ゴム印：確定した状態">
-        <div class="ply-cluster">
-          <Badge stamped>受付</Badge>
-          <Badge tone="info" stamped>
-            回覧済み
-          </Badge>
-          <Badge tone="success" stamped>
-            承認済み
-          </Badge>
-          <Badge tone="warning" stamped>
-            保留
-          </Badge>
-          <Badge tone="danger" stamped>
-            却下
-          </Badge>
-        </div>
-      </Disclosure>
       <Disclosure summary="狭い場所で折り返す">
         <div class="ply-stack" data-space="small" style="max-inline-size: 12rem">
           <Badge tone="warning">期限が近づいています。今週中に提出してください</Badge>
           <Badge draft>公開前に担当者の確認を待つ下書き</Badge>
-          <Badge tone="success" stamped>
-            担当者と管理者が承認済み
-          </Badge>
+          <Badge tone="success">担当者と管理者が承認済み</Badge>
           <Badge>https://example.com/articles/autumn-reading-club-2026</Badge>
         </div>
       </Disclosure>
@@ -75,9 +53,7 @@ export default () => (
           <Badge draft>مسودة</Badge>
           <Badge>معلق</Badge>
           <Badge tone="info">قيد المراجعة</Badge>
-          <Badge tone="success" stamped>
-            تمت الموافقة
-          </Badge>
+          <Badge tone="success">تمت الموافقة</Badge>
           <Badge tone="danger">فشل الإرسال</Badge>
         </div>
       </Disclosure>
