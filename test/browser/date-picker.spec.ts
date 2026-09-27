@@ -102,6 +102,10 @@ test("今日の印は通常の文字色の点で示し選択時は白になる",
 test("クリアは終了日と左右・行高を揃えて文字を中央に置く", async ({ page }) => {
   await page.goto("/components/date-picker");
   const flexible = await open(page, "flexible");
+  // 膨らんで現れる動きの途中で測らないよう、動きの終わりを待つ。
+  await flexible.panel.evaluate((element) =>
+    Promise.all(element.getAnimations().map((animation) => animation.finished)),
+  );
   for (const name of ["クリア", "今日"]) {
     const button = flexible.panel.getByRole("button", { name, exact: true });
     await expect(button).toHaveCSS("text-decoration-line", "none");

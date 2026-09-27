@@ -105,6 +105,10 @@ test("タッチ画面の補足と確認を操作できる", async ({ browser }) 
   await page.locator('[data-dialog-target="trigger"][aria-controls="hono-dialog"]').click();
   const dialog = page.locator("#hono-dialog");
   await expect(dialog).toBeVisible();
+  // 下から滑り上げる動きの途中で測らないよう、動きの終わりを待つ。
+  await dialog.evaluate((element) =>
+    Promise.all(element.getAnimations().map((animation) => animation.finished)),
+  );
   expect(await dialog.evaluate((element) => element.getBoundingClientRect().bottom)).toBeCloseTo(
     812,
     0,

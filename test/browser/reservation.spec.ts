@@ -40,8 +40,10 @@ for (const width of [375, 540, 768, 1280]) {
 }
 
 test("CSSのみの予約例で標準検証・リセット・入れ子の開閉を利用できる", async ({ browser }) => {
+  // JavaScript無効の画面では、動きの途中の要素が止まるまでの待機が進まない。CSSだけの操作を確かめるため動きを止める。
   const context = await browser.newContext({
     javaScriptEnabled: false,
+    reducedMotion: "reduce",
     viewport: { width: 375, height: 1000 },
   });
   const page = await context.newPage();

@@ -14,7 +14,7 @@ type OverlayCloseProps = Omit<ButtonProps, "children" | "variant" | "size"> & {
 
 export const OverlayClose = ({ label, ...attributes }: OverlayCloseProps) => (
   <span class="close">
-    <Button {...attributes} variant="link" size="compact" data-icon-only="true" aria-label={label}>
+    <Button {...attributes} variant="primary" data-icon-only="true" aria-label={label}>
       <Icon name="x" />
     </Button>
   </span>

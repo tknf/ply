@@ -98,9 +98,17 @@ test("Toastは標準操作で開閉でき長い通知と操作が狭幅に収ま
   await sample.getByRole("button", { name: "結果表示を試す", exact: true }).click();
   const toast = sample.locator(".ply-toast").first();
   await expect(toast).toBeVisible();
-  expect(await toast.evaluate((element) => element.scrollWidth <= element.clientWidth + 1)).toBe(
-    true,
-  );
+  // 閉じる操作は角からはみ出させるため、見出し・本文・操作の行がそれぞれ幅に収まるかを測る。
+  expect(
+    await toast.evaluate((element) =>
+      Array.from(element.querySelectorAll(":scope > *")).every(
+        (part) => part.scrollWidth <= part.clientWidth + 1,
+      ),
+    ),
+  ).toBe(true);
+  const closeBox = await toast.getByRole("button", { name: "閉じる", exact: true }).boundingBox();
+  if (!closeBox) throw new Error("閉じる操作がありません");
+  expect(closeBox.x + closeBox.width).toBeLessThanOrEqual(375);
   await toast.getByRole("button", { name: "閉じる", exact: true }).click();
   await expect(toast).not.toBeVisible();
 });
@@ -197,12 +205,15 @@ test("EditablePropertyの複数行はEnterで改行し、Control / Meta+Enterで
     "カテゴリは5つにまとめる。\n公開は9月30日。\n次回は10月7日の14時から。\n資料は前日までに共有する。",
   );
   // 改行を表示にも残し、4行分の高さで表示する。
-  expect(await value.evaluate((element) => element.getBoundingClientRect().height)).toBeGreaterThan(
-    100,
+  const lines = await value.evaluate(
+    (element) =>
+      element.getBoundingClientRect().height /
+      Number.parseFloat(getComputedStyle(element).lineHeight),
   );
+  expect(Math.round(lines)).toBe(4);
 });
 
-test("EditablePropertyは表示と編集で罫線の位置と書き始めを変えない", async ({ page }) => {
+test("EditablePropertyは表示と編集で下線の位置と書き始めを変えない", async ({ page }) => {
   await page.goto("/components/editable-property");
   const property = page.locator('[data-example="hono"] .ply-editable-property').first();
   const measure = () =>
@@ -234,25 +245,25 @@ test("EditablePropertyは表示と編集で罫線の位置と書き始めを変�
   expect(editing?.start).toBeCloseTo(viewing?.start ?? Number.NaN, 0);
 });
 
-test("Boardのゴム印は紙を運んだ列の印に押し直され、たたんだ列は札の幅になる", async ({ page }) => {
+test("Boardは運んだ項目を置いた列の色に染め、たたんだ列はピルの幅になる", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/components/board");
   await page
     .locator('[data-example="hono"] details')
     .evaluateAll((elements) => elements.forEach((element) => element.setAttribute("open", "")));
   const approval = page.getByRole("region", { name: "原稿の承認", exact: true });
-  const stamp = (id: string) =>
+  const fill = (id: string) =>
     approval
       .locator(`[data-board-id="${id}"]`)
-      .evaluate((element) => getComputedStyle(element, "::after").content);
-  expect(await stamp("d1")).toBe("none");
-  expect(await stamp("d3")).toBe('"承認"');
+      .evaluate((element) => getComputedStyle(element).backgroundColor);
+  const approved = await fill("d3");
+  expect(await fill("d1")).not.toBe(approved);
   await approval.locator('[data-board-id="d1"]').getByRole("button").focus();
   await page.keyboard.press("Space");
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("Enter");
   await expect(approval.locator('[data-column-id="approved"] [data-board-id="d1"]')).toBeVisible();
-  expect(await stamp("d1")).toBe('"承認"');
+  await expect.poll(() => fill("d1")).toBe(approved);
 
   const hiring = page.getByRole("region", { name: "採用の進行", exact: true });
   const widths = await hiring
@@ -409,7 +420,7 @@ test("文章・数値・操作の文字寸法を親からの継承で変えな�
     return {
       font: style.fontSize,
       line: style.lineHeight,
-      block: element.getBoundingClientRect().height,
+      block: Math.round(element.getBoundingClientRect().height),
       paddingStart: style.paddingBlockStart,
       paddingEnd: style.paddingBlockEnd,
     };
@@ -417,7 +428,7 @@ test("文章・数値・操作の文字寸法を親からの継承で変えな�
   expect(dimensions).toEqual({
     font: "14px",
     line: "20px",
-    block: 32,
+    block: 36,
     paddingStart: "0px",
     paddingEnd: "0px",
   });

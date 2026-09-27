@@ -277,14 +277,22 @@ test("MessageListは日時や添付の長さで本文列をずらさない", asy
   expect(Math.max(...starts) - Math.min(...starts)).toBeLessThan(0.5);
 });
 
-test("Toastの閉じる操作は本文右上に残り操作行へ混ざらない", async ({ page }) => {
+test("Toastの閉じる操作は紙の右上の角からはみ出し、本文と操作行へ混ざらない", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 850 });
   await page.goto("/components/toast");
   await page.getByRole("button", { name: "結果表示を試す", exact: true }).click();
   const toast = page.locator(".ply-toast").first();
+  // 下から差し出す動きの途中で二つを順に測ると位置がずれるため、動きの終わりを待つ。
+  await toast.evaluate((element) =>
+    Promise.all(element.getAnimations({ subtree: true }).map((animation) => animation.finished)),
+  );
   const close = await toast.getByRole("button", { name: "閉じる", exact: true }).boundingBox();
   const message = await toast.locator(".message").boundingBox();
-  if (!close || !message) throw new Error("通知がありません");
+  const paper = await toast.boundingBox();
+  const actions = await toast.locator(".actions").boundingBox();
+  if (!close || !message || !paper || !actions) throw new Error("通知がありません");
   expect(close.x).toBeGreaterThanOrEqual(message.x + message.width);
-  expect(close.y).toBeCloseTo(message.y, 1);
+  expect(close.y).toBeLessThan(paper.y);
+  expect(close.x + close.width).toBeGreaterThan(paper.x + paper.width);
+  expect(close.y + close.height).toBeLessThan(actions.y);
 });

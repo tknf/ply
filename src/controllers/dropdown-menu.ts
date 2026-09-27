@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 import { menuPosition } from "./dropdown-menu-position";
+import { layoutRect } from "../internal/layout-rect";
 
 type OpenPanel = { panel: HTMLElement; anchor: HTMLElement };
 
@@ -143,9 +144,10 @@ export class DropdownMenuController extends Controller<HTMLElement> {
       const rtl = getComputedStyle(panel).direction === "rtl";
       panel.style.maxInlineSize = `min(20rem, ${Math.max(0, (viewport?.width ?? window.innerWidth) - 16)}px)`;
       panel.style.maxBlockSize = `${Math.max(0, Math.min(384, (viewport?.height ?? window.innerHeight) - 16))}px`;
+      const anchorBounds = anchor.getBoundingClientRect();
       const position = menuPosition({
-        anchor: anchor.getBoundingClientRect(),
-        panel: panel.getBoundingClientRect(),
+        anchor: anchorBounds,
+        panel: layoutRect(panel),
         viewport: {
           width: viewport?.width ?? window.innerWidth,
           height: viewport?.height ?? window.innerHeight,
@@ -159,6 +161,9 @@ export class DropdownMenuController extends Controller<HTMLElement> {
       });
       panel.style.insetInlineStart = `${position.inlineStart}px`;
       panel.style.insetBlockStart = `${position.blockStart}px`;
+      // 出入りの動きを、開いた操作の側から始めるための向き。
+      panel.dataset.side =
+        index > 0 ? "inline" : position.blockStart < anchorBounds.top ? "top" : "bottom";
     }
   };
 

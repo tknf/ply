@@ -38,7 +38,7 @@ export const interactiveExamples = [
       </Dialog>
     ),
     usage:
-      "DialogControllerをdialogとして登録します。idは画面内で一意にします。見出し・本文・操作欄を分け、長文では本文をスクロールします。sizeはcompact/default/wide、closeLabelで閉じる操作の文言、actionsで追加操作を指定できます。初期フォーカスは見出しです。フォームではinitialFocusをcontentにし、必要な入力にautofocusを指定します。Escapeと閉じる操作で元のトリガーへ戻ります。狭いタッチ画面では下端に寄せたシートとして表示します。保存・削除は利用側で処理してください。",
+      "DialogControllerをdialogとして登録します。idは画面内で一意にします。見出し・本文・操作欄を分け、長文では本文をスクロールします。sizeはcompact/default/wide、closeLabelで閉じる操作の文言、actionsで追加操作を指定できます。初期フォーカスは見出しです。フォームではinitialFocusをcontentにし、必要な入力にautofocusを指定します。Escapeと閉じる操作で元のトリガーへ戻ります。狭いタッチ画面では下端に寄せたシートとして表示し、上端のハンドルと見出しを下へ引くと閉じます（dialog:beforecloseのdetail.reasonはswipe）。保存・削除は利用側で処理してください。",
   },
   {
     id: "dropdown-menu",
@@ -55,7 +55,7 @@ export const interactiveExamples = [
       />
     ),
     usage:
-      "DropdownMenuControllerをdropdown-menuとして登録します。通常操作・リンク・区切り・見出し・チェック・単一選択・多段サブメニューに対応します。dropdown-menu:selectのdetail.value、checked、nameを利用側で受け取ります。beforeselectはpreventDefaultで取り消せます。上下矢印・Home/Endで項目移動、左右矢印で階層移動、Escapeで一段戻り、Tabで閉じます。チェックと単一選択は既定で開いたままです。idは画面内で一意、radioのnameは同じ階層の選択グループごとに指定します。ショートカットの補助表記はキー登録を行いません。",
+      "DropdownMenuControllerをdropdown-menuとして登録します。メニューは青の面に白い文字で、開いた操作の側から膨らんで現れます。通常操作・リンク・区切り・見出し・チェック・単一選択・多段サブメニューに対応します。dropdown-menu:selectのdetail.value、checked、nameを利用側で受け取ります。beforeselectはpreventDefaultで取り消せます。上下矢印・Home/Endで項目移動、左右矢印で階層移動、Escapeで一段戻り、Tabで閉じます。チェックと単一選択は既定で開いたままです。idは画面内で一意、radioのnameは同じ階層の選択グループごとに指定します。ショートカットの補助表記はキー登録を行いません。",
   },
   {
     id: "tabs",

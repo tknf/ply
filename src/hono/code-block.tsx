@@ -11,7 +11,7 @@ export type CodeBlockProps = ElementProps<"figure"> & {
   copy?: boolean;
   /** 行の頭に番号を振る。番号はコピーする内容に含めない。 */
   lineNumbers?: boolean;
-  /** 蛍光ペンを引いて目印にする行（1から数える）。 */
+  /** 淡い黄色の地で目印にする行（1から数える）。 */
   highlight?: readonly number[];
 };
 
@@ -85,7 +85,7 @@ export const CodeBlock = ({
         </code>
       </pre>
       {copy && (
-        <Toast id={notificationId} closeLabel="コピー結果の通知を閉じる">
+        <Toast id={notificationId} tone="success" closeLabel="コピー結果の通知を閉じる">
           <span data-code-block-target="status" />
         </Toast>
       )}

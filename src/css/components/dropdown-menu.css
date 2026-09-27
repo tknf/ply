@@ -26,6 +26,10 @@
       justify-items: end;
     }
   }
+  /*
+    操作のメニューはHEYのメニューと同じく、白い紙ではなく青の面に白い文字で出す。
+    項目に指を載せると白を薄く重ね、区切りや補足も白の濃さで分ける。読み物を載せるPopoverやDialogは白い紙のまま。
+  */
   .ply-menu {
     position: fixed;
     inset-block: 0 auto;
@@ -43,21 +47,46 @@
     padding-inline: var(--ply-space-1);
     border: 0;
     border-radius: var(--ply-radius-surface);
-    background: var(--ply-surface);
-    color: var(--ply-text);
+    background: var(--ply-link);
+    background-image: var(--ply-fill-menu);
+    color: var(--ply-surface);
     font-family: var(--ply-control-font-family);
     font-size: var(--ply-label);
     line-height: calc(10 / 7);
     letter-spacing: 0;
     list-style: none;
     box-shadow: var(--ply-shadow-menu);
+    scrollbar-color: color-mix(in srgb, var(--ply-surface) 40%, transparent) transparent;
+    /* 出入りの動きはoverlay.cssの共通の定義。支点は開いた操作の側の角にする。 */
+    transform-origin: top left;
     &::backdrop {
       background: transparent;
       pointer-events: none;
     }
     &:focus-visible {
-      outline: 0.125rem solid var(--ply-link);
+      outline: 0.125rem solid var(--ply-surface);
       outline-offset: -0.125rem;
+    }
+    &:dir(rtl) {
+      transform-origin: top right;
+    }
+    &[data-side="top"] {
+      transform-origin: bottom left;
+    }
+    &[data-side="top"]:dir(rtl) {
+      transform-origin: bottom right;
+    }
+  }
+  .ply-dropdown-menu[data-align="end"] > .ply-menu:dir(ltr) {
+    transform-origin: top right;
+    &[data-side="top"] {
+      transform-origin: bottom right;
+    }
+  }
+  .ply-dropdown-menu[data-align="end"] > .ply-menu:dir(rtl) {
+    transform-origin: top left;
+    &[data-side="top"] {
+      transform-origin: bottom left;
     }
   }
   .ply-menu[data-variant="group"] {
@@ -70,6 +99,8 @@
     padding: 0;
     border: 0;
     border-radius: 0;
+    background: none;
+    color: inherit;
     box-shadow: none;
   }
   .ply-menu > li > .item.ply-button {
@@ -90,27 +121,28 @@
     transition: background-color var(--ply-duration) ease;
     &:hover:not(:disabled, [data-disabled="true"]),
     &[data-state="active"]:not(:disabled, [data-disabled="true"]) {
-      background: color-mix(in srgb, var(--ply-text) 6%, var(--ply-surface));
+      background: color-mix(in srgb, var(--ply-surface) 16%, transparent);
       box-shadow: none;
     }
     &:active:not(:disabled, [data-disabled="true"]) {
-      background: color-mix(in srgb, var(--ply-text) 10%, var(--ply-surface));
+      background: color-mix(in srgb, var(--ply-surface) 24%, transparent);
       box-shadow: none;
     }
     &:focus-visible {
-      outline: 0.125rem solid var(--ply-link);
+      outline: 0.125rem solid var(--ply-surface);
       outline-offset: -0.125rem;
     }
+    /* 青の面の上では赤の文字が沈むため、危険の操作は淡い赤の文字と印で分ける。 */
     &[data-tone="danger"] {
-      color: var(--ply-danger);
+      color: var(--ply-danger-soft);
     }
     &:disabled,
     &[data-disabled="true"] {
       background: transparent;
       border-color: transparent;
-      color: var(--ply-muted);
+      color: inherit;
       box-shadow: none;
-      opacity: 0.4;
+      opacity: 0.45;
       cursor: not-allowed;
     }
     &[data-checked="false"] > .content > .heading > .mark {
@@ -148,12 +180,12 @@
   }
   .ply-menu > li > .item > .content > .description {
     display: block;
-    color: var(--ply-muted);
+    color: color-mix(in srgb, currentColor 76%, transparent);
     font-size: var(--ply-small);
     line-height: var(--ply-control-leading);
   }
   .ply-menu > li > .item > .content > .heading > .shortcut {
-    color: var(--ply-muted);
+    color: color-mix(in srgb, currentColor 72%, transparent);
     white-space: nowrap;
   }
   .ply-menu > li > .item > .content > .heading > .caret,
@@ -186,13 +218,15 @@
     display: block;
     padding-block: var(--ply-space-2);
     padding-inline: var(--ply-space-2);
-    color: var(--ply-muted);
+    color: color-mix(in srgb, currentColor 76%, transparent);
     font-size: var(--ply-small);
+    font-weight: 600;
   }
   .ply-menu > .separator {
     margin-block-start: var(--ply-space-1);
     padding-block-start: var(--ply-space-1);
-    border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+    border-block-start: var(--ply-stroke-width) solid
+      color-mix(in srgb, currentColor 24%, transparent);
   }
   @media (pointer: coarse) {
     .ply-menu > li > .item.ply-button {
@@ -202,6 +236,7 @@
   @media (forced-colors: active) {
     .ply-menu {
       background: Canvas;
+      color: CanvasText;
       box-shadow: none;
     }
     .ply-menu > li > .item.ply-button[data-state="active"] {

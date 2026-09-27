@@ -1,5 +1,6 @@
 import { CalendarController } from "@tknf/stimulus-ui";
 import { calendarPosition } from "./date-picker-position";
+import { layoutRect } from "../internal/layout-rect";
 import {
   formatSelection,
   isoDate,
@@ -533,7 +534,7 @@ export class DatePickerController extends CalendarController {
     this.panelTarget.style.maxBlockSize = `${Math.max(0, height - 16)}px`;
     const position = calendarPosition({
       anchor: this.controlTarget.getBoundingClientRect(),
-      panel: this.panelTarget.getBoundingClientRect(),
+      panel: layoutRect(this.panelTarget),
       viewport: {
         width,
         height,

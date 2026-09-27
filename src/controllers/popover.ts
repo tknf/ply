@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 import { menuPosition } from "./dropdown-menu-position";
 import { isPopoverAnchored } from "./popover-position";
+import { layoutRect } from "../internal/layout-rect";
 
 /** CSSを優先し、実際の配置が成立しない場合だけ既存の座標計算で補う。 */
 export class PopoverController extends Controller<HTMLElement> {
@@ -96,11 +97,7 @@ export class PopoverController extends Controller<HTMLElement> {
     if (
       this.cssAnchors &&
       !this.fallback &&
-      isPopoverAnchored(
-        trigger.getBoundingClientRect(),
-        panel.getBoundingClientRect(),
-        visibleViewport,
-      )
+      isPopoverAnchored(trigger.getBoundingClientRect(), layoutRect(panel), visibleViewport)
     )
       return;
     this.fallback = true;
@@ -112,7 +109,7 @@ export class PopoverController extends Controller<HTMLElement> {
     panel.style.maxBlockSize = `${Math.max(0, (viewport?.height ?? window.innerHeight) - 16)}px`;
     const position = menuPosition({
       anchor: trigger.getBoundingClientRect(),
-      panel: panel.getBoundingClientRect(),
+      panel: layoutRect(panel),
       viewport: visibleViewport,
       layoutWidth: document.documentElement.clientWidth,
       rtl: getComputedStyle(panel).direction === "rtl",

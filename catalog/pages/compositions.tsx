@@ -253,7 +253,9 @@ export const SettingsExample = () => (
         <noscript>
           <p>設定の保存にはJavaScriptが必要です。入力コンポーネントはそのまま試せます。</p>
         </noscript>
-        <Toast id="settings-result">設定をこのブラウザに保存しました。</Toast>
+        <Toast id="settings-result" tone="success">
+          設定をこのブラウザに保存しました。
+        </Toast>
       </form>
     </div>
     <CompositionNote>

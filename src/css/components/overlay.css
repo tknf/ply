@@ -1,6 +1,11 @@
 @layer components {
+  /*
+    閉じる操作は青いアイコンだけのButtonにし、紙の終わりの側の上の角から少しはみ出させて置く。
+    Wingの持ち手と同じく、紙の外から手を掛けられる印にする。見出しの行は操作の幅を取らない。
+  */
   .ply-overlay {
-    --ply-overlay-close-size: calc(var(--ply-label) * 16 / 7);
+    --ply-overlay-close-size: 1.75rem;
+    --ply-overlay-close-offset: 0.25rem;
     --ply-overlay-title-line: calc(var(--ply-label) * 10 / 7);
     --ply-overlay-inset-inline: 1.25rem;
     border: 0;
@@ -16,20 +21,24 @@
       display: grid;
       gap: var(--ply-space-1);
       min-inline-size: 0;
-      padding-block-start: 0.625rem;
+      padding-block-start: var(--ply-space-4);
       padding-inline: var(--ply-overlay-inset-inline);
       & > .heading-row {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-columns: minmax(0, 1fr);
         align-items: start;
-        gap: var(--ply-space-2);
         min-inline-size: 0;
+        /* 角に置いた操作が余白より内側へ入る分だけ、題名の行末を空ける。 */
+        padding-inline-end: max(
+          0rem,
+          calc(
+            var(--ply-overlay-close-size) - var(--ply-overlay-close-offset) -
+              var(--ply-overlay-inset-inline)
+          )
+        );
         & > :is(h2, h3, strong, .message) {
           display: block;
           min-inline-size: 0;
-          padding-block-start: calc(
-            (var(--ply-overlay-close-size) - var(--ply-overlay-title-line)) / 2
-          );
         }
         & > :is(h2, h3, strong) {
           font-size: var(--ply-label);
@@ -37,13 +46,13 @@
           line-height: var(--ply-overlay-title-line);
         }
         & > .close {
+          position: absolute;
+          inset-block-start: calc(-1 * var(--ply-overlay-close-offset));
+          inset-inline-end: calc(-1 * var(--ply-overlay-close-offset));
+          z-index: 1;
           display: flex;
           & > .ply-button {
-            color: var(--ply-muted);
-            &:hover:enabled {
-              background: var(--ply-background);
-              color: var(--ply-text);
-            }
+            --ply-button-size: var(--ply-overlay-close-size);
           }
         }
       }
@@ -77,6 +86,50 @@
       padding-inline: var(--ply-overlay-inset-inline);
     }
   }
+  /*
+    浮かぶ物の出入り。Dialog・Popover・HoverCard・Tooltip・Toast・DropdownMenu・CommandMenu・DatePickerの全てで、
+    ここだけに書く。支点から小さく現れて一瞬膨らんでから収まり、閉じる時は同じ支点へ縮みながら速く消える。
+    各コンポーネントは支点（transform-origin）だけを決める。画面の端から差し出す物（Toast・下に付くDialog）は、
+    --ply-motion-slideで滑らせる時間を、--ply-motion-scale-in・-outで膨らみを1にし、閉じた形と開き始めのtranslateを決める。
+    位置を決めるスクリプトは変形前の寸法（layoutRect）で測るため、大きさを変えても配置は狂わない。
+  */
+  :is(.ply-overlay, .ply-menu, .ply-command-menu > .panel, .ply-date-picker > .panel):is(
+    [popover],
+    dialog
+  ) {
+    transition:
+      opacity var(--ply-duration-fade) ease-out,
+      scale var(--ply-duration-pop) var(--ply-ease-pop),
+      translate var(--ply-motion-slide) var(--ply-ease-slide),
+      display var(--ply-duration-pop) allow-discrete,
+      overlay var(--ply-duration-pop) allow-discrete;
+    &:is([popover]:not(:popover-open), dialog:not([open])) {
+      opacity: 0;
+      scale: var(--ply-motion-scale-out);
+      transition-duration: var(--ply-duration-out);
+      transition-timing-function: ease-in;
+    }
+  }
+  @starting-style {
+    :is(.ply-overlay, .ply-menu, .ply-command-menu > .panel, .ply-date-picker > .panel):is(
+      [popover]:popover-open,
+      dialog[open]
+    ) {
+      opacity: 0;
+      scale: var(--ply-motion-scale-in);
+    }
+  }
+  /* アンカーに付く紙（Popover・HoverCard）は、開いた操作の側の上の角を支点にする。 */
+  .ply-overlay[popover] {
+    transform-origin: top left;
+    &:dir(rtl),
+    &[data-align="end"]:dir(ltr) {
+      transform-origin: top right;
+    }
+    &[data-align="end"]:dir(rtl) {
+      transform-origin: top left;
+    }
+  }
   .ply-overlay[data-placement="anchor"] {
     --ply-overlay-anchor: auto;
     --ply-overlay-width: 20rem;
@@ -90,7 +143,8 @@
     inline-size: min(var(--ply-overlay-width), calc(100vw - 1rem));
     max-inline-size: calc(100vw - 1rem);
     max-block-size: calc(100dvh - 1rem);
-    overflow: auto;
+    /* 角の操作をはみ出させるため、紙は切り取らず本文だけをスクロールする。 */
+    overflow: visible;
     margin: 0;
     padding: 0;
     &[data-size="compact"] {
@@ -142,6 +196,11 @@
   @media (pointer: coarse) {
     .ply-overlay {
       --ply-overlay-close-size: 2.75rem;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-overlay > .heading > .heading-row > .close > .ply-button {
+      border-color: ButtonText;
     }
   }
 }

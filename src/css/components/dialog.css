@@ -5,9 +5,11 @@
     inline-size: min(var(--ply-dialog-width), calc(100% - var(--ply-space-8)));
     max-inline-size: calc(100% - var(--ply-space-8));
     max-block-size: calc(100dvh - var(--ply-space-8));
-    overflow: auto;
+    /* 角の閉じる操作をはみ出させるため、紙は切り取らず本文だけをスクロールする。 */
+    overflow: visible;
     padding: 0;
     font-family: var(--ply-control-font-family);
+    /* 出入りの動きはoverlay.cssの共通の定義。中央の紙は中央を支点に膨らむ。背景の暗さだけここで一緒に変える。 */
     &[open] {
       display: grid;
       grid-template-rows: auto minmax(0, 1fr) auto;
@@ -20,6 +22,19 @@
     }
     &::backdrop {
       background: rgb(36 57 70 / 24%);
+      transition:
+        background-color var(--ply-duration-pop) ease-out,
+        display var(--ply-duration-pop) allow-discrete,
+        overlay var(--ply-duration-pop) allow-discrete;
+    }
+    &:not([open])::backdrop {
+      background: rgb(36 57 70 / 0%);
+      transition-duration: var(--ply-duration-out);
+    }
+  }
+  @starting-style {
+    .ply-dialog > .panel[open]::backdrop {
+      background: rgb(36 57 70 / 0%);
     }
   }
   .ply-dialog > .panel > .heading > .heading-row > h2 {
@@ -36,17 +51,67 @@
   .ply-dialog > .panel > .actions {
     grid-row: 3;
   }
+  /*
+    狭い画面のタッチ操作では、画面の下に付くシートにする。
+    上端のハンドルとその周りを下へ引くと閉じる（DialogControllerが--ply-dialog-sheetを見て有効にする）。
+    閉じる操作は見出しの行の終わりに置き、題名を隠さない。下端は操作の後にホームバーの分も空ける。
+  */
   @media (max-width: 40rem) and (pointer: coarse) {
     .ply-dialog > .panel {
+      --ply-dialog-sheet: 1;
       inline-size: 100%;
       max-inline-size: 100%;
       max-block-size: 90dvh;
       margin: 0;
       margin-inline: auto;
       margin-block-start: auto;
-      padding-block-end: env(safe-area-inset-bottom);
+      padding-block-end: calc(var(--ply-space-3) + env(safe-area-inset-bottom));
       border-end-start-radius: 0;
       border-end-end-radius: 0;
+      touch-action: none;
+      --ply-motion-slide: var(--ply-duration-pop);
+      --ply-motion-scale-in: 1;
+      --ply-motion-scale-out: 1;
+      /* 上端のハンドル。引いて閉じられることを示す。 */
+      &::before {
+        content: "";
+        position: absolute;
+        inset-block-start: var(--ply-space-2);
+        inset-inline-start: 50%;
+        inline-size: 2.5rem;
+        block-size: 0.3125rem;
+        border-radius: var(--ply-radius-pill);
+        background: color-mix(in srgb, var(--ply-ink) 18%, var(--ply-surface));
+        translate: -50% 0;
+      }
+      /* 画面の下に付く紙は、膨らませず下から滑り上げる。引いている間は指に付いて動かす。 */
+      &:not([open]) {
+        translate: 0 100%;
+      }
+      &[data-dragging="true"] {
+        transition: none;
+      }
+      & > .heading {
+        padding-block-start: var(--ply-space-6);
+        & > .heading-row {
+          grid-template-columns: minmax(0, 1fr) auto;
+          column-gap: var(--ply-space-3);
+          padding-inline-end: 0;
+          & > h2 {
+            padding-block-start: calc(
+              (var(--ply-overlay-close-size) - var(--ply-overlay-title-line)) / 2
+            );
+          }
+          & > .close {
+            position: static;
+          }
+        }
+      }
+    }
+    @starting-style {
+      .ply-dialog > .panel[open] {
+        translate: 0 100%;
+      }
     }
   }
 }

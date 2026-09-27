@@ -76,6 +76,10 @@ test("CtrlまたはCmdとKで開閉し、パネルは480pxで背景を暗転し�
   await page.keyboard.press("Control+k");
   const panel = page.getByRole("dialog");
   await expect(panel).toBeVisible();
+  // 膨らんで現れる動きの途中で測らないよう、動きの終わりを待つ。
+  await panel.evaluate((element) =>
+    Promise.all(element.getAnimations().map((animation) => animation.finished)),
+  );
   const geometry = await panel.evaluate((element) => {
     const rect = element.getBoundingClientRect();
     return {

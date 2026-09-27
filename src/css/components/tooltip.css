@@ -16,6 +16,8 @@
     padding-inline: var(--ply-space-3);
     font-size: var(--ply-small);
     line-height: var(--ply-small-leading);
+    /* 操作の中央の下に出るため、上の中央を支点に膨らむ。 */
+    transform-origin: top center;
   }
   @supports (inset-block-start: anchor(end)) and (position-try-fallbacks: flip-block) {
     .ply-tooltip > .content {
