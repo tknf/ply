@@ -2,43 +2,51 @@
   .ply-surface {
     container: ply-surface / inline-size;
     min-inline-size: 0;
-    background: var(--ply-surface);
-    /* 作業面は紙。寸法を保つため枠の幅は残し、線は見せずに紙の影で縁取る。 */
+    /* 寸法を保つため枠の幅は残し、線は見せない。 */
     border: var(--ply-stroke-width) solid transparent;
-    border-radius: var(--ply-radius-surface);
-    box-shadow: var(--ply-shadow-paper);
+    /* パンくずの帯は区切り線を持たず、本文と同じ左右の余白に揃える。 */
+    & > .ply-context-bar {
+      min-block-size: calc(var(--ply-control-size) + var(--ply-space-4) + var(--ply-space-2));
+      padding-block-start: var(--ply-space-4);
+      padding-inline: var(--ply-space-12);
+      border-block-end: 0;
+      @container ply-surface (inline-size < 40rem) {
+        padding-inline: var(--ply-space-4);
+      }
+    }
     & > .body {
       display: grid;
       align-content: start;
-      gap: var(--ply-space-4);
+      gap: var(--ply-space-6);
       min-inline-size: 0;
-      padding-block: var(--ply-space-4) var(--ply-space-3);
-      padding-inline: var(--ply-space-5);
+      /* HEYの面は左右55px、Fizzyの詳細は内側47.5px。狭い面では詰める。 */
+      padding-block: var(--ply-space-8) var(--ply-space-6);
+      padding-inline: var(--ply-space-12);
       overflow-wrap: anywhere;
       &:empty {
         display: none;
       }
+      @container ply-surface (inline-size < 40rem) {
+        padding-block: var(--ply-space-5) var(--ply-space-4);
+        padding-inline: var(--ply-space-4);
+      }
     }
-    &:has(> .body:empty) > .ply-context-bar {
-      border-block-end: 0;
-    }
-    /* 面の色は区別のため。強調ではないのでグラデーションにせず平らに敷く。 */
-    &[data-tone="warm"] {
-      background: var(--ply-soft);
-    }
-    &[data-tone="cool"] {
-      background: var(--ply-info-soft);
-    }
-    &[data-kind="panel"] {
-      border-radius: var(--ply-radius-field);
-      box-shadow: var(--ply-shadow-control);
+    /* 文書の配置では、パンくずも本文と同じ行長の書き始めにそろえる。 */
+    &[data-layout="document"] > .ply-context-bar {
+      padding-inline: max(var(--ply-space-12), calc((100% - 42rem) / 2));
+      @container ply-surface (inline-size < 40rem) {
+        padding-inline: var(--ply-space-4);
+      }
     }
     &[data-layout="document"] > .body {
-      padding-inline: max(var(--ply-space-5), calc((100% - 42rem) / 2));
+      padding-inline: max(var(--ply-space-12), calc((100% - 42rem) / 2));
+      @container ply-surface (inline-size < 40rem) {
+        padding-inline: var(--ply-space-4);
+      }
     }
   }
   @media (forced-colors: active) {
-    :is(.ply-surface, .ply-surface[data-kind="panel"]) {
+    .ply-surface {
       border: var(--ply-stroke-width) solid CanvasText;
       background: Canvas;
       box-shadow: none;

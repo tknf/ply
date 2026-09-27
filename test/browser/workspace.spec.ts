@@ -55,7 +55,7 @@ test("中央のコマンドと作業面は狭幅・埋め込み・文字拡大�
     if (!commands || !workspace) throw new Error("中央の構造がありません");
     expect(Math.abs(commands.x + commands.width / 2 - width / 2)).toBeLessThanOrEqual(1);
     expect(Math.abs(workspace.x + workspace.width / 2 - width / 2)).toBeLessThanOrEqual(1);
-    expect(workspace.width).toBeLessThanOrEqual(1024);
+    expect(workspace.width).toBeLessThanOrEqual(1088);
     expect(workspace.y).toBeGreaterThan(commands.y + commands.height);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,

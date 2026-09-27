@@ -30,11 +30,7 @@ export const WorkspaceFrame = ({
   current = "project",
 }: PropsWithChildren<{ current?: "project" | "mail" }>) => (
   <AppShell
-    home={
-      <ActionLink href="/review/workspace" variant="link">
-        ホーム
-      </ActionLink>
-    }
+    home={<ActionLink href="/review/workspace">ホーム</ActionLink>}
     commands={
       <CommandMenu
         id="workspace-commands"
@@ -102,15 +98,7 @@ export const WorkspaceFrame = ({
         ]}
       />
     }
-    account={
-      <Avatar
-        name="田中 遥"
-        initials="遥"
-        size="small"
-        tone="coral"
-        title="田中 遥 · つむぐチーム"
-      />
-    }
+    account={<Avatar name="田中 遥" initials="遥" tone="coral" title="田中 遥 · つむぐチーム" />}
   >
     {children}
   </AppShell>

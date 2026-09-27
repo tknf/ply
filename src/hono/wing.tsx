@@ -24,7 +24,12 @@ export type WingProps = PropsWithChildren<
   }
 >;
 
-/** summaryは外側の持ち手。開くと持ち手から外側へパネルが出る。 */
+/**
+ * summaryは作業面の縁から出る持ち手。共通Buttonの主操作のアイコンだけの形を中に置き、
+ * アイコンを指定しない時だけ開閉の印を出す。押す要素はsummaryで、ボタンの見た目は読み上げない。
+ * 広い配置で閉じている間は名前を画面に出さず、指を載せた時にツールチップで示す（読み上げの名前は中の文言）。
+ * 開くと、ボタンと名前が上端の見出しになる。
+ */
 const Panel = ({
   side,
   panel,
@@ -38,11 +43,19 @@ const Panel = ({
 }) => (
   <details class={side} open={open} data-wing-target={persist ? "panel" : undefined}>
     <summary>
-      <span class="marker" aria-hidden="true">
-        <Icon name="caret" />
+      <span
+        class="handle ply-button"
+        data-variant="primary"
+        data-icon-only="true"
+        data-fallback={panel.icon ? undefined : "caret"}
+        aria-hidden="true"
+      >
+        <Icon name={panel.icon ?? "caret"} />
       </span>
-      {panel.icon && <Icon name={panel.icon} class="icon" />}
       <span class="label">{panel.label}</span>
+      <span class="tip ply-overlay" aria-hidden="true">
+        {panel.label}
+      </span>
     </summary>
     <div class="body">{panel.content}</div>
   </details>

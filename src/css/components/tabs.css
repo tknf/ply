@@ -2,7 +2,7 @@
   .ply-tabs {
     container: ply-tabs / inline-size;
     display: grid;
-    gap: var(--ply-space-4);
+    gap: var(--ply-space-5);
     min-inline-size: 0;
     & > .panel {
       min-inline-size: 0;
@@ -15,9 +15,9 @@
       display: flex;
       flex-wrap: wrap;
       align-items: end;
-      gap: var(--ply-space-1);
-      /* つまみの下に墨の線を引き、今のつまみからその下の紙が続くように見せる。 */
-      box-shadow: inset 0 calc(var(--ply-frame-width) * -1) var(--ply-ink);
+      gap: var(--ply-space-3);
+      /* 並びの下に細い線を引き、今のタブの青い印をその上に重ねる。 */
+      box-shadow: inset 0 calc(var(--ply-stroke-width) * -1) var(--ply-border);
       & > button {
         appearance: none;
         display: inline-flex;
@@ -26,27 +26,37 @@
         gap: var(--ply-space-2);
         min-inline-size: 0;
         max-inline-size: 100%;
-        min-block-size: 2.25rem;
-        padding-block: 0.4375rem;
-        padding-inline: var(--ply-space-3);
+        min-block-size: var(--ply-control-size);
+        padding-block: var(--ply-space-2);
+        padding-inline: var(--ply-space-2);
         border: 0;
         border-radius: 0;
         background: transparent;
         color: var(--ply-muted);
         font-family: var(--ply-control-font-family);
-        font-size: var(--ply-small);
+        font-size: var(--ply-label);
         font-weight: 400;
-        line-height: var(--ply-small-leading);
+        line-height: var(--ply-label-leading);
         cursor: pointer;
         & > .icon {
           display: flex;
         }
+        /* 件数はSectionと同じ、淡い面の色の小さなピル。 */
         & > .count {
-          font-size: inherit;
-          color: var(--ply-muted);
+          display: inline-grid;
+          place-items: center;
+          min-inline-size: 1.25rem;
+          block-size: 1.25rem;
+          padding-inline: 0.375rem;
+          border-radius: var(--ply-radius-pill);
+          background: var(--ply-background);
+          color: var(--ply-text);
+          font-size: var(--ply-small);
+          font-weight: 600;
+          line-height: 1;
           font-variant-numeric: tabular-nums;
         }
-        /* 今ではないつまみは面を持たず、文字の色だけで応える。下の墨の線を面で途切れさせない。 */
+        /* 今ではないタブは面を持たず、文字の色だけで応える。 */
         &:hover:enabled:not([data-state="active"]) {
           color: var(--ply-text);
         }
@@ -57,15 +67,11 @@
           outline: 0.125rem solid var(--ply-link);
           outline-offset: 0.125rem;
         }
-        /* 今のつまみはインデックスの見出し。墨で塗った四角いつまみにし、下の線とつなげる。 */
+        /* 今のタブは現在地。インクの太字と、下の青い2pxの印。 */
         &[data-state="active"] {
-          background: var(--ply-ink) var(--ply-fill-ink);
-          box-shadow: var(--ply-shadow-control-primary);
-          color: var(--ply-surface);
+          box-shadow: inset 0 calc(var(--ply-frame-width) * -1) var(--ply-link);
+          color: var(--ply-text);
           font-weight: 600;
-          & > .count {
-            color: inherit;
-          }
         }
         &:disabled {
           color: var(--ply-muted);
@@ -75,8 +81,8 @@
       }
     }
     @container ply-tabs (inline-size < 24rem) {
-      & > .list > button {
-        padding-inline: var(--ply-space-2);
+      & > .list {
+        gap: var(--ply-space-1);
       }
     }
     @media (pointer: coarse) {

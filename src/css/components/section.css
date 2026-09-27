@@ -2,7 +2,7 @@
   .ply-section {
     --ply-section-accent: var(--ply-muted);
     display: grid;
-    gap: var(--ply-space-2);
+    gap: var(--ply-space-3);
     min-inline-size: 0;
     &[data-tone="info"] {
       --ply-section-accent: var(--ply-info);
@@ -16,19 +16,15 @@
     &[data-tone="danger"] {
       --ply-section-accent: var(--ply-danger);
     }
-    /* 見出しから線を伸ばし、ここからまとまりが始まることを示す。操作がある時は線の後に置く。 */
+    /*
+      見出しは印・太字の名前・件数だけにし、線は伸ばさない。続く一覧や表が罫線を持つので、線を重ねない。
+      操作がある時は終わりの側に寄せる。
+    */
     & > .heading {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: var(--ply-space-2);
-      &::after {
-        content: "";
-        order: 1;
-        flex: 1 1 2rem;
-        block-size: var(--ply-stroke-width);
-        background: var(--ply-border);
-      }
       & > .actions {
         order: 2;
       }
@@ -47,9 +43,19 @@
           background: var(--ply-section-accent);
         }
       }
+      /* 件数は淡い面の色の小さなピルで包み、名前の横で見つけやすくする。数字はピルの上下の中央に置く。 */
       & > .count {
-        color: var(--ply-muted);
+        display: inline-grid;
+        place-items: center;
+        min-inline-size: 1.25rem;
+        block-size: 1.25rem;
+        padding-inline: 0.375rem;
+        border-radius: var(--ply-radius-pill);
+        background: var(--ply-background);
+        color: var(--ply-text);
         font-size: var(--ply-small);
+        font-weight: 600;
+        line-height: 1;
         font-variant-numeric: tabular-nums;
       }
       & > .actions {

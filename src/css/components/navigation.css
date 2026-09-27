@@ -1,63 +1,105 @@
 @layer components {
+  /*
+    縦並びのナビゲーション。HEYのaction-groupと同じく、淡い面の一枚の板に行を並べ、
+    行の間は名前の書き始めから細い線で区切る。今いる行は面を塗らず、太字と終わりの側の青いチェックで示す。
+    名前はHEYの行と同じMedium、アイコンは塗りつぶしの版（Iconのfill）を文字と同じ濃さで置く。
+  */
   .ply-navigation {
     display: grid;
     align-content: start;
-    gap: 0.125rem;
+    /* 並べた先の高さに引き伸ばさず、中身の高さの板にする。 */
+    align-self: start;
+    padding-block: var(--ply-space-1);
+    padding-inline: var(--ply-space-1);
+    border-radius: var(--ply-radius-field);
+    background: var(--ply-background);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     & > a {
       position: relative;
       display: flex;
-      align-items: start;
+      align-items: center;
       gap: var(--ply-space-2);
       min-inline-size: 0;
-      min-block-size: 2rem;
-      padding-block: 0.375rem;
-      /* 開始側は現在地のバー（4px＋2px）を避けて12px。 */
-      padding-inline: var(--ply-space-3) var(--ply-space-2);
+      min-block-size: 2.75rem;
+      padding-block: var(--ply-space-2);
+      padding-inline: var(--ply-space-3);
       border-radius: var(--ply-radius-control);
-      color: var(--ply-muted);
+      color: var(--ply-text);
+      font-weight: 500;
       text-decoration: none;
       transition: background-color var(--ply-duration) ease;
+      /* アイコンは先頭の列に揃え、文字と同じ濃さで少し大きく置く。 */
       & > .icon {
         display: flex;
-        flex: 0 0 auto;
+        flex: none;
+        justify-content: center;
+        inline-size: 1.25rem;
+        color: var(--ply-text);
+        & > .ply-icon {
+          inline-size: 1.125em;
+          block-size: 1.125em;
+        }
       }
       & > span:not(.icon) {
         flex: 1;
         min-inline-size: 0;
       }
+      /* 件数はSectionと同じ、淡い面の色の小さなピル。板の色と分けるため白地にする。 */
       & > small {
+        display: inline-grid;
+        flex: none;
+        place-items: center;
         min-inline-size: 1.25rem;
-        padding-inline: var(--ply-space-1);
-        color: var(--ply-muted);
+        block-size: 1.25rem;
+        padding-inline: 0.375rem;
+        border-radius: var(--ply-radius-pill);
+        background: var(--ply-surface);
+        color: var(--ply-text);
         font-size: var(--ply-small);
-        text-align: center;
+        font-weight: 600;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
       }
       &:hover {
-        background: var(--ply-background);
-        color: var(--ply-text);
+        background: color-mix(in srgb, var(--ply-ink) 6%, var(--ply-background));
       }
-      /* 現在地はインクの太字と開始側の青い2pxの印。面は塗らない（選択中の面と分ける）。 */
+      /* 今いる行は太字と、終わりの側の青いチェック。 */
       &[data-current="true"] {
-        color: var(--ply-text);
         font-weight: 600;
-        &::before {
+        &::after {
           content: "";
-          position: absolute;
-          inset-block: var(--ply-space-2);
-          inset-inline-start: var(--ply-space-1);
-          inline-size: var(--ply-frame-width);
-          border-radius: var(--ply-radius-pill);
+          flex: none;
+          inline-size: 1rem;
+          block-size: 1rem;
           background: var(--ply-link);
+          mask: url("../assets/check.svg") center / contain no-repeat;
         }
       }
     }
-    @media (pointer: coarse) {
-      & > a {
-        min-block-size: 2.75rem;
-        padding-block: var(--ply-space-3);
-        padding-inline: var(--ply-space-4);
+    /* 行の間の線は、名前の書き始めから終わりまで。指を載せた行の上下では消す。 */
+    & > a + a::before {
+      content: "";
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline: var(--ply-space-3);
+      block-size: var(--ply-stroke-width);
+      background: color-mix(in srgb, var(--ply-ink) 8%, var(--ply-background));
+      transition: opacity var(--ply-duration) ease;
+    }
+    & > a + a:has(> .icon)::before {
+      inset-inline-start: calc(var(--ply-space-3) + 1.25rem + var(--ply-space-2));
+    }
+    & > a:hover::before,
+    & > a:hover + a::before {
+      opacity: 0;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-navigation {
+      border: var(--ply-stroke-width) solid CanvasText;
+      & > a[data-current="true"]::after {
+        background: LinkText;
       }
     }
   }

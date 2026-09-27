@@ -15,6 +15,7 @@ export const Pagination = ({
           ) : (
             <span
               data-current={current ? "true" : undefined}
+              data-disabled={!current && text !== "…" ? "true" : undefined}
               aria-current={current ? "page" : undefined}
               aria-disabled={!current && text !== "…" ? "true" : undefined}
             >

@@ -18,7 +18,8 @@ test("Wingは作業面・start・endの読み順を保ち、既定で展開す�
   expect(markup.indexOf('class="start"')).toBeLessThan(markup.indexOf('class="end"'));
   expect(markup).toMatch(/<details class="start" open/);
   expect(markup).not.toMatch(/<details class="end" open/);
-  expect(markup).toContain("<summary>");
+  // 閉じている間はアイコンだけを見せるので、持ち手に名前のツールチップを付ける。読み上げの名前とは重ねない。
+  expect(markup).toContain('<span class="tip ply-overlay" aria-hidden="true">はじめる</span>');
   expect(markup).not.toContain("data-controller");
 });
 

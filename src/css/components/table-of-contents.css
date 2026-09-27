@@ -9,9 +9,11 @@
     display: grid;
     align-content: start;
     gap: var(--ply-space-1);
-    inline-size: min(100%, 36rem);
+    /* 目次の幅は中身に合わせ、今いる項目のチェックを名前の近くに置く。 */
+    inline-size: fit-content;
+    max-inline-size: min(100%, 24rem);
     min-inline-size: 0;
-    /* まとまりの見出しはSectionと同じ形。太字の名前から右へ線を伸ばす。 */
+    /* まとまりの見出しはSectionと同じ形。太字の名前だけで、線は伸ばさない。 */
     & > .heading {
       display: flex;
       align-items: center;
@@ -21,12 +23,6 @@
       font-size: var(--ply-label);
       font-weight: 600;
       line-height: var(--ply-label-leading);
-      &::after {
-        content: "";
-        flex: 1 1 1rem;
-        block-size: var(--ply-stroke-width);
-        background: var(--ply-border);
-      }
     }
     & > ol {
       display: grid;
@@ -35,42 +31,43 @@
       padding: 0;
       list-style: none;
     }
+    /*
+      行はNavigationと同じ作り。高さ36px・角丸8px、指を載せると淡い面。
+      今いる項目もNavigationと同じく、太字と終わりの側の青いチェック。
+    */
     & > ol > li > a {
       position: relative;
       display: grid;
-      grid-template-columns: 2rem minmax(0, 1fr);
+      /* 番号の列は数字の幅に合わせる。一段目は1.25em、二段目（2.1など）は2em。 */
+      grid-template-columns: 1.25em minmax(0, 1fr) auto;
+      align-items: center;
       gap: var(--ply-space-2);
       min-inline-size: 0;
-      padding-block: 0.375rem;
-      padding-inline-start: var(--ply-space-3);
+      min-block-size: var(--ply-control-size);
+      padding-block: var(--ply-space-2);
+      padding-inline: var(--ply-space-3);
+      border-radius: var(--ply-radius-control);
       color: var(--ply-text);
       font-size: var(--ply-label);
       line-height: var(--ply-label-leading);
       text-decoration: none;
       overflow-wrap: anywhere;
+      transition: background-color var(--ply-duration) ease;
       & > .number {
         color: var(--ply-muted);
         font-variant-numeric: tabular-nums;
       }
       &:hover {
-        color: var(--ply-link);
-        & > .title {
-          text-decoration: underline;
-          text-underline-offset: 0.2em;
-        }
+        background: color-mix(in srgb, var(--ply-ink) 6%, var(--ply-surface));
       }
-      /* 現在地はインクの太字と開始側の青い2pxの印。 */
       &[data-state="current"] {
-        color: var(--ply-text);
         font-weight: 600;
-        &::before {
+        &::after {
           content: "";
-          position: absolute;
-          inset-block: var(--ply-space-2);
-          inset-inline-start: var(--ply-space-1);
-          inline-size: var(--ply-frame-width);
-          border-radius: var(--ply-radius-pill);
+          inline-size: 1rem;
+          block-size: 1rem;
           background: var(--ply-link);
+          mask: url("../assets/check.svg") center / contain no-repeat;
         }
       }
       &:focus-visible {
@@ -79,7 +76,9 @@
       }
     }
     & > ol > li[data-level="3"] > a {
-      padding-inline-start: calc(var(--ply-space-3) + var(--ply-space-4));
+      grid-template-columns: 2em minmax(0, 1fr) auto;
+      /* 二段目の番号を、一段目の題名の書き始めに揃える（一段目の文字の大きさで計算する）。 */
+      padding-inline-start: calc(var(--ply-space-3) + var(--ply-label) * 1.25 + var(--ply-space-2));
       font-size: var(--ply-small);
       line-height: var(--ply-small-leading);
     }
@@ -114,6 +113,11 @@
       & > * + * {
         margin-block-start: var(--ply-space-3);
       }
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-table-of-contents > nav > ol > li > a[data-state="current"]::after {
+      background: LinkText;
     }
   }
 }

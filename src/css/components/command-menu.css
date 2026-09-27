@@ -20,6 +20,8 @@
     & > .panel {
       container: ply-command-panel / inline-size;
       position: fixed;
+      /* 出入りの動きはoverlay.cssの共通の定義。上部中央の操作の下から膨らむ。 */
+      transform-origin: top center;
       inset-block: var(--ply-space-4) auto;
       inset-inline: 0;
       inline-size: min(30rem, calc(100% - var(--ply-space-4)));
@@ -35,7 +37,8 @@
       background: var(--ply-surface);
       color: var(--ply-text);
       font-family: var(--ply-control-font-family);
-      font-size: var(--ply-body);
+      /* メニューの文字は操作と同じ段。HEYの項目は15.4px、Fizzyの操作は14.25px。 */
+      font-size: var(--ply-label);
       line-height: 1.5;
       letter-spacing: normal;
       box-shadow: var(--ply-shadow-menu);
@@ -87,17 +90,30 @@
             gap: 0.375rem;
             min-block-size: 4.625rem;
             padding-block: var(--ply-space-2);
-            padding-inline: var(--ply-space-4);
+            padding-inline: var(--ply-space-2);
+            /* 入口の名前を「プロジェク／ト」のように語の途中で折り返さない。 */
+            word-break: auto-phrase;
             border-radius: var(--ply-radius-control);
-            background: color-mix(in srgb, var(--ply-text) 4%, var(--ply-surface));
+            /* 入口は押す物。Buttonと同じかすかな縦の陰影と影で、平らな面から少し浮かせる。 */
+            background: var(--ply-surface);
+            background-image: var(--ply-fill-control);
             color: var(--ply-text);
             font-size: var(--ply-label);
+            font-weight: 500;
             line-height: calc(10 / 7);
             text-align: center;
             text-decoration: none;
-            transition: background var(--ply-duration) ease;
+            box-shadow: var(--ply-shadow-control);
+            transition:
+              background var(--ply-duration) ease,
+              box-shadow var(--ply-duration) ease;
             &:is(a):hover {
-              background: color-mix(in srgb, var(--ply-command-accent) 12%, var(--ply-surface));
+              background: color-mix(in srgb, var(--ply-command-accent) 8%, var(--ply-surface));
+              background-image: var(--ply-fill-control);
+              box-shadow: var(--ply-shadow-control-hover);
+            }
+            &:is(a):active {
+              box-shadow: var(--ply-shadow-control-pressed);
             }
             &:focus-visible {
               outline-offset: -0.125rem;
@@ -167,14 +183,15 @@
                 align-items: center;
                 gap: var(--ply-space-2);
                 min-inline-size: 0;
-                min-block-size: 2rem;
+                min-block-size: var(--ply-control-size);
                 padding-block: var(--ply-space-1);
                 padding-inline: var(--ply-space-2);
                 border-radius: var(--ply-radius-control);
                 color: var(--ply-text);
-                font-size: var(--ply-body);
-                font-weight: 400;
-                line-height: 1.5;
+                font-size: var(--ply-label);
+                /* HEYメニューの項目と同じMedium。アイコンは塗りつぶしの版。 */
+                font-weight: 500;
+                line-height: calc(10 / 7);
                 text-decoration: none;
                 & > .icon {
                   display: flex;
@@ -195,6 +212,7 @@
                   text-overflow: ellipsis;
                   color: var(--ply-muted);
                   font-size: var(--ply-small);
+                  font-weight: 400;
                 }
                 & > .current {
                   display: flex;

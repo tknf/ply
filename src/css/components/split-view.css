@@ -1,12 +1,10 @@
 @layer components {
   /*
-    二つの面は見開きのノート。一枚の紙の真ん中にのど（綴じ目）を置き、
-    のどへ向かって両方のページがわずかに沈む陰影を付けて、紙の厚みと開いた形を見せる。
-    狭い幅では上下のページになり、のどは横になる。
+    二つの面は一枚の紙に並べ、境目には細い罫線を一本だけ引く。
+    狭い幅では上下に積み、罫線は横になる。
   */
   .ply-split-view {
     --splitter-value: 50;
-    --ply-split-fold: color-mix(in srgb, var(--ply-ink) 7%, transparent);
     container: ply-split-view / inline-size;
     min-inline-size: 0;
     & > .panes {
@@ -14,71 +12,43 @@
       grid-template-columns: minmax(0, 1fr);
       min-inline-size: 0;
       overflow: hidden;
-      border: 0;
       border-radius: var(--ply-radius-surface);
       background: var(--ply-surface) var(--ply-fill-paper);
       box-shadow: var(--ply-shadow-paper);
       & > :is(.primary, .secondary) {
         min-inline-size: 0;
-        padding-block: var(--ply-space-4) var(--ply-space-5);
-        padding-inline: var(--ply-space-6);
+        padding-block: var(--ply-space-6);
+        padding-inline: var(--ply-space-8);
         overflow-wrap: anywhere;
       }
-      & > .primary {
-        background: linear-gradient(to top, var(--ply-split-fold), transparent var(--ply-space-6));
-      }
+      /* 縦に積んだ時の境目は持ち手を持たないので、枠線の色の半分ほどの淡さにする。 */
       & > .secondary {
-        border-block-start: var(--ply-stroke-width) solid var(--ply-split-fold);
-        background: linear-gradient(
-          to bottom,
-          var(--ply-split-fold),
-          transparent var(--ply-space-6)
-        );
+        border-block-start: var(--ply-stroke-width) solid
+          color-mix(in srgb, var(--ply-border) 55%, var(--ply-surface));
       }
     }
     @container ply-split-view (inline-size < 32rem) {
       & > .panes > :is(.primary, .secondary) {
-        padding-inline: var(--ply-space-5);
+        padding-block: var(--ply-space-5);
+        padding-inline: var(--ply-space-4);
       }
     }
     @container ply-split-view (inline-size >= 52rem) {
       & > .panes {
         grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.5fr);
-        & > .primary {
-          background: linear-gradient(
-            to left,
-            var(--ply-split-fold),
-            transparent var(--ply-space-8)
-          );
-          &:dir(rtl) {
-            background: linear-gradient(
-              to right,
-              var(--ply-split-fold),
-              transparent var(--ply-space-8)
-            );
-          }
-        }
         & > .secondary {
           border-block-start: 0;
-          border-inline-start: var(--ply-stroke-width) solid var(--ply-split-fold);
-          background: linear-gradient(
-            to right,
-            var(--ply-split-fold),
-            transparent var(--ply-space-8)
-          );
-          &:dir(rtl) {
-            background: linear-gradient(
-              to left,
-              var(--ply-split-fold),
-              transparent var(--ply-space-8)
-            );
-          }
+          border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
         }
       }
       &[data-layout="reader"] > .panes {
         grid-template-columns: minmax(18rem, 0.6fr) minmax(0, 1fr);
       }
-      /* 幅を変えられる見開き。ページは一続きのまま、持ち手をのどの上に重ねる。 */
+      /* 幅を変えない時の境目は、持ち手の目印にならないので、縦に積んだ時と同じ淡い色にする。 */
+      &:not([data-resizable="true"][data-state]) > .panes > .secondary {
+        border-inline-start-color: color-mix(in srgb, var(--ply-border) 55%, var(--ply-surface));
+      }
+      /* 幅を変えられる時は、境目の罫線の上に持ち手を重ねる。 */
       &[data-resizable="true"][data-state] > .panes {
         position: relative;
         grid-template-columns:
@@ -90,8 +60,8 @@
       }
     }
     /*
-      持ち手は、のどに挟んだしおり紐（スピン）。紙の上端から垂れた紐をつまんで、のどを左右へ動かす。
-      のど全体をつかめるように、持ち手は見開きの上下いっぱいに重ねる。
+      持ち手は、境目の罫線の中ほどに置いた控えめなつまみ。
+      境目全体をつかめるように、持ち手は面の上下いっぱいに重ねる。
     */
     & > .panes > .handle {
       display: none;
@@ -116,51 +86,42 @@
       }
       & > .grip {
         position: absolute;
-        inset-block-start: 0;
-        inset-inline-start: calc(50% - 0.375rem);
-        inline-size: 0.75rem;
-        block-size: 3.25rem;
-        filter: drop-shadow(0 0.125rem 0.125rem rgb(36 57 70 / 22%));
-        transition: block-size var(--ply-duration) ease;
-        &::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            to right,
-            color-mix(in srgb, var(--ply-coral) 80%, black),
-            color-mix(in srgb, var(--ply-coral) 85%, white) 45%,
-            var(--ply-coral) 70%,
-            color-mix(in srgb, var(--ply-coral) 80%, black)
-          );
-          clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
-        }
+        inset-block-start: calc(50% - 1.25rem);
+        inset-inline-start: calc(50% - 0.25rem);
+        inline-size: 0.5rem;
+        block-size: 2.5rem;
+        border-radius: var(--ply-radius-pill);
+        background: var(--ply-surface) var(--ply-fill-control);
+        box-shadow: var(--ply-shadow-control);
+        transition: box-shadow var(--ply-duration) ease;
       }
       &:hover > .grip {
-        block-size: 3.75rem;
+        box-shadow: var(--ply-shadow-control-hover);
       }
       &:hover::before,
       &[data-state="dragging"]::before,
       &:focus-visible::before {
         background: var(--ply-link);
       }
-      &[data-state="dragging"] > .grip,
+      /* つかんでいる間は、押した物と同じく影が内側へ移る。 */
+      &[data-state="dragging"] > .grip {
+        box-shadow: var(--ply-shadow-control-pressed);
+      }
       &:focus-visible > .grip {
-        block-size: 3.75rem;
-        filter: drop-shadow(0 0 0 var(--ply-link)) drop-shadow(0 0 0.125rem var(--ply-link));
+        outline: var(--ply-frame-width) solid var(--ply-link);
+        outline-offset: var(--ply-stroke-width);
       }
     }
   }
   @media (forced-colors: active) {
     .ply-split-view > .panes {
       border: var(--ply-stroke-width) solid CanvasText;
-    }
-    .ply-split-view > .panes,
-    .ply-split-view > .panes > .handle > .grip {
       box-shadow: none;
     }
-    .ply-split-view > .panes > :is(.primary, .secondary) {
+    .ply-split-view > .panes > .handle > .grip {
+      border: var(--ply-stroke-width) solid CanvasText;
       background: Canvas;
+      box-shadow: none;
     }
   }
 }

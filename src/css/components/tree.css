@@ -6,9 +6,13 @@
     list-style: none;
   }
 
+  /*
+    行はNavigationと同じ作り。高さ36px・角丸8px、指を載せると淡い面。選んだ行は帯で塗らず、太字と青い文字。
+    階層はガイド線を引かず、字下げだけで示す。開閉の印は24pxにし、子の行の印を親の名前の書き始めの下に置く。
+  */
   .ply-tree {
     display: grid;
-    gap: var(--ply-space-1);
+    gap: 0;
     min-inline-size: 0;
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
@@ -26,27 +30,33 @@
   .ply-tree li > .row {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
-    align-items: start;
+    align-items: center;
     gap: var(--ply-space-1);
     min-inline-size: 0;
+    min-block-size: var(--ply-control-size);
+    padding-inline-end: var(--ply-space-3);
     border-radius: var(--ply-radius-control);
+    transition: background-color var(--ply-duration) ease;
+    &:hover {
+      background: color-mix(in srgb, var(--ply-ink) 6%, var(--ply-surface));
+    }
     & > :is(a, .label) {
       min-inline-size: 0;
-      padding-block: 0.375rem;
+      padding-block: var(--ply-space-2);
       color: var(--ply-text);
       overflow-wrap: anywhere;
     }
     & > a {
       text-decoration: none;
     }
-    & > a:hover {
-      text-decoration: underline;
-    }
     & > .spacer {
-      inline-size: var(--ply-button-size);
+      inline-size: 1.5rem;
     }
     & > .toggle {
       padding-inline: 0;
+      @media (pointer: fine) {
+        min-inline-size: 1.5rem;
+      }
       & > .ply-icon {
         transition: rotate var(--ply-duration) ease;
       }
@@ -71,7 +81,10 @@
 
   .ply-tree li[data-state="selected"] > .row,
   .ply-tree li[data-state="active"] > .row {
-    background: var(--ply-info-soft);
+    font-weight: 600;
+    & > :is(a, .label) {
+      color: var(--ply-link);
+    }
   }
 
   .ply-tree li[data-state="disabled"] > .row {
@@ -81,9 +94,7 @@
 
   .ply-tree li > ul {
     display: grid;
-    gap: var(--ply-space-1);
-    margin-inline-start: var(--ply-space-3);
-    padding-inline-start: var(--ply-space-2);
-    border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
+    gap: 0;
+    padding-inline-start: calc(1.5rem + var(--ply-space-1));
   }
 }

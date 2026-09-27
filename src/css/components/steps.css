@@ -13,15 +13,29 @@
       font-size: var(--ply-label);
       line-height: var(--ply-label-leading);
     }
+    /* 番号の円（24px）の中心を、題名の一行目（行の高さ）の中心に合わせる。 */
     & > li > .number {
       display: grid;
       place-items: center;
       inline-size: 1.5rem;
       block-size: 1.5rem;
+      margin-block-start: calc((1lh - 1.5rem) / 2);
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: 50%;
       color: var(--ply-muted);
       font-size: var(--ply-small);
+    }
+    /* 戻れる段階の題名は普段は本文の色と淡い下線にし、指を載せた時だけ青くする。 */
+    & > li > span > a {
+      color: inherit;
+      text-decoration-color: var(--ply-border);
+      transition:
+        color var(--ply-duration) ease,
+        text-decoration-color var(--ply-duration) ease;
+      &:hover {
+        color: var(--ply-link);
+        text-decoration-color: currentColor;
+      }
     }
     & > li > span > small {
       display: block;
@@ -44,7 +58,7 @@
     & > li[data-state="current"] > span:last-child {
       font-weight: 600;
     }
-    /* これからの段階はまだ確定していないので、番号の円をミシン目にする。 */
+    /* これからの段階はまだ確定していないので、番号の円を破線にする。 */
     & > li:not([data-state]) > .number,
     & > li[data-state="upcoming"] > .number {
       border-style: dashed;

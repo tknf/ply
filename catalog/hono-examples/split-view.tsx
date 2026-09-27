@@ -65,13 +65,13 @@ export default () => (
           secondary={
             <Section title="カテゴリ案をまとめました">
               <p>
-                5つのカテゴリに整理しました。実際の記事を入れて試してみませんか。一覧で選んだ連絡は、右のページで開きます。
+                5つのカテゴリに整理しました。実際の記事を入れて試してみませんか。一覧で選んだ連絡は、右の面で開きます。
               </p>
             </Section>
           }
         />
       </Disclosure>
-      <Disclosure summary="幅を変えない見開き：作業と、その値の一覧">
+      <Disclosure summary="幅を変えない：作業と、その値の一覧">
         <SplitView
           layout="inspector"
           primary={draft}
@@ -86,7 +86,7 @@ export default () => (
           }
         />
       </Disclosure>
-      <Disclosure summary="長い本文：ページの高さは長い側にそろう">
+      <Disclosure summary="長い本文：面の高さは長い側にそろう">
         <SplitView
           layout="inspector"
           resizable
@@ -107,7 +107,7 @@ export default () => (
           secondary={status}
         />
       </Disclosure>
-      <Disclosure summary="狭い場所：上下のページになる">
+      <Disclosure summary="狭い場所：上下に積み、境目の罫線は横になる">
         <div style="max-inline-size: 28rem">
           <SplitView layout="inspector" resizable primary={draft} secondary={status} />
         </div>

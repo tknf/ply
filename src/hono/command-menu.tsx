@@ -29,7 +29,7 @@ const Destination = ({ item }: { item: CommandLink }) => {
   const content = (
     <>
       <span class="icon">
-        <Icon name={item.icon ?? "arrow"} />
+        <Icon name={item.icon ?? "arrow"} fill />
       </span>
       <span class="name">{item.label}</span>
       {item.description && <span class="context">{item.description}</span>}
@@ -80,7 +80,7 @@ export const CommandMenu = ({
         shortcut === "mod+k" ? "Control+k Meta+k" : shortcut === "shift+j" ? "Shift+j" : undefined
       }
     >
-      <Icon name={icon} />
+      <Icon name={icon} fill />
       {label}
       <Icon name="caret" />
     </Button>

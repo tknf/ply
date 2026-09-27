@@ -1,7 +1,7 @@
 export type DividerProps = {
   label?: string;
-  /** solidは確定した区切り、dashedはミシン目（ここから先はまだ確定していない）、wavyはここから新しい。 */
-  line?: "solid" | "dashed" | "wavy";
+  /** solidは確定した区切り、dashedは破線（ここから先はまだ確定していない）。 */
+  line?: "solid" | "dashed";
 };
 
 export const Divider = ({ label, line = "solid" }: DividerProps) => {
