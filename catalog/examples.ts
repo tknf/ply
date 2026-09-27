@@ -52,9 +52,10 @@ export const examples = [
   {
     id: "surface",
     name: "Surface",
-    description: "中央の白い作業面。外側の配置は親のContainerが持ちます。",
+    description:
+      "中央の作業面。仕事の中身を一枚の白い面にまとめます。AppShellの作業面と同じ見た目で、AppShellを使わない画面で使います。",
     usage:
-      "ContextBarはcontextに渡し、本文には一律の余白を設けます。documentレイアウトでは本文幅を制限します。kind=panelは補助面、tone=warm・coolで設定やプレビューの面を区別します。",
+      "パンくずや補助操作（ContextBar）はcontextに渡し、本文には一律の余白を設けます。documentレイアウトでは本文を読みやすい行長に収めます。一件の紙はCard、役割の色の面はNoticeを使い、作業面の中に作業面を重ねません。",
   },
   {
     id: "context-bar",
@@ -75,7 +76,7 @@ export const examples = [
     name: "Button",
     description: "操作の主従、無効、処理中を表します。",
     usage:
-      "通常・compactは文字0.875rem・行高20/14、largeは文字1rem・行高1.5です。画面幅で文字サイズは変わりません。通常・compactの高さは文字の16/7倍、largeは文字の2.5倍です。左右余白は通常1em・compact0.5em・large1.1em。通常の高さは約2remです。上のHono例は通常・compact・largeの順です。data-variantはprimary・secondary・danger・link。Iconは文字の前後に配置でき、components/icon.cssと共通SVGスプライトも読み込みます。アイコンだけの操作はdata-icon-only=trueで正方形にし、aria-labelで操作名を付けます。titleはマウス向けの補助で、aria-labelの代わりにはしません。処理中はアイコンを含む内容を処理中文言に置き換えます。data-busy=true、disabled、aria-busy=trueを併記します。移動にはhrefを持つaを使います。",
+      "通常・compactは文字0.875rem・行高20/14、largeは文字1rem・行高1.5です。画面幅で文字サイズは変わりません。通常・compactの高さは文字の18/7倍（約2.25rem）、largeは文字の2.5倍です。左右余白は通常1.25em・compact0.875em・large1.375em。上のHono例は通常・compact・largeの順です。data-variantはprimary（青の塗り）・secondary（白の縦の陰影）・danger（赤の塗り）・link。影の付き方と、指を載せると影が広がり押すと内側へ沈む変化は、primary・secondary・dangerで同じです。Iconは文字の前後に配置でき、components/icon.cssと共通SVGスプライトも読み込みます。アイコンだけの操作はdata-icon-only=trueで正方形にし、aria-labelで操作名を付けます。titleはマウス向けの補助で、aria-labelの代わりにはしません。処理中はアイコンを含む内容を処理中文言に置き換えます。data-busy=true、disabled、aria-busy=trueを併記します。移動にはhrefを持つaを使います。",
   },
   {
     id: "field",
@@ -171,7 +172,7 @@ export const examples = [
     name: "Disclosure",
     description: "補足を標準HTMLで開閉します。",
     usage:
-      "標準details/summaryで開閉します。見出しは1rem/1.5rem、本文は0.875rem/1.375rem。1.5remの開閉マークから0.5rem空け、見出し・説明・本文の左端を揃えます。開いた本文の縦線で所属を示し、DisclosureGroupでは項目を0.25rem間隔で並べます。一つだけ開く場合は同じnameを指定してください。controllerの登録は不要です。CSSはdisclosure.cssと、集合を使う場合のdisclosure-group.css。",
+      "標準details/summaryで開閉します。見出しは1rem/1.5rem、本文は0.875rem/1.375rem。1.5remの開閉の矢印から0.5rem空け、見出し・説明・本文の左端を揃えます。枠や縦線は引かず、入れ子は字下げで示します。開く時は高さが伸びながら中身が現れ、閉じる時は縮みます（動きを減らす設定では動きません）。DisclosureGroupでは項目を0.25rem間隔で並べます。一つだけ開く場合は同じnameを指定してください。controllerの登録は不要です。CSSはdisclosure.cssと、集合を使う場合のdisclosure-group.css。",
   },
   {
     id: "progress",

@@ -289,7 +289,7 @@ export const extendedExamples = [
       />
     ),
     usage:
-      "標準checkboxとして操作できます。完了の保存はフォーム送信または利用側controllerで行います。headingを渡すと、開閉できる外側の見出しに未完了の数と進み具合を添えます（TaskListControllerをtask-listとして登録すると、チェックに合わせて数え直します）。titleは紙の中に書く一覧の名前、addは最後の行に置く書き足す欄で、追加は利用側のフォームで扱います。",
+      "標準checkboxとして操作できます。完了の保存はフォーム送信または利用側controllerで行います。headingを渡すと、開閉できる外側の見出しに未完了の数と進み具合を添えます（TaskListControllerをtask-listとして登録すると、チェックに合わせて数え直します）。titleは一覧の始まりに置く名前、addは最後の行に置く書き足す欄で、追加は利用側のフォームで扱います。",
   },
   {
     id: "calendar",
@@ -380,17 +380,25 @@ export const extendedExamples = [
         <button type="button" class="ply-button" popovertarget="sample-toast">
           結果表示を試す
         </button>
-        <Toast id="sample-toast">表示を更新しました。</Toast>
+        <Toast id="sample-toast" tone="success">
+          表示を更新しました。
+        </Toast>
         <button type="button" class="ply-button" popovertarget="sample-toast-timed">
           時間で閉じる通知
         </button>
         <Toast id="sample-toast-timed" duration={5000}>
           操作が完了しました。
         </Toast>
+        <button type="button" class="ply-button" popovertarget="sample-toast-danger">
+          失敗の知らせ
+        </button>
+        <Toast id="sample-toast-danger" tone="danger" live="assertive">
+          保存できませんでした。
+        </Toast>
       </div>
     ),
     usage:
-      "ToastControllerをtoastとして登録します。初期値は保持し、durationを指定すると時間で閉じます。重要なエラーは入力付近やErrorSummaryに残します。",
+      "ToastControllerをtoastとして登録します。toneで知らせの種類（info・success・warning・danger、初期値はinfo）を選び、面をその色で塗ります。初期値は保持し、durationを指定すると時間で閉じます。失敗はlive=assertiveにし、重要なエラーは入力付近やErrorSummaryにも残します。",
   },
   {
     id: "popover",
@@ -450,7 +458,7 @@ export const extendedExamples = [
       />
     ),
     usage:
-      "標準form・Textarea・Buttonを使います。actionとmethodを利用側で指定し、attachmentsへFileInputや選択済みファイルを渡せます。busyは送信ボタンの重複操作を止め、errorは本文に関連付けます。送信・下書き保存は利用側が実装します。本文は書いた分だけ伸びます（field-sizingに対応するブラウザ）。toへ宛先、statusへ下書きの保存などの状態を渡すと、便箋の頭に並べます。editorへリッチテキストの編集部品（ProseMirror・Tiptap・Lexxyなど）やcontenteditableを渡すと、本文の欄と差し替えます。中の書く場所がどの深さにあっても、便箋の罫線と行の高さ、紙全体の輪をかけ、段落や箇条の上下の余白を0にして罫線にそろえます。送信する値の受け渡しは編集部品の側で行います。",
+      "標準form・Textarea・Buttonを使います。actionとmethodを利用側で指定し、attachmentsへFileInputや選択済みファイルを渡せます。busyは送信ボタンの重複操作を止め、errorは本文に関連付けます。送信・下書き保存は利用側が実装します。本文は書いた分だけ伸びます（field-sizingに対応するブラウザ）。toへ宛先、statusへ下書きの保存などの状態を渡すと、題名の行に並べます。editorへリッチテキストの編集部品（ProseMirror・Tiptap・Lexxyなど）やcontenteditableを渡すと、本文の欄と差し替えます。中の書く場所がどの深さにあっても、本文と同じ文字と行の高さ、紙全体の輪をかけ、段落や箇条の間を一定の間隔にそろえます。送信する値の受け渡しは編集部品の側で行います。",
   },
   {
     id: "picker",
