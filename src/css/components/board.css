@@ -16,7 +16,8 @@
     gap: var(--ply-space-4);
     min-inline-size: 0;
     overflow: auto;
-    padding-block: var(--ply-space-2);
+    /* スクロール領域の下端でカードの影（--ply-shadow-paper）が切れないよう、影がほぼ見えなくなるまで余白を取る。 */
+    padding-block: var(--ply-space-2) var(--ply-space-8);
     overscroll-behavior-inline: contain;
     color: var(--ply-text);
     font-size: var(--ply-label);
@@ -94,6 +95,18 @@
           }
         }
       }
+      /*
+        開閉のボタン（36px）がある見出しは上下の余白を0にし、ほかの列の見出し（文字の20pxと上下8pxずつの余白）と高さを揃える。
+        タッチ操作ではボタンが44pxになるので、どの列の見出しも44pxにする。
+      */
+      &:not([data-collapsed="true"]) > .title:has(> .toggle:not([hidden])) {
+        padding-block: 0;
+      }
+      @media (pointer: coarse) {
+        & > .title {
+          min-block-size: 2.75rem;
+        }
+      }
       & > .empty {
         display: none;
         position: relative;
@@ -138,7 +151,8 @@
       開ける列はピルのどこを押しても開き、ホバーすると項目と同じく少し持ち上がる。
     */
     & > section[data-collapsed="true"] {
-      min-inline-size: 0;
+      /* 列が収まらない時もピルの幅を確保する。0にすると、autoのトラックが0まで縮み、ピルがはみ出す。 */
+      min-inline-size: min-content;
       padding-block: 0 var(--ply-space-2);
       padding-inline: 0;
       & > .title {

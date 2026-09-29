@@ -10,11 +10,12 @@
     --ply-wing-tuck: var(--ply-radius-surface);
     --ply-wing-inset: var(--ply-space-6);
     /*
-      開閉の動きはDialog・Popoverと同じ時間と加速にする（overlay.cssの定義）。閉じる時は短くease-inで、
-      開く時（[open]で上書き）は少し長く、滑らかに減速して止まる。中身の出入りは短いease-outで薄れる。
+      開閉の時間はDialog・Popoverと同じにする（overlay.cssの定義）。閉じる時は短く、開く時（[open]で上書き）は少し長くする。
+      Dialog・Popoverは閉じる時にease-inで加速して消えるが、Wingのパネルは閉じても作業面の縁に見えたまま止まる。
+      加速したまま止まると最後に跳んで見えるので、閉じる時も減速して止める。中身の出入りは短いease-outで薄れる。
     */
     --ply-wing-duration: var(--ply-duration-out);
-    --ply-wing-ease: ease-in;
+    --ply-wing-ease: ease;
     container: ply-wing / inline-size;
     min-inline-size: 0;
     /* 狭い配置で、閉じた高さ0から内容の高さ（auto）へ伸び縮みさせる。 */
@@ -133,7 +134,7 @@
       }
       & > :is(.start, .end)[open] {
         --ply-wing-duration: var(--ply-duration-pop);
-        --ply-wing-ease: var(--ply-ease-slide);
+        --ply-wing-ease: ease;
         &::details-content {
           block-size: auto;
         }
@@ -182,6 +183,13 @@
           overflow: visible;
           inline-size: calc(0.625rem + var(--ply-wing-tuck));
           transition: inline-size var(--ply-wing-duration) var(--ply-wing-ease);
+          /*
+            開く時はDialog・Popoverと同じく、少し行き過ぎてから戻る。列の幅は固定で作業面は動かないので、揺れるのはパネルだけ。
+            狭い配置では高さが行き過ぎて下の作業面まで揺れるので、この配置の時だけにする。
+          */
+          &[open] {
+            --ply-wing-ease: var(--ply-ease-pop);
+          }
           &:not([open]):has(> summary:is(:hover, :focus-visible)) {
             inline-size: calc(1.125rem + var(--ply-wing-tuck));
           }

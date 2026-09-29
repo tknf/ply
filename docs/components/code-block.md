@@ -214,7 +214,7 @@ export default async () => {
       </div>
     </section>
     <aside
-      id="code-copy-:r2b:-done"
+      id="code-copy-:r2d:-done"
       class="ply-toast ply-overlay"
       popover="manual"
       role="status"
@@ -240,7 +240,7 @@ export default async () => {
           </div>
           <span class="close"
             ><button
-              popovertarget="code-copy-:r2b:-done"
+              popovertarget="code-copy-:r2d:-done"
               popovertargetaction="hide"
               data-icon-only="true"
               aria-label="コピー結果の通知を閉じる"
@@ -264,7 +264,7 @@ export default async () => {
       <div class="body"></div>
     </aside>
     <aside
-      id="code-copy-:r2b:-failed"
+      id="code-copy-:r2d:-failed"
       class="ply-toast ply-overlay"
       popover="manual"
       role="alert"
@@ -290,7 +290,7 @@ export default async () => {
           </div>
           <span class="close"
             ><button
-              popovertarget="code-copy-:r2b:-failed"
+              popovertarget="code-copy-:r2d:-failed"
               popovertargetaction="hide"
               data-icon-only="true"
               aria-label="コピー結果の通知を閉じる"
@@ -350,7 +350,7 @@ export default async () => {
       </div>
     </section>
     <aside
-      id="code-copy-:r2c:-done"
+      id="code-copy-:r2e:-done"
       class="ply-toast ply-overlay"
       popover="manual"
       role="status"
@@ -376,7 +376,7 @@ export default async () => {
           </div>
           <span class="close"
             ><button
-              popovertarget="code-copy-:r2c:-done"
+              popovertarget="code-copy-:r2e:-done"
               popovertargetaction="hide"
               data-icon-only="true"
               aria-label="コピー結果の通知を閉じる"
@@ -400,7 +400,7 @@ export default async () => {
       <div class="body"></div>
     </aside>
     <aside
-      id="code-copy-:r2c:-failed"
+      id="code-copy-:r2e:-failed"
       class="ply-toast ply-overlay"
       popover="manual"
       role="alert"
@@ -426,7 +426,7 @@ export default async () => {
           </div>
           <span class="close"
             ><button
-              popovertarget="code-copy-:r2c:-failed"
+              popovertarget="code-copy-:r2e:-failed"
               popovertargetaction="hide"
               data-icon-only="true"
               aria-label="コピー結果の通知を閉じる"
@@ -494,7 +494,7 @@ export default async () => {
             </div>
           </section>
           <aside
-            id="code-copy-:r2d:-done"
+            id="code-copy-:r2f:-done"
             class="ply-toast ply-overlay"
             popover="manual"
             role="status"
@@ -520,7 +520,7 @@ export default async () => {
                 </div>
                 <span class="close"
                   ><button
-                    popovertarget="code-copy-:r2d:-done"
+                    popovertarget="code-copy-:r2f:-done"
                     popovertargetaction="hide"
                     data-icon-only="true"
                     aria-label="コピー結果の通知を閉じる"
@@ -544,7 +544,7 @@ export default async () => {
             <div class="body"></div>
           </aside>
           <aside
-            id="code-copy-:r2d:-failed"
+            id="code-copy-:r2f:-failed"
             class="ply-toast ply-overlay"
             popover="manual"
             role="alert"
@@ -570,7 +570,7 @@ export default async () => {
                 </div>
                 <span class="close"
                   ><button
-                    popovertarget="code-copy-:r2d:-failed"
+                    popovertarget="code-copy-:r2f:-failed"
                     popovertargetaction="hide"
                     data-icon-only="true"
                     aria-label="コピー結果の通知を閉じる"
@@ -652,7 +652,7 @@ export default async () => {
             </div>
           </section>
           <aside
-            id="code-copy-:r2e:-done"
+            id="code-copy-:r2g:-done"
             class="ply-toast ply-overlay"
             popover="manual"
             role="status"
@@ -678,7 +678,7 @@ export default async () => {
                 </div>
                 <span class="close"
                   ><button
-                    popovertarget="code-copy-:r2e:-done"
+                    popovertarget="code-copy-:r2g:-done"
                     popovertargetaction="hide"
                     data-icon-only="true"
                     aria-label="コピー結果の通知を閉じる"
@@ -702,7 +702,7 @@ export default async () => {
             <div class="body"></div>
           </aside>
           <aside
-            id="code-copy-:r2e:-failed"
+            id="code-copy-:r2g:-failed"
             class="ply-toast ply-overlay"
             popover="manual"
             role="alert"
@@ -728,7 +728,7 @@ export default async () => {
                 </div>
                 <span class="close"
                   ><button
-                    popovertarget="code-copy-:r2e:-failed"
+                    popovertarget="code-copy-:r2g:-failed"
                     popovertargetaction="hide"
                     data-icon-only="true"
                     aria-label="コピー結果の通知を閉じる"
@@ -952,7 +952,7 @@ export default async () => {
               </div>
             </section>
             <aside
-              id="code-copy-:r2h:-done"
+              id="code-copy-:r2j:-done"
               class="ply-toast ply-overlay"
               popover="manual"
               role="status"
@@ -978,7 +978,7 @@ export default async () => {
                   </div>
                   <span class="close"
                     ><button
-                      popovertarget="code-copy-:r2h:-done"
+                      popovertarget="code-copy-:r2j:-done"
                       popovertargetaction="hide"
                       data-icon-only="true"
                       aria-label="コピー結果の通知を閉じる"
@@ -1002,7 +1002,7 @@ export default async () => {
               <div class="body"></div>
             </aside>
             <aside
-              id="code-copy-:r2h:-failed"
+              id="code-copy-:r2j:-failed"
               class="ply-toast ply-overlay"
               popover="manual"
               role="alert"
@@ -1028,7 +1028,7 @@ export default async () => {
                   </div>
                   <span class="close"
                     ><button
-                      popovertarget="code-copy-:r2h:-failed"
+                      popovertarget="code-copy-:r2j:-failed"
                       popovertargetaction="hide"
                       data-icon-only="true"
                       aria-label="コピー結果の通知を閉じる"

@@ -15,6 +15,11 @@ export type AppShellProps = PropsWithChildren<
      * 省略するとWingを使わず、作業面だけを置く。
      */
     wings?: Pick<WingProps, "start" | "end" | "storageKey" | "savedState">;
+    /**
+     * 作業面の幅の上限。compactは46rem（本文の行の長さ--ply-measureに左右の余白を足した幅）、defaultは68rem（--ply-page）、wideは112rem。
+     * 設定画面など入力が中心の画面はcompact、Boardや年の予定など横に広い画面はwideにする。
+     */
+    size?: "compact" | "default" | "wide";
   }
 >;
 
@@ -24,13 +29,14 @@ export const AppShell = ({
   home,
   account,
   wings,
+  size = "default",
   children,
   class: className,
   ...attributes
 }: AppShellProps) => {
   const workspace = <div class="workspace">{children}</div>;
   return (
-    <div {...attributes} class={classes("ply-app-shell", className)}>
+    <div {...attributes} class={classes("ply-app-shell", className)} data-size={size}>
       <header class="bar">
         <div class="start">{home}</div>
         <nav class="commands" aria-label="共通コマンド">

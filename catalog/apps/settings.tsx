@@ -19,7 +19,7 @@ import {
 import { AppFrame } from "./frame";
 
 export const SettingsScreen = () => (
-  <AppFrame current="settings">
+  <AppFrame current="settings" size="compact">
     <PageHeader
       title="設定"
       icon={<Icon name="grid" />}

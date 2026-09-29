@@ -4,16 +4,33 @@
     display: grid;
     justify-items: center;
     align-content: start;
-    gap: var(--ply-space-2);
+    /* バーの下のグラデーション（.bar::after）と同じ高さにし、スクロールしていない時にグラデーションが作業面にかからないようにする。 */
+    gap: var(--ply-space-6);
     min-inline-size: 0;
     min-block-size: 100dvh;
+    /*
+      Wingが開く時に行き過ぎたパネルや影が画面の外へ出て、一瞬だけ横スクロールが出ないよう、左右を画面の幅で切る。
+      clipはスクロールコンテナを作らないので、上端に留まるバー（sticky）はそのまま動く。
+    */
+    overflow-x: clip;
     padding-block-end: var(--ply-space-8);
     background: var(--ply-surface);
     color: var(--ply-text);
+    /* 作業面の幅の上限。compactは本文の幅を読みやすい行の長さ（--ply-measure）にそろえる。 */
+    &[data-size="compact"] {
+      --ply-page: calc(var(--ply-measure) + 2 * var(--ply-space-12));
+    }
+    &[data-size="wide"] {
+      --ply-page: 112rem;
+    }
     & > .bar {
       position: sticky;
       inset-block-start: 0;
-      z-index: 1;
+      /*
+        作業面の中の要素（ButtonGroup、カレンダー、Wingの作業面など）より上、メニューより下に重ねる。
+        作業面はスタッキングコンテキストを作らないため、1のままだとスクロール時に作業面の中の要素がバーの上に表示される。
+      */
+      z-index: calc(var(--ply-z-menu) - 1);
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
       align-items: center;
@@ -23,6 +40,19 @@
       padding-block: var(--ply-space-3);
       padding-inline: var(--ply-space-4);
       background: var(--ply-surface);
+      /*
+        バーの背景で作業面の影（--ply-shadow-sheet）が直線的に途切れないよう、バーの下に背景色から透明へのグラデーションを置く。
+        スクロールしていない時はバーと作業面の間に収まり、スクロール時はバーの下に入った内容を徐々に隠す。
+      */
+      &::after {
+        content: "";
+        position: absolute;
+        inset-inline: 0;
+        inset-block-start: 100%;
+        block-size: var(--ply-space-6);
+        background: linear-gradient(var(--ply-surface), transparent);
+        pointer-events: none;
+      }
       /* 左右の内容幅に影響されず、共通コマンドを画面の中央へ置く。 */
       & > :is(.start, .end) {
         display: flex;
@@ -54,9 +84,50 @@
       gap: var(--ply-space-6);
       inline-size: min(calc(100% - var(--ply-space-8)), var(--ply-page));
       min-inline-size: 0;
-      padding-block: var(--ply-space-8) var(--ply-space-6);
-      padding-inline: var(--ply-space-12);
+      /* 左右の余白は変数にし、横スクロールするコンテンツを作業面の端まで広げる時にも使う。 */
+      --ply-workspace-gutter: var(--ply-space-12);
+      padding-block: calc(var(--ply-space-12) + var(--ply-space-2));
+      padding-inline: var(--ply-workspace-gutter);
       /* 白い面・角丸・影は、Surfaceと共通の作業面の定義（layout.css）が持つ。 */
+      /*
+        先頭のContextBarはSurfaceと同じく、見出しと同じ左右の位置に置き、下の区切り線を消す。
+        上の余白を詰めてパンくずを作業面の上端に寄せ、見出しはパンくずのすぐ下から始める。
+        バーの高さは操作の高さに揃え、操作の有無で見出しの位置を変えない。
+      */
+      &:has(> .ply-context-bar:first-child) {
+        padding-block-start: var(--ply-space-8);
+      }
+      & > .ply-context-bar:first-child {
+        min-block-size: var(--ply-control-size);
+        padding-block: 0;
+        padding-inline: 0;
+        border-block-end: 0;
+      }
+      /*
+        枠や背景のない横スクロールのコンテンツは、作業面の左右の余白の分だけ外側へ広げ、作業面の端までスクロールできるようにする。
+        同じ幅を内側の余白に取るため、スクロールしていない時の表示位置は変わらない。枠や背景があるもの（CodeBlock・ChartFrame）は対象にしない。
+      */
+      & :is(.ply-board, .ply-table, .ply-grid, .ply-calendar > .viewport) {
+        margin-inline: calc(-1 * var(--ply-workspace-gutter));
+        padding-inline: var(--ply-workspace-gutter);
+        scroll-padding-inline: var(--ply-workspace-gutter);
+      }
+      /* 段組みの中や、余白・枠のあるコンポーネントの中では、隣の列や枠の外にはみ出すため広げない。 */
+      &
+        :is(
+          .ply-split,
+          .ply-workspace,
+          .ply-split-view,
+          .ply-card,
+          .ply-layer-card,
+          .ply-notice,
+          .ply-chart-frame,
+          .ply-surface,
+          dialog,
+          [popover]
+        ) {
+        --ply-workspace-gutter: 0rem;
+      }
     }
     /* Wingの左右列を含めた幅を使う。作業面の最大幅はWingの中央列が所有する。 */
     & > .ply-wing {
@@ -72,8 +143,11 @@
       }
       & > .workspace,
       & > .ply-wing > .layout > .main > .workspace {
-        padding-block: var(--ply-space-6);
-        padding-inline: var(--ply-space-4);
+        --ply-workspace-gutter: var(--ply-space-4);
+        padding-block: var(--ply-space-8);
+        &:has(> .ply-context-bar:first-child) {
+          padding-block-start: var(--ply-space-6);
+        }
       }
       & > .ply-wing {
         padding-inline: var(--ply-space-2);

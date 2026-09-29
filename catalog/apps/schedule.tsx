@@ -147,7 +147,7 @@ export const ScheduleScreen = ({
     weeks: makeCalendarWeeks(year, index + 1),
   }));
   return (
-    <AppFrame current="schedule" wide={view === "year"}>
+    <AppFrame current="schedule" size={view === "year" ? "wide" : "default"}>
       <PageHeader
         title="予定"
         icon={<Icon name="calendar" />}

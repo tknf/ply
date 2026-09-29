@@ -17,6 +17,10 @@
       color: var(--ply-link);
       font-size: 1.75rem;
     }
+    /* 補足文があると見出し部分が縦に長くなるため、アイコンと操作は見出しの1行目の上端に揃える。 */
+    &:not([data-align="center"]):has(> .heading > p) > :is(.icon, .actions) {
+      align-self: start;
+    }
     & > .heading {
       flex: 1 1 14rem;
       min-inline-size: 0;

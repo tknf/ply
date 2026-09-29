@@ -157,7 +157,7 @@ const JobContent = ({ job }: { job: Job }) => {
 
 /** プロジェクト。公開までの数値、ドラッグで移動できるボード、今週のチェック、会話、記録をタブで切り替える。 */
 export const ProjectScreen = () => (
-  <AppFrame current="project">
+  <AppFrame current="project" size="wide">
     <div class="ply-stack" data-controller="project-demo">
       <PageHeader
         title="ヘルプセンターのリニューアル"

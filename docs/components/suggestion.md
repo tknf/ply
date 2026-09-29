@@ -263,131 +263,12 @@ export default () => (
       <div class="ply-stack">
         <div class="ply-field">
           <div class="heading">
-            <label for="ply-suggestion-:ro:">初期値のある分類</label>
+            <label for="ply-suggestion-:rq:">初期値のある分類</label>
           </div>
           <div class="ply-combobox ply-suggestion" data-controller="suggestion">
             <input
               value="編集"
-              id="ply-suggestion-:ro:"
-              type="text"
-              autocomplete="off"
-              list="ply-suggestion-:ro:-options"
-              data-suggestion-target="input"
-              class="ply-input"
-            /><button
-              class="toggle"
-              type="button"
-              aria-label="初期値のある分類の候補を開閉"
-              aria-haspopup="listbox"
-              aria-controls="ply-suggestion-:ro:-listbox"
-              hidden=""
-            >
-              <svg
-                class="ply-icon"
-                viewBox="0 0 256 256"
-                fill="currentColor"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <use href="/assets/ply-icons.svg#ply-caret"></use>
-              </svg>
-            </button>
-            <ul
-              class="options"
-              id="ply-suggestion-:ro:-listbox"
-              role="listbox"
-              aria-label="初期値のある分類の候補"
-              data-suggestion-target="listbox"
-              hidden=""
-            >
-              <li
-                id="ply-suggestion-:ro:-option-0"
-                role="option"
-                aria-selected="false"
-                data-suggestion-target="option"
-                data-combobox-value="制作"
-              >
-                制作
-              </li>
-              <li
-                id="ply-suggestion-:ro:-option-1"
-                role="option"
-                aria-selected="false"
-                data-suggestion-target="option"
-                data-combobox-value="編集"
-              >
-                編集
-              </li>
-              <li
-                id="ply-suggestion-:ro:-option-2"
-                role="option"
-                aria-selected="false"
-                data-suggestion-target="option"
-                data-combobox-value="運営"
-              >
-                運営
-              </li>
-            </ul>
-            <p class="note" role="status"></p>
-            <datalist id="ply-suggestion-:ro:-options">
-              <option value="制作"></option>
-              <option value="編集"></option>
-              <option value="運営"></option>
-            </datalist>
-          </div>
-        </div>
-        <div class="ply-field">
-          <div class="heading"><label for="ply-suggestion-:rp:">新しい分類</label></div>
-          <div class="ply-combobox ply-suggestion" data-controller="suggestion">
-            <input
-              placeholder="分類を入力"
-              id="ply-suggestion-:rp:"
-              type="text"
-              autocomplete="off"
-              list="ply-suggestion-:rp:-options"
-              data-suggestion-target="input"
-              class="ply-input"
-            /><button
-              class="toggle"
-              type="button"
-              aria-label="新しい分類の候補を開閉"
-              aria-haspopup="listbox"
-              aria-controls="ply-suggestion-:rp:-listbox"
-              hidden=""
-            >
-              <svg
-                class="ply-icon"
-                viewBox="0 0 256 256"
-                fill="currentColor"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <use href="/assets/ply-icons.svg#ply-caret"></use>
-              </svg>
-            </button>
-            <ul
-              class="options"
-              id="ply-suggestion-:rp:-listbox"
-              role="listbox"
-              aria-label="新しい分類の候補"
-              data-suggestion-target="listbox"
-              hidden=""
-            ></ul>
-            <p class="note" role="status"></p>
-            <datalist id="ply-suggestion-:rp:-options"></datalist>
-          </div>
-        </div>
-        <div class="ply-field">
-          <div class="heading">
-            <label for="ply-suggestion-:rq:">分類（必須）</label>
-          </div>
-          <div class="ply-combobox ply-suggestion" data-controller="suggestion">
-            <input
-              required=""
               id="ply-suggestion-:rq:"
-              aria-describedby="ply-suggestion-:rq:-error"
-              aria-invalid="true"
-              data-invalid="true"
               type="text"
               autocomplete="off"
               list="ply-suggestion-:rq:-options"
@@ -396,7 +277,7 @@ export default () => (
             /><button
               class="toggle"
               type="button"
-              aria-label="分類（必須）の候補を開閉"
+              aria-label="初期値のある分類の候補を開閉"
               aria-haspopup="listbox"
               aria-controls="ply-suggestion-:rq:-listbox"
               hidden=""
@@ -415,7 +296,7 @@ export default () => (
               class="options"
               id="ply-suggestion-:rq:-listbox"
               role="listbox"
-              aria-label="分類（必須）の候補"
+              aria-label="初期値のある分類の候補"
               data-suggestion-target="listbox"
               hidden=""
             >
@@ -424,58 +305,42 @@ export default () => (
                 role="option"
                 aria-selected="false"
                 data-suggestion-target="option"
-                data-combobox-value="お知らせ"
+                data-combobox-value="制作"
               >
-                お知らせ
+                制作
               </li>
               <li
                 id="ply-suggestion-:rq:-option-1"
                 role="option"
                 aria-selected="false"
                 data-suggestion-target="option"
-                data-combobox-value="暮らし"
+                data-combobox-value="編集"
               >
-                暮らし
+                編集
               </li>
               <li
                 id="ply-suggestion-:rq:-option-2"
                 role="option"
                 aria-selected="false"
                 data-suggestion-target="option"
-                data-combobox-value="仕事場"
+                data-combobox-value="運営"
               >
-                仕事場
+                運営
               </li>
             </ul>
             <p class="note" role="status"></p>
             <datalist id="ply-suggestion-:rq:-options">
-              <option value="お知らせ"></option>
-              <option value="暮らし"></option>
-              <option value="仕事場"></option>
+              <option value="制作"></option>
+              <option value="編集"></option>
+              <option value="運営"></option>
             </datalist>
-          </div>
-          <div class="messages">
-            <p class="error" id="ply-suggestion-:rq:-error">
-              <svg
-                class="ply-icon"
-                viewBox="0 0 256 256"
-                fill="currentColor"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <use href="/assets/ply-icons.svg#ply-x-circle"></use></svg
-              ><span>分類を入力してください。</span>
-            </p>
           </div>
         </div>
         <div class="ply-field">
-          <div class="heading">
-            <label for="ply-suggestion-:rr:">分類（利用不可）</label>
-          </div>
+          <div class="heading"><label for="ply-suggestion-:rr:">新しい分類</label></div>
           <div class="ply-combobox ply-suggestion" data-controller="suggestion">
             <input
-              value="暮らし"
-              disabled=""
+              placeholder="分類を入力"
               id="ply-suggestion-:rr:"
               type="text"
               autocomplete="off"
@@ -485,10 +350,9 @@ export default () => (
             /><button
               class="toggle"
               type="button"
-              aria-label="分類（利用不可）の候補を開閉"
+              aria-label="新しい分類の候補を開閉"
               aria-haspopup="listbox"
               aria-controls="ply-suggestion-:rr:-listbox"
-              disabled=""
               hidden=""
             >
               <svg
@@ -505,45 +369,25 @@ export default () => (
               class="options"
               id="ply-suggestion-:rr:-listbox"
               role="listbox"
-              aria-label="分類（利用不可）の候補"
+              aria-label="新しい分類の候補"
               data-suggestion-target="listbox"
               hidden=""
-            >
-              <li
-                id="ply-suggestion-:rr:-option-0"
-                role="option"
-                aria-selected="false"
-                data-suggestion-target="option"
-                data-combobox-value="お知らせ"
-              >
-                お知らせ
-              </li>
-              <li
-                id="ply-suggestion-:rr:-option-1"
-                role="option"
-                aria-selected="false"
-                data-suggestion-target="option"
-                data-combobox-value="暮らし"
-              >
-                暮らし
-              </li>
-            </ul>
+            ></ul>
             <p class="note" role="status"></p>
-            <datalist id="ply-suggestion-:rr:-options">
-              <option value="お知らせ"></option>
-              <option value="暮らし"></option>
-            </datalist>
+            <datalist id="ply-suggestion-:rr:-options"></datalist>
           </div>
         </div>
         <div class="ply-field">
           <div class="heading">
-            <label for="ply-suggestion-:rs:">分類（読み取り専用）</label>
+            <label for="ply-suggestion-:rs:">分類（必須）</label>
           </div>
           <div class="ply-combobox ply-suggestion" data-controller="suggestion">
             <input
-              value="お知らせ"
-              readonly=""
+              required=""
               id="ply-suggestion-:rs:"
+              aria-describedby="ply-suggestion-:rs:-error"
+              aria-invalid="true"
+              data-invalid="true"
               type="text"
               autocomplete="off"
               list="ply-suggestion-:rs:-options"
@@ -552,10 +396,9 @@ export default () => (
             /><button
               class="toggle"
               type="button"
-              aria-label="分類（読み取り専用）の候補を開閉"
+              aria-label="分類（必須）の候補を開閉"
               aria-haspopup="listbox"
               aria-controls="ply-suggestion-:rs:-listbox"
-              disabled=""
               hidden=""
             >
               <svg
@@ -572,7 +415,7 @@ export default () => (
               class="options"
               id="ply-suggestion-:rs:-listbox"
               role="listbox"
-              aria-label="分類（読み取り専用）の候補"
+              aria-label="分類（必須）の候補"
               data-suggestion-target="listbox"
               hidden=""
             >
@@ -594,18 +437,45 @@ export default () => (
               >
                 暮らし
               </li>
+              <li
+                id="ply-suggestion-:rs:-option-2"
+                role="option"
+                aria-selected="false"
+                data-suggestion-target="option"
+                data-combobox-value="仕事場"
+              >
+                仕事場
+              </li>
             </ul>
             <p class="note" role="status"></p>
             <datalist id="ply-suggestion-:rs:-options">
               <option value="お知らせ"></option>
               <option value="暮らし"></option>
+              <option value="仕事場"></option>
             </datalist>
+          </div>
+          <div class="messages">
+            <p class="error" id="ply-suggestion-:rs:-error">
+              <svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-x-circle"></use></svg
+              ><span>分類を入力してください。</span>
+            </p>
           </div>
         </div>
         <div class="ply-field">
-          <div class="heading"><label for="ply-suggestion-:rt:">長い分類名</label></div>
+          <div class="heading">
+            <label for="ply-suggestion-:rt:">分類（利用不可）</label>
+          </div>
           <div class="ply-combobox ply-suggestion" data-controller="suggestion">
             <input
+              value="暮らし"
+              disabled=""
               id="ply-suggestion-:rt:"
               type="text"
               autocomplete="off"
@@ -615,9 +485,10 @@ export default () => (
             /><button
               class="toggle"
               type="button"
-              aria-label="長い分類名の候補を開閉"
+              aria-label="分類（利用不可）の候補を開閉"
               aria-haspopup="listbox"
               aria-controls="ply-suggestion-:rt:-listbox"
+              disabled=""
               hidden=""
             >
               <svg
@@ -634,7 +505,7 @@ export default () => (
               class="options"
               id="ply-suggestion-:rt:-listbox"
               role="listbox"
-              aria-label="長い分類名の候補"
+              aria-label="分類（利用不可）の候補"
               data-suggestion-target="listbox"
               hidden=""
             >
@@ -643,12 +514,141 @@ export default () => (
                 role="option"
                 aria-selected="false"
                 data-suggestion-target="option"
+                data-combobox-value="お知らせ"
+              >
+                お知らせ
+              </li>
+              <li
+                id="ply-suggestion-:rt:-option-1"
+                role="option"
+                aria-selected="false"
+                data-suggestion-target="option"
+                data-combobox-value="暮らし"
+              >
+                暮らし
+              </li>
+            </ul>
+            <p class="note" role="status"></p>
+            <datalist id="ply-suggestion-:rt:-options">
+              <option value="お知らせ"></option>
+              <option value="暮らし"></option>
+            </datalist>
+          </div>
+        </div>
+        <div class="ply-field">
+          <div class="heading">
+            <label for="ply-suggestion-:ru:">分類（読み取り専用）</label>
+          </div>
+          <div class="ply-combobox ply-suggestion" data-controller="suggestion">
+            <input
+              value="お知らせ"
+              readonly=""
+              id="ply-suggestion-:ru:"
+              type="text"
+              autocomplete="off"
+              list="ply-suggestion-:ru:-options"
+              data-suggestion-target="input"
+              class="ply-input"
+            /><button
+              class="toggle"
+              type="button"
+              aria-label="分類（読み取り専用）の候補を開閉"
+              aria-haspopup="listbox"
+              aria-controls="ply-suggestion-:ru:-listbox"
+              disabled=""
+              hidden=""
+            >
+              <svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-caret"></use>
+              </svg>
+            </button>
+            <ul
+              class="options"
+              id="ply-suggestion-:ru:-listbox"
+              role="listbox"
+              aria-label="分類（読み取り専用）の候補"
+              data-suggestion-target="listbox"
+              hidden=""
+            >
+              <li
+                id="ply-suggestion-:ru:-option-0"
+                role="option"
+                aria-selected="false"
+                data-suggestion-target="option"
+                data-combobox-value="お知らせ"
+              >
+                お知らせ
+              </li>
+              <li
+                id="ply-suggestion-:ru:-option-1"
+                role="option"
+                aria-selected="false"
+                data-suggestion-target="option"
+                data-combobox-value="暮らし"
+              >
+                暮らし
+              </li>
+            </ul>
+            <p class="note" role="status"></p>
+            <datalist id="ply-suggestion-:ru:-options">
+              <option value="お知らせ"></option>
+              <option value="暮らし"></option>
+            </datalist>
+          </div>
+        </div>
+        <div class="ply-field">
+          <div class="heading"><label for="ply-suggestion-:rv:">長い分類名</label></div>
+          <div class="ply-combobox ply-suggestion" data-controller="suggestion">
+            <input
+              id="ply-suggestion-:rv:"
+              type="text"
+              autocomplete="off"
+              list="ply-suggestion-:rv:-options"
+              data-suggestion-target="input"
+              class="ply-input"
+            /><button
+              class="toggle"
+              type="button"
+              aria-label="長い分類名の候補を開閉"
+              aria-haspopup="listbox"
+              aria-controls="ply-suggestion-:rv:-listbox"
+              hidden=""
+            >
+              <svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-caret"></use>
+              </svg>
+            </button>
+            <ul
+              class="options"
+              id="ply-suggestion-:rv:-listbox"
+              role="listbox"
+              aria-label="長い分類名の候補"
+              data-suggestion-target="listbox"
+              hidden=""
+            >
+              <li
+                id="ply-suggestion-:rv:-option-0"
+                role="option"
+                aria-selected="false"
+                data-suggestion-target="option"
                 data-combobox-value="仕事場で使い続けたい道具と日々の小さな工夫について"
               >
                 仕事場で使い続けたい道具と日々の小さな工夫について
               </li>
               <li
-                id="ply-suggestion-:rt:-option-1"
+                id="ply-suggestion-:rv:-option-1"
                 role="option"
                 aria-selected="false"
                 data-suggestion-target="option"
@@ -658,7 +658,7 @@ export default () => (
               </li>
             </ul>
             <p class="note" role="status"></p>
-            <datalist id="ply-suggestion-:rt:-options">
+            <datalist id="ply-suggestion-:rv:-options">
               <option
                 value="仕事場で使い続けたい道具と日々の小さな工夫について"
               ></option>
