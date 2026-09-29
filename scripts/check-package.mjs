@@ -28,7 +28,7 @@ try {
     if (!file.endsWith(".tsx")) continue;
     const source = await readFile(`catalog/hono-examples/${file}`, "utf8");
     const target = resolve(temporary, file);
-    await writeFile(target, source.replace('"../../src/hono"', '"ply/hono"'));
+    await writeFile(target, source.replace('"../../src/hono"', '"@tknf/ply/hono"'));
     files.push(target);
   }
   const program = ts.createProgram(files, {
@@ -51,7 +51,7 @@ try {
       }),
     );
   }
-  console.log(`${files.length}件の掲載コードをply/honoの配布型で確認しました。`);
+  console.log(`${files.length}件の掲載コードを@tknf/ply/honoの配布型で確認しました。`);
 } finally {
   await rm(temporary, { recursive: true, force: true });
 }

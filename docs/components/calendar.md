@@ -189,7 +189,7 @@ import {
   ValueList,
   type CalendarDay,
   type CalendarEvent,
-} from "ply/hono";
+} from "@tknf/ply/hono";
 
 const sampleEvents = (date: string): readonly CalendarEvent[] => {
   if (date === "2026-09-15")

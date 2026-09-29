@@ -71,7 +71,7 @@ JavaScriptなしでは選んだタブのパネルだけを表示し、タブを�
 ## コード
 
 ```tsx
-import { Disclosure, DisclosureGroup, Icon, Tabs } from "ply/hono";
+import { Disclosure, DisclosureGroup, Icon, Tabs } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

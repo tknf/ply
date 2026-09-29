@@ -53,7 +53,7 @@
 ## コード
 
 ```tsx
-import { TableOfContents } from "ply/hono";
+import { TableOfContents } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

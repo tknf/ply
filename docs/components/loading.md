@@ -41,7 +41,7 @@
 ## コード
 
 ```tsx
-import { Loading, Button, Progress, Disclosure, DisclosureGroup } from "ply/hono";
+import { Loading, Button, Progress, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 export default () => (
   <div class="ply-stack">
     <Loading label="次の記事を読み込んでいます…" />

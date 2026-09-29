@@ -84,7 +84,7 @@
 ## コード
 
 ```tsx
-import { Dialog, Button, Disclosure, Field, Input, DropdownMenu } from "ply/hono";
+import { Dialog, Button, Disclosure, Field, Input, DropdownMenu } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

@@ -14,7 +14,7 @@ export default async () => {
     '{\n  "title": "秋の読書会",\n  "published": false,\n  "path": "/articles/abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789"\n}';
   const controller = [
     'import { Application } from "@hotwired/stimulus";',
-    'import { BoardController } from "ply/controllers";',
+    'import { BoardController } from "@tknf/ply/controllers";',
     "",
     "const application = Application.start();",
     'application.register("board", BoardController);',

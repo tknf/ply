@@ -46,7 +46,7 @@
 ## コード
 
 ```tsx
-import { Progress, Disclosure, DisclosureGroup } from "ply/hono";
+import { Progress, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 export default () => (
   <div class="ply-stack">
     <Progress label="処理待ち" value={0} />

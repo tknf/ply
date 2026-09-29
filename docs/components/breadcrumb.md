@@ -43,7 +43,7 @@
 ## コード
 
 ```tsx
-import { Breadcrumb } from "ply/hono";
+import { Breadcrumb } from "@tknf/ply/hono";
 
 export default () => (
   <Breadcrumb

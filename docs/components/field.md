@@ -275,7 +275,7 @@ import {
   TimeField,
   Combobox,
   CheckboxGroup,
-} from "ply/hono";
+} from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-split">

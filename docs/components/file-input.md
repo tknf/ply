@@ -57,7 +57,7 @@ JavaScriptが無い時は、標準のファイル選択をそのまま表示し�
 ## コード
 
 ```tsx
-import { Disclosure, Button, Field, FileInput, Input } from "ply/hono";
+import { Disclosure, Button, Field, FileInput, Input } from "@tknf/ply/hono";
 
 export default () => (
   <form class="ply-stack" aria-label="ファイルの添付例">

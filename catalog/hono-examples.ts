@@ -21,5 +21,8 @@ export const getHonoExample = (id: string) => {
   const example = modules[path];
   const source = sources[path];
   if (!example || !source) throw new Error(`Hono利用例がありません: ${id}`);
-  return { render: example.default, source: source.replace('"../../src/hono"', '"ply/hono"') };
+  return {
+    render: example.default,
+    source: source.replace('"../../src/hono"', '"@tknf/ply/hono"'),
+  };
 };

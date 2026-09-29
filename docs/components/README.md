@@ -115,7 +115,7 @@
 
 ## controllerの登録名
 
-`ply/controllers`のcontrollerを、次の登録名でStimulusのApplicationへ登録します。登録の仕方は[controller](../controllers.md)を参照してください。
+`@tknf/ply/controllers`のcontrollerを、次の登録名でStimulusのApplicationへ登録します。登録の仕方は[controller](../controllers.md)を参照してください。
 
 | 登録名              | controller                   | 使うコンポーネント                                                        |
 | ------------------- | ---------------------------- | ------------------------------------------------------------------------- |

@@ -91,7 +91,7 @@
 ## コード
 
 ```tsx
-import { MessageList, Avatar, Disclosure, DisclosureGroup } from "ply/hono";
+import { MessageList, Avatar, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 export default () => (
   <div class="ply-stack">
     <MessageList

@@ -76,7 +76,7 @@
 ## コード
 
 ```tsx
-import { EditableProperty, Button, Disclosure, DisclosureGroup } from "ply/hono";
+import { EditableProperty, Button, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

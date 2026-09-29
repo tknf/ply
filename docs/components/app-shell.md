@@ -55,7 +55,7 @@
 ## コード
 
 ```tsx
-import { AppShell, ActionLink, CommandMenu, PageHeader, Avatar } from "ply/hono";
+import { AppShell, ActionLink, CommandMenu, PageHeader, Avatar } from "@tknf/ply/hono";
 export default () => (
   <AppShell
     home={

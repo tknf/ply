@@ -71,6 +71,18 @@ describe("コンポーネントのリファレンス", () => {
     );
   });
 
+  test("Agent Skillの部品一覧が最新である", async () => {
+    const docs = "https://github.com/tknf/ply/blob/main/docs";
+    await expect(
+      await markdown(
+        componentIndexMarkdown({
+          componentHref: (id) => `${docs}/components/${id}.md`,
+          controllersHref: `${docs}/controllers.md`,
+        }),
+      ),
+    ).toMatchFileSnapshot("../skills/ply/references/components.md");
+  });
+
   test.each(componentDocs.map((doc) => [doc.id, doc] as const))(
     "docs/components/%s.mdが最新である",
     async (id, doc) => {

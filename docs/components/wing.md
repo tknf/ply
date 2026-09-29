@@ -64,7 +64,14 @@
 ## コード
 
 ```tsx
-import { Wing, wingCookieName, ActionLink, Card, Surface, Timeline } from "ply/hono";
+import {
+  Wing,
+  wingCookieName,
+  ActionLink,
+  Card,
+  Surface,
+  Timeline,
+} from "@tknf/ply/hono";
 
 const actions = (
   <>

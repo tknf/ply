@@ -47,7 +47,7 @@
 ## コード
 
 ```tsx
-import { Section, TaskList } from "ply/hono";
+import { Section, TaskList } from "@tknf/ply/hono";
 export default () => (
   <Section title="進めている" count={2} tone="info">
     <TaskList

@@ -136,7 +136,7 @@ import {
   Disclosure,
   DisclosureGroup,
   ValueList,
-} from "ply/hono";
+} from "@tknf/ply/hono";
 
 const card = (id: string, title: string, body?: string) => ({
   id,

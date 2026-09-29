@@ -82,7 +82,7 @@ JavaScriptが無い時は、格子と検索欄を表示するだけで、絞り�
 ## コード
 
 ```tsx
-import { EmojiPicker, Popover, Disclosure, DisclosureGroup } from "ply/hono";
+import { EmojiPicker, Popover, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

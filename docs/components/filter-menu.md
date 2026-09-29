@@ -101,7 +101,7 @@ JavaScriptなしでもパネルは標準のPopover APIで開閉し、初めか�
 ## コード
 
 ```tsx
-import { FilterMenu, Disclosure, DisclosureGroup } from "ply/hono";
+import { FilterMenu, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

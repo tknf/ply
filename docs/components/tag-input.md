@@ -77,7 +77,7 @@ JavaScriptが無い時は、カンマ区切りの一行の入力欄として送�
 ## コード
 
 ```tsx
-import { TagInput } from "ply/hono";
+import { TagInput } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

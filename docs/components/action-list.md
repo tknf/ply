@@ -62,7 +62,7 @@
 ## コード
 
 ```tsx
-import { ActionList, Icon, Disclosure, DisclosureGroup } from "ply/hono";
+import { ActionList, Icon, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 export default () => (
   <div class="ply-stack">
     <ActionList

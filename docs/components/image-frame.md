@@ -47,7 +47,7 @@
 ## コード
 
 ```tsx
-import { ImageFrame, Disclosure, DisclosureGroup } from "ply/hono";
+import { ImageFrame, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

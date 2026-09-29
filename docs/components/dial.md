@@ -61,7 +61,7 @@ controllerの登録は要らず、JavaScriptが無い時も同じように動き
 ## コード
 
 ```tsx
-import { Dial, Disclosure, DisclosureGroup } from "ply/hono";
+import { Dial, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 
 const days = ["3", "7", "11", "30", "90", "365"].map((value) => ({
   value,

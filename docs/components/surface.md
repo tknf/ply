@@ -47,7 +47,7 @@ import {
   DataList,
   Disclosure,
   DisclosureGroup,
-} from "ply/hono";
+} from "@tknf/ply/hono";
 
 const items = [
   {

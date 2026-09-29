@@ -49,7 +49,7 @@ controllerの登録は要らず、JavaScriptが無い時も同じように動き
 ## コード
 
 ```tsx
-import { Disclosure, Button, Switch } from "ply/hono";
+import { Disclosure, Button, Switch } from "@tknf/ply/hono";
 
 export default () => (
   <form class="ply-stack" aria-label="通知と表示の設定">

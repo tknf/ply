@@ -116,7 +116,7 @@ import {
   DisclosureGroup,
   Button,
   ActionTile,
-} from "ply/hono";
+} from "@tknf/ply/hono";
 const records = [
   {
     id: "guide",

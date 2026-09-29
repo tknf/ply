@@ -86,7 +86,7 @@ JavaScriptが無い時は、検索欄を出さず、標準の `select` をその
 ## コード
 
 ```tsx
-import { Picker } from "ply/hono";
+import { Picker } from "@tknf/ply/hono";
 
 const people = [
   { value: "tanaka", label: "田中 遥" },

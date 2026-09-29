@@ -77,7 +77,7 @@ JavaScriptがない時はコピーの操作を出さず、コードは読めま�
 ## コード
 
 ```tsx
-import { CodeBlock, Disclosure, DisclosureGroup } from "ply/hono";
+import { CodeBlock, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 import { codeToTokens } from "shiki";
 
 type Language = "html" | "json" | "ts" | "css" | "shell";
@@ -96,7 +96,7 @@ export default async () => {
     '{\n  "title": "秋の読書会",\n  "published": false,\n  "path": "/articles/abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789"\n}';
   const controller = [
     'import { Application } from "@hotwired/stimulus";',
-    'import { BoardController } from "ply/controllers";',
+    'import { BoardController } from "@tknf/ply/controllers";',
     "",
     "const application = Application.start();",
     'application.register("board", BoardController);',
@@ -639,7 +639,7 @@ export default async () => {
                 role="region"
                 aria-label="controllers.ts"
               ><code data-clipboard-target="source"><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { Application } </span><span style="color:#D73A49">from</span> <span style="color:#032F62">&quot;@hotwired/stimulus&quot;</span><span style="color:#24292E">;</span>
-</span><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { BoardController } </span><span style="color:#D73A49">from</span> <span style="color:#032F62">&quot;ply/controllers&quot;</span><span style="color:#24292E">;</span>
+</span><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { BoardController } </span><span style="color:#D73A49">from</span> <span style="color:#032F62">&quot;@tknf/ply/controllers&quot;</span><span style="color:#24292E">;</span>
 </span><span class="line">
 </span><span class="line"><span style="color:#D73A49">const</span> <span style="color:#005CC5">application</span> <span style="color:#D73A49">=</span><span style="color:#24292E"> Application.</span><span style="color:#6F42C1">start</span><span style="color:#24292E">();</span>
 </span><span class="line"><span style="color:#24292E">application.</span><span style="color:#6F42C1">register</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;board&quot;</span><span style="color:#24292E">, BoardController);</span>

@@ -2,37 +2,31 @@
 
 Plyは三つの層で提供します。必要な層だけを使えます。
 
-| 層                  | 内容                                              | エントリーポイント |
-| ------------------- | ------------------------------------------------- | ------------------ |
-| CSS                 | フレームワークに依存しないCSSとセマンティックHTML | `ply/css/*`        |
-| Hono JSX            | 同じHTMLを出力するSSRコンポーネントと型           | `ply/hono`         |
-| Stimulus controller | 開閉・選択・キーボード操作などの動作              | `ply/controllers`  |
+| 層                  | 内容                                              | エントリーポイント      |
+| ------------------- | ------------------------------------------------- | ----------------------- |
+| CSS                 | フレームワークに依存しないCSSとセマンティックHTML | `@tknf/ply/css/*`       |
+| Hono JSX            | 同じHTMLを出力するSSRコンポーネントと型           | `@tknf/ply/hono`        |
+| Stimulus controller | 開閉・選択・キーボード操作などの動作              | `@tknf/ply/controllers` |
 
 HonoのコンポーネントはブラウザのJavaScriptをimportしません。controllerは自動で起動・登録しないので、使うものだけを登録します。
 
 ## インストール
 
-Plyは公開パッケージにしていません。リポジトリをビルドし、利用するアプリからローカルの依存として参照します。
-
 ```sh
-# Plyのリポジトリで
-vp install
-vp run build
+pnpm add @tknf/ply
 ```
 
-```json
-{
-  "dependencies": {
-    "ply": "file:../ply"
-  }
-}
-```
+使う層に応じて、peer dependencyを利用するアプリに追加します。
 
-配布物は`dist/hono`・`dist/controllers`・`dist/css`・`dist/icons.svg`です。使う層に応じて`hono`・`@hotwired/stimulus`・`@tknf/stimulus-ui`も利用するアプリに導入します。
+- CSSだけで使う場合：追加するものはありません。
+- Hono JSXのコンポーネントを使う場合：`hono`
+- controllerを使う場合：`@hotwired/stimulus`と`@tknf/stimulus-ui`
+
+配布物はESMのみで、`dist/hono`・`dist/controllers`・`dist/css`・`dist/icons.svg`を含みます。
 
 ## 動作環境
 
-- Node.js 22以降（ビルドする場合）
+- Node.js 22以降（Plyをビルドする場合）
 - ブラウザはPopover APIに対応したもの。Popover・Toast・DropdownMenu・CommandMenuが使います。
 - 通常のフォームと`details`は、JavaScriptなしでも操作できます。
 
@@ -54,7 +48,7 @@ vp run build
 - 読み込み順は`layers.css`、reset・tokens・base・layout、必要なcomponentsです。CSS内では`@import`を使いません。
 - カスケードレイヤーの優先順は`reset, base, tokens, layout, components, utilities, overrides`です。利用側の上書きは`@layer overrides`に書きます。
 - reset・baseはページ全体に効くので、既存のアプリにはページ単位で導入してください。
-- 全てのコンポーネントを使う場合の読み込み順は、`ply/hono`の`stylesheets`にまとまっています。
+- 全てのコンポーネントを使う場合の読み込み順は、`@tknf/ply/hono`の`stylesheets`にまとまっています。
 - コンポーネントを選んで読み込む場合は、各コンポーネントのページの「API」にある「読み込むCSS」を、上から順に読み込みます。中で使う別のコンポーネントのCSS（DatePickerの中のButtonなど）も含んでいます。
 
 CSSだけで使う場合も、Honoのコンポーネントが出力するHTML構造と状態属性（`data-*`・`aria-*`）をそのまま書きます。各コンポーネントのHTMLはカタログのページに掲載しています。各コンポーネントのHTMLは[コンポーネントのリファレンス](components/README.md)の「コード」にもあります。クラス名の決まりは[CSSの構造](css.md)を参照してください。
@@ -65,7 +59,7 @@ CSSだけで使う場合も、Honoのコンポーネントが出力するHTML構
 
 ```tsx
 import { Hono } from "hono";
-import { Button, Field, Input } from "ply/hono";
+import { Button, Field, Input } from "@tknf/ply/hono";
 
 const app = new Hono();
 app.get("/edit", (c) =>
@@ -87,7 +81,7 @@ app.get("/edit", (c) =>
 - CSSは`stylesheets`の順に`<link>`で読み込みます。
 
 ```tsx
-import { stylesheets } from "ply/hono";
+import { stylesheets } from "@tknf/ply/hono";
 
 const Head = () => (
   <head>
@@ -104,7 +98,7 @@ const Head = () => (
 
 ```ts
 import { Application } from "@hotwired/stimulus";
-import { DialogController, FileInputController } from "ply/controllers";
+import { DialogController, FileInputController } from "@tknf/ply/controllers";
 
 const application = Application.start(); // 既存のApplicationがあればそれを使う
 application.register("dialog", DialogController);
@@ -115,7 +109,7 @@ application.register("file-input", FileInputController);
 
 ## アイコンを配置する
 
-`Icon`は外部SVGスプライトを参照します。`ply/icons.svg`を同一オリジンの`/assets/ply-icons.svg`へ配置してください。詳しくは[アイコン](icons.md)を参照してください。
+`Icon`は外部SVGスプライトを参照します。`@tknf/ply/icons.svg`を同一オリジンの`/assets/ply-icons.svg`へ配置してください。詳しくは[アイコン](icons.md)を参照してください。
 
 ## データと保存
 

@@ -101,7 +101,7 @@ Buttonと同じ見た目の移動リンク。
 ## コード
 
 ```tsx
-import { Button, ActionLink, Icon } from "ply/hono";
+import { Button, ActionLink, Icon } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

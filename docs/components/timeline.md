@@ -65,7 +65,7 @@
 ## コード
 
 ```tsx
-import { Timeline, ActionLink, Avatar } from "ply/hono";
+import { Timeline, ActionLink, Avatar } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

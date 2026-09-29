@@ -53,7 +53,7 @@ Noticeは描いた時の内容を示すだけで、自動では消えません�
 ## コード
 
 ```tsx
-import { Notice, ActionLink, Disclosure, DisclosureGroup } from "ply/hono";
+import { Notice, ActionLink, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 export default () => (
   <div class="ply-stack" data-space="small">
     <Notice label="変更は保存後に反映されます">

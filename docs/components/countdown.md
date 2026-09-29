@@ -50,7 +50,7 @@
 ## コード
 
 ```tsx
-import { Countdown, Card, Disclosure, DisclosureGroup } from "ply/hono";
+import { Countdown, Card, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

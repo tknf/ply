@@ -41,7 +41,7 @@
 ## コード
 
 ```tsx
-import { FieldGroup, Field, Input } from "ply/hono";
+import { FieldGroup, Field, Input } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-form">

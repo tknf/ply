@@ -127,7 +127,7 @@ kind: "range"
 ## コード
 
 ```tsx
-import { Disclosure, Button, DatePicker, FieldGroup } from "ply/hono";
+import { Disclosure, Button, DatePicker, FieldGroup } from "@tknf/ply/hono";
 
 export default () => (
   <form id="date-picker-examples" class="ply-stack" aria-label="日付の選択例">

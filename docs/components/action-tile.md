@@ -62,7 +62,7 @@
 ## コード
 
 ```tsx
-import { ActionTile, Disclosure, DisclosureGroup } from "ply/hono";
+import { ActionTile, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 // セルは5〜7.5remで、入る数だけ並べる（文字を大きくした狭い画面では一列になる）。
 const grid =
   "display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 5rem), 7.5rem)); gap: 0.75rem";
