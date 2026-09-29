@@ -171,7 +171,7 @@ CSSの行ボックスが枠の中央にあっても、字形の見た目の中�
 
 ## 版と公開
 
-Semantic VersioningとKeep a Changelogに従います。互換性のない公開APIやHTML構造の変更は`major`、互換性を保った追加は`minor`、互換性を保った修正は`patch`です。`0.x`の間は、互換性のない変更を`minor`で出すことがあります。ドキュメントだけ、リポジトリだけの変更では版を上げません。
+Semantic VersioningとKeep a Changelogに従います。互換性のない公開APIやHTML構造の変更は`major`、互換性を保った追加は`minor`、互換性を保った修正は`patch`です。ドキュメントだけ、リポジトリだけの変更では版を上げません。
 
 公開の準備では、`vp pm version X.Y.Z -- --no-git-tag-version`の後に`vp run check`・`vp run test`・`vp run build`・`vp run check:package`を流します。公開のコミットの件名は`vX.Y.Zを公開する`にし、同じコミットに注釈付きタグ`vX.Y.Z`を付けます。タグをpushするとGitHub Actionsがnpmへ公開するので、手動では公開しません。公開のコミット・タグ・pushには、メンテナーの明示的な許可が要ります。
 
