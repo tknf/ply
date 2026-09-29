@@ -43,7 +43,7 @@
 | Table / Calendar | `.ply-table > table`、`.ply-calendar > table`。スクロールする領域がコンポーネントのルート                          |
 | ImageFrame       | `.ply-image-frame > .image > img`                                                                                  |
 
-その他のコンポーネントの構造は、カタログの各ページのHTMLを参照してください。
+その他のコンポーネントの構造は、[コンポーネントのリファレンス](components/README.md)の各ページの「コード」にある出力HTMLを参照してください。
 
 ## 書き方の決まり
 

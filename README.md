@@ -61,8 +61,8 @@ vp run dev
 - [デザインの原則](docs/principles.md)：形・面・色・状態・余白・動きの決まり
 - [トークン](docs/tokens.md)：`--ply-*`の種類と使い方
 - [CSSの構造](docs/css.md)：読み込み順、レイヤー、クラス名の決まり
-- [controller](docs/controllers.md)：登録名とイベントの一覧
-- [コンポーネントの詳細](docs/components.md)：DatePicker・DropdownMenu・Table・Boardなどの受け渡し
+- [コンポーネント](docs/components/README.md)：全部品のリファレンス。使いどころ、使い方、キーボード、props、controller、読み込むCSS、コード
+- [controller](docs/controllers.md)：登録の決まりとイベントの約束
 - [アイコン](docs/icons.md)：大きさ、配置、ライセンス
 
 Plyの開発に参加する場合は[開発ガイド](CONTRIBUTING.md)を参照してください。

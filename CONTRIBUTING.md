@@ -29,7 +29,7 @@ vp run dev
 - `index.ts`は再exportだけを持ちます。
 - Honoのコンポーネントはブラウザ用のコードをimportしません。
 - controllerは自動で起動・登録しません。`@tknf/stimulus-ui`の機能を利用・継承し、Ply固有の配置と操作は追加のcontrollerが持ちます。
-- カタログは部品だけで組みます。部品の説明は`catalog/components.ts`、見本は`catalog/hono-examples/<id>.tsx`、分類は`catalog/component-groups.ts`です。見本のファイルがそのままカタログのHonoのコードとして掲載されます。
+- カタログは部品だけで組みます。部品の説明は`catalog/component-docs/<id>.ts`、見本は`catalog/hono-examples/<id>.tsx`、分類は`catalog/component-groups.ts`です。見本のファイルがそのままカタログのHonoのコードとして掲載されます。
 - 利用例のアプリの保存処理はカタログの中のデモ（`catalog/controllers`）で、配布物に含めません。
 
 ## コンポーネントを足す
@@ -37,9 +37,23 @@ vp run dev
 1. `src/css/components/<名前>.css`を書き、`src/hono/stylesheets.ts`に加えます。
 2. `src/hono/<名前>.tsx`を書き、`src/hono/index.ts`から再exportします。
 3. 動作が要る場合は`src/controllers`に書き、`src/controllers/index.ts`から再exportします。
-4. `catalog/components.ts`に説明、`catalog/hono-examples/<id>.tsx`に見本、`catalog/component-groups.ts`に分類を加えます。
+4. `catalog/component-docs/<id>.ts`に説明、`catalog/hono-examples/<id>.tsx`に見本、`catalog/component-groups.ts`に分類を加えます。propsには全てJSDocを書きます（[リファレンス](#リファレンス)）。
 5. 既存の部品（Button・Keycap・Badgeなど）を組み合わせ、ボタンや入力欄を作り直しません。まとまった塊は別の部品に切り出します。
 6. [デザインの原則](docs/principles.md)に沿っているか、状態・長い文字・狭い場所・使えない時・右から左に読む場合を見本に並べて確かめます。
+
+## リファレンス
+
+各部品のページ（カタログの`/components/<id>`と`docs/components/<id>.md`）は、二つの一次情報から作ります。
+
+| 内容                                                                 | 一次情報                                                  |
+| -------------------------------------------------------------------- | --------------------------------------------------------- |
+| 使いどころ・使い方・キーボード・アクセシビリティ・イベント           | `catalog/component-docs/<id>.ts`                          |
+| propsの型・既定値・必須、参照する型、登録するcontroller、読み込むCSS | `src/hono`の型とJSDoc（`scripts/component-api.ts`が読む） |
+
+- propsと、propsが参照する型の項目には、全てJSDocを書きます。標準のHTML属性や`children`のようにJSDocを書けないものは、`propNotes`に書きます。
+- 公開する全てのコンポーネントは、いずれか一つのページの`api`に載せます。
+- `docs/components/`は生成物です。説明や型を変えたら`vp run docs:components`で生成し直します。
+- `vp run test`は、載っていないコンポーネント、説明の無いprops、古い`docs/components/`を検出して失敗します。
 
 ## 検証
 

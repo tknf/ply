@@ -10,6 +10,26 @@ Plyは三つの層で提供します。必要な層だけを使えます。
 
 HonoのコンポーネントはブラウザのJavaScriptをimportしません。controllerは自動で起動・登録しないので、使うものだけを登録します。
 
+## インストール
+
+Plyは公開パッケージにしていません。リポジトリをビルドし、利用するアプリからローカルの依存として参照します。
+
+```sh
+# Plyのリポジトリで
+vp install
+vp run build
+```
+
+```json
+{
+  "dependencies": {
+    "ply": "file:../ply"
+  }
+}
+```
+
+配布物は`dist/hono`・`dist/controllers`・`dist/css`・`dist/icons.svg`です。使う層に応じて`hono`・`@hotwired/stimulus`・`@tknf/stimulus-ui`も利用するアプリに導入します。
+
 ## 動作環境
 
 - Node.js 22以降（ビルドする場合）
@@ -34,22 +54,14 @@ HonoのコンポーネントはブラウザのJavaScriptをimportしません。
 - 読み込み順は`layers.css`、reset・tokens・base・layout、必要なcomponentsです。CSS内では`@import`を使いません。
 - カスケードレイヤーの優先順は`reset, base, tokens, layout, components, utilities, overrides`です。利用側の上書きは`@layer overrides`に書きます。
 - reset・baseはページ全体に効くので、既存のアプリにはページ単位で導入してください。
-- 全コンポーネントの読み込み順は`ply/hono`の`stylesheets`にまとまっています。個別に読む場合は、次の共通ファイルも合わせて読み込みます。
+- 全ての部品を使う場合の読み込み順は、`ply/hono`の`stylesheets`にまとまっています。
+- 部品を選んで読み込む場合は、各部品のページの「API」にある「読み込むCSS」を、上から順に読み込みます。中で使う別の部品のCSS（DatePickerの中のButtonなど）も含んでいます。
 
-| コンポーネント                             | 合わせて読むCSS               |
-| ------------------------------------------ | ----------------------------- |
-| Dialog・Popover・HoverCard・Toast・Tooltip | `components/overlay.css`      |
-| TaskList・DataList・MessageList            | `components/list-frame.css`   |
-| ChartFrame内のデータ表                     | `components/table.css`        |
-| ButtonGroup                                | `components/button-group.css` |
-| TagGroup                                   | `components/tag-group.css`    |
-| Board                                      | `components/board-item.css`   |
-
-CSSだけで使う場合も、Honoのコンポーネントが出力するHTML構造と状態属性（`data-*`・`aria-*`）をそのまま書きます。各コンポーネントのHTMLはカタログのページに掲載しています。クラス名の決まりは[CSSの構造](css.md)を参照してください。
+CSSだけで使う場合も、Honoのコンポーネントが出力するHTML構造と状態属性（`data-*`・`aria-*`）をそのまま書きます。各コンポーネントのHTMLはカタログのページに掲載しています。各部品のHTMLは[コンポーネントのリファレンス](components/README.md)の「コード」にもあります。クラス名の決まりは[CSSの構造](css.md)を参照してください。
 
 ## Honoで使う
 
-利用アプリでこのパッケージを依存に追加し、`hono`を導入します。TypeScriptでは`jsx: "react-jsx"`と`jsxImportSource: "hono/jsx"`を指定します。これはHonoの構文設定で、Reactには依存しません。
+利用アプリでこのパッケージを依存に追加し（[インストール](#インストール)）、`hono`を導入します。TypeScriptでは`jsx: "react-jsx"`と`jsxImportSource: "hono/jsx"`を指定します。これはHonoの構文設定で、Reactには依存しません。
 
 ```tsx
 import { Hono } from "hono";
@@ -99,7 +111,7 @@ application.register("dialog", DialogController);
 application.register("file-input", FileInputController);
 ```
 
-登録名とコンポーネントの対応は[controller](controllers.md)を参照してください。controllerは`@tknf/stimulus-ui`と`@hotwired/stimulus`をpeer dependencyとして使います。
+登録名は各部品のページの「API」と[controllerの登録名](components/README.md#controllerの登録名)、登録の決まりは[controller](controllers.md)を参照してください。controllerは`@tknf/stimulus-ui`と`@hotwired/stimulus`をpeer dependencyとして使います。
 
 ## アイコンを配置する
 
