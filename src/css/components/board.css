@@ -10,6 +10,8 @@
     grid-template-columns: var(--ply-board-tracks);
     grid-auto-flow: column;
     grid-auto-columns: minmax(auto, 1fr);
+    /* 全ての列をたたんだ時も、余った幅をピルの列へ配らず、始まりの側に詰めて並べる。 */
+    justify-content: start;
     align-items: stretch;
     gap: var(--ply-space-4);
     min-inline-size: 0;
@@ -20,18 +22,24 @@
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     /*
-      列は地も影も持たず、見出しと項目だけを並べる。列の色は見出しの文字と項目の淡い地に出す。
+      列は地も影も持たず、見出しと項目だけを並べる。列の色は見出しの文字と、項目の紙の染まり・角の札に出す。
+      紙はFizzyのカードと同じく、始まりの下の角から列の色で斜めに淡く染め、上の終わりへ向かって白に戻す。
       運んでいる間の破線が項目に重ならないよう、列の内側に少しだけ余白を取る。
     */
     & > section {
       --ply-lane-accent: var(--ply-muted);
-      --ply-board-paper: color-mix(in srgb, var(--ply-lane-accent) 7%, var(--ply-surface));
+      --ply-board-tint: linear-gradient(
+        60deg,
+        color-mix(in srgb, var(--ply-lane-accent) 16%, var(--ply-surface)) 0%,
+        color-mix(in srgb, var(--ply-lane-accent) 5%, var(--ply-surface)) 45%,
+        var(--ply-surface) 75%
+      );
       min-inline-size: 16rem;
       padding-block: 0 var(--ply-space-2);
       padding-inline: var(--ply-space-2);
       border-radius: var(--ply-radius-surface);
-      &[data-tone="neutral"] {
-        --ply-board-paper: var(--ply-surface);
+      &[data-tone="neutral"]:not([data-current="true"]) {
+        --ply-board-tint: none;
       }
       &[data-tone="info"] {
         --ply-lane-accent: var(--ply-info);
@@ -47,7 +55,6 @@
       }
       &[data-current="true"] {
         --ply-lane-accent: var(--ply-link);
-        --ply-board-paper: color-mix(in srgb, var(--ply-link) 7%, var(--ply-surface));
       }
       /* 列の名前はFizzyの列名のように控えめにし、項目の題名より弱くする。件数は名前の隣に置く。 */
       & > .title {
@@ -77,6 +84,14 @@
           font-weight: 600;
           line-height: 1;
           font-variant-numeric: tabular-nums;
+        }
+        /* 開閉の操作は、見出しの終わりの側に置く。開いている時は「たたむ」、たたんだ時は「開く」の印を見せる。 */
+        & > .ply-button.toggle {
+          margin-inline-start: auto;
+          color: var(--ply-muted);
+          & > .expand {
+            display: none;
+          }
         }
       }
       & > .empty {
@@ -118,66 +133,163 @@
         display: none;
       }
     }
-    /* たたんだ列は、件数と縦書きの名前を載せた縦長のピル。中の項目は隠す。 */
+    /*
+      たたんだ列は、縦長のピルの紙。列の色で塗った件数の丸と縦書きの名前を載せ、開ける列はピルの下に「開く」の印を置く。
+      開ける列はピルのどこを押しても開き、指を載せると項目と同じく少し持ち上がる。
+    */
     & > section[data-collapsed="true"] {
       min-inline-size: 0;
-      padding-block: 0;
+      padding-block: 0 var(--ply-space-2);
       padding-inline: 0;
       & > .title {
         flex-direction: column;
         align-items: center;
-        gap: var(--ply-space-2);
+        gap: var(--ply-space-3);
         inline-size: 2.75rem;
         min-block-size: 12rem;
-        padding-block: var(--ply-space-4);
+        padding-block: var(--ply-space-2);
         padding-inline: 0;
         border-radius: var(--ply-radius-pill);
-        background: color-mix(in srgb, var(--ply-lane-accent) 10%, var(--ply-surface));
+        background: linear-gradient(
+          to bottom,
+          color-mix(in srgb, var(--ply-lane-accent) 12%, var(--ply-surface)),
+          var(--ply-surface) 70%
+        );
+        box-shadow: var(--ply-shadow-paper);
+        transition: box-shadow var(--ply-duration) ease;
+        /* 名前を伸ばして、開く操作をピルの下端へ送る（Buttonの余白は動かさない）。 */
         & > .label {
+          flex: 1 1 auto;
           writing-mode: vertical-rl;
+        }
+        /* 件数はピルの上に、列の色で塗った丸に白い数字で置く。 */
+        & > small {
+          order: -1;
+          min-inline-size: 1.75rem;
+          block-size: 1.75rem;
+          background: var(--ply-lane-accent);
+          color: var(--ply-surface);
+        }
+        & > .ply-button.toggle {
+          margin-inline-start: 0;
+          & > .expand {
+            display: block;
+          }
+          & > .collapse {
+            display: none;
+          }
+        }
+      }
+      &:has(> .title > .toggle) > .title {
+        cursor: pointer;
+        &:hover {
+          box-shadow: var(--ply-shadow-paper-lift);
         }
       }
       & > :is(.items, .empty) {
         display: none;
       }
     }
-    /* 項目を運んでいる先の列は、受け入れ先の破線で縁取る。 */
+    /* 開いた時だけ、中の項目をピルのあった側から一枚ずつ差し出す。 */
+    & > section[data-unfolding="true"] > .items > * {
+      animation: ply-board-unfold calc(var(--ply-duration) * 1.6) ease-out both;
+      &:nth-child(2) {
+        animation-delay: 40ms;
+      }
+      &:nth-child(3) {
+        animation-delay: 80ms;
+      }
+      &:nth-child(n + 4) {
+        animation-delay: 120ms;
+      }
+    }
+    /*
+      項目を運んでいる先の列は、Fizzyと同じく列の色の淡い地を敷き、列の色の破線で内側を縁取る。
+      地の色は運び込んだ瞬間に少しかけて乗せる。
+    */
+    & > section {
+      transition: background-color calc(var(--ply-duration) * 1.3) ease;
+    }
     & > section[data-over="true"] {
-      outline: var(--ply-frame-width) dashed var(--ply-link);
+      background-color: color-mix(in srgb, var(--ply-lane-accent) 8%, var(--ply-surface));
+      outline: var(--ply-frame-width) dashed
+        color-mix(in srgb, var(--ply-lane-accent) 55%, var(--ply-surface));
       outline-offset: calc(var(--ply-frame-width) * -1);
     }
+    /*
+      指で運ぶ間の入る位置。Fizzyと同じく、項目は元の場所に跡として残し、運び込む先には列の色の線の印だけを出す。
+      線は両端を淡く中央を濃くした列の色のグラデーションにし、縁取りは付けずに、ぼかした影を重ねてうっすら光らせる。
+    */
+    & > section > .items > .drop-marker {
+      --ply-board-marker: var(--ply-lane-accent);
+      block-size: 0.1875rem;
+      border-radius: var(--ply-radius-pill);
+      background: linear-gradient(
+        to right,
+        color-mix(in srgb, var(--ply-board-marker) 35%, transparent),
+        var(--ply-board-marker) 30% 70%,
+        color-mix(in srgb, var(--ply-board-marker) 35%, transparent)
+      );
+      box-shadow:
+        0 0 0.375rem color-mix(in srgb, var(--ply-board-marker) 45%, transparent),
+        0 0 1rem 0.125rem color-mix(in srgb, var(--ply-board-marker) 18%, transparent);
+    }
+    & > section[data-tone="neutral"]:not([data-current="true"]) > .items > .drop-marker {
+      --ply-board-marker: var(--ply-link);
+    }
+    /*
+      手に持った項目。Fizzyのドラッグの像と同じく、項目そのものの写しを傾けずに深い影で持ち上げ、
+      下に出る入る位置の印が見えるよう半透明にする。
+      位置は指の位置から決めるので、書く向きにかかわらず左上を基準にする（写しの中身は元の書く向きのまま）。
+    */
     & > .drag-preview {
       position: fixed;
       inset-block-start: 0;
       inset-inline-start: 0;
       direction: ltr;
       z-index: 100;
-      max-inline-size: 16rem;
       pointer-events: none;
-      padding-block: var(--ply-space-3);
-      padding-inline: var(--ply-space-4);
-      /* 手に持った項目。少し傾け、深い影で持ち上げる。 */
-      border-radius: var(--ply-radius-surface);
-      background: var(--ply-surface) var(--ply-fill-paper);
-      box-shadow: var(--ply-shadow-paper-lift);
-      font-weight: 600;
-      rotate: -2deg;
+      opacity: 0.8;
+      & > * {
+        box-shadow: var(--ply-shadow-paper-lift);
+      }
     }
     @container ply-board (inline-size < 36rem) {
       & > section {
         grid-column: 1 / -1;
         min-inline-size: 0;
       }
+      /* 狭い場所では、横長のピルにし、件数・名前・「開く」を一行に並べる。 */
       & > section[data-collapsed="true"] > .title {
         flex-direction: row;
         inline-size: fit-content;
         min-block-size: 0;
         padding-block: var(--ply-space-1);
-        padding-inline: var(--ply-space-4);
+        padding-inline: var(--ply-space-1) var(--ply-space-4);
+        background: linear-gradient(
+          to right,
+          color-mix(in srgb, var(--ply-lane-accent) 12%, var(--ply-surface)),
+          var(--ply-surface) 70%
+        );
+        &:has(> .toggle) {
+          padding-inline-end: var(--ply-space-1);
+        }
         & > .label {
+          flex: 0 1 auto;
           writing-mode: horizontal-tb;
         }
       }
+    }
+  }
+  @keyframes ply-board-unfold {
+    from {
+      opacity: 0;
+      translate: calc(var(--ply-space-4) * -1) 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ply-board > section[data-unfolding="true"] > .items > * {
+      animation: none;
     }
   }
   @media (forced-colors: active) {
@@ -187,7 +299,12 @@
     .ply-board > section[data-collapsed="true"] > .title {
       border: var(--ply-stroke-width) solid CanvasText;
     }
-    .ply-board > .drag-preview {
+    .ply-board > section > .items > .drop-marker {
+      forced-color-adjust: none;
+      background: Highlight;
+      box-shadow: none;
+    }
+    .ply-board > .drag-preview > * {
       border: var(--ply-stroke-width) solid CanvasText;
       background: Canvas;
       box-shadow: none;

@@ -49,7 +49,7 @@ export const EditableProperty = ({
       data-multiline={multiline ? "true" : undefined}
       data-controller="editable editable-property"
       data-editable-commit-key-value="modifier-enter"
-      data-action="editable:commit->editable-property#commit"
+      data-action="editable:commit->editable-property#commit editable:edit->editable-property#select"
       data-editable-property-empty-value={emptyLabel}
     >
       <span class="label" id={`${id}-label`}>
@@ -59,6 +59,7 @@ export const EditableProperty = ({
         <span
           class="value"
           data-editable-property-target="value"
+          data-action="click->editable-property#start"
           data-empty={value ? undefined : "true"}
         >
           {value || emptyLabel}
@@ -66,6 +67,7 @@ export const EditableProperty = ({
         <Button
           class="edit"
           type="button"
+          variant="link"
           data-icon-only="true"
           aria-label={`${label}を編集`}
           data-editable-target="edit"
@@ -80,15 +82,17 @@ export const EditableProperty = ({
         {/* textareaの初期値は属性ではなく中身に書く。 */}
         {multiline ? <Textarea {...field}>{value}</Textarea> : <Input {...field} value={value} />}
         <div class="actions">
+          {/* 確定は小さい主操作、取消は文字だけの操作にして、書いている値より重くしない。面の下に並べる。 */}
           <Button
             type="button"
             variant="primary"
+            size="compact"
             data-editable-target="save"
             aria-keyshortcuts="Control+Enter Meta+Enter"
           >
             確定
           </Button>
-          <Button type="button" data-editable-target="cancel">
+          <Button type="button" variant="link" size="compact" data-editable-target="cancel">
             取消
           </Button>
         </div>

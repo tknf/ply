@@ -6,6 +6,7 @@ import {
   Disclosure,
   DisclosureGroup,
   Button,
+  ActionTile,
 } from "../../src/hono";
 const records = [
   {
@@ -94,7 +95,7 @@ export default () => (
                 />
               </td>
               <th scope="row" data-cell="text">
-                <a href="/example">{record.title}</a>
+                <a href="/apps/docs">{record.title}</a>
               </th>
               <td data-cell="short" data-sort-value={record.date}>
                 {record.date ? (
@@ -177,6 +178,47 @@ export default () => (
             </thead>
           </Table>
         ))}
+      </Disclosure>
+      <Disclosure summary="一括操作が多い表（タイルを格子で並べる）">
+        <Table
+          caption="資料の整理"
+          selectable
+          selectionActions={
+            <>
+              <ActionTile label="公開する" icon="check" />
+              <ActionTile label="下書きに戻す" icon="pencil" />
+              <ActionTile label="分類をつける" icon="layers" accent="green" />
+              <ActionTile label="複製する" icon="files" accent="amber" />
+              <ActionTile label="書き出す" icon="file" />
+              <ActionTile label="削除する" icon="trash" accent="coral" />
+            </>
+          }
+        >
+          <thead>
+            <tr>
+              <th scope="col">
+                <TableSelection label="資料をすべて選択" />
+              </th>
+              <th scope="col">資料</th>
+              <th scope="col">更新</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ["guide", "利用案内", "9月15日"],
+              ["terms", "利用規約", "9月12日"],
+              ["price", "料金表", "9月10日"],
+            ].map(([id, title, date]) => (
+              <tr>
+                <td>
+                  <TableSelection rowId={id} label={title + "を選択"} />
+                </td>
+                <th scope="row">{title}</th>
+                <td>{date}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </Disclosure>
       <Disclosure summary="無効な行・数値の欠損・負の値・密度">
         <Table caption="増減の確認" sort="local" selectable density="comfortable">

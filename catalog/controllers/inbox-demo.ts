@@ -38,6 +38,9 @@ export class InboxDemoController extends Controller<HTMLElement> {
       )) {
         button.hidden = button.dataset.inboxFolder === entry.folder;
         button.disabled = button.hidden;
+        // ActionDockの棚では、操作を包む升ごと隠して間を詰める。
+        const slot = button.closest("li");
+        if (slot) slot.hidden = button.hidden;
       }
     } else this.refresh();
   };
@@ -71,9 +74,8 @@ export class InboxDemoController extends Controller<HTMLElement> {
       if (marker instanceof HTMLElement) marker.hidden = entry.read;
     }
     for (const panel of this.element.querySelectorAll<HTMLElement>("[data-inbox-folder-panel]")) {
+      // 0件の表示はMessageListが持ち、行が一つもない時だけ見える。
       const count = panel.querySelectorAll("[data-message-id]").length;
-      const empty = panel.querySelector("[data-inbox-empty]");
-      if (empty instanceof HTMLElement) empty.hidden = count !== 0;
       const badge = this.element.querySelector(
         `[data-tabs-value="${panel.dataset.inboxFolderPanel}"] > .count`,
       );
@@ -92,7 +94,7 @@ export class InboxDemoController extends Controller<HTMLElement> {
     entry.folder = folder;
     const textarea = this.element.querySelector('textarea[name="reply"]');
     if (textarea instanceof HTMLTextAreaElement) entry.draft = textarea.value;
-    if (this.persist()) window.location.assign("/review/mail");
+    if (this.persist()) window.location.assign("/apps/inbox");
     else {
       entry.folder = previousFolder;
       const status = this.element.querySelector("[data-inbox-status]");

@@ -24,10 +24,11 @@
     & > .editor {
       display: grid;
       align-items: start;
-      gap: 1.125rem;
+      gap: var(--ply-space-4);
       min-inline-size: 0;
-      padding-block: 0.875rem 0.75rem;
-      padding-inline: 1.125rem;
+      /* 面の余白は、色の面とスライダーの束の間やスライダーどうしの間より広くする。 */
+      padding-block: var(--ply-space-6);
+      padding-inline: var(--ply-space-6);
       /* Navigationの板と同じく、枠線を引かず淡い面の上に色の面と調整を載せる。 */
       border: var(--ply-stroke-width) solid transparent;
       border-radius: var(--ply-radius-field);
@@ -52,7 +53,7 @@
       background:
         linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent),
         var(--color-picker-hue-color, var(--ply-link));
-      box-shadow: var(--ply-shadow-input), var(--ply-shadow-control);
+      box-shadow: var(--ply-shadow-input);
       cursor: crosshair;
       touch-action: none;
     }
@@ -97,7 +98,7 @@
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: var(--ply-radius-mark);
       background: repeating-conic-gradient(var(--ply-border) 0 25%, white 0 50%) 0 0 / 0.5rem 0.5rem;
-      box-shadow: var(--ply-shadow-chip);
+      box-shadow: none;
     }
 
     & > .editor > .visual > .preview > .swatch::after {

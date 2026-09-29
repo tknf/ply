@@ -27,7 +27,8 @@
     text-decoration: none;
     overflow-wrap: anywhere;
     cursor: pointer;
-    box-shadow: var(--ply-shadow-control);
+    /* 押す物は浮かせない。普段は平らにし、指を載せると面を少し濃くし、押すと内側へへこむ（ActionTileと同じ手触り）。 */
+    box-shadow: none;
     transition:
       background-color var(--ply-duration) ease,
       border-color var(--ply-duration) ease,
@@ -38,9 +39,12 @@
     }
 
     &:hover:not(:disabled) {
-      box-shadow: var(--ply-shadow-control-hover);
+      background-color: color-mix(in srgb, var(--ply-ink) 4%, var(--ply-surface));
+      background-image: none;
     }
     &:active:not(:disabled) {
+      background-color: color-mix(in srgb, var(--ply-ink) 6%, var(--ply-surface));
+      background-image: none;
       box-shadow: var(--ply-shadow-control-pressed);
     }
 
@@ -54,43 +58,57 @@
       line-height: var(--ply-control-leading);
     }
     /*
-      主操作と危険は役割の色の135度で塗る。塗りは指を載せても押しても変えず、
-      白い押す物と同じく、影が広がる・内側へ移る動きだけで応える。
+      主操作と危険は役割の色の135度で塗る。浮かせず、指を載せると塗りの上に薄い墨を重ねて少し濃くし、
+      押すと内側へへこむ。
     */
     &[data-variant="primary"],
     &[data-current="true"] {
+      --ply-button-fill: var(--ply-fill-primary);
       background: var(--ply-link);
-      background-image: var(--ply-fill-primary);
+      background-image: var(--ply-button-fill);
       border-color: var(--ply-link);
     }
     &[data-variant="danger"] {
+      --ply-button-fill: var(--ply-fill-danger);
       background: var(--ply-danger);
-      background-image: var(--ply-fill-danger);
+      background-image: var(--ply-button-fill);
       border-color: var(--ply-danger);
     }
     &:is([data-variant="primary"], [data-variant="danger"], [data-current="true"]) {
       color: var(--ply-surface);
-      box-shadow: var(--ply-shadow-control-primary);
+      box-shadow: none;
 
       &:hover:not(:disabled) {
-        box-shadow: var(--ply-shadow-control-primary-hover);
+        background-image: linear-gradient(rgb(0 0 0 / 8%), rgb(0 0 0 / 8%)), var(--ply-button-fill);
       }
 
       &:active:not(:disabled) {
+        background-image:
+          linear-gradient(rgb(0 0 0 / 12%), rgb(0 0 0 / 12%)), var(--ply-button-fill);
         box-shadow: var(--ply-shadow-control-primary-pressed);
       }
     }
 
+    /*
+      文字だけの操作はHEYと同じく下線を引かず、青い文字にする。
+      指を載せると淡い青のピルの面が現れ、押すと少し濃くなる。
+    */
     &[data-variant="link"] {
       background: transparent;
       border-color: transparent;
       color: var(--ply-link);
       box-shadow: none;
       padding-inline: calc(4em / 7);
-      text-decoration: underline;
-      text-underline-offset: 0.2em;
+      text-decoration: none;
+      transition: background-color var(--ply-duration) ease;
       &:is(:hover, :active) {
         box-shadow: none;
+      }
+      &:hover:not(:disabled) {
+        background: color-mix(in srgb, var(--ply-link) 8%, transparent);
+      }
+      &:active:not(:disabled) {
+        background: color-mix(in srgb, var(--ply-link) 14%, transparent);
       }
     }
 

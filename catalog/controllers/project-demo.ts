@@ -1,71 +1,56 @@
 import { Controller } from "@hotwired/stimulus";
-import { getProgressState } from "../../src/internal/progress";
+
+/**
+ * 利用例のプロジェクトの画面の動き。ボードの項目を言葉と担当で絞り込み、Dialogから新しい項目を「これから」へ足す。
+ * 項目を運ぶ動きはBoardControllerが持つ。
+ */
 export class ProjectDemoController extends Controller<HTMLElement> {
+  private query = "";
+  private person = "all";
+
   connect = () => {
-    const button = this.element.querySelector('button[type="submit"]');
-    if (button instanceof HTMLButtonElement) button.disabled = false;
+    for (const button of this.element.querySelectorAll<HTMLButtonElement>(
+      'button[type="submit"][form="project-add-form"]',
+    ))
+      button.disabled = false;
   };
-  filter = (event: Event) => {
-    const input = event.target;
-    if (!(input instanceof HTMLInputElement)) return;
-    const query = input.value.trim().toLocaleLowerCase();
+
+  private items = () =>
+    Array.from(this.element.querySelectorAll<HTMLElement>(".ply-board .ply-board-item"));
+
+  private apply = () => {
     let visible = 0;
-    for (const card of this.element.querySelectorAll<HTMLElement>(".ply-board .ply-card")) {
-      card.hidden = !(card.querySelector("h3")?.textContent ?? "")
-        .toLocaleLowerCase()
-        .includes(query);
-      if (!card.hidden) visible += 1;
+    for (const item of this.items()) {
+      const label = (item.dataset.boardLabel ?? "").toLocaleLowerCase();
+      const owner = item.querySelector<HTMLElement>("[data-owner]")?.dataset.owner;
+      item.hidden = !label.includes(this.query) || (this.person !== "all" && owner !== this.person);
+      if (!item.hidden) visible += 1;
     }
     const status = this.element.querySelector('[data-project-demo-target="filterStatus"]');
-    if (status) status.textContent = query ? `${visible}件のタスクが見つかりました。` : "";
+    if (status)
+      status.textContent =
+        this.query || this.person !== "all" ? `${visible}件のタスクが見つかりました。` : "";
   };
-  check = () => {
-    const checks = Array.from(
-      this.element.querySelectorAll<HTMLInputElement>(
-        '[data-project-demo-target="checklist"] input[type="checkbox"]',
-      ),
-    );
-    const completed = checks.filter((input) => input.checked).length;
-    const progress = this.element.querySelector('[data-project-demo-target="progress"] progress');
-    if (progress instanceof HTMLProgressElement) {
-      const state = getProgressState(completed, checks.length);
-      const percentageLabel = state.label ?? "0%";
-      progress.max = state.limit;
-      progress.value = state.current ?? 0;
-      progress.textContent = percentageLabel;
-      const presentation = progress.closest(".ply-progress");
-      const label = presentation?.querySelector(".value");
-      if (label) label.textContent = percentageLabel;
-      const track = presentation?.querySelector<HTMLElement>(".track");
-      if (track) track.dataset.state = state.complete ? "complete" : "determinate";
-      const fill = track?.querySelector<HTMLElement>(".fill");
-      if (fill && state.percentage !== undefined) fill.style.inlineSize = `${state.percentage}%`;
-    }
+
+  filter = (event: Event) => {
+    if (!(event.target instanceof HTMLInputElement)) return;
+    this.query = event.target.value.trim().toLocaleLowerCase();
+    this.apply();
   };
-  private refresh = (message: string) => {
-    for (const column of this.element.querySelectorAll(".ply-board > section")) {
-      const count = column.querySelector("h3 > small");
-      if (count) count.textContent = String(column.querySelectorAll(".ply-card").length);
-    }
-    for (const status of this.element.querySelectorAll('[data-project-demo-target="status"]'))
-      status.textContent = message;
+
+  /** 担当の切り替え（ToggleGroupのtoggle-group:change）。何も選ばない時は全員に戻す。 */
+  owner = (event: Event) => {
+    if (!(event instanceof CustomEvent)) return;
+    const detail: unknown = event.detail;
+    const selected =
+      typeof detail === "object" && detail !== null && "selected" in detail
+        ? detail.selected
+        : undefined;
+    const value = Array.isArray(selected) ? selected[0] : undefined;
+    this.person = typeof value === "string" ? value : "all";
+    this.apply();
   };
-  move = (event: Event) => {
-    const select = event.target;
-    if (!(select instanceof HTMLSelectElement)) return;
-    const card = select.closest(".ply-card");
-    const column = this.element
-      .querySelectorAll(".ply-board > section > .items")
-      .item(Number(select.value));
-    if (!card || !column) return;
-    column.append(card);
-    if (card instanceof HTMLElement)
-      card.dataset.state = select.value === "2" ? "complete" : "active";
-    select.focus();
-    this.refresh(
-      `${card.querySelector("h3")?.textContent ?? "仕事"}を${select.selectedOptions.item(0)?.textContent ?? "選択した列"}へ移動しました。`,
-    );
-  };
+
   add = (event: SubmitEvent) => {
     event.preventDefault();
     const form = event.target;
@@ -74,32 +59,38 @@ export class ProjectDemoController extends Controller<HTMLElement> {
     if (!(input instanceof HTMLInputElement)) return;
     const title = input.value.trim();
     if (!title) {
-      input.setCustomValidity("仕事の名前を入力してください。");
+      input.setCustomValidity("タスクの名前を入力してください。");
       input.reportValidity();
       input.addEventListener("input", () => input.setCustomValidity(""), { once: true });
       return;
     }
-    const template = this.element.querySelector(".ply-card");
+    const template = this.items()[0];
     const column = this.element.querySelector(".ply-board > section > .items");
     if (!template || !column) return;
-    const card = template.cloneNode(true);
-    if (!(card instanceof HTMLElement)) return;
-    const heading = card.querySelector("h3");
-    if (heading) heading.textContent = title;
-    const description = card.querySelector(":scope > .body");
-    if (description) description.textContent = "";
-    card.removeAttribute("hidden");
-    card.dataset.state = "new";
-    const category = card.querySelector(":scope > .eyebrow");
-    if (category) category.remove();
-    const select = card.querySelector("select");
-    if (select) {
-      select.value = "0";
-      select.setAttribute("aria-label", `${title}の状態`);
+    const item = template.cloneNode(true);
+    if (!(item instanceof HTMLElement)) return;
+    item.hidden = false;
+    item.dataset.boardId = `new-${Date.now()}`;
+    item.dataset.boardLabel = title;
+    const code = item.querySelector(":scope > .code");
+    if (code) code.textContent = "新規";
+    const body = item.querySelector(":scope > .body");
+    if (body) {
+      const heading = document.createElement("h4");
+      heading.textContent = title;
+      const owner = body.querySelector("[data-owner]");
+      body.replaceChildren(heading, ...(owner ? [owner] : []));
     }
-    column.append(card);
+    item
+      .querySelector(":scope > [data-board-handle]")
+      ?.setAttribute("aria-label", `「${title}」を移動`);
+    column.prepend(item);
+    const count = column.parentElement?.querySelector(":scope > .title > small");
+    if (count)
+      count.textContent = String(column.querySelectorAll(":scope > .ply-board-item").length);
     input.value = "";
     input.focus();
-    this.refresh(`${title}を追加しました。`);
+    const status = this.element.querySelector('[data-project-demo-target="status"]');
+    if (status) status.textContent = `${title}を追加しました。`;
   };
 }

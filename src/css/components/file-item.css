@@ -2,9 +2,10 @@
   .ply-file-item {
     container: ply-file-item / inline-size;
     display: grid;
-    grid-template-columns: 2rem minmax(0, 1fr);
+    /* 印の札と中身の縮小は同じ40pxの正方形の列に置き、混ぜても名前の書き始めをそろえる。 */
+    grid-template-columns: 2.5rem minmax(0, 1fr);
     align-items: center;
-    gap: var(--ply-space-2);
+    gap: var(--ply-space-3);
     min-inline-size: 0;
     padding-block: var(--ply-space-2);
     color: var(--ply-text);
@@ -19,6 +20,27 @@
       border-radius: var(--ply-radius-control);
       background: var(--ply-info-soft);
       color: var(--ply-link);
+    }
+    /*
+      中身の縮小はHEYのファイル一覧と同じく、角丸を付けず淡い縁だけで囲み、印と同じ高さの正方形に切り抜く。
+      送信待ちは縮小を薄くする。
+    */
+    & > .preview {
+      grid-column: 1;
+      inline-size: 2.5rem;
+      block-size: 2.5rem;
+      overflow: hidden;
+      border: var(--ply-stroke-width) solid color-mix(in srgb, var(--ply-ink) 15%, transparent);
+      background: var(--ply-background);
+      & > :is(img, svg:not(.ply-icon)) {
+        display: block;
+        inline-size: 100%;
+        block-size: 100%;
+        object-fit: cover;
+      }
+    }
+    &[data-state="pending"] > .preview {
+      opacity: 0.6;
     }
     /* 送信待ちは印を控えめな色にし、状態は説明の文言で伝える。 */
     &[data-state="pending"] > .icon {

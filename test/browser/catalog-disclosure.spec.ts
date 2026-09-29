@@ -1,14 +1,10 @@
 import { expect, test } from "@playwright/test";
-import { redesignedComponentIds } from "../../catalog/redesigned-components";
+import { appPaths, componentIds as redesignedComponentIds } from "./catalog-pages";
 
 test("全コンポーネントのコードを改行・色分けしDisclosureの見出しを保つ", async ({ page }) => {
   test.setTimeout(120000);
   await page.setViewportSize({ width: 375, height: 900 });
-  const paths = [
-    ...redesignedComponentIds.map((id) => `/components/${id}`),
-    "/reservation",
-    "/files",
-  ];
+  const paths = [...redesignedComponentIds.map((id) => `/components/${id}`), ...appPaths];
   for (const path of paths) {
     await page.goto(path);
     const result = await page.locator(".ply-disclosure > summary").evaluateAll((elements) => {
@@ -40,12 +36,12 @@ test("全コンポーネントのコードを改行・色分けしDisclosureの�
     expect(result.wrapped, path).toEqual([]);
     if (path.startsWith("/components/")) {
       expect(result.code, path).toBe(2);
-      const group = page.getByRole("group", { name: "利用例のコード", exact: true });
+      const group = page.getByRole("group", { name: "見本のコード", exact: true });
       await expect(group.locator("code")).toHaveCount(0);
       for (const summary of await group.locator("summary").all()) await summary.press("Enter");
       await expect(group.locator("code")).toHaveCount(2);
       const samples = await page
-        .getByRole("group", { name: "利用例のコード", exact: true })
+        .getByRole("group", { name: "見本のコード", exact: true })
         .locator(".ply-code-block code")
         .evaluateAll((elements) =>
           elements.map((element) => ({
@@ -72,7 +68,7 @@ for (const width of [375, 1280])
   test(`コード欄を${width}pxと文字200%で開閉しても見出しを一行に保つ`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/components/command-menu");
-    const group = page.getByRole("group", { name: "利用例のコード", exact: true });
+    const group = page.getByRole("group", { name: "見本のコード", exact: true });
     for (const zoom of ["100%", "200%"]) {
       await page.evaluate((value) => {
         document.documentElement.style.fontSize = value;

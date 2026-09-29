@@ -1,0 +1,43 @@
+@layer components {
+  /*
+    必要な時だけ足す欄。足した欄を上に積み、足せる項目を細い縁のピルのチップで下に並べる（HEYの予定）。
+    stackはHEYの検索の条件のように、チップを縦に並べる。チップは墨の淡い文字で、指を載せると墨に濃くする。
+  */
+  .ply-optional-fields {
+    display: grid;
+    gap: var(--ply-space-3);
+    min-inline-size: 0;
+    & > .fields {
+      display: grid;
+      gap: var(--ply-space-3);
+      min-inline-size: 0;
+      &:not(:has(> .field:not([hidden]))) {
+        display: none;
+      }
+    }
+    & > .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ply-space-2);
+      & > .ply-button.chip {
+        color: var(--ply-muted);
+        &:hover:not(:disabled) {
+          color: var(--ply-text);
+        }
+      }
+    }
+    &[data-layout="stack"] > .chips {
+      flex-direction: column;
+      align-items: start;
+      gap: var(--ply-space-1);
+      & > .ply-button.chip {
+        border-color: transparent;
+        background: transparent;
+        box-shadow: none;
+        &:hover:not(:disabled) {
+          background: var(--ply-background);
+        }
+      }
+    }
+  }
+}

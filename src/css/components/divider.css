@@ -23,11 +23,31 @@
       block-size: auto;
       background: none;
     }
+    /* 操作がある時は、狭い場所で操作を次の行の終わりの側へ回す。 */
+    &:has(> .actions) {
+      flex-wrap: wrap;
+      row-gap: var(--ply-space-1);
+    }
     &:has(> span)::after {
       content: "";
       flex: 1 0 2rem;
       block-size: var(--ply-divider-size);
       background: var(--ply-divider-paint) 0 50% / 100% 100% no-repeat;
+    }
+    /* 線の終わりの操作。名前・線・操作の順に並べ、操作は線から少し離す。 */
+    & > .actions {
+      display: flex;
+      flex: none;
+      margin-inline-start: auto;
+      align-items: center;
+      order: 2;
+      gap: var(--ply-space-2);
+    }
+    &:has(> .actions)::after {
+      order: 1;
+    }
+    &[data-bare="true"]::after {
+      order: 0;
     }
     &[data-line="dashed"] {
       --ply-divider-color: var(--ply-perforation);

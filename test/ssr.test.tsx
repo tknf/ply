@@ -99,10 +99,10 @@ test("FilterBarの各項目は共通のActionLinkを使う", async () => {
   }
 });
 
-test("予定の事例はURLの月のカレンダーと、その月の表示形式を現在地として返す", async () => {
+test("予定の画面はURLの月のカレンダーと、その月の表示形式を現在地として返す", async () => {
   for (const [path, month] of [
-    ["/examples/schedule/august", 8],
-    ["/examples/schedule", 9],
+    ["/apps/schedule?month=8", 8],
+    ["/apps/schedule", 9],
   ] as const) {
     const response = await app.request(`http://localhost${path}`);
     expect(response.status).toBe(200);
@@ -111,7 +111,7 @@ test("予定の事例はURLの月のカレンダーと、その月の表示形�
     expect(result).toContain(`aria-label="2026年${month}月の日付グリッド"`);
     expect(result).toMatch(
       new RegExp(
-        `href="/examples/schedule\\?year=2026&amp;month=${month}&amp;view=month&amp;week=\\d+" aria-current="page"`,
+        `href="/apps/schedule\\?year=2026&amp;month=${month}&amp;view=month&amp;week=\\d+" aria-current="page"`,
       ),
     );
   }
@@ -291,7 +291,7 @@ test("Toolbarの使用例は標準フォーム操作を持ち表示と掲載コ�
   const result = await response.text();
   const ids = [...result.matchAll(/(?<![-\w])id="([^"]+)"/g)].map((match) => match[1]);
   expect(new Set(ids).size).toBe(ids.length);
-  expect(result).toContain('action="/search" method="get"');
+  expect(result).toContain('action="/apps/search" method="get"');
   for (const prefix of ["hono-toolbar"]) {
     expect(result).toContain(`id="${prefix}-query"`);
     expect(result).toContain(`aria-describedby="${prefix}-help"`);

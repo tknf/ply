@@ -11,7 +11,7 @@ export default () => (
       id="tooltip-link"
       text="設定画面を開きます。"
       trigger={(attributes) => (
-        <ActionLink {...attributes} href="/examples/settings">
+        <ActionLink {...attributes} href="/apps/settings">
           設定へ
         </ActionLink>
       )}

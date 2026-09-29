@@ -1,0 +1,45 @@
+import type { Child } from "hono/jsx";
+import { classes, type ElementProps } from "./types";
+
+export type SettingListItem = {
+  label: string;
+  /** 名前の下に添える淡い補足（メールアドレスなど）。 */
+  description?: Child;
+  /** 名前の前に置く人の円や印。 */
+  leading?: Child;
+  /** 行の終わりに置く操作（Switch・チェック・役割の丸など）。 */
+  control: Child;
+};
+export type SettingListProps = ElementProps<"ul"> & {
+  label: string;
+  items: readonly SettingListItem[];
+};
+
+/**
+ * Fizzyの設定と同じく、名前と行の終わりの操作を点線でつなぐ設定の行。
+ * 「Everyone ……… スイッチ」「人の名前 ……… ✓」のように、どの名前にどの操作が付くかを目でたどれるようにする。
+ */
+export const SettingList = ({
+  label,
+  items,
+  class: className,
+  ...attributes
+}: SettingListProps) => (
+  <ul {...attributes} class={classes("ply-setting-list", className)} aria-label={label}>
+    {items.map((item) => (
+      <li>
+        {item.leading != null && item.leading !== false && (
+          <span class="leading">{item.leading}</span>
+        )}
+        <span class="text">
+          <span class="name">{item.label}</span>
+          {item.description != null && item.description !== false && (
+            <small class="description">{item.description}</small>
+          )}
+        </span>
+        <span class="leader" aria-hidden="true" />
+        <span class="control">{item.control}</span>
+      </li>
+    ))}
+  </ul>
+);

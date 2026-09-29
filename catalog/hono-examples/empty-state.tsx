@@ -3,7 +3,7 @@ export default () => (
   <div class="ply-stack">
     <EmptyState
       title="条件に合う記事が見つかりませんでした"
-      actions={<ActionLink href="/search">条件をクリアする</ActionLink>}
+      actions={<ActionLink href="/apps/search">条件をクリアする</ActionLink>}
     >
       <p>キーワードを短くするか、公開状態の絞り込みを外してみてください。</p>
     </EmptyState>
@@ -13,7 +13,7 @@ export default () => (
           kind="start"
           title="最初の記事を書いてみましょう"
           actions={
-            <ActionLink href="/example" variant="primary">
+            <ActionLink href="/apps/docs" variant="primary">
               記事を書く
             </ActionLink>
           }
@@ -34,10 +34,10 @@ export default () => (
           icon={<Icon name="calendar" />}
           actions={
             <>
-              <ActionLink href="/example" variant="primary">
+              <ActionLink href="/apps/docs" variant="primary">
                 予約を入れる
               </ActionLink>
-              <ActionLink href="/example">予約の受け方を読む</ActionLink>
+              <ActionLink href="/apps/docs">予約の受け方を読む</ActionLink>
             </>
           }
         >
@@ -52,7 +52,7 @@ export default () => (
           <EmptyState
             kind="start"
             title="このフォルダにはまだ資料がありません。最初の資料を追加しましょう"
-            actions={<ActionLink href="/example">資料を追加する</ActionLink>}
+            actions={<ActionLink href="/apps/docs">資料を追加する</ActionLink>}
           >
             <p>PDF・画像・表計算のファイルを置けます。</p>
           </EmptyState>

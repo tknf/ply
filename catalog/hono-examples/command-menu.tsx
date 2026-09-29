@@ -7,7 +7,7 @@ export default () => (
       label="Plyの道具箱"
       action="command-menu:select->command-demo#selected"
       shortcuts={[
-        { label: "カタログ", href: "/components", icon: "grid", accent: "green" },
+        { label: "カタログ", href: "/", icon: "grid", accent: "green" },
         { label: "入力", href: "/components/field", icon: "pencil", accent: "blue" },
         { label: "予定", href: "/components/calendar", icon: "calendar", accent: "amber" },
         { label: "通知", href: "/components/message-list", icon: "mail", accent: "coral" },

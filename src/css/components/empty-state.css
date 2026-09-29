@@ -1,16 +1,17 @@
 @layer components {
   /*
-    まだ何もない場所は、中央に円の中のアイコン・題名・説明・操作をゆったり縦に並べる。
-    図は描かず、アイコンを淡い円に控えめに置く。場面は円の色だけで分ける（終わった時は完了の色）。
+    まだ何もない場所。Fizzyの空の場所と同じく、中央に破線で囲んだ札を置き、太字の題名と説明を書く。
+    破線はPlyでも「ここに入る・置ける」の印なので、これから物が入る場所を示す。札と文字は場面の色で染める
+    （探して0件は灰、初めては青、終わった時は緑）。操作は札の下に置く。
   */
   .ply-empty-state {
+    --ply-empty-color: var(--ply-muted);
     display: grid;
     justify-items: center;
+    gap: var(--ply-space-5);
     min-inline-size: 0;
     inline-size: 100%;
-    max-inline-size: 36rem;
-    margin-inline: auto;
-    padding-block: var(--ply-space-12);
+    padding-block: var(--ply-space-8);
     padding-inline: var(--ply-space-4);
     color: var(--ply-text);
     font-size: var(--ply-label);
@@ -19,35 +20,55 @@
     overflow-wrap: anywhere;
     /* 日本語は文節の切れ目で折り返し、中央に揃えた行の端に一、二文字だけを残さない。 */
     word-break: auto-phrase;
-    & > .symbol {
+    &[data-kind="start"] {
+      --ply-empty-color: var(--ply-link);
+    }
+    &[data-kind="complete"] {
+      --ply-empty-color: var(--ply-success);
+    }
+    /* 札。場面の色の2pxの破線と、ごく淡い同じ色の面。 */
+    & > .slip {
       display: grid;
-      place-items: center;
-      inline-size: 3.5rem;
-      block-size: 3.5rem;
-      border-radius: 50%;
-      background: var(--ply-info-soft);
-      color: var(--ply-link);
-      font-size: 1.5rem;
-    }
-    & > .title {
-      margin: 0;
-      margin-block-start: var(--ply-space-5);
-      font-size: var(--ply-section-title);
-      font-weight: 600;
-      line-height: 1.4;
-      text-wrap: balance;
-    }
-    & > .body {
+      justify-items: center;
       min-inline-size: 0;
-      margin-block-start: var(--ply-space-3);
-      color: var(--ply-muted);
-      /* 中央に揃えた説明は行の長さをそろえ、文節の区切りが語の途中になる所（下／書き）で切らない。 */
-      text-wrap: balance;
-      & > * + * {
-        margin-block-start: var(--ply-space-2);
+      max-inline-size: min(100%, 28rem);
+      padding-block: var(--ply-space-5);
+      padding-inline: var(--ply-space-6);
+      border: var(--ply-frame-width) dashed
+        color-mix(in srgb, var(--ply-empty-color) 35%, var(--ply-surface));
+      border-radius: var(--ply-radius-field);
+      background: color-mix(in srgb, var(--ply-empty-color) 5%, var(--ply-surface));
+      & > .symbol {
+        display: grid;
+        place-items: center;
+        inline-size: 2rem;
+        block-size: 2rem;
+        border-radius: 50%;
+        color: var(--ply-surface);
+        font-size: 1rem;
       }
-      &:empty {
-        display: none;
+      & > .symbol + .title {
+        margin-block-start: var(--ply-space-3);
+      }
+      & > .title {
+        margin: 0;
+        color: color-mix(in srgb, var(--ply-empty-color) 70%, var(--ply-text));
+        font-size: var(--ply-body);
+        font-weight: 700;
+        line-height: 1.5;
+        text-wrap: balance;
+      }
+      & > .body {
+        min-inline-size: 0;
+        margin-block-start: var(--ply-space-1);
+        color: var(--ply-muted);
+        text-wrap: balance;
+        & > * + * {
+          margin-block-start: var(--ply-space-1);
+        }
+        &:empty {
+          display: none;
+        }
       }
     }
     & > .actions {
@@ -55,13 +76,14 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: var(--ply-space-3);
-      margin-block-start: var(--ply-space-6);
     }
-    /* 終わった時は、完了の色の円に書き始めの側からペンでチェックを描く。 */
-    &[data-kind="complete"] > .symbol {
+    /* 渡された印は、場面の色で塗った丸に白く置く。終わった時は完了の色で、ペンでチェックを描く。 */
+    &:not([data-kind="complete"]) > .slip > .symbol {
+      background: var(--ply-empty-color);
+    }
+    &[data-kind="complete"] > .slip > .symbol {
       --ply-empty-state-pen-start: inset(0 100% 0 0);
-      background: var(--ply-success-soft);
-      color: var(--ply-success);
+      background: var(--ply-fill-success);
       &:dir(rtl) {
         --ply-empty-state-pen-start: inset(0 0 0 100%);
       }
@@ -79,12 +101,15 @@
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .ply-empty-state[data-kind="complete"] > .symbol > .ply-icon {
+    .ply-empty-state[data-kind="complete"] > .slip > .symbol > .ply-icon {
       animation: none;
     }
   }
   @media (forced-colors: active) {
-    .ply-empty-state > .symbol {
+    .ply-empty-state > .slip {
+      border-color: CanvasText;
+    }
+    .ply-empty-state > .slip > .symbol {
       outline: var(--ply-stroke-width) solid CanvasText;
     }
   }

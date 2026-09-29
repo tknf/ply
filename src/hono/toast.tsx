@@ -1,7 +1,7 @@
 import type { Child, PropsWithChildren } from "hono/jsx";
 import { Icon } from "./icon";
 import { OverlayClose, OverlayContent } from "./overlay-content";
-import type { Tone } from "./types";
+import { classes, type ElementProps, type Tone } from "./types";
 
 export type ToastProps = PropsWithChildren<{
   id: string;
@@ -48,4 +48,30 @@ export const Toast = ({
       actions={actions}
     />
   </aside>
+);
+
+export type ToastStackProps = PropsWithChildren<
+  ElementProps<"div"> & {
+    /** 束を置く場所。既定は書き終わりの側の下（左から右に読む画面では右下）。 */
+    placement?: "start" | "center" | "end";
+  }
+>;
+/**
+ * 開いているToastを、新しいものを手前にして束ねる。押すと広げ、外を押すかEscで畳む。
+ * 重ね方と広げ方はToastStackControllerが扱う。childrenにはToastだけを置く。
+ */
+export const ToastStack = ({
+  placement = "end",
+  children,
+  class: className,
+  ...attributes
+}: ToastStackProps) => (
+  <div
+    {...attributes}
+    class={classes("ply-toast-stack", className)}
+    data-controller="toast-stack"
+    data-placement={placement}
+  >
+    {children}
+  </div>
 );

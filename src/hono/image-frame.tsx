@@ -7,6 +7,8 @@ export type ImageFrameProps = ElementProps<"figure"> & {
   fit?: "contain" | "cover";
   missingLabel?: string;
   caption?: string;
+  /** 説明の下に淡い文字で添える大きさや日付（HEYの添付と同じ）。 */
+  meta?: string;
 };
 export const ImageFrame = ({
   src,
@@ -15,6 +17,7 @@ export const ImageFrame = ({
   fit = "contain",
   missingLabel = "画像なし",
   caption,
+  meta,
   class: className,
   ...attributes
 }: ImageFrameProps) => (
@@ -33,6 +36,11 @@ export const ImageFrame = ({
         </span>
       )}
     </div>
-    {caption && <figcaption>{caption}</figcaption>}
+    {(caption || meta) && (
+      <figcaption>
+        {caption && <span class="name">{caption}</span>}
+        {meta && <span class="meta">{meta}</span>}
+      </figcaption>
+    )}
   </figure>
 );

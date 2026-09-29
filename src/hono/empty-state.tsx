@@ -19,17 +19,22 @@ export const EmptyState = ({
   icon,
   class: className,
   ...attributes
-}: EmptyStateProps) => (
-  <section {...attributes} class={classes("ply-empty-state", className)} data-kind={kind}>
-    <div class="symbol" aria-hidden="true">
-      {icon != null && icon !== false ? (
-        icon
-      ) : (
-        <Icon name={kind === "complete" ? "check" : kind === "start" ? "pencil" : "search"} />
-      )}
-    </div>
-    <h3 class="title">{title}</h3>
-    <div class="body">{children}</div>
-    {actions != null && actions !== false && <div class="actions">{actions}</div>}
-  </section>
-);
+}: EmptyStateProps) => {
+  // 終わった時だけ、ペンで描くチェックを既定の印にする。他の場面は渡された時だけ印を置く。
+  const symbol =
+    icon != null && icon !== false ? icon : kind === "complete" ? <Icon name="check" /> : null;
+  return (
+    <section {...attributes} class={classes("ply-empty-state", className)} data-kind={kind}>
+      <div class="slip">
+        {symbol && (
+          <div class="symbol" aria-hidden="true">
+            {symbol}
+          </div>
+        )}
+        <h3 class="title">{title}</h3>
+        <div class="body">{children}</div>
+      </div>
+      {actions != null && actions !== false && <div class="actions">{actions}</div>}
+    </section>
+  );
+};

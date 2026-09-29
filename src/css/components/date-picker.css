@@ -298,9 +298,9 @@
     border-radius: var(--ply-radius-control);
   }
 
+  /* 下の操作（クリアなど）は線で区切らず、暦との間の余白だけで分ける。 */
   .ply-date-picker > .panel > .actions {
     display: grid;
-    border-block-start: var(--ply-stroke-width) solid var(--ply-border);
     padding-block-start: var(--ply-space-1);
 
     gap: var(--ply-space-2);

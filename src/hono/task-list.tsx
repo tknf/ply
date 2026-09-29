@@ -5,7 +5,7 @@ import { classes, type ElementProps } from "./types";
 
 export type TaskListProps = ElementProps<"div"> & {
   label: string;
-  /** 一覧の外側の見出し。開閉でき、未完了の数と進み具合を添える。 */
+  /** 一覧の外側の見出し。開閉でき、終えた数と進み具合を添える。 */
   heading?: string;
   /** 行の一覧の上に書く、この一覧の名前。 */
   title?: string;
@@ -85,16 +85,19 @@ export const TaskList = ({
       data-controller={controller}
       data-action={action}
       style={`--ply-task-progress: ${items.length ? done / items.length : 0}`}
+      data-complete={items.length > 0 && done === items.length ? "true" : undefined}
     >
       <summary>
         <span class="marker" aria-hidden="true">
           <Icon name="caret" />
         </span>
         <span class="name">{heading}</span>
-        <span class="remaining" data-task-list-target="remaining">
-          未完了{items.length - done}件
+        {/* Fizzyのカードの手順と同じく、終えた割合だけ塗る円と「終えた数/全体」で進み具合を示す。 */}
+        <span class="pie" aria-hidden="true" />
+        <span class="count">
+          <span class="ply-visually-hidden">完了</span>
+          <span data-task-list-target="done">{done}</span>/{items.length}
         </span>
-        <span class="meter" aria-hidden="true" />
       </summary>
       {sheet}
     </details>

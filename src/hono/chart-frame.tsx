@@ -48,7 +48,10 @@ export const ChartFrame = ({
     )}
     {/* 数値の表は他の開閉と同じDisclosureで畳む。表の見た目はply-tableの枠が持つ。 */}
     <Disclosure class="data" summary={tableLabel}>
-      <div class="ply-table">{table}</div>
+      {/* Tableは準備中の本文を隠すので、表示できる状態（ready）を明示する。 */}
+      <div class="ply-table" data-state="ready">
+        {table}
+      </div>
     </Disclosure>
     {source && <p class="source">出典：{source}</p>}
   </figure>

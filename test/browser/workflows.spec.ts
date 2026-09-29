@@ -14,12 +14,11 @@ for (const width of [375, 540, 768, 1280]) {
     await page.setViewportSize({ width, height: 1000 });
     for (const path of [
       "/",
-      "/example",
-      "/sales",
-      "/files",
-      "/review",
-      "/search",
-      "/search/empty",
+      "/apps/docs?article=export",
+      "/apps/sales",
+      "/apps/files",
+      "/apps/search?q=招待",
+      "/apps/search?q=見つからない言葉",
     ]) {
       await page.goto(path);
       await expect(page.locator("h1")).toBeVisible();
@@ -30,7 +29,7 @@ for (const width of [375, 540, 768, 1280]) {
           .toBe(true);
         await page.screenshot({
           path: testInfo.outputPath(
-            `${(path.slice(1) || "home").replaceAll("/", "-")}-${width}-${zoom}.png`,
+            `${path.replace(/[^a-z0-9]+/gi, "-") || "home"}-${width}-${zoom}.png`,
           ),
           fullPage: true,
         });
@@ -56,8 +55,11 @@ test("ダイアログをキーボードで開閉しトリガーへ戻る", async
 
 test("操作メニュー・タブが上流controllerで操作できる", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 900 });
-  await page.goto("/files");
-  const trigger = page.getByRole("button", { name: "操作", exact: true });
+  await page.goto("/apps/files");
+  const trigger = page.getByRole("button", {
+    name: "ヘルプセンターの構成案.pdfの操作",
+    exact: true,
+  });
   await trigger.focus();
   await page.keyboard.press("ArrowDown");
   await expect(page.getByRole("menu")).toBeVisible();
@@ -69,11 +71,11 @@ test("操作メニュー・タブが上流controllerで操作できる", async (
   }
   await page.keyboard.press("Escape");
   await expect(trigger).toBeFocused();
-  await page.goto("/sales");
+  await page.goto("/apps/sales");
   await page.getByRole("tab", { name: "8月" }).focus();
   await page.keyboard.press("ArrowRight");
   await expect(page.getByRole("tab", { name: "7月" })).toHaveAttribute("aria-selected", "true");
-  await expect(page.getByRole("tabpanel", { name: "7月" })).toContainText("¥105,700");
+  await expect(page.getByRole("tabpanel", { name: "7月" })).toContainText("¥1,057,000");
 });
 
 test("Turbo遷移とDOM再接続後もイベントが重複しない", async ({ page }) => {
@@ -111,8 +113,9 @@ test("Turbo遷移とDOM再接続後もイベントが重複しない", async ({ 
 });
 
 test("ファイル選択・エラー関連・フォーカスが成立する", async ({ page }) => {
-  await page.goto("/files");
-  await page.getByLabel("差し替えるファイル", { exact: true }).setInputFiles({
+  await page.goto("/apps/files");
+  await page.getByRole("button", { name: "＋ アップロード" }).click();
+  await page.getByLabel("資料", { exact: true }).setInputFiles({
     name: "長い日本語の資料_2026.pdf",
     mimeType: "application/pdf",
     buffer: Buffer.from("sample"),
@@ -120,7 +123,7 @@ test("ファイル選択・エラー関連・フォーカスが成立する", as
   await expect
     .poll(() =>
       page
-        .getByLabel("差し替えるファイル", { exact: true })
+        .getByLabel("資料", { exact: true })
         .evaluate((input) =>
           input instanceof HTMLInputElement ? input.files?.[0]?.name : undefined,
         ),
@@ -141,8 +144,8 @@ test("ファイル選択・エラー関連・フォーカスが成立する", as
 });
 
 test("CSSの順序交換とforced-colorsでコンポーネントが操作可能", async ({ page }) => {
-  await page.goto("/example");
-  const button = page.getByRole("button", { name: "下書きを保存" });
+  await page.goto("/apps/docs?article=export");
+  const button = page.getByRole("button", { name: "公開する", exact: true });
   const colors = () =>
     button.evaluate((element) => ({
       color: getComputedStyle(element).color,
@@ -178,59 +181,37 @@ test("JavaScriptなしでもフォーム・表・開閉を利用できる", asyn
   });
   try {
     const page = await context.newPage();
-    await page.goto("http://127.0.0.1:5178/files");
-    await page.getByText("ファイル選択について", { exact: true }).click();
-    await expect(page.getByText("ファイルは送信されません。", { exact: false })).toBeVisible();
-    await page.getByText("利用案内を差し替える", { exact: true }).click();
-    await expect(page.getByLabel("差し替えるファイル", { exact: true })).toBeVisible();
-    await page.goto("http://127.0.0.1:5178/sales");
-    await expect(page.getByRole("table")).toBeVisible();
-    await page.goto("http://127.0.0.1:5178/example");
-    await page.getByLabel("記事名", { exact: true }).fill("JavaScriptなしの入力");
-    await expect(page.getByRole("button", { name: "下書きを保存" })).toBeDisabled();
-    await page.getByText("記事の設定", { exact: true }).click();
-    await expect(page.getByLabel("カテゴリー", { exact: true })).toBeVisible();
-    await expect(
-      page.getByText("入力と設定の開閉は利用できます。", { exact: false }),
-    ).toBeVisible();
+    await page.goto("http://127.0.0.1:5178/apps/files");
+    await page.getByRole("link", { name: /^PDF/ }).click();
+    await expect(page.getByRole("table")).toContainText("公開前チェックリスト.pdf");
+    await expect(page.getByRole("table")).not.toContainText("よくある質問の集計.csv");
+    await page.goto("http://127.0.0.1:5178/apps/sales");
+    await expect(page.getByRole("table").first()).toBeVisible();
+    await page.goto("http://127.0.0.1:5178/apps/search");
+    await page.getByRole("searchbox", { name: "記事と資料を探す" }).fill("招待");
+    await page.getByRole("button", { name: "検索", exact: true }).click();
+    await expect(page.getByRole("link", { name: "メンバーを招待する" })).toBeVisible();
+    await page.goto("http://127.0.0.1:5178/apps/docs?article=export");
+    await page.getByRole("textbox", { name: "題名", exact: true }).fill("JavaScriptなしの入力");
+    await expect(page.getByRole("textbox", { name: "題名", exact: true })).toHaveValue(
+      "JavaScriptなしの入力",
+    );
   } finally {
     await context.close();
   }
 });
 
-test("ファイルの選択・反映・取り消しが実際の入力と連動する", async ({ page }) => {
-  await page.goto("/files");
-  const input = page.getByLabel("差し替えるファイル", { exact: true });
-  await input.setInputFiles({
+test("資料のアップロードで選んだファイルを名前と大きさで確かめられる", async ({ page }) => {
+  await page.goto("/apps/files");
+  await page.getByRole("button", { name: "＋ アップロード" }).click();
+  const dialog = page.getByRole("dialog", { name: "資料をアップロード" });
+  await expect(dialog).toBeVisible();
+  await dialog.getByLabel("資料", { exact: true }).setInputFiles({
     name: "確認用.pdf",
     mimeType: "application/pdf",
-    buffer: Buffer.from("sample"),
+    buffer: Buffer.alloc(2048),
   });
-  await expect(page.locator('[data-file-preview-target="status"]')).toContainText("確認用.pdf");
-  await page.getByRole("button", { name: "この画面に反映" }).click();
-  await expect(page.locator('[data-file-preview-target="current"] strong')).toHaveText(
-    "確認用.pdf",
-  );
-  await expect(page.locator('[data-file-preview-target="status"]')).toHaveText(
-    "この画面に反映しました。",
-  );
-  await expect(page.getByRole("button", { name: "この画面に反映" })).toBeDisabled();
-  await input.setInputFiles({
-    name: "別の画像.jpg",
-    mimeType: "image/jpeg",
-    buffer: Buffer.from("photo"),
-  });
-  await page.getByRole("button", { name: "選択を取り消す" }).click();
-  expect(
-    await input.evaluate((element) =>
-      element instanceof HTMLInputElement ? element.files?.length : -1,
-    ),
-  ).toBe(0);
-  await expect(page.locator('[data-file-preview-target="current"] strong')).toHaveText(
-    "確認用.pdf",
-  );
-  await page.reload();
-  await expect(page.locator('[data-file-preview-target="current"] strong')).toHaveText(
-    "利用案内と申し込み手順.pdf",
-  );
+  await expect(dialog.getByRole("listitem")).toHaveText("確認用.pdf2 KB");
+  await dialog.getByRole("button", { name: "選択を解除", exact: true }).click();
+  await expect(dialog.getByRole("list")).toBeHidden();
 });

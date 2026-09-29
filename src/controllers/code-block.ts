@@ -82,7 +82,8 @@ export class CodeBlockController extends Controller<HTMLElement> {
       if (controller instanceof ToastController) controller.hide();
       else other.hidePopover();
     }
-    const label = this.element.querySelector("figcaption > .label")?.textContent ?? "コード";
+    const label =
+      this.element.querySelector(".ply-layer-card > .heading > .title")?.textContent ?? "コード";
     status.textContent = detail.ok
       ? `${label}をコピーしました`
       : "コピーできませんでした。コードを選択してコピーしてください。";

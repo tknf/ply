@@ -1,0 +1,72 @@
+@layer components {
+  /*
+    文の中の選択。前後の文と同じ大きさ・行高のまま、選べる語を青い太字にし、終わりに小さな▾を添える。
+    Tagと同じく淡い青の縁のピルで囲み、文の中で「ここは押して変えられる」と見分けられるようにする。
+    下線は引かず、指を載せると淡い青の面を出す。幅は選んだ語に合わせる。
+  */
+  .ply-inline-select {
+    position: relative;
+    display: inline-flex;
+    min-inline-size: 0;
+    align-items: baseline;
+    /* 日本語の文は語の間に空白を置かないので、縁と前後の文字が触れないよう少し離す。 */
+    margin-inline: 0.2em;
+    max-inline-size: calc(100% - 0.4em);
+    border: var(--ply-stroke-width) solid
+      color-mix(in srgb, var(--ply-link) 35%, var(--ply-surface));
+    border-radius: var(--ply-radius-pill);
+    color: var(--ply-link);
+    font-weight: 700;
+    vertical-align: baseline;
+    transition:
+      background-color var(--ply-duration) ease,
+      border-color var(--ply-duration) ease;
+    & > select {
+      appearance: none;
+      field-sizing: content;
+      min-inline-size: 0;
+      max-inline-size: 100%;
+      margin: 0;
+      padding-block: 0;
+      padding-inline: 0.5em 1.35em;
+      border: 0;
+      border-radius: inherit;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      cursor: pointer;
+      &:focus-visible {
+        outline: 0.125rem solid var(--ply-link);
+        outline-offset: 0.0625rem;
+      }
+      &:disabled {
+        color: var(--ply-muted);
+        cursor: not-allowed;
+      }
+    }
+    &:has(> select:disabled) {
+      border-color: var(--ply-border);
+      color: var(--ply-muted);
+    }
+    & > .ply-icon {
+      position: absolute;
+      inset-block-start: 50%;
+      inset-inline-end: 0.45em;
+      translate: 0 -50%;
+      font-size: 0.7em;
+      pointer-events: none;
+    }
+    &:has(> select:enabled):hover {
+      border-color: color-mix(in srgb, var(--ply-link) 60%, var(--ply-surface));
+      background: var(--ply-cover);
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-inline-select {
+      border-color: LinkText;
+    }
+  }
+}

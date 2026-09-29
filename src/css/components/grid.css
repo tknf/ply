@@ -1,4 +1,9 @@
 @layer components {
+  /*
+    日と時間の格子。HEYのカレンダーの週の表示と同じく、外枠を持たず、列の間は淡い縦線、行の間は細い線だけで区切る。
+    日付の見出しは墨の太字、時刻は淡い小さな数字にする。今日の列は見出しに蛍光ペンの黄のピルを敷く。
+    選んだ枠はHEYの「今」の枠と同じく墨の2pxの角丸の枠で示し、埋まっている枠は斜線にする。
+  */
   .ply-grid {
     min-inline-size: 0;
     overflow: auto;
@@ -10,7 +15,7 @@
     & > .table {
       inline-size: max-content;
       min-inline-size: 100%;
-      border: var(--ply-stroke-width) solid var(--ply-border);
+      border: 0;
       border-spacing: 0;
       border-radius: 0;
       background: var(--ply-surface);
@@ -25,35 +30,69 @@
 
       & > :is(thead, tbody) > tr > :is(th, td) {
         min-inline-size: 7.5rem;
-        padding-block: 0.625rem;
-        padding-inline: 0.875rem;
-        border-block-end: var(--ply-stroke-width) solid var(--ply-border);
+        padding-block: var(--ply-space-3);
+        padding-inline: var(--ply-space-3);
+        border-block-end: var(--ply-stroke-width) solid
+          color-mix(in srgb, var(--ply-ink) 12%, transparent);
         text-align: start;
         vertical-align: middle;
         overflow-wrap: anywhere;
       }
 
-      & > :is(thead, tbody) > tr > :is(th, td):not(:last-child) {
-        border-inline-end: var(--ply-stroke-width) solid var(--ply-border);
+      & > :is(thead, tbody) > tr > :is(th, td) + :is(th, td) {
+        border-inline-start: var(--ply-stroke-width) solid
+          color-mix(in srgb, var(--ply-ink) 8%, transparent);
       }
 
       & > thead > tr > th {
         padding-block: var(--ply-space-2);
         background: var(--ply-surface);
+        color: var(--ply-text);
+        font-size: var(--ply-label);
+        font-weight: 700;
+        line-height: var(--ply-label-leading);
+        white-space: nowrap;
+        & > .label {
+          display: inline-block;
+          padding-inline: var(--ply-space-2);
+          border-radius: var(--ply-radius-pill);
+        }
+        /* 楕円の内側の余白の分だけ見出しの余白を詰め、日付の文字を下の枠の文字と同じ書き始めにそろえる。 */
+        &:not(:first-child) {
+          padding-inline: calc(var(--ply-space-3) - var(--ply-space-2));
+        }
+        /* 今日の列の見出しは、Calendarの今日と同じ蛍光ペンの黄のピルを敷く。 */
+        &[data-current="true"] > .label {
+          position: relative;
+          isolation: isolate;
+          color: var(--ply-ink);
+          &::before {
+            content: "";
+            position: absolute;
+            inset-block: -0.1875rem;
+            inset-inline: -0.125rem;
+            z-index: -1;
+            background: var(--ply-mark);
+            border-radius: var(--ply-radius-pill);
+          }
+        }
+      }
+
+      /* 格子の角の見出しと時刻は、日付より控えめな淡い小さな文字にする。 */
+      & > thead > tr > th:first-child,
+      & > tbody > tr > th {
         color: var(--ply-muted);
         font-size: var(--ply-small);
-        font-weight: 600;
-        line-height: var(--ply-small-leading);
-        white-space: nowrap;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
       }
 
       & > tbody > tr > th {
         position: sticky;
         inset-inline-start: 0;
         z-index: 1;
-        min-inline-size: 6.5rem;
+        min-inline-size: 5rem;
         background: var(--ply-surface);
-        font-weight: 600;
         white-space: nowrap;
       }
 
@@ -61,8 +100,8 @@
         border-block-end: 0;
       }
 
-      & > tbody > tr:hover > td:not([data-disabled="true"]) {
-        background: color-mix(in srgb, var(--ply-info-soft) 40%, var(--ply-surface));
+      & > tbody > tr > td:not([data-disabled="true"]):hover {
+        background: color-mix(in srgb, var(--ply-link) 5%, var(--ply-surface));
       }
 
       /* 使えない・埋まっている枠は斜線で示す。 */
@@ -75,9 +114,9 @@
       & > :is(thead, tbody) > tr > :is(th, td):focus-visible {
         position: relative;
         z-index: 2;
-        outline: 0.125rem solid var(--ply-link);
-        outline-offset: -0.1875rem;
-        background: var(--ply-info-soft);
+        outline: var(--ply-frame-width) solid var(--ply-ink);
+        outline-offset: calc(-1 * var(--ply-frame-width));
+        border-radius: var(--ply-radius-control);
       }
     }
 
@@ -86,7 +125,8 @@
       padding-block: var(--ply-space-3);
       padding-inline: var(--ply-space-4);
       border: 0;
-      border-block: var(--ply-stroke-width) solid var(--ply-border);
+      border-block: var(--ply-stroke-width) solid
+        color-mix(in srgb, var(--ply-ink) 12%, transparent);
       border-radius: 0;
       background: var(--ply-surface);
       color: var(--ply-muted);
@@ -97,6 +137,9 @@
     .ply-grid > :is(.table, .empty) {
       background: Canvas;
       box-shadow: none;
+    }
+    .ply-grid > .table > thead > tr > th[data-current="true"] > .label {
+      outline: var(--ply-stroke-width) solid CanvasText;
     }
   }
 }

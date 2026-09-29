@@ -6,8 +6,8 @@ export default () => (
       <Navigation
         label="記事の分類"
         items={[
-          { label: "すべての記事", href: "/search", current: true, count: 6 },
-          { label: "下書き", href: "/search?state=draft", count: 2 },
+          { label: "すべての記事", href: "/apps/search", current: true, count: 6 },
+          { label: "下書き", href: "/apps/search?state=draft", count: 2 },
           { label: "道具箱へ", href: "/" },
         ]}
       />
@@ -38,11 +38,11 @@ export default () => (
             items={[
               {
                 label: "公開前の確認が終わっていない、とても長い名前の記事",
-                href: "/search?state=review",
+                href: "/apps/search?state=review",
                 current: true,
                 count: 128,
               },
-              { label: "下書き", href: "/search?state=draft", count: 2 },
+              { label: "下書き", href: "/apps/search?state=draft", count: 2 },
             ]}
           />
         </div>
@@ -52,8 +52,12 @@ export default () => (
           <Navigation
             label="تصنيف المقالات"
             items={[
-              { label: "كل المقالات", href: "/search", current: true, count: 6 },
-              { label: "المسودات", href: "/search?state=draft", icon: <Icon name="pencil" fill /> },
+              { label: "كل المقالات", href: "/apps/search", current: true, count: 6 },
+              {
+                label: "المسودات",
+                href: "/apps/search?state=draft",
+                icon: <Icon name="pencil" fill />,
+              },
             ]}
           />
         </div>

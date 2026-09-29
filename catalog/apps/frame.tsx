@@ -1,0 +1,155 @@
+import type { PropsWithChildren } from "hono/jsx";
+import { ActionLink, AppShell, Avatar, CommandMenu, type IconName } from "../../src/hono";
+
+/** 利用例のアプリ「つむぐ」の画面。小さな制作チームが、ヘルプセンターを作り直す仕事を進めている。 */
+export type AppScreen =
+  | "project"
+  | "inbox"
+  | "schedule"
+  | "docs"
+  | "files"
+  | "sales"
+  | "search"
+  | "people"
+  | "settings";
+
+type ScreenEntry = {
+  id: AppScreen;
+  label: string;
+  icon: IconName;
+  accent: "blue" | "green" | "amber" | "coral";
+  description: string;
+  keywords?: readonly string[];
+};
+
+export const screens: readonly ScreenEntry[] = [
+  {
+    id: "project",
+    label: "プロジェクト",
+    icon: "layers",
+    accent: "green",
+    description: "仕事の進み具合を見渡す",
+    keywords: ["ボード", "タスク"],
+  },
+  {
+    id: "inbox",
+    label: "受信トレイ",
+    icon: "mail",
+    accent: "blue",
+    description: "届いた連絡を読む・整理する",
+    keywords: ["メール", "inbox"],
+  },
+  {
+    id: "schedule",
+    label: "予定",
+    icon: "calendar",
+    accent: "amber",
+    description: "打ち合わせと締め切りを確かめる",
+    keywords: ["カレンダー"],
+  },
+  {
+    id: "docs",
+    label: "文書",
+    icon: "pencil",
+    accent: "coral",
+    description: "記事を書いて公開の準備をする",
+    keywords: ["記事", "下書き"],
+  },
+  {
+    id: "files",
+    label: "資料",
+    icon: "file",
+    accent: "amber",
+    description: "チームの資料を探す・差し替える",
+    keywords: ["ファイル"],
+  },
+  {
+    id: "sales",
+    label: "売上",
+    icon: "chart",
+    accent: "coral",
+    description: "数字と動きを確かめる",
+    keywords: ["集計", "レポート"],
+  },
+  {
+    id: "search",
+    label: "検索",
+    icon: "search",
+    accent: "blue",
+    description: "記事と資料を言葉で探す",
+  },
+  {
+    id: "people",
+    label: "メンバー",
+    icon: "user",
+    accent: "green",
+    description: "チームの人と連絡先を見る",
+    keywords: ["人", "連絡先"],
+  },
+  {
+    id: "settings",
+    label: "設定",
+    icon: "grid",
+    accent: "blue",
+    description: "仕事場の名前や通知を変える",
+  },
+];
+
+export const appPath = (screen: AppScreen) => `/apps/${screen}`;
+
+/** アプリの画面の枠。上部中央のコマンドで画面を移り、中央の作業面に画面を置く。wideは年の予定など横に広い画面。 */
+export const AppFrame = ({
+  current,
+  wide = false,
+  children,
+}: PropsWithChildren<{ current: AppScreen; wide?: boolean }>) => (
+  <AppShell
+    style={wide ? "--ply-page: 112rem" : undefined}
+    home={<ActionLink href={appPath("project")}>つむぐ</ActionLink>}
+    commands={
+      <CommandMenu
+        id="app-commands"
+        label="つむぐチーム"
+        shortcut="mod+k"
+        shortcuts={screens.slice(0, 4).map((screen) => ({
+          label: screen.label,
+          href: appPath(screen.id),
+          icon: screen.icon,
+          accent: screen.accent,
+        }))}
+        groups={[
+          {
+            label: "仕事を進める",
+            items: screens.slice(0, 4).map((screen) => ({
+              ...screen,
+              href: appPath(screen.id),
+              current: screen.id === current,
+            })),
+          },
+          {
+            label: "記録とチーム",
+            items: screens.slice(4).map((screen) => ({
+              ...screen,
+              href: appPath(screen.id),
+              current: screen.id === current,
+            })),
+          },
+          {
+            label: "Ply",
+            items: [
+              {
+                label: "コンポーネントカタログ",
+                href: "/",
+                icon: "grid",
+                description: "この画面の部品と使い方を見る",
+              },
+            ],
+          },
+        ]}
+      />
+    }
+    account={<Avatar name="田中 遥" initials="遥" tone="coral" title="田中 遥 · つむぐチーム" />}
+  >
+    {children}
+  </AppShell>
+);

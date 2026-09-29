@@ -1,5 +1,7 @@
 @layer components {
   .ply-table {
+    /* 表の中の絶対配置（読み上げだけの文字など）を、スクロールする囲みの中に収める。 */
+    position: relative;
     min-inline-size: 0;
     overflow: auto;
     overscroll-behavior-inline: contain;
@@ -25,23 +27,80 @@
       color: var(--ply-muted);
       text-align: center;
     }
+    /*
+      選択した行の操作は表の中の行に置かず、画面の下の中央に浮かべる。表は一行も動かない。
+      板はActionDockと同じ棚（白い紙・紙の角丸・メニューの影・内側4px）にし、始まりに件数、続けて一括操作を横一列に並べる。
+      解除の×（「選択を解除」）はDialogと同じく紙の終わりの側の上の角から少しはみ出させて置く。
+    */
     & > .selection-bar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--ply-space-2);
-      padding-block: var(--ply-space-2);
-      padding-inline: var(--ply-space-3);
-      border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-field);
-      border-color: color-mix(in srgb, var(--ply-info) 22%, var(--ply-surface));
-      background: var(--ply-emphasis-info);
-    }
-    & > .selection-bar > .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--ply-space-2);
+      position: fixed;
+      inset-block: auto max(var(--ply-space-4), env(safe-area-inset-bottom));
+      inset-inline: 0;
+      /* 下から差し出して置き、閉じる時は同じ向きへ下げながら消す（出入りはoverlay.cssの共通の定義）。 */
+      transform-origin: bottom center;
+      --ply-motion-slide: var(--ply-duration-pop);
+      --ply-motion-scale-in: 1;
+      --ply-motion-scale-out: 1;
+      /* 板は中身の幅に合わせ、入らない時は操作の列を横にスクロールする。 */
+      inline-size: max-content;
+      max-inline-size: calc(100% - 2 * var(--ply-space-4));
+      /* 角の×をはみ出させるため、紙は切り取らない。 */
+      overflow: visible;
+      margin: 0;
+      margin-inline: auto;
+      padding-block: var(--ply-space-1);
+      /* 終わりの側は、角の×が重なる分を空けて、最後の操作を×の下に入れない。 */
+      padding-inline: var(--ply-space-1)
+        calc(var(--ply-overlay-close-size) - var(--ply-overlay-close-offset));
+      border: 0;
+      border-radius: var(--ply-radius-surface);
+      background: var(--ply-surface);
+      color: var(--ply-text);
+      font-family: var(--ply-control-font-family);
+      font-size: var(--ply-label);
+      line-height: 1.5;
+      box-shadow: var(--ply-shadow-menu);
+      &:popover-open {
+        display: flex;
+        align-items: stretch;
+        gap: var(--ply-space-1);
+      }
+      &:not(:popover-open) {
+        translate: 0 1rem;
+      }
+      /* 件数。操作の列の始まりに、タイルと同じ高さで置く。 */
+      & > .heading {
+        display: flex;
+        flex: none;
+        align-items: center;
+        min-block-size: 3.75rem;
+        padding-inline: var(--ply-space-3) var(--ply-space-2);
+        & > .count {
+          font-weight: 700;
+          white-space: nowrap;
+        }
+      }
+      /*
+        一括操作。ActionDockと同じく、面を持たないActionTileを横一列に並べる（Buttonを渡した時も同じ列に置く）。
+        入らない時は列だけを横にスクロールする。
+      */
+      & > .actions {
+        display: flex;
+        align-items: center;
+        gap: var(--ply-space-1);
+        min-inline-size: 0;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        & > .ply-action-tile {
+          --ply-action-tile-rest: transparent;
+          flex: none;
+          min-inline-size: 5.25rem;
+        }
+        & > :not(.ply-action-tile) {
+          flex: none;
+          margin-inline-end: var(--ply-space-2);
+        }
+      }
     }
     & > table {
       inline-size: 100%;
@@ -158,11 +217,14 @@
       & > tbody > tr[data-selected="true"] {
         background: var(--ply-info-soft);
       }
+      /* 行の題名のリンクはHEYの一覧と同じく墨のMediumの文字にし、指を載せた時だけ青くする。 */
       & > tbody > tr > :is(th, td) > a {
+        color: var(--ply-text);
+        font-weight: 500;
         text-decoration: none;
       }
       & > tbody > tr > :is(th, td) > a:hover {
-        color: var(--ply-blue-dark);
+        color: var(--ply-link);
       }
       & > thead > tr > [data-cell="numeric"] > .sort {
         margin-inline-start: auto;
@@ -171,6 +233,17 @@
         font-weight: 600;
         border-block-end: 0;
       }
+    }
+  }
+  /* 選択の板は、開き始めを少し下に置いて差し出す。 */
+  @starting-style {
+    .ply-table > .selection-bar:popover-open {
+      translate: 0 1.5rem;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-table > .selection-bar {
+      outline: var(--ply-stroke-width) solid CanvasText;
     }
   }
   /* 触れて確かめられない端末では、並べ替えられる列だと分かるよう印を常に出す。 */

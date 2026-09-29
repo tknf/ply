@@ -1,7 +1,13 @@
+/* 進み具合の円を、割合の変化に合わせて滑らかに塗り足すため、数値として登録する。 */
+@property --ply-task-progress {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
 @layer components {
   /*
-    やることの一覧。外側の見出しに開閉・名前・未完了の数・進み具合を置き、
-    その下の行を罫線で区切る。行の始まりにチェックを置き、終えたことはペンで線を引いて消す。
+    やることの一覧。外側の見出しに開閉・名前と、Fizzyのカードの手順と同じ塗りつぶしの円と「終えた数/全体」を置き、
+    その下の行を罫線で区切る。行の始まりにチェックを置き、終えたことはペンで引く線で消す。
     最後の行は、項目を書き足す欄。
   */
   .ply-task-list {
@@ -12,7 +18,7 @@
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
-    /* 外側の見出し。進み具合は細いピルの中を、終えた割合だけ塗る。 */
+    /* 外側の見出し。進み具合は円を終えた割合だけ塗り、全て終えると緑の円に白いチェックを置く。 */
     & > summary {
       display: flex;
       flex-wrap: wrap;
@@ -42,24 +48,38 @@
       & > .name {
         font-weight: 600;
       }
-      & > .remaining {
+      & > .pie {
+        display: grid;
+        place-items: center;
+        inline-size: 1rem;
+        block-size: 1rem;
+        margin-inline-start: var(--ply-space-1);
+        border-radius: 50%;
+        background: conic-gradient(
+          var(--ply-success) calc(var(--ply-task-progress) * 1turn),
+          color-mix(in srgb, var(--ply-success) 16%, var(--ply-surface)) 0
+        );
+        transition: --ply-task-progress var(--ply-duration) ease;
+      }
+      & > .count {
+        margin-inline-start: calc(var(--ply-space-1) * -1);
         color: var(--ply-muted);
         font-size: var(--ply-small);
+        font-weight: 700;
         font-variant-numeric: tabular-nums;
       }
-      & > .meter {
-        inline-size: 3rem;
-        block-size: 0.25rem;
-        border-radius: var(--ply-radius-pill);
-        background:
-          linear-gradient(var(--ply-success), var(--ply-success)) 0 0 /
-            calc(var(--ply-task-progress) * 100%) 100% no-repeat,
-          var(--ply-border);
-        &:dir(rtl) {
-          background-position:
-            100% 0,
-            0 0;
-        }
+    }
+    &[data-complete="true"] > summary {
+      & > .pie::before {
+        content: "";
+        inline-size: 0.625rem;
+        block-size: 0.625rem;
+        background: var(--ply-surface);
+        mask: url("../assets/check-bold.svg") center / contain no-repeat;
+        animation: ply-check-arrive calc(var(--ply-duration) * 1.5) ease-out;
+      }
+      & > .count {
+        color: var(--ply-success);
       }
     }
     &:not([open]) > summary > .marker {
@@ -94,7 +114,11 @@
             line-height: var(--ply-label-leading);
           }
         }
-        /* 書き足す欄は、チェックの列に足す印を置き、題名と同じ位置から書く。 */
+        /* 行に指を載せると、DataListと同じ淡い青の面を行の幅いっぱいに出す。行のどこを押してもチェックが変わる。 */
+        &:not(.heading, .add):has(> .ply-choice > input:enabled):hover {
+          background: color-mix(in srgb, var(--ply-link) 4%, var(--ply-surface));
+        }
+        /* 書き足す欄は、チェックの列に足す印を置き、題名と同じ位置から書く。書いている間は印を青い丸にする。 */
         &.add {
           grid-template-columns: calc(var(--ply-body) * 9 / 7) minmax(0, 1fr);
           column-gap: calc(var(--ply-body) / 2);
@@ -104,6 +128,20 @@
           & > .plus {
             display: grid;
             place-items: center;
+            justify-self: center;
+            inline-size: calc(var(--ply-body) * 9 / 7);
+            block-size: calc(var(--ply-body) * 9 / 7);
+            border-radius: 50%;
+            transition:
+              background-color var(--ply-duration) ease,
+              color var(--ply-duration) ease;
+          }
+          &:focus-within {
+            background: color-mix(in srgb, var(--ply-link) 6%, var(--ply-surface));
+          }
+          &:focus-within > .plus {
+            background: var(--ply-fill-menu);
+            color: var(--ply-surface);
           }
           & > .entry {
             min-inline-size: 0;
@@ -117,10 +155,9 @@
               color: var(--ply-muted);
               opacity: 1;
             }
+            /* 書いている間は、欄を四角で囲まず、青い丸の印と行の淡い青の面で示す。 */
             &:focus-visible {
-              outline: 0.125rem solid var(--ply-link);
-              outline-offset: 0.125rem;
-              border-radius: var(--ply-radius-mark);
+              outline: 0;
             }
           }
         }
@@ -136,6 +173,11 @@
         & > .ply-choice {
           padding-block: var(--ply-space-3);
           font-size: var(--ply-body);
+          /* 終えた印は、見出しの進み具合の円と同じ緑で塗る。 */
+          & > input:checked {
+            border-color: var(--ply-success);
+            background: var(--ply-fill-success);
+          }
           & > input:checked::before {
             animation: ply-check-arrive calc(var(--ply-duration) * 1.5) ease-out;
           }
@@ -143,15 +185,30 @@
             min-inline-size: 0;
             overflow-wrap: anywhere;
           }
+          /*
+            終えたことは、ペンで引く線で消す。線は書き始めの側から伸ばし、折り返した題名は一行目から順に引く。
+            （背景は折り返した行をつないだ一本の帯として描かれるので、幅を伸ばすと行の順に引ける。）
+          */
           & > span > strong {
-            font-weight: 400;
+            /* 線を文字の長さで止めるため、題名だけインラインにする（説明はブロックなので次の行に置かれる）。 */
+            display: inline;
+            background: linear-gradient(
+                color-mix(in srgb, var(--ply-ink) 70%, transparent),
+                color-mix(in srgb, var(--ply-ink) 70%, transparent)
+              )
+              0 55% / 0 calc(var(--ply-stroke-width) * 1.5) no-repeat;
+            /* 項目の題名は、他の一覧の題名と同じ太さにする。 */
+            font-weight: 600;
+            transition:
+              background-size calc(var(--ply-duration) * 2.5) ease-out,
+              color var(--ply-duration) ease;
+            &:dir(rtl) {
+              background-position: 100% 55%;
+            }
           }
-          /* 終えたことは、ペンで引いた太めの線で消す。 */
           & > input:checked + span > strong {
+            background-size: 100% calc(var(--ply-stroke-width) * 1.5);
             color: var(--ply-muted);
-            text-decoration: line-through;
-            text-decoration-color: color-mix(in srgb, var(--ply-ink) 70%, transparent);
-            text-decoration-thickness: calc(var(--ply-stroke-width) * 1.5);
           }
         }
       }
@@ -173,8 +230,25 @@
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .ply-task-list > .sheet > li > .ply-choice > input:checked::before {
+    .ply-task-list > .sheet > li > .ply-choice > input:checked::before,
+    .ply-task-list[data-complete="true"] > summary > .pie::before {
       animation: none;
+    }
+    .ply-task-list > .sheet > li > .ply-choice > span > strong {
+      transition: none;
+    }
+  }
+  /* 強制カラーでは背景の線が消えるため、終えた題名は取り消し線で示す。 */
+  @media (forced-colors: active) {
+    .ply-task-list > .sheet > li.add:focus-within {
+      outline: 0.125rem solid Highlight;
+      outline-offset: -0.125rem;
+    }
+    .ply-task-list > .sheet > li > .ply-choice > input:checked + span > strong {
+      text-decoration: line-through;
+    }
+    .ply-task-list > summary > .pie {
+      border: var(--ply-stroke-width) solid CanvasText;
     }
   }
   @keyframes ply-check-arrive {

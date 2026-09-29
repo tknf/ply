@@ -1,7 +1,8 @@
 import type { Child } from "hono/jsx";
 import { classes, type ElementProps } from "./types";
 
-export type GridColumn = { id: string; label: string };
+/** currentは今日の列。HEYのカレンダーの今日と同じく、見出しを塗った楕円で囲む。 */
+export type GridColumn = { id: string; label: string; current?: boolean };
 export type GridCell = { content: Child; disabled?: boolean };
 export type GridRow = { id: string; label: string; cells: readonly GridCell[] };
 export type GridProps = ElementProps<"div"> & {
@@ -47,8 +48,13 @@ export const Grid = ({
           <tr>
             <th scope="col">{rowHeader}</th>
             {columns.map((column) => (
-              <th scope="col" data-column-id={column.id}>
-                {column.label}
+              <th
+                scope="col"
+                data-column-id={column.id}
+                data-current={column.current ? "true" : undefined}
+                aria-current={column.current ? "date" : undefined}
+              >
+                <span class="label">{column.label}</span>
               </th>
             ))}
           </tr>

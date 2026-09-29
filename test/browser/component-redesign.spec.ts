@@ -1,79 +1,67 @@
 import { expect, test } from "@playwright/test";
-import { redesignedComponentIds } from "../../catalog/redesigned-components";
+import { appPaths, componentIds as redesignedComponentIds } from "./catalog-pages";
+
+const overflowOf = (element: Element) => {
+  if (element.scrollWidth <= element.clientWidth + 1) return [];
+  const edge = element.getBoundingClientRect();
+  return Array.from(element.querySelectorAll("*"))
+    .filter((child) => {
+      const box = child.getBoundingClientRect();
+      return (
+        box.width > 0 && box.height > 0 && (box.right > edge.right + 1 || box.left < edge.left - 1)
+      );
+    })
+    .slice(0, 6)
+    .map((child) => ({
+      tag: child.tagName,
+      class: String(child.className),
+      width: child.getBoundingClientRect().width,
+      text: child.textContent?.slice(0, 30),
+    }));
+};
 
 for (const width of [375, 1280]) {
   test(`全${redesignedComponentIds.length}コンポーネントが${width}pxで収まり参照先と表示を保つ`, async ({
     page,
   }) => {
-    test.setTimeout(120000);
+    test.setTimeout(600_000);
     await page.setViewportSize({ width, height: 1000 });
-    await page.goto("/review/components");
-    await page
-      .locator("details")
-      .evaluateAll((elements) => elements.forEach((element) => element.setAttribute("open", "")));
-    const references = await page.evaluate(() => {
-      const ids = Array.from(document.querySelectorAll("[id]"), (element) => element.id);
-      const missing = Array.from(
-        document.querySelectorAll(
-          "[aria-labelledby], [aria-describedby], [aria-controls], label[for]",
-        ),
-      ).flatMap((element) =>
-        ["aria-labelledby", "aria-describedby", "aria-controls", "for"].flatMap((attribute) =>
-          (element.getAttribute(attribute)?.split(/\s+/) ?? []).filter(
-            (id) => id && !document.getElementById(id),
+    for (const id of redesignedComponentIds) {
+      await page.goto(`/components/${id}`);
+      await page
+        .locator("details")
+        .evaluateAll((elements) => elements.forEach((element) => element.setAttribute("open", "")));
+      const references = await page.evaluate(() => {
+        const ids = Array.from(document.querySelectorAll("[id]"), (element) => element.id);
+        const missing = Array.from(
+          document.querySelectorAll(
+            "[aria-labelledby], [aria-describedby], [aria-controls], label[for]",
           ),
-        ),
-      );
-      return { duplicates: ids.filter((id, index) => ids.indexOf(id) !== index), missing };
-    });
-    expect(references).toEqual({ duplicates: [], missing: [] });
-    for (const id of redesignedComponentIds) {
-      const sample = page.locator(`[data-component="${id}"]`);
-      await expect(sample).toBeVisible();
-      expect
-        .soft(
-          await sample.evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
-          id,
-        )
-        .toBe(true);
-    }
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-      true,
-    );
-    await page.evaluate(() => {
-      document.documentElement.style.fontSize = "200%";
-    });
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-      true,
-    );
-    for (const id of redesignedComponentIds) {
-      const sample = page.locator(`[data-component="${id}"]`);
-      const overflow = await sample.evaluate((element) => {
-        if (element.scrollWidth <= element.clientWidth + 1) return [];
-        const edge = element.getBoundingClientRect();
-        return Array.from(element.querySelectorAll("*"))
-          .filter((child) => {
-            const box = child.getBoundingClientRect();
-            return (
-              box.width > 0 &&
-              box.height > 0 &&
-              (box.right > edge.right + 1 || box.left < edge.left - 1)
-            );
-          })
-          .slice(0, 6)
-          .map((child) => ({
-            tag: child.tagName,
-            class: child.className,
-            width: child.getBoundingClientRect().width,
-            text: child.textContent?.slice(0, 30),
-          }));
+        ).flatMap((element) =>
+          ["aria-labelledby", "aria-describedby", "aria-controls", "for"].flatMap((attribute) =>
+            (element.getAttribute(attribute)?.split(/\s+/) ?? []).filter(
+              (reference) => reference && !document.getElementById(reference),
+            ),
+          ),
+        );
+        return { duplicates: ids.filter((entry, index) => ids.indexOf(entry) !== index), missing };
       });
-      expect
-        .soft(
-          await sample.evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
-          `${id}・文字200% ${JSON.stringify(overflow)}`,
-        )
-        .toBe(true);
+      expect.soft(references, id).toEqual({ duplicates: [], missing: [] });
+      const sample = page.locator('[data-example="hono"]');
+      await expect(sample).toBeVisible();
+      for (const zoom of ["100%", "200%"]) {
+        await page.evaluate((size) => {
+          document.documentElement.style.fontSize = size;
+        }, zoom);
+        const overflow = await sample.evaluate(overflowOf);
+        expect.soft(overflow, `${id}・文字${zoom}`).toEqual([]);
+        expect
+          .soft(
+            await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+            `${id}・文字${zoom}のページ`,
+          )
+          .toBe(true);
+      }
     }
   });
 }
@@ -88,7 +76,7 @@ test("TaskListはキーボードで完了を切り替え無効な項目を保持
   expect(await task.isChecked()).toBe(!initial);
   await page.keyboard.press("Space");
   expect(await task.isChecked()).toBe(initial);
-  await expect(sample.getByRole("checkbox").last()).toBeDisabled();
+  await expect(sample.getByRole("checkbox", { name: "管理者の確認", exact: true })).toBeDisabled();
 });
 
 test("Toastは標準操作で開閉でき長い通知と操作が狭幅に収まる", async ({ page }) => {
@@ -204,45 +192,64 @@ test("EditablePropertyの複数行はEnterで改行し、Control / Meta+Enterで
   expect(await value.textContent()).toBe(
     "カテゴリは5つにまとめる。\n公開は9月30日。\n次回は10月7日の14時から。\n資料は前日までに共有する。",
   );
-  // 改行を表示にも残し、4行分の高さで表示する。
-  const lines = await value.evaluate(
-    (element) =>
-      element.getBoundingClientRect().height /
-      Number.parseFloat(getComputedStyle(element).lineHeight),
-  );
+  // 改行を表示にも残し、4行分の高さで表示する（値の行の上下の余白は除く）。
+  const lines = await value.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return (
+      (element.getBoundingClientRect().height -
+        Number.parseFloat(style.paddingTop) -
+        Number.parseFloat(style.paddingBottom)) /
+      Number.parseFloat(style.lineHeight)
+    );
+  });
   expect(Math.round(lines)).toBe(4);
 });
 
-test("EditablePropertyは表示と編集で下線の位置と書き始めを変えない", async ({ page }) => {
+test("EditablePropertyは表示と編集で一行目の高さと書き始めを変えず、書き始めると値を選ぶ", async ({
+  page,
+}) => {
   await page.goto("/components/editable-property");
   const property = page.locator('[data-example="hono"] .ply-editable-property').first();
+  // 表示の値と編集中の欄の、一行目の中心の高さと文字の書き始めを測る。
   const measure = () =>
     property.evaluate((element) => {
-      const input = element.querySelector("input");
       const editing = element.getAttribute("data-state") === "editing";
-      const row = element.querySelector(editing ? ".editor" : ".preview");
-      if (!input || !row) return null;
-      let start = 0;
-      if (editing) {
-        const style = getComputedStyle(input);
-        start =
-          input.getBoundingClientRect().left +
-          parseFloat(style.paddingLeft) +
-          parseFloat(style.borderLeftWidth);
-      } else {
-        const range = document.createRange();
-        const value = element.querySelector(".value");
-        if (value) range.selectNodeContents(value);
-        start = range.getBoundingClientRect().left;
-      }
-      return { line: row.getBoundingClientRect().bottom, start };
+      const box = element.querySelector(editing ? ".editor > .ply-input" : ".preview > .value");
+      if (!(box instanceof HTMLElement)) return null;
+      const style = getComputedStyle(box);
+      const rect = box.getBoundingClientRect();
+      const line = parseFloat(style.lineHeight);
+      const edge = editing ? parseFloat(style.borderTopWidth) : 0;
+      return {
+        middle:
+          box instanceof HTMLInputElement
+            ? rect.top + rect.height / 2
+            : rect.top + edge + parseFloat(style.paddingTop) + line / 2,
+        start:
+          rect.left +
+          (editing ? parseFloat(style.borderLeftWidth) + parseFloat(style.paddingLeft) : 0),
+        size: style.fontSize,
+      };
     });
   const viewing = await measure();
-  await property.getByRole("button", { name: "担当者を編集" }).click();
+  // 鉛筆だけでなく、値そのものを押しても書き始める。
+  await property.locator(".value").click();
   await expect(property).toHaveAttribute("data-state", "editing");
   const editing = await measure();
-  expect(editing?.line).toBe(viewing?.line);
+  expect(editing?.middle).toBeCloseTo(viewing?.middle ?? Number.NaN, 0);
   expect(editing?.start).toBeCloseTo(viewing?.start ?? Number.NaN, 0);
+  expect(editing?.size).toBe(viewing?.size);
+  const input = property.locator("input");
+  await expect(input).toBeFocused();
+  expect(
+    await input.evaluate((element) =>
+      element instanceof HTMLInputElement
+        ? [element.selectionStart, element.selectionEnd, element.value.length]
+        : [],
+    ),
+  ).toEqual([0, 4, 4]);
+  await page.keyboard.press("Escape");
+  await expect(property).toHaveAttribute("data-state", "viewing");
 });
 
 test("Boardは運んだ項目を置いた列の色に染め、たたんだ列はピルの幅になる", async ({ page }) => {
@@ -252,10 +259,11 @@ test("Boardは運んだ項目を置いた列の色に染め、たたんだ列は
     .locator('[data-example="hono"] details')
     .evaluateAll((elements) => elements.forEach((element) => element.setAttribute("open", "")));
   const approval = page.getByRole("region", { name: "原稿の承認", exact: true });
+  // 列の色は紙の地ではなく、斜めの染まり（背景の画像）に出る。
   const fill = (id: string) =>
     approval
       .locator(`[data-board-id="${id}"]`)
-      .evaluate((element) => getComputedStyle(element).backgroundColor);
+      .evaluate((element) => getComputedStyle(element).backgroundImage);
   const approved = await fill("d3");
   expect(await fill("d1")).not.toBe(approved);
   await approval.locator('[data-board-id="d1"]').getByRole("button").focus();
@@ -273,6 +281,52 @@ test("Boardは運んだ項目を置いた列の色に染め、たたんだ列は
   expect(widths[1]).toBeGreaterThan(200);
   await expect(hiring.locator('[data-column-id="closed"] .title > small')).toHaveText("3");
   await expect(hiring.locator('[data-column-id="closed"] .items')).toBeHidden();
+});
+
+test("Boardのたたんだ列は押すと開き、たためて、取り消せるboard:toggleで知らせる", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/components/board");
+  await page
+    .locator('[data-example="hono"] details')
+    .evaluateAll((elements) => elements.forEach((element) => element.setAttribute("open", "")));
+  const hiring = page.getByRole("region", { name: "採用の進行", exact: true });
+  const backlog = hiring.locator('[data-column-id="backlog"]');
+  const toggle = backlog.getByRole("button", { name: "「応募」の列を開閉", exact: true });
+  await page.evaluate(() => {
+    const events: unknown[] = [];
+    Object.assign(window, { boardToggles: events });
+    document.addEventListener("board:toggle", (event) => {
+      if (event instanceof CustomEvent) events.push(event.detail);
+    });
+  });
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await toggle.click();
+  await expect(backlog).not.toHaveAttribute("data-collapsed", "true");
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  await expect(backlog.locator(".items")).toBeVisible();
+  expect(
+    await backlog.evaluate((element) => element.getBoundingClientRect().width),
+  ).toBeGreaterThan(200);
+  await toggle.click();
+  await expect(backlog).toHaveAttribute("data-collapsed", "true");
+  await expect(backlog.locator(".items")).toBeHidden();
+  expect(await page.evaluate(() => Reflect.get(window, "boardToggles"))).toEqual([
+    { column: "backlog", collapsed: false },
+    { column: "backlog", collapsed: true },
+  ]);
+  // 利用アプリが取り消した時は、表示を変えない。
+  await page.evaluate(() =>
+    document.addEventListener("board:toggle", (event) => event.preventDefault(), { once: true }),
+  );
+  await toggle.click();
+  await expect(backlog).toHaveAttribute("data-collapsed", "true");
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  // たたんだピルは、名前など「開く」以外の場所を押しても開く。
+  await backlog.locator(".title > .label").click();
+  await expect(backlog).not.toHaveAttribute("data-collapsed", "true");
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
 });
 
 test("Boardは広い画面内でもコンポーネント幅に応じて横スクロールから縦の棚へ変わる", async ({
@@ -328,85 +382,90 @@ test("入れ子の局所クラスへ外側の見出しと状態の指定が漏�
 });
 
 for (const width of [375, 1280]) {
-  test(`6領域の組み合わせが${width}pxで収まり本文と操作の基準を保つ`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 1000 });
-    await page.goto("/review/applications");
-    for (const application of ["mail", "crm", "projects", "documents", "finance", "chat"]) {
-      const example = page.locator(`[data-application="${application}"]`);
-      await expect(example).toBeVisible();
-      expect(
-        await example.evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
-        application,
-      ).toBe(true);
+  test(`利用例のアプリの全画面が${width}pxで収まる`, async ({ page }) => {
+    for (const path of appPaths) {
+      await page.setViewportSize({ width, height: 1000 });
+      await page.goto(path);
+      const workspace = page.locator(".ply-app-shell > .workspace");
+      await expect(workspace, path).toBeVisible();
+      expect.soft(await workspace.evaluate(overflowOf), path).toEqual([]);
+      expect
+        .soft(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), path)
+        .toBe(true);
     }
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-      true,
-    );
   });
 }
 
 test("コンポーネントの入れ子とCSSの読み込み順が文字と固有の状態を変えない", async ({ page }) => {
   // 読込直後のtransition途中ではなく、確定したスタイル同士を比較する。
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/review/components");
-  const samples = page.locator(".catalog-review");
-  const signatures = () =>
-    samples.evaluate((element) =>
-      Array.from(
-        element.querySelectorAll(
-          ".ply-card > .title, .ply-notice > .title, .ply-comparison > .title, .ply-button, .ply-badge, .ply-tag",
+  for (const id of ["card", "notice", "comparison", "button", "badge", "tag"]) {
+    await page.goto(`/components/${id}`);
+    const samples = page.locator('[data-example="hono"]');
+    const signatures = () =>
+      samples.evaluate((element) =>
+        Array.from(
+          element.querySelectorAll(
+            ".ply-card > .title, .ply-notice > .heading > .title, .ply-comparison > .title, .ply-button, .ply-badge, .ply-tag",
+          ),
+          (child) => {
+            const style = getComputedStyle(child);
+            return {
+              component: child.closest("[data-component]")?.getAttribute("data-component"),
+              label: child.textContent?.trim(),
+              color: style.color,
+              background: style.backgroundColor,
+              image: style.backgroundImage,
+              border: style.borderColor,
+              shadow: style.boxShadow,
+              font: style.fontFamily,
+              size: style.fontSize,
+              line: style.lineHeight,
+              weight: style.fontWeight,
+              padding: style.paddingBlock,
+            };
+          },
         ),
-        (child) => {
-          const style = getComputedStyle(child);
-          return {
-            component: child.closest("[data-component]")?.getAttribute("data-component"),
-            label: child.textContent?.trim(),
-            color: style.color,
-            background: style.backgroundColor,
-            image: style.backgroundImage,
-            border: style.borderColor,
-            shadow: style.boxShadow,
-            font: style.fontFamily,
-            size: style.fontSize,
-            line: style.lineHeight,
-            weight: style.fontWeight,
-            padding: style.paddingBlock,
-          };
-        },
-      ),
+      );
+    const original = await signatures();
+    await page.evaluate(() =>
+      Array.from(document.querySelectorAll('link[href*="/components/"]'))
+        .reverse()
+        .forEach((link) => document.head.append(link)),
     );
-  const original = await signatures();
-  await page.evaluate(() =>
-    Array.from(document.querySelectorAll('link[href*="/components/"]'))
-      .reverse()
-      .forEach((link) => document.head.append(link)),
-  );
-  await expect.poll(signatures).toEqual(original);
+    await expect.poll(signatures, { message: id }).toEqual(original);
+  }
 });
 
 test("RTLと動きを減らす設定でも配置と操作の意味を保つ", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 900 });
   await page.emulateMedia({ reducedMotion: "reduce", forcedColors: "active" });
-  await page.goto("/review/components");
-  await page.evaluate(() => {
-    document.documentElement.dir = "rtl";
-  });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  const loading = page.locator(".ply-loading > .indicator").first();
+  for (const id of ["loading", "icon"]) {
+    await page.goto(`/components/${id}`);
+    await page.evaluate(() => {
+      document.documentElement.dir = "rtl";
+    });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), id).toBe(
+      true,
+    );
+  }
+  await page.goto("/components/loading");
+  const loading = page.locator('[data-example="hono"] .ply-loading > .indicator').first();
   expect(await loading.evaluate((element) => getComputedStyle(element).animationName)).toBe("none");
-  const button = page.locator('[data-component="icon"] .ply-button:not(:disabled)').first();
+  await page.goto("/components/icon");
+  const button = page.locator('[data-example="hono"] .ply-button:not(:disabled)').first();
   await button.focus();
   await expect(button).toBeFocused();
   expect(await button.evaluate((element) => getComputedStyle(element).outlineStyle)).toBe("solid");
 });
 
 test("文章・数値・操作の文字寸法を親からの継承で変えない", async ({ page }) => {
-  await page.goto("/review/components");
-  for (const selector of [
-    '[data-component="table"] tbody td',
-    '[data-component="card"] .ply-card > .body > p',
-    '[data-component="notice"] .ply-notice > .body > p',
-  ]) {
+  for (const [id, selector] of [
+    ["table", '[data-example="hono"] tbody td'],
+    ["card", '[data-example="hono"] .ply-card > .body > p'],
+    ["notice", '[data-example="hono"] .ply-notice > .body > p'],
+  ] as const) {
+    await page.goto(`/components/${id}`);
     const element = page.locator(selector).first();
     const style = await element.evaluate((node) => ({
       font: getComputedStyle(node).fontSize,
@@ -414,7 +473,8 @@ test("文章・数値・操作の文字寸法を親からの継承で変えな�
     }));
     expect(style, selector).toEqual({ font: "14px", line: "20px" });
   }
-  const button = page.locator('[data-component="icon"] .ply-button').first();
+  await page.goto("/components/icon");
+  const button = page.locator('[data-example="hono"] .ply-button').first();
   const dimensions = await button.evaluate((element) => {
     const style = getComputedStyle(element);
     return {

@@ -1,5 +1,6 @@
 import type { Child, PropsWithChildren } from "hono/jsx";
 import { Button } from "./button";
+import { OverlayClose } from "./overlay-content";
 import { classes, type ElementProps } from "./types";
 
 export type TableProps = PropsWithChildren<
@@ -38,14 +39,15 @@ export const Table = ({
     data-sticky={stickyHeader ? "true" : undefined}
   >
     {selectable && (
-      <div class="selection-bar" hidden>
-        <span class="count" role="status" aria-live="polite" />
-        <div class="actions">
-          {selectionActions}
-          <Button size="compact" data-table-clear>
-            選択を解除
-          </Button>
-        </div>
+      // 選択の板はActionDockと同じ棚にし、画面の下の中央に浮かべて表を動かさない。件数と一括操作を横一列に並べ、解除の×はDialogと同じく紙の角に置く。開閉はTableControllerが持つ。
+      <div class="selection-bar" popover="manual" role="group" aria-label="選択した行の操作">
+        <header class="heading">
+          <span class="count" role="status" aria-live="polite" />
+          <OverlayClose label="選択を解除" data-table-clear />
+        </header>
+        {selectionActions != null && selectionActions !== false && (
+          <div class="actions">{selectionActions}</div>
+        )}
       </div>
     )}
     <table

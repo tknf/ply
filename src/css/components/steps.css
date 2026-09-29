@@ -25,16 +25,13 @@
       color: var(--ply-muted);
       font-size: var(--ply-small);
     }
-    /* 戻れる段階の題名は普段は本文の色と淡い下線にし、指を載せた時だけ青くする。 */
+    /* 戻れる段階の題名は下線を引かず本文の色にし、指を載せた時だけ青くする。 */
     & > li > span > a {
       color: inherit;
-      text-decoration-color: var(--ply-border);
-      transition:
-        color var(--ply-duration) ease,
-        text-decoration-color var(--ply-duration) ease;
+      text-decoration: none;
+      transition: color var(--ply-duration) ease;
       &:hover {
         color: var(--ply-link);
-        text-decoration-color: currentColor;
       }
     }
     & > li > span > small {

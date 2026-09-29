@@ -1,42 +1,59 @@
 import { expect, test } from "@playwright/test";
 
-test("共通コンポーネントの仕事場で検索・追加・状態変更・完了を操作できる", async ({
+test("プロジェクトの画面で絞り込み・追加・運ぶ・チェックを操作できる", async ({
   page,
 }, testInfo) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto("/review/workspace");
+  await page.goto("/apps/project");
   await expect(page.getByRole("heading", { name: "ヘルプセンターのリニューアル" })).toBeVisible();
   if (testInfo.project.name === "chromium")
-    await page.screenshot({ path: testInfo.outputPath("workspace-desktop.png"), fullPage: true });
+    await page.screenshot({ path: testInfo.outputPath("project-desktop.png"), fullPage: true });
+  const items = page.locator(".ply-board .ply-board-item:visible");
   const search = page.getByRole("searchbox", { name: "タスクを探す" });
   await search.fill("スマートフォン");
-  await expect(page.locator(".ply-board .ply-card:visible")).toHaveCount(1);
+  await expect(items).toHaveCount(1);
   await search.fill("存在しないタスク");
-  await expect(page.locator(".ply-board .ply-card:visible")).toHaveCount(0);
+  await expect(items).toHaveCount(0);
   await expect(page.getByText("0件のタスクが見つかりました。", { exact: true })).toBeVisible();
   await search.fill("");
+  await page.getByRole("button", { name: "佐藤 健", exact: true }).click();
+  await expect(items).toHaveCount(3);
+  await page.getByRole("button", { name: "全員", exact: true }).click();
   await page.getByRole("button", { name: "＋ タスクを追加" }).click();
   await page
     .getByRole("textbox", { name: "何をしますか？" })
     .fill("公開前にアクセシビリティを確認する");
   await page.getByRole("button", { name: "追加する", exact: true }).click();
   await expect(page.getByRole("dialog").getByRole("status")).toContainText("追加しました");
-  await page.getByRole("button", { name: "閉じる", exact: true }).click();
-  const card = page
-    .locator(".ply-card")
+  await page
+    .getByRole("dialog")
+    .getByRole("button", { name: "閉じる", exact: true })
+    .first()
+    .click();
+  // Dialogは閉じ終わってから開いた操作へフォーカスを戻すので、戻ったのを待ってから次へ移る。
+  await expect(page.getByRole("button", { name: "＋ タスクを追加" })).toBeFocused();
+  const added = page
+    .locator(".ply-board-item")
     .filter({ has: page.getByRole("heading", { name: "公開前にアクセシビリティを確認する" }) });
-  await expect(card).toBeVisible();
-  await card.getByRole("combobox").selectOption("2");
+  await expect(added).toBeVisible();
+  const handle = added.getByRole("button", {
+    name: "「公開前にアクセシビリティを確認する」を移動",
+  });
+  await handle.focus();
+  await page.keyboard.press("Space");
+  await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("Enter");
   await expect(
     page
-      .locator(".ply-board > section")
-      .last()
+      .locator('.ply-board > section[data-column-id="doing"]')
       .getByRole("heading", { name: "公開前にアクセシビリティを確認する" }),
   ).toBeVisible();
-  await page.getByRole("tab", { name: "今週のチェック" }).click();
+  await page.getByRole("tab", { name: /今週のチェック/ }).click();
   await page.getByRole("checkbox", { name: "スマートフォンで読んでみる" }).check();
-  await expect(page.getByRole("progressbar")).toHaveAttribute("value", "2");
-  await page.getByRole("tab", { name: "会話" }).click();
+  await expect(page.locator(".ply-task-list [data-task-list-target='done']").first()).toHaveText(
+    "2",
+  );
+  await page.getByRole("tab", { name: /会話/ }).click();
   await expect(page.locator(".ply-message:visible")).toHaveCount(2);
 });
 
@@ -45,7 +62,7 @@ test("中央のコマンドと作業面は狭幅・埋め込み・文字拡大�
 }, testInfo) => {
   for (const width of [375, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/review/mail");
+    await page.goto("/apps/inbox");
     const shell = page.locator(".ply-app-shell");
     await expect(shell.locator(".sidebar")).toHaveCount(0);
     const commands = await shell.locator(":scope > .bar > .commands").boundingBox();
@@ -73,7 +90,7 @@ test("中央のコマンドと作業面は狭幅・埋め込み・文字拡大�
     await page.keyboard.press("Escape");
     await expect(page.getByRole("button", { name: "つむぐチーム", exact: true })).toBeFocused();
     await page.getByRole("link", { name: /カテゴリ案をまとめました/ }).click();
-    await expect(page.getByRole("textbox", { name: "森 美咲への返信の下書き" })).toBeVisible();
+    await expect(page.getByRole("textbox", { name: "森 美咲への返信" })).toBeVisible();
     const byline = await page.locator(".ply-message > .heading").boundingBox();
     const body = await page.locator(".ply-message > .body").boundingBox();
     if (!byline || !body) throw new Error("投稿者と本文がありません");
@@ -97,10 +114,10 @@ test("中央のコマンドと作業面は狭幅・埋め込み・文字拡大�
 });
 
 test("連絡を読み下書きを残して整理し、元の受信トレイへ戻せる", async ({ page }) => {
-  await page.goto("/review/mail");
+  await page.goto("/apps/inbox");
   await expect(page.getByRole("tab", { name: "受信トレイ 3", exact: true })).toBeVisible();
   await page.getByRole("link", { name: /カテゴリ案をまとめました/ }).click();
-  const draft = page.getByRole("textbox", { name: "森 美咲への返信の下書き" });
+  const draft = page.getByRole("textbox", { name: "森 美咲への返信" });
   await draft.fill("カテゴリ案を確認しました。こちらで記事を入れてみます。");
   await page.getByRole("button", { name: "下書きを保存", exact: true }).click();
   await expect(page.getByRole("status")).toHaveText("下書きを保存しました");

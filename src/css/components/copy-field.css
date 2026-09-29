@@ -1,0 +1,51 @@
+@layer components {
+  /*
+    写して使う値の欄。読み取り専用の欄の終わりに、写す操作の丸い印を置く。写すと印がペンで描くチェックに変わり、
+    しばらくして元の印に戻る（Fizzyの公開リンクと招待リンク）。
+  */
+  .ply-copy-field {
+    min-inline-size: 0;
+    & > .ply-field > .row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--ply-space-2);
+      min-inline-size: 0;
+      & > .ply-input {
+        flex: 1 1 10rem;
+        min-inline-size: 0;
+        font-variant-numeric: tabular-nums;
+        text-overflow: ellipsis;
+      }
+      & > .ply-button {
+        flex: none;
+        & > .copied {
+          display: none;
+        }
+      }
+    }
+    &[data-copied="true"] > .ply-field > .row > .ply-button {
+      color: var(--ply-success);
+      & > .copy {
+        display: none;
+      }
+      & > .copied {
+        display: block;
+        animation: ply-copy-field-write 0.35s ease-out both;
+      }
+    }
+  }
+  @keyframes ply-copy-field-write {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ply-copy-field[data-copied="true"] > .ply-field > .row > .ply-button > .copied {
+      animation: none;
+    }
+  }
+}

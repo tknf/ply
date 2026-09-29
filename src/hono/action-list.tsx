@@ -1,6 +1,5 @@
 import type { Child } from "hono/jsx";
 import { classes, type ElementProps, type Accent } from "./types";
-import { Icon } from "./icon";
 
 export type ActionListItem = {
   title: string;
@@ -9,6 +8,8 @@ export type ActionListItem = {
   icon?: Child;
   preview?: Child;
   accent?: Accent;
+  /** 手当てが要る行（確かめていない予備の連絡先など）。名前と説明を危険の色で書く。 */
+  attention?: boolean;
 };
 export type ActionListProps = ElementProps<"ul"> & {
   items: readonly ActionListItem[];
@@ -21,14 +22,15 @@ export const ActionList = ({
   ...attributes
 }: ActionListProps) => (
   <ul {...attributes} class={classes("ply-action-list", className)} data-layout={layout}>
-    {items.map(({ title, href, description, icon, preview, accent = "blue" }) => (
+    {items.map(({ title, href, description, icon, preview, accent = "blue", attention }) => (
       <li>
-        <a href={href} data-accent={accent}>
+        <a
+          href={href}
+          data-accent={attention ? "coral" : accent}
+          data-attention={attention ? "true" : undefined}
+        >
           {icon && <span class="icon">{icon}</span>}
           <span class="title">{title}</span>
-          <span class="arrow" aria-hidden="true">
-            <Icon name="arrow" />
-          </span>
           {description && <small class="description">{description}</small>}
           {preview != null && preview !== false && <div class="preview">{preview}</div>}
         </a>

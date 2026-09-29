@@ -41,12 +41,15 @@ for (const width of [375, 1280])
     const toast = example.locator(":scope > .ply-toast");
     const bounds = () =>
       example.evaluate((element) =>
-        [element, ...element.querySelectorAll("figcaption,pre,[data-code-block-target=copy]")].map(
-          (node) => {
-            const rect = node.getBoundingClientRect();
-            return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
-          },
-        ),
+        [
+          element,
+          ...element.querySelectorAll(
+            ".ply-layer-card > .heading,pre,[data-code-block-target=copy]",
+          ),
+        ].map((node) => {
+          const rect = node.getBoundingClientRect();
+          return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+        }),
       );
     for (const zoom of ["100%", "200%"]) {
       await page.evaluate((value) => {
@@ -135,7 +138,7 @@ test("JavaScriptがなくてもコードを読め、動かないコピー操作�
   await expect(examples.locator("code").first()).toContainText("<link");
   await expect(examples.getByRole("button")).toHaveCount(0);
   const html = page
-    .getByRole("group", { name: "利用例のコード", exact: true })
+    .getByRole("group", { name: "見本のコード", exact: true })
     .locator("details")
     .first();
   await html.locator("summary").press("Enter");

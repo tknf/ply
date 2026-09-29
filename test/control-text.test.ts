@@ -180,3 +180,59 @@ test("旧実装のような共通コンポーネントを迂回したボタン�
     ),
   ).toEqual([]);
 });
+
+test("ActionTileの専用buttonは許し、同じbuttonを別のファイルに書くと検出する", () => {
+  const tile =
+    '<button type="button" class="ply-action-tile"><span class="name">公開する</span></button>';
+  expect(controlMarkupErrors(tile, "src/hono/action-tile.tsx")).toEqual([]);
+  expect(controlMarkupErrors(tile, "src/hono/table.tsx")).not.toEqual([]);
+  // 追加のclassを受けるclasses()の呼び出しでも、固定の文字列の引数で所有元を判断する。
+  const extended =
+    '<button type="button" class={classes("ply-action-tile", className)}>公開する</button>';
+  expect(controlMarkupErrors(extended, "src/hono/action-tile.tsx")).toEqual([]);
+  expect(controlMarkupErrors(extended, "src/hono/table.tsx")).not.toEqual([]);
+  expect(
+    controlMarkupErrors(
+      '<button type="button" class={classes(className)}>公開する</button>',
+      "src/hono/action-tile.tsx",
+    ),
+  ).not.toEqual([]);
+  expect(
+    controlMarkupErrors(
+      '<button type="button" class="tile">公開する</button>',
+      "src/hono/action-tile.tsx",
+    ),
+  ).not.toEqual([]);
+});
+
+test("Promptの選択肢のカードは専用buttonとして許し、別のファイルや別のclassでは検出する", () => {
+  const choice =
+    '<button type="submit" class="choice" name="kind" value="person"><strong>人</strong></button>';
+  expect(controlMarkupErrors(choice, "src/hono/prompt.tsx")).toEqual([]);
+  expect(controlMarkupErrors(choice, "src/hono/card.tsx")).not.toEqual([]);
+  expect(
+    controlMarkupErrors('<button type="submit" class="option">人</button>', "src/hono/prompt.tsx"),
+  ).not.toEqual([]);
+});
+
+test("EmojiPickerの升とReactionsの札は専用buttonとして許し、別のファイルや別のclassでは検出する", () => {
+  const emoji = '<button type="button" class="emoji" aria-label="いいね">👍</button>';
+  expect(controlMarkupErrors(emoji, "src/hono/emoji-picker.tsx")).toEqual([]);
+  expect(controlMarkupErrors(emoji, "src/hono/reactions.tsx")).not.toEqual([]);
+  const reaction =
+    '<button type="button" class="reaction" aria-pressed="true"><span class="content">👍</span></button>';
+  expect(controlMarkupErrors(reaction, "src/hono/reactions.tsx")).toEqual([]);
+  expect(controlMarkupErrors(reaction, "src/hono/emoji-picker.tsx")).not.toEqual([]);
+  expect(
+    controlMarkupErrors('<button type="button" class="chip">👍</button>', "src/hono/reactions.tsx"),
+  ).not.toEqual([]);
+});
+
+test("Calendarの予定の札は専用buttonとして許し、別のファイルや別のclassでは検出する", () => {
+  const event = '<button type="button" class="event" popovertarget="e1">編集会議</button>';
+  expect(controlMarkupErrors(event, "src/hono/calendar.tsx")).toEqual([]);
+  expect(controlMarkupErrors(event, "src/hono/grid.tsx")).not.toEqual([]);
+  expect(
+    controlMarkupErrors('<button type="button" class="day">15</button>', "src/hono/calendar.tsx"),
+  ).not.toEqual([]);
+});

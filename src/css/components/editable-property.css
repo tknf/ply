@@ -1,36 +1,35 @@
 @layer components {
   /*
-    その場で書き換えられる値。値の文字に細い下線を引くだけにし、箱は出さない。
-    書いている間は、同じ位置の欄にフォーカスの輪を出す。値の書き始めの位置と行の高さは、表示と編集で同じ。
-    確定すると、新しい値を書き始めの側からペンで書き、書き終えた印を添える。
+    その場で書き換えられる値。FizzyやHEYと同じく、表示の時の値は下線も枠もない文字にする。
+    値の行は表示でも編集でも同じ箱（文字の幅のまま、高さは欄と同じ）にし、面だけを文字の外へ張り出して描く。文字の書き始めと上下の位置は動かさない。
+    表示の箱は値と鉛筆だけを包み、指を載せると淡い面を出す。値を押しても鉛筆を押しても書き始める。
+    書いている間は同じ箱を淡い地の面にし、フォーカスの輪を出す。確定・取消は一行でも複数行でも面の下に並べる。
+    確定すると、新しい値を書き始めの側からペンで書き、鉛筆の升に書き終えた印をしばらく出す。
   */
   .ply-editable-property {
+    /* 値の行の高さは欄とButtonの高さ。行の文字は上下の余りを半分ずつ空けて置く。 */
+    --ply-editable-row: calc(18em / 7);
+    --ply-editable-pad: calc((var(--ply-editable-row) - 10em / 7) / 2);
+    /* 面を文字の外へ張り出す幅は、鉛筆の升の中で印が端から空く幅と同じにし、面の端・値・鉛筆の間をそろえる。 */
+    --ply-editable-inset: calc((var(--ply-editable-row) - 1em) / 2);
+    --ply-editable-start: calc(-1 * var(--ply-editable-inset));
+    --ply-editable-end: var(--ply-editable-inset);
     display: grid;
     /* 並べた隣の欄が高くても、名前と値の行を伸ばさない。 */
     align-content: start;
     gap: var(--ply-space-1);
     min-inline-size: 0;
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+    &:dir(rtl) {
+      --ply-editable-start: var(--ply-editable-inset);
+      --ply-editable-end: calc(-1 * var(--ply-editable-inset));
+    }
   }
 
   .ply-editable-property > .label {
-    font-weight: var(--ply-label-weight);
-    font-size: var(--ply-label);
-    line-height: var(--ply-label-leading);
-  }
-
-  .ply-editable-property > .preview {
-    display: flex;
-    align-items: center;
-    gap: var(--ply-space-2);
-    min-inline-size: 0;
-    inline-size: min(100%, 28rem);
-    padding-block: 0.125rem;
-    /* 書き始めの位置は、名前と編集中の欄の文字にそろえる（透明にした欄の枠の幅だけ内側）。 */
-    padding-inline: var(--ply-stroke-width) 0.125rem;
-    /* 鉛筆に指を載せると、書き換わる値の下線を青くする。 */
-    &:has(> .edit:hover:enabled) > .value {
-      text-decoration-color: var(--ply-link);
-    }
+    color: var(--ply-muted);
+    font-weight: 500;
   }
 
   .ply-editable-property > .preview[hidden],
@@ -38,142 +37,225 @@
     display: none;
   }
 
-  .ply-editable-property > .preview > .value {
-    flex: 1;
+  /*
+    値の箱は文字の幅のまま置き、書き始めを名前にそろえる。面は箱をずらした影で文字の外へ張り出して描く
+    （影は横の大きさに数えないので、狭い場所やスクロールする場所でも横にはみ出さない）。
+  */
+  .ply-editable-property > .preview,
+  .ply-editable-property > .editor > .ply-input {
+    --ply-editable-face: transparent;
+    border-radius: var(--ply-radius-control);
+    background: var(--ply-editable-face);
+  }
+
+  /*
+    表示の箱は値と鉛筆だけを包み、鉛筆を値から離さない。面は書き始めの側にだけ張り出す（鉛筆の升が終わりの側の余白になる）。
+    指を載せると淡い面を一枚だけ出し（Fizzyの操作と同じ淡い面）、鉛筆にフォーカスがある時は、編集中の欄と同じ青い縁と淡い青の輪を出す。
+  */
+  .ply-editable-property > .preview {
+    display: flex;
+    align-items: start;
+    inline-size: fit-content;
     min-inline-size: 0;
-    overflow-wrap: anywhere;
-    font-size: var(--ply-label);
-    line-height: var(--ply-label-leading);
+    max-inline-size: 100%;
+    position: relative;
+    box-shadow: var(--ply-editable-start) 0 0 0 var(--ply-editable-face);
+    transition:
+      background-color var(--ply-duration) ease,
+      box-shadow var(--ply-duration) ease;
     --ply-editable-pen-start: inset(0 100% 0 0);
-    /* 書き換えられる値の印は、文字に沿う細い下線。 */
-    text-decoration-line: underline;
-    text-decoration-color: color-mix(in srgb, var(--ply-muted) 45%, transparent);
-    text-decoration-thickness: var(--ply-stroke-width);
-    text-underline-offset: 0.3em;
-    transition: text-decoration-color var(--ply-duration) ease;
-    /* 未登録は、まだ何も書いていない状態として控えめな色にする。 */
-    &[data-empty="true"] {
-      color: var(--ply-muted);
+    &:dir(rtl) {
+      --ply-editable-pen-start: inset(0 0 0 100%);
     }
-    /* 書き終えた印。チェックボックスと同じく、書き始めの側からペンで描く。 */
+    /*
+      書き終えた印は、鉛筆と同じ升に描く（値の後ろに場所を取らず、鉛筆を値から離さない）。
+      チェックボックスと同じく、書き始めの側からペンで描く。
+    */
     &::after {
       content: "";
-      display: inline-block;
+      position: absolute;
+      inset-block-start: calc((var(--ply-editable-row) - 1em) / 2);
+      inset-inline-end: calc((var(--ply-editable-row) - 1em) / 2);
       inline-size: 1em;
       block-size: 1em;
-      margin-inline-start: var(--ply-space-2);
-      vertical-align: -0.125em;
       background: var(--ply-success);
       mask: url("../assets/check.svg") center / contain no-repeat;
       clip-path: var(--ply-editable-pen-start);
       opacity: 0;
+      pointer-events: none;
     }
-    &:dir(rtl) {
-      --ply-editable-pen-start: inset(0 0 0 100%);
+    &:has(> .edit:enabled):hover {
+      --ply-editable-face: color-mix(in srgb, var(--ply-text) 5%, var(--ply-surface));
+    }
+    &:has(> .edit:focus-visible) {
+      box-shadow:
+        var(--ply-editable-start) 0 0 0 var(--ply-editable-face),
+        var(--ply-editable-start) 0 0 var(--ply-stroke-width) var(--ply-link),
+        0 0 0 var(--ply-stroke-width) var(--ply-link),
+        var(--ply-editable-start) 0 0 calc(var(--ply-stroke-width) + 0.125rem) var(--ply-focus-ring),
+        0 0 0 calc(var(--ply-stroke-width) + 0.125rem) var(--ply-focus-ring);
     }
   }
 
-  /* 確定した値は、書き始めの側からペンで書き、書き終えたところで印を添える。 */
-  .ply-editable-property[data-saved="true"] > .preview > .value {
-    animation: ply-editable-property-write 0.45s steps(12, end) both;
+  /* 鉛筆は値のすぐ後ろに置き、どの値を書き換えるのかを離さない。 */
+  .ply-editable-property > .preview > .value {
+    flex: 0 1 auto;
+    min-inline-size: 0;
+    padding-block: var(--ply-editable-pad);
+    overflow-wrap: anywhere;
+    /* 未登録は、まだ何も書いていない状態として控えめな色にする。 */
+    &[data-empty="true"] {
+      color: var(--ply-muted);
+    }
+  }
+
+  /* 値そのものを押しても書き始める。 */
+  .ply-editable-property > .preview:has(> .edit:enabled) > .value {
+    cursor: text;
+  }
+
+  /* 確定した値は、書き始めの側からペンで書き、書き終えたところで鉛筆を印に置き換え、しばらくして鉛筆に戻す。 */
+  .ply-editable-property[data-saved="true"] > .preview {
+    & > .value {
+      animation: ply-editable-property-write 0.45s steps(12, end) both;
+    }
     &::after {
       animation: ply-editable-property-saved 1.6s ease-out 0.4s both;
     }
+    & > .edit > .ply-icon {
+      animation: ply-editable-property-pencil 1.6s ease-out 0.4s both;
+    }
   }
 
-  .ply-editable-property > .preview > .edit {
+  /* 鉛筆は自分の面と輪を持たず、箱の面と輪で示す。 */
+  .ply-editable-property > .preview > .edit.ply-button {
     flex: none;
-  }
-
-  /* 書いている間も同じ位置。欄の枠と影は外し、フォーカスの輪で書いている所を示す。 */
-  .ply-editable-property > .editor {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--ply-space-3);
-    min-inline-size: 0;
-    inline-size: min(100%, 28rem);
-    padding-block: 0.125rem;
-    padding-inline: 0 0.125rem;
-  }
-
-  .ply-editable-property > .editor > .ply-input {
-    flex: 1 1 12rem;
-    inline-size: auto;
-    /* 文字は名前と同じ位置から書き、フォーカスの輪は文字から離して外側に出す。 */
-    padding-inline: 0;
-    border-color: transparent;
-    background: transparent;
-    /* フォーカスが確定・取消へ移っても、書いている欄だと分かるよう表示と同じ色の細い下線を引く。 */
-    box-shadow: inset 0 calc(var(--ply-stroke-width) * -1)
-      color-mix(in srgb, var(--ply-muted) 45%, transparent);
+    &:is(:hover, :active) {
+      background: transparent;
+    }
     &:focus-visible {
-      outline-offset: var(--ply-space-1);
-      border-color: transparent;
-      box-shadow: none;
+      outline: 0;
+    }
+  }
+
+  .ply-editable-property > .editor {
+    display: grid;
+    justify-items: start;
+    gap: var(--ply-space-2);
+    min-inline-size: 0;
+  }
+
+  /*
+    書いている間の欄は、列の幅いっぱい（30remまで）に広げる。枠を持たず、文字は箱の端から書く（表示と同じ位置）。
+    面は淡い地の色で両側へ張り出し、フォーカスは他の欄と同じ青い縁と淡い青の輪を面の外周に出す。
+  */
+  .ply-editable-property > .editor > .ply-input {
+    --ply-input-size: var(--ply-editable-row);
+    --ply-input-border-size: 0rem;
+    --ply-editable-face: var(--ply-background);
+    --ply-editable-edge: transparent;
+    --ply-editable-ring: transparent;
+    inline-size: 100%;
+    max-inline-size: 30rem;
+    padding-inline: 0;
+    box-shadow:
+      var(--ply-editable-start) 0 0 0 var(--ply-editable-face),
+      var(--ply-editable-end) 0 0 0 var(--ply-editable-face),
+      var(--ply-editable-start) 0 0 var(--ply-stroke-width) var(--ply-editable-edge),
+      var(--ply-editable-end) 0 0 var(--ply-stroke-width) var(--ply-editable-edge),
+      var(--ply-editable-start) 0 0 calc(var(--ply-stroke-width) + 0.125rem)
+        var(--ply-editable-ring),
+      var(--ply-editable-end) 0 0 calc(var(--ply-stroke-width) + 0.125rem) var(--ply-editable-ring);
+    &:focus-visible {
+      --ply-editable-edge: var(--ply-link);
+      --ply-editable-ring: var(--ply-focus-ring);
+      box-shadow:
+        var(--ply-editable-start) 0 0 0 var(--ply-editable-face),
+        var(--ply-editable-end) 0 0 0 var(--ply-editable-face),
+        var(--ply-editable-start) 0 0 var(--ply-stroke-width) var(--ply-editable-edge),
+        var(--ply-editable-end) 0 0 var(--ply-stroke-width) var(--ply-editable-edge),
+        var(--ply-editable-start) 0 0 calc(var(--ply-stroke-width) + 0.125rem)
+          var(--ply-editable-ring),
+        var(--ply-editable-end) 0 0 calc(var(--ply-stroke-width) + 0.125rem)
+          var(--ply-editable-ring);
     }
     &[data-invalid="true"],
     &:user-invalid {
-      outline: 0.125rem solid var(--ply-danger);
-      outline-offset: var(--ply-space-1);
+      --ply-editable-edge: var(--ply-danger);
     }
-    /* 使えない欄は、共通の斜線を引く。 */
-    &:disabled {
-      background: var(--ply-hatch);
-    }
+  }
+
+  /*
+    一行の欄は、共通Inputのように行高を内寸いっぱいにせず、複数行と同じく文字の行高と上下の余白で置く。
+    枠のない面では、内寸いっぱいの行高だと選択の色が面の上下の端まで塗られるため。
+  */
+  .ply-editable-property > .editor > input.ply-input {
+    padding-block: calc((var(--ply-input-size) - 10em / 7) / 2);
+    line-height: calc(10 / 7);
   }
 
   .ply-editable-property > .editor > .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--ply-space-2);
+    align-items: center;
+    gap: var(--ply-space-1);
   }
 
-  /* 複数行は改行をそのまま表示し、表示と編集で同じ行の上端から書く。確定・取消は欄の下の終わりの側に置く。 */
+  /* 複数行は改行をそのまま表示し、書いている間は3行分から内容に合わせて伸ばす。 */
   .ply-editable-property[data-multiline="true"] {
-    & > .preview {
-      align-items: start;
-      padding-block: 0;
-      & > .value {
-        white-space: pre-wrap;
-      }
+    & > .preview > .value {
+      white-space: pre-wrap;
     }
-    & > .editor {
-      padding-block: 0;
-      & > .ply-input {
-        flex-basis: 100%;
-        min-block-size: 3lh;
-        field-sizing: content;
-        padding-block: 0;
-        border-block-width: 0;
-        line-height: var(--ply-label-leading);
-        resize: none;
-      }
-      & > .actions {
-        margin-inline-start: auto;
-      }
+    & > .editor > .ply-input {
+      min-block-size: calc(3 * 10em / 7 + 2 * var(--ply-editable-pad));
+      field-sizing: content;
+      resize: none;
     }
   }
 
   .ply-editable-property:not([data-state]) > .editor > .actions {
     display: none;
   }
+  /* 指で触れる端末では、鉛筆がButtonの大きさになるので、値の行と欄も同じ高さにする。 */
+  @media (pointer: coarse) {
+    .ply-editable-property {
+      --ply-editable-row: 2.75rem;
+    }
+    /* 指で触れる端末の欄は拡大を防ぐため16pxで書くので、表示の値も同じ大きさにし、書き始めても文字の大きさを変えない。 */
+    .ply-editable-property > .preview > .value {
+      font-size: max(1rem, var(--ply-label));
+    }
+  }
   @media (prefers-reduced-motion: reduce) {
     .ply-editable-property[data-saved="true"] > .preview > .value {
       animation: none;
     }
-    .ply-editable-property[data-saved="true"] > .preview > .value::after {
+    .ply-editable-property[data-saved="true"] > .preview::after {
       animation: none;
       clip-path: inset(0);
       opacity: 1;
     }
+    .ply-editable-property[data-saved="true"] > .preview > .edit > .ply-icon {
+      animation: none;
+      opacity: 0;
+    }
   }
   @media (forced-colors: active) {
-    .ply-editable-property > .preview > .value {
-      text-decoration-color: CanvasText;
+    /* 影の面と輪は消えるので、欄と鉛筆のフォーカスは張り出す幅の輪郭で示す。 */
+    .ply-editable-property > .editor > .ply-input {
+      outline: var(--ply-stroke-width) solid CanvasText;
+      outline-offset: var(--ply-editable-inset);
+      &:focus-visible {
+        outline: 0.125rem solid Highlight;
+      }
     }
-    .ply-editable-property > .preview > .value::after {
+    .ply-editable-property > .preview::after {
       background: CanvasText;
+    }
+    /* 影は消えるので、鉛筆のフォーカスは箱の輪郭で示す。 */
+    .ply-editable-property > .preview:has(> .edit:focus-visible) {
+      outline: 0.125rem solid Highlight;
+      outline-offset: var(--ply-editable-inset);
     }
   }
   @keyframes ply-editable-property-write {
@@ -182,6 +264,15 @@
     }
     100% {
       clip-path: inset(0);
+    }
+  }
+  @keyframes ply-editable-property-pencil {
+    0%,
+    75% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
     }
   }
   @keyframes ply-editable-property-saved {

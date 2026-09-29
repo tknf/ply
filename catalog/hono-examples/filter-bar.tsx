@@ -7,8 +7,8 @@ export default () => (
       <FilterBar
         label="表示する月"
         items={[
-          { label: "8月", href: "/examples/schedule/august" },
-          { label: "9月", href: "/examples/schedule", current: true },
+          { label: "8月", href: "/apps/schedule?month=8" },
+          { label: "9月", href: "/apps/schedule", current: true },
         ]}
       />
     </div>
@@ -18,10 +18,10 @@ export default () => (
         label="予定の表示形式"
         appearance="segmented"
         items={[
-          { label: "月", href: "/examples/schedule", current: true },
-          { label: "週", href: "/examples/schedule?view=week" },
-          { label: "年", href: "/examples/schedule?view=year" },
-          { label: "一覧", href: "/examples/schedule?view=agenda" },
+          { label: "月", href: "/apps/schedule", current: true },
+          { label: "週", href: "/apps/schedule?view=week" },
+          { label: "年", href: "/apps/schedule?view=year" },
+          { label: "一覧", href: "/apps/schedule?view=agenda" },
         ]}
       />
     </div>
@@ -30,21 +30,21 @@ export default () => (
         <FilterBar
           label="記事の状態"
           items={[
-            { label: "すべて", href: "/search", count: 6, current: true },
-            { label: "公開中", href: "/search?state=公開中", count: 3 },
-            { label: "下書き", href: "/search?state=下書き", count: 3 },
-            { label: "該当なし", href: "/search?q=該当なし", count: 0 },
+            { label: "すべて", href: "/apps/search", count: 6, current: true },
+            { label: "公開中", href: "/apps/search?state=公開中", count: 3 },
+            { label: "下書き", href: "/apps/search?state=下書き", count: 3 },
+            { label: "該当なし", href: "/apps/search?q=該当なし", count: 0 },
           ]}
         />
         <FilterBar
           label="検索する内容"
           items={[
-            { label: "すべて", href: "/search", current: true },
+            { label: "すべて", href: "/apps/search", current: true },
             {
               label: "長く使う道具と日々の暮らしを整える工夫について",
-              href: "/search?q=道具",
+              href: "/apps/search?q=道具",
             },
-            { label: "初めての方への申し込み手順", href: "/search?q=申し込み" },
+            { label: "初めての方への申し込み手順", href: "/apps/search?q=申し込み" },
           ]}
         />
       </div>

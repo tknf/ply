@@ -30,6 +30,6 @@ export default () => (
       </div>
     </Disclosure>
     <Button type="reset">初期値に戻す</Button>
-    <a href="/examples/settings">設定画面で保存・復元を試す</a>
+    <a href="/apps/settings">設定画面で保存・復元を試す</a>
   </form>
 );

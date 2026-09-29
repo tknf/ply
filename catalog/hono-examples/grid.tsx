@@ -2,7 +2,7 @@ import { Grid, Disclosure } from "../../src/hono";
 
 const days = [
   { id: "mon", label: "月 14" },
-  { id: "tue", label: "火 15" },
+  { id: "tue", label: "火 15", current: true },
   { id: "wed", label: "水 16" },
   { id: "thu", label: "木 17" },
   { id: "fri", label: "金 18" },

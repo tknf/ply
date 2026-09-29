@@ -1,5 +1,7 @@
 import type { Child } from "hono/jsx";
+import { Badge } from "./badge";
 import { Divider } from "./divider";
+import { EmptyState, type EmptyStateProps } from "./empty-state";
 import { Icon } from "./icon";
 import { classes, type ElementProps } from "./types";
 
@@ -27,6 +29,11 @@ export type MessageListProps = ElementProps<"ul"> & {
   previewLines?: 1 | 2;
   /** この項目の直前に区切りの線とラベルを置き、ここから新しいことを示す。 */
   newSince?: { id: string; label?: string };
+  /**
+   * 連絡が一件もない時の表示。EmptyStateで描く。行を後から出し入れしても、行が一つもない時だけ見える。
+   * 既定は「連絡はまだありません」。
+   */
+  empty?: { title: string; description?: Child; kind?: EmptyStateProps["kind"] };
 };
 export const MessageList = ({
   label,
@@ -35,6 +42,7 @@ export const MessageList = ({
   stateContent,
   previewLines = 1,
   newSince,
+  empty = { title: "連絡はまだありません" },
   class: className,
   ...attributes
 }: MessageListProps) => {
@@ -49,16 +57,21 @@ export const MessageList = ({
       data-avatars={String(avatars)}
       data-preview-lines={previewLines}
     >
-      {state !== "ready" || items.length === 0 ? (
+      {state !== "ready" ? (
         <li class="state" role="status">
           {stateContent ??
-            (state === "loading"
-              ? "連絡を読み込んでいます…"
-              : state === "error"
-                ? "連絡を読み込めませんでした。"
-                : "連絡はまだありません。")}
+            (state === "loading" ? "連絡を読み込んでいます…" : "連絡を読み込めませんでした。")}
         </li>
       ) : (
+        <li class="state" data-empty="true" role="status">
+          {stateContent ?? (
+            <EmptyState title={empty.title} kind={empty.kind}>
+              {empty.description}
+            </EmptyState>
+          )}
+        </li>
+      )}
+      {state === "ready" &&
         items.map((item) => {
           const Row = item.href ? "a" : "div";
           const validDate = item.datetime && Number.isFinite(Date.parse(item.datetime));
@@ -74,6 +87,7 @@ export const MessageList = ({
                 data-unread={item.unread ? "true" : "false"}
                 data-current={item.current ? "true" : undefined}
                 data-state={item.state}
+                data-unavailable={item.unavailableReason ? "true" : undefined}
               >
                 <Row class="row" href={item.href} aria-current={item.current ? "page" : undefined}>
                   {avatars && (
@@ -83,6 +97,26 @@ export const MessageList = ({
                   )}
                   <span class="body">
                     <strong class="title">
+                      {/* 状態はHEYの「DRAFT」の札と同じく、件名の前に共通のBadgeで置く。 */}
+                      {(item.state || item.unavailableReason) && (
+                        <Badge
+                          class="state"
+                          tone={
+                            !item.unavailableReason && item.state === "failed"
+                              ? "danger"
+                              : "neutral"
+                          }
+                          draft={!item.unavailableReason && item.state === "draft"}
+                        >
+                          {item.unavailableReason
+                            ? "閲覧不可"
+                            : item.state === "draft"
+                              ? "下書き"
+                              : item.state === "sending"
+                                ? "送信中"
+                                : "送信失敗"}
+                        </Badge>
+                      )}
                       <span class="subject">{item.title.trim() || "（件名なし）"}</span>
                       {item.threadCount != null && item.threadCount > 1 && (
                         <span class="count" aria-label={`${item.threadCount}件の会話`}>
@@ -98,18 +132,10 @@ export const MessageList = ({
                     </strong>
                     <span class="summary">
                       <span class="sender">{item.sender.trim() || "差出人不明"}</span>
-                      {item.preview && <span class="preview">{item.preview}</span>}
+                      {(item.unavailableReason ?? item.preview) && (
+                        <span class="preview">{item.unavailableReason ?? item.preview}</span>
+                      )}
                     </span>
-                    {(item.state || item.unavailableReason) && (
-                      <span class="status">
-                        {item.unavailableReason ??
-                          (item.state === "draft"
-                            ? "下書き"
-                            : item.state === "sending"
-                              ? "送信中…"
-                              : "送信できませんでした")}
-                      </span>
-                    )}
                   </span>
                   <span class="meta">
                     {item.time &&
@@ -126,8 +152,7 @@ export const MessageList = ({
               </li>
             </>
           );
-        })
-      )}
+        })}
     </ul>
   );
 };

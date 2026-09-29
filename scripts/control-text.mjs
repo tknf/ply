@@ -199,14 +199,42 @@ export const controlMarkupErrors = (source, path) => {
       const attribute = (name) =>
         attributes.find((entry) => ts.isJsxAttribute(entry) && entry.name.getText(file) === name);
       const classValue = attribute("class")?.initializer;
+      // class="…"の文字列と、class={classes("…", 追加のclass)}の文字列の引数を読む。
+      const call =
+        classValue &&
+        ts.isJsxExpression(classValue) &&
+        classValue.expression &&
+        ts.isCallExpression(classValue.expression) &&
+        classValue.expression.expression.getText(file) === "classes"
+          ? classValue.expression
+          : undefined;
       const classes =
-        classValue && ts.isStringLiteral(classValue) ? classValue.text.split(/\s+/) : [];
+        classValue && ts.isStringLiteral(classValue)
+          ? classValue.text.split(/\s+/)
+          : (call?.arguments ?? [])
+              .filter((argument) => ts.isStringLiteral(argument))
+              .flatMap((argument) => argument.text.split(/\s+/));
       const role = attribute("role")?.initializer;
       const tab =
         path === "src/hono/tabs.tsx" && role && ts.isStringLiteral(role) && role.text === "tab";
+      // ActionTileは印と名前を縦に積む専用の操作で、文字の指定はaction-tile.cssが持つ。
+      const tile = path === "src/hono/action-tile.tsx" && classes.includes("ply-action-tile");
+      // Promptの選択肢は要点と説明の複数行の文を持つ大きなカードで、文字の指定はprompt.cssが持つ。
+      const promptChoice = path === "src/hono/prompt.tsx" && classes.includes("choice");
+      // Calendarの詳細を持つ予定の札は、リンクの札と同じ見た目の小さな操作で、文字の指定はcalendar.cssが持つ。
+      const calendarEvent = path === "src/hono/calendar.tsx" && classes.includes("event");
+      // EmojiPickerの升は絵文字一字だけを大きく置く専用の操作で、文字の指定はemoji-picker.cssが持つ。
+      const emoji = path === "src/hono/emoji-picker.tsx" && classes.includes("emoji");
+      // Reactionsの札は絵文字と数を並べた小さな切り替えで、文字の指定はreactions.cssが持つ。
+      const reaction = path === "src/hono/reactions.tsx" && classes.includes("reaction");
       if (
         path !== "src/hono/button.tsx" &&
         !tab &&
+        !tile &&
+        !promptChoice &&
+        !emoji &&
+        !calendarEvent &&
+        !reaction &&
         !classes.includes("ply-button") &&
         !(
           classes.includes("toggle") &&

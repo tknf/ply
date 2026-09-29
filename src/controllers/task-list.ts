@@ -1,10 +1,10 @@
 import { Controller } from "@hotwired/stimulus";
 
-/** チェックの変化に合わせて、見出しの未完了の数と進み具合を数え直す。 */
+/** チェックの変化に合わせて、見出しの終えた数と進み具合を数え直す。 */
 export class TaskListController extends Controller<HTMLElement> {
-  static targets = ["remaining"];
-  declare readonly remainingTarget: HTMLElement;
-  declare readonly hasRemainingTarget: boolean;
+  static targets = ["done"];
+  declare readonly doneTarget: HTMLElement;
+  declare readonly hasDoneTarget: boolean;
 
   connect = () => {
     this.update();
@@ -21,7 +21,8 @@ export class TaskListController extends Controller<HTMLElement> {
       "--ply-task-progress",
       String(boxes.length ? done / boxes.length : 0),
     );
-    if (this.hasRemainingTarget)
-      this.remainingTarget.textContent = `未完了${boxes.length - done}件`;
+    if (boxes.length > 0 && done === boxes.length) this.element.dataset.complete = "true";
+    else delete this.element.dataset.complete;
+    if (this.hasDoneTarget) this.doneTarget.textContent = String(done);
   };
 }

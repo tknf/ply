@@ -2,13 +2,13 @@ import { classes, type ElementProps } from "./types";
 
 export type LoadingProps = ElementProps<"p"> & {
   label?: string;
-  /** orbitは回る丸、waveは順に灯る三つの点、haloは広がって消える輪。 */
+  /** waveは青から紫の三つの点が順に跳ねる印（既定）、orbitは回る丸、haloは広がって消える輪。 */
   variant?: "orbit" | "wave" | "halo";
   layout?: "inline" | "region";
 };
 export const Loading = ({
   label = "読み込み中…",
-  variant = "orbit",
+  variant = "wave",
   layout = "inline",
   class: className,
   ...attributes

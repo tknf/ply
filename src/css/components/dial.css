@@ -1,0 +1,178 @@
+@layer components {
+  /*
+    ダイヤル。Fizzyの自動で閉じる日数と同じく、押す物と同じ縦の陰影の金属のつまみを置き、周りに目盛りの値を並べる。
+    値は左下から時計回りに右下まで、270度の弧に等しく並べる（3〜8個）。選んだ値は青い太字にし、つまみの針がその値へ回る。
+    実体はラジオボタンの束で、ボタンそのものは見えなくして値の文字を押す的にする。
+  */
+  .ply-dial {
+    --ply-dial-count: 2;
+    --ply-dial-at: 0;
+    /* 弧の半径は置き場所の幅に合わせて縮め、つまみも同じ割合で小さくする。 */
+    --ply-dial-radius: min(4.25rem, calc((100cqi - 3rem) / 2));
+    --ply-dial-size: calc(var(--ply-dial-radius) * 18 / 17);
+    container-type: inline-size;
+    --ply-dial-step: calc(270deg / (var(--ply-dial-count) - 1));
+    display: grid;
+    justify-items: center;
+    gap: var(--ply-space-1);
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: var(--ply-text);
+    font-family: var(--ply-control-font-family);
+    font-size: var(--ply-label);
+    line-height: var(--ply-label-leading);
+    & > legend {
+      margin-inline: auto;
+      padding: 0;
+      padding-block-end: var(--ply-space-2);
+      font-weight: var(--ply-label-weight);
+    }
+    /* 目盛りとつまみの位置は円の上の角度で決まり、書く向きに関係しないので、面の中は左から右に固定する。 */
+    & > .face {
+      position: relative;
+      direction: ltr;
+      max-inline-size: 100%;
+      inline-size: calc(var(--ply-dial-radius) * 2 + 3rem);
+      block-size: calc(var(--ply-dial-radius) * 2 + 1.5rem);
+      &:has(> .stop:nth-of-type(1) > input:checked) {
+        --ply-dial-at: 0;
+      }
+      &:has(> .stop:nth-of-type(2) > input:checked) {
+        --ply-dial-at: 1;
+      }
+      &:has(> .stop:nth-of-type(3) > input:checked) {
+        --ply-dial-at: 2;
+      }
+      &:has(> .stop:nth-of-type(4) > input:checked) {
+        --ply-dial-at: 3;
+      }
+      &:has(> .stop:nth-of-type(5) > input:checked) {
+        --ply-dial-at: 4;
+      }
+      &:has(> .stop:nth-of-type(6) > input:checked) {
+        --ply-dial-at: 5;
+      }
+      &:has(> .stop:nth-of-type(7) > input:checked) {
+        --ply-dial-at: 6;
+      }
+      &:has(> .stop:nth-of-type(8) > input:checked) {
+        --ply-dial-at: 7;
+      }
+      /* 目盛りの値。弧の上の位置へ置き、文字はまっすぐ立てたままにする。 */
+      & > .stop {
+        --ply-dial-i: 0;
+        --ply-dial-angle: calc(-135deg + var(--ply-dial-i) * var(--ply-dial-step));
+        position: absolute;
+        inset-block-start: 50%;
+        inset-inline-start: 50%;
+        translate: calc(-50% + sin(var(--ply-dial-angle)) * var(--ply-dial-radius))
+          calc(-50% - cos(var(--ply-dial-angle)) * var(--ply-dial-radius));
+        padding-block: 0.125rem;
+        padding-inline: 0.375rem;
+        border-radius: var(--ply-radius-pill);
+        color: var(--ply-muted);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: color var(--ply-duration) ease;
+        & > input {
+          position: absolute;
+          inline-size: 0.0625rem;
+          block-size: 0.0625rem;
+          margin: 0;
+          opacity: 0;
+          pointer-events: none;
+        }
+        &:hover {
+          color: var(--ply-text);
+        }
+        &:has(> input:checked) {
+          color: var(--ply-link);
+          font-weight: 700;
+        }
+        &:has(> input:focus-visible) {
+          outline: 0.125rem solid var(--ply-link);
+          outline-offset: 0.0625rem;
+        }
+      }
+      /* つまみ。押す物と同じ縦の陰影に、金属の光を上に一筋だけ乗せ、紙の影で浮かせる。 */
+      & > .knob {
+        position: absolute;
+        inset-block-start: 50%;
+        inset-inline-start: 50%;
+        inline-size: var(--ply-dial-size);
+        block-size: var(--ply-dial-size);
+        translate: -50% -50%;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 50% 22%, rgb(255 255 255 / 85%), transparent 55%),
+          linear-gradient(
+            176deg,
+            var(--ply-surface),
+            color-mix(in srgb, var(--ply-ink) 16%, var(--ply-surface))
+          );
+        box-shadow:
+          inset 0 -0.125rem 0.25rem rgb(36 57 70 / 14%),
+          var(--ply-shadow-paper-lift);
+        /* 目盛りの刻み。つまみの縁の外に、値と同じ角度で短い線を引く。 */
+        & > .tick {
+          --ply-dial-i: 0;
+          --ply-dial-angle: calc(-135deg + var(--ply-dial-i) * var(--ply-dial-step));
+          position: absolute;
+          inset-block-start: 50%;
+          inset-inline-start: 50%;
+          inline-size: var(--ply-stroke-width);
+          block-size: 0.375rem;
+          background: var(--ply-perforation);
+          transform-origin: 50% 0;
+          transform: rotate(calc(var(--ply-dial-angle) + 180deg))
+            translateY(calc(var(--ply-dial-size) / 2 + 0.25rem));
+        }
+        /* 針。つまみの中心から、選んだ値の角度へ伸ばす。 */
+        & > .pointer {
+          position: absolute;
+          inset-block-start: 50%;
+          inset-inline-start: 50%;
+          inline-size: 0.1875rem;
+          block-size: calc(var(--ply-dial-size) / 2 - 0.625rem);
+          border-radius: var(--ply-radius-pill);
+          background: var(--ply-ink);
+          transform-origin: 50% 0;
+          rotate: calc(-135deg + var(--ply-dial-at) * var(--ply-dial-step) + 180deg);
+          translate: -50% 0;
+          transition: rotate calc(var(--ply-duration) * 2) cubic-bezier(0.3, 1.4, 0.5, 1);
+        }
+      }
+    }
+    & > .unit {
+      color: var(--ply-text);
+      font-size: var(--ply-small);
+      font-weight: 700;
+      line-height: var(--ply-small-leading);
+    }
+    &:disabled {
+      opacity: 0.5;
+      & > .face > .stop {
+        cursor: not-allowed;
+      }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ply-dial > .face > .knob > .pointer {
+      transition: none;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-dial > .face > .knob {
+      border: var(--ply-stroke-width) solid CanvasText;
+      & > .pointer {
+        background: CanvasText;
+      }
+    }
+    .ply-dial > .face > .stop:has(> input:checked) {
+      outline: var(--ply-stroke-width) solid Highlight;
+    }
+  }
+}

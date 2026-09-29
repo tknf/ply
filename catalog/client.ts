@@ -4,10 +4,6 @@ import { CodeExampleController } from "./controllers/code-example";
 import { InboxDemoController } from "./controllers/inbox-demo";
 import { ProjectDemoController } from "./controllers/project-demo";
 import { SettingsDemoController } from "./controllers/settings-demo";
-import { FilePreviewController } from "./controllers/file-preview";
-import { DraftController } from "./controllers/draft";
-import { DraftSummaryController } from "./controllers/draft-summary";
-import { ArticleSearchController } from "./controllers/article-search";
 import { FieldDemoController } from "./controllers/field-demo";
 import { Application } from "@hotwired/stimulus";
 import "@hotwired/turbo";
@@ -22,6 +18,7 @@ import {
   TableSortController,
   TableSelectController,
   BoardController,
+  ToastStackController,
   CalendarController,
   CarouselController,
   ColorPickerController,
@@ -59,6 +56,11 @@ import {
   HoverCardController,
   ToggleGroupController,
   TimeFieldController,
+  FilterMenuController,
+  CopyFieldController,
+  OptionalFieldsController,
+  ReactionsController,
+  EmojiPickerController,
 } from "../src/controllers";
 
 const application = Application.start();
@@ -95,10 +97,6 @@ application.register("time-field", TimeFieldController);
 application.register("field-demo", FieldDemoController);
 application.register("project-demo", ProjectDemoController);
 application.register("settings-demo", SettingsDemoController);
-application.register("file-preview", FilePreviewController);
-application.register("draft", DraftController);
-application.register("draft-summary", DraftSummaryController);
-application.register("article-search", ArticleSearchController);
 application.register("dialog", DialogController);
 application.register("popover", PopoverController);
 application.register("dropdown-menu", DropdownMenuController);
@@ -108,6 +106,7 @@ application.register("tabs", TabsController);
 application.register("tooltip", TooltipController);
 application.register("toolbar", ToolbarController);
 application.register("toast", ToastController);
+application.register("toast-stack", ToastStackController);
 application.register("editable", EditableController);
 application.register("editable-property", EditablePropertyController);
 application.register("picker", PickerController);
@@ -120,6 +119,11 @@ application.register("table-of-contents", TableOfContentsController);
 application.register("avatar", AvatarController);
 application.register("hover-card", HoverCardController);
 application.register("toggle-group", ToggleGroupController);
+application.register("filter-menu", FilterMenuController);
+application.register("copy-field", CopyFieldController);
+application.register("reactions", ReactionsController);
+application.register("optional-fields", OptionalFieldsController);
+application.register("emoji-picker", EmojiPickerController);
 
 // 開発時の更新でApplicationとイベント登録を重複させない。
 if (import.meta.hot) import.meta.hot.dispose(() => application.stop());

@@ -2,7 +2,7 @@ import { Toolbar, Button, ActionLink, Field, Input, Disclosure } from "../../src
 
 export default ({ id = "hono-toolbar" }: { id?: string } = {}) => (
   <div class="ply-stack">
-    <form class="ply-stack" action="/search" method="get">
+    <form class="ply-stack" action="/apps/search" method="get">
       <Field id={`${id}-query`} label="記事のキーワード">
         {(attributes) => <Input {...attributes} name="q" value="案内" />}
       </Field>
@@ -13,7 +13,7 @@ export default ({ id = "hono-toolbar" }: { id?: string } = {}) => (
         <Button type="reset" data-toolbar-target="control">
           初期値に戻す
         </Button>
-        <ActionLink href="/search" data-toolbar-target="control">
+        <ActionLink href="/apps/search" data-toolbar-target="control">
           記事一覧
         </ActionLink>
       </Toolbar>
@@ -21,10 +21,10 @@ export default ({ id = "hono-toolbar" }: { id?: string } = {}) => (
     </form>
     <Disclosure summary="移動リンク・利用できない操作との組み合わせ">
       <Toolbar label="記事の操作">
-        <ActionLink href="/example" data-toolbar-target="control">
+        <ActionLink href="/apps/docs" data-toolbar-target="control">
           編集
         </ActionLink>
-        <ActionLink href="/review" data-toolbar-target="control">
+        <ActionLink href="/apps/docs" data-toolbar-target="control">
           比較
         </ActionLink>
         <Button disabled data-toolbar-target="control">
@@ -35,29 +35,29 @@ export default ({ id = "hono-toolbar" }: { id?: string } = {}) => (
     <Disclosure summary="長いラベル・サイズ違い・右から左の配置">
       <div class="ply-stack">
         <Toolbar label="公開前の確認">
-          <ActionLink href="/review" data-toolbar-target="control">
+          <ActionLink href="/apps/docs" data-toolbar-target="control">
             公開前に文章と設定の変更内容を確認する
           </ActionLink>
-          <ActionLink href="/example" data-toolbar-target="control">
+          <ActionLink href="/apps/docs" data-toolbar-target="control">
             編集画面へ戻って内容を修正する
           </ActionLink>
         </Toolbar>
         <Toolbar label="サイズ違いの操作">
-          <ActionLink href="/example" size="compact" data-toolbar-target="control">
+          <ActionLink href="/apps/docs" size="compact" data-toolbar-target="control">
             編集
           </ActionLink>
-          <ActionLink href="/review" data-toolbar-target="control">
+          <ActionLink href="/apps/docs" data-toolbar-target="control">
             比較
           </ActionLink>
-          <ActionLink href="/search" size="large" data-toolbar-target="control">
+          <ActionLink href="/apps/search" size="large" data-toolbar-target="control">
             記事一覧
           </ActionLink>
         </Toolbar>
         <Toolbar label="右から左に並ぶ操作" dir="rtl">
-          <ActionLink href="/example" data-toolbar-target="control">
+          <ActionLink href="/apps/docs" data-toolbar-target="control">
             編集
           </ActionLink>
-          <ActionLink href="/review" data-toolbar-target="control">
+          <ActionLink href="/apps/docs" data-toolbar-target="control">
             比較
           </ActionLink>
           <Button disabled data-toolbar-target="control">

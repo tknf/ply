@@ -37,6 +37,7 @@ export { CommandMenuController } from "./command-menu";
 export { TableController } from "./table";
 
 export { BoardController } from "./board";
+export { ToastStackController } from "./toast-stack";
 export { EditablePropertyController } from "./editable-property";
 export { EditableController } from "@tknf/stimulus-ui";
 export { PickerController } from "./picker";
@@ -52,3 +53,8 @@ export { TableOfContentsController } from "@tknf/stimulus-ui";
 export { AvatarController } from "@tknf/stimulus-ui";
 export { HoverCardController } from "@tknf/stimulus-ui";
 export { ToggleGroupController } from "@tknf/stimulus-ui";
+export { FilterMenuController } from "./filter-menu";
+export { CopyFieldController } from "./copy-field";
+export { OptionalFieldsController } from "./optional-fields";
+export { ReactionsController } from "./reactions";
+export { EmojiPickerController } from "./emoji-picker";

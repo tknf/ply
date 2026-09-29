@@ -20,10 +20,13 @@ export const Notice = ({
     data-tone={tone}
     aria-label={label}
   >
-    <span class="symbol" aria-hidden="true">
-      <Icon name={tone === "success" ? "check" : tone === "danger" ? "x-circle" : "info"} />
-    </span>
-    {heading ? <h2 class="title">{label}</h2> : <p class="title">{label}</p>}
+    {/* 印と題名を一つのピルにまとめ、紙の上の縁にまたがせる。 */}
+    <div class="heading">
+      <span class="symbol" aria-hidden="true">
+        <Icon name={tone === "success" ? "check" : tone === "danger" ? "x" : "info"} />
+      </span>
+      {heading ? <h2 class="title">{label}</h2> : <p class="title">{label}</p>}
+    </div>
     <div class="body">{children}</div>
   </aside>
 );

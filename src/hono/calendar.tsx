@@ -2,6 +2,7 @@ import type { Child } from "hono/jsx";
 import { ActionLink, Button } from "./button";
 import { FilterBar, type FilterBarItem } from "./filter-bar";
 import { Icon } from "./icon";
+import { OverlayClose, OverlayContent, overlayAnchorName } from "./overlay-content";
 import { classes, type Accent, type ElementProps } from "./types";
 import {
   eventRange,
@@ -23,7 +24,13 @@ export type { WeekStart } from "../internal/calendar-date";
 
 export type CalendarEvent = {
   label: string;
-  href: string;
+  /** 予定のページ。detailsを渡す時は省略でき、札は詳細の紙を開く操作になる。 */
+  href?: string;
+  /**
+   * 札を押すとPopoverと同じ紙で開く、予定の詳細（場所・参加者・メモなど）。idは紙のidで、画面の中で一意にする。
+   * 開閉と位置決めはPopoverと同じ（PopoverControllerをpopoverとして登録する）。
+   */
+  details?: { id: string; content: Child };
   /** 開始時刻（HH:MM）。省略すると終日の予定。 */
   start?: string;
   /** 終了時刻（HH:MM）。省略すると開始から1時間。 */
@@ -205,26 +212,89 @@ const EventLink = ({
   withEnd?: boolean;
   allDayLabel?: boolean;
   past: boolean;
-}) => (
-  <a
-    class="event"
-    href={event.href}
-    data-accent={event.accent}
-    data-all-day={isAllDay(event) ? "true" : undefined}
-    data-past={past ? "true" : undefined}
-    data-tentative={event.tentative ? "true" : undefined}
-  >
-    <span class="bar" aria-hidden="true" />
-    <EventTime event={event} withEnd={withEnd} allDayLabel={allDayLabel} />
-    <span class="label">{event.label}</span>
-  </a>
-);
+}) => {
+  const state = {
+    "data-accent": event.accent,
+    "data-all-day": isAllDay(event) ? "true" : undefined,
+    "data-past": past ? "true" : undefined,
+    "data-tentative": event.tentative ? "true" : undefined,
+  };
+  const content = (
+    <>
+      <span class="bar" aria-hidden="true" />
+      <EventTime event={event} withEnd={withEnd} allDayLabel={allDayLabel} />
+      <span class="label">{event.label}</span>
+    </>
+  );
+  if (!event.details)
+    return (
+      <a {...state} class="event" href={event.href}>
+        {content}
+      </a>
+    );
+  const { id, content: details } = event.details;
+  const anchor = overlayAnchorName("popover", id);
+  // 札と詳細の紙は兄弟に置く。開閉のcontroller（popover）は札を包むliが持つ（eventControllerを参照）。
+  return (
+    <>
+      <button
+        {...state}
+        type="button"
+        class="event"
+        popovertarget={id}
+        style={`anchor-name: ${anchor}`}
+        aria-haspopup="dialog"
+        aria-controls={id}
+        data-popover-target="trigger"
+      >
+        {content}
+      </button>
+      <div
+        id={id}
+        popover="auto"
+        class="event-details ply-overlay"
+        data-placement="anchor"
+        data-size="compact"
+        style={`--ply-overlay-anchor: ${anchor}`}
+        role="dialog"
+        aria-labelledby={`${id}-title`}
+        data-popover-target="panel"
+      >
+        <OverlayContent
+          title={
+            <h3 id={`${id}-title`} tabindex={-1} autofocus>
+              {event.label}
+            </h3>
+          }
+          description={
+            <p>
+              <EventTime event={event} withEnd allDayLabel />
+            </p>
+          }
+          close={<OverlayClose label="閉じる" popovertarget={id} popovertargetaction="hide" />}
+        >
+          {details}
+          {event.href && (
+            <p>
+              <ActionLink href={event.href} variant="link">
+                詳しく見る
+              </ActionLink>
+            </p>
+          )}
+        </OverlayContent>
+      </div>
+    </>
+  );
+};
+
+/** 詳細を持つ予定の札を包むliは、Popoverと同じ開閉のcontrollerを持つ。 */
+const eventController = (event: CalendarEvent) => (event.details ? "popover" : undefined);
 
 const DayEvents = ({ day, clockState }: { day: CalendarDay; clockState: Clock }) =>
   day.events && day.events.length > 0 ? (
     <ul class="events" aria-label={`${day.label ?? day.date}の予定`}>
       {sortEvents(day.events).map((event) => (
-        <li>
+        <li data-controller={eventController(event)}>
           <EventLink event={event} past={isPast(day, event, clockState)} />
         </li>
       ))}
@@ -286,16 +356,19 @@ const CalendarWeek = ({
             data-weekend={isWeekend(day.date) ? "true" : undefined}
           >
             <div class="heading">
-              <span class="weekday" aria-hidden="true">
-                {weekdayLabel(day.date)}
+              {/* 曜日と日付を一つにまとめ、今日はHEYのように両方をまとめて塗る。 */}
+              <span class="date" data-current={day.current ? "true" : undefined}>
+                <span class="weekday" aria-hidden="true">
+                  {weekdayLabel(day.date)}
+                </span>
+                <DayMarker day={day} selection={selection} />
               </span>
-              <DayMarker day={day} selection={selection} />
             </div>
             <div class="all-day">
               {allDay.length > 0 && (
                 <ul aria-label="終日の予定">
                   {allDay.map((event) => (
-                    <li>
+                    <li data-controller={eventController(event)}>
                       <EventLink event={event} past={isPast(day, event, clockState)} />
                     </li>
                   ))}
@@ -307,6 +380,7 @@ const CalendarWeek = ({
                 <ol aria-label={`${label}・${day.label ?? day.date}の時間の予定`}>
                   {timed.map((item) => (
                     <li
+                      data-controller={eventController(item.event)}
                       style={`--ply-calendar-start: ${item.start}; --ply-calendar-end: ${item.end}; --ply-calendar-lane: ${item.lane}; --ply-calendar-lanes: ${item.lanes}`}
                       data-length={item.end - item.start < 45 ? "short" : undefined}
                     >
@@ -543,7 +617,7 @@ const CalendarAgenda = ({
           </h3>
           <ul class="events" aria-label={`${day.label ?? day.date}の予定`}>
             {sortEvents(day.events ?? []).map((event) => (
-              <li>
+              <li data-controller={eventController(event)}>
                 <EventLink
                   event={event}
                   withEnd

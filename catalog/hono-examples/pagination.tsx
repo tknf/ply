@@ -5,35 +5,35 @@ export default () => (
     <Pagination
       items={[
         { label: "前へ" },
-        { label: "1", current: true, href: "/search" },
-        { label: "2", href: "/search?page=2" },
-        { label: "3", href: "/search?page=3" },
-        { label: "次へ", href: "/search?page=2" },
+        { label: "1", current: true, href: "/apps/search" },
+        { label: "2", href: "/apps/search?page=2" },
+        { label: "3", href: "/apps/search?page=3" },
+        { label: "次へ", href: "/apps/search?page=2" },
       ]}
     />
     <DisclosureGroup label="位置と長さの違い">
       <Disclosure summary="途中のページ：前後があり、間を省く">
         <Pagination
           items={[
-            { label: "前へ", href: "/search?page=6" },
-            { label: "1", href: "/search" },
+            { label: "前へ", href: "/apps/search?page=6" },
+            { label: "1", href: "/apps/search" },
             { label: "…" },
-            { label: "6", href: "/search?page=6" },
-            { label: "7", current: true, href: "/search?page=7" },
-            { label: "8", href: "/search?page=8" },
+            { label: "6", href: "/apps/search?page=6" },
+            { label: "7", current: true, href: "/apps/search?page=7" },
+            { label: "8", href: "/apps/search?page=8" },
             { label: "…" },
-            { label: "24", href: "/search?page=24" },
-            { label: "次へ", href: "/search?page=8" },
+            { label: "24", href: "/apps/search?page=24" },
+            { label: "次へ", href: "/apps/search?page=8" },
           ]}
         />
       </Disclosure>
       <Disclosure summary="最後のページ：次へは押せない">
         <Pagination
           items={[
-            { label: "前へ", href: "/search?page=2" },
-            { label: "1", href: "/search" },
-            { label: "2", href: "/search?page=2" },
-            { label: "3", current: true, href: "/search?page=3" },
+            { label: "前へ", href: "/apps/search?page=2" },
+            { label: "1", href: "/apps/search" },
+            { label: "2", href: "/apps/search?page=2" },
+            { label: "3", current: true, href: "/apps/search?page=3" },
             { label: "次へ" },
           ]}
         />
@@ -42,11 +42,11 @@ export default () => (
         <div style="max-inline-size: 14rem">
           <Pagination
             items={[
-              { label: "前のページへ", href: "/search?page=6" },
-              { label: "6", href: "/search?page=6" },
-              { label: "7", current: true, href: "/search?page=7" },
-              { label: "8", href: "/search?page=8" },
-              { label: "次のページへ", href: "/search?page=8" },
+              { label: "前のページへ", href: "/apps/search?page=6" },
+              { label: "6", href: "/apps/search?page=6" },
+              { label: "7", current: true, href: "/apps/search?page=7" },
+              { label: "8", href: "/apps/search?page=8" },
+              { label: "次のページへ", href: "/apps/search?page=8" },
             ]}
           />
         </div>
@@ -57,9 +57,9 @@ export default () => (
             label="التنقل بين الصفحات"
             items={[
               { label: "السابق" },
-              { label: "١", current: true, href: "/search" },
-              { label: "٢", href: "/search?page=2" },
-              { label: "التالي", href: "/search?page=2" },
+              { label: "١", current: true, href: "/apps/search" },
+              { label: "٢", href: "/apps/search?page=2" },
+              { label: "التالي", href: "/apps/search?page=2" },
             ]}
           />
         </div>

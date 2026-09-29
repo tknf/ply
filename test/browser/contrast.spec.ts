@@ -80,11 +80,11 @@ const cases = [
     id: "notice",
     targets: [
       { selector: '[data-example="hono"] .ply-notice', property: "color", threshold: 7 },
+      // 印と題名は、役割の色で塗ったピルの上の白い文字。全ての役割で本文と同じ基準にする。
       {
-        selector:
-          '[data-example="hono"] .ply-notice:is([data-tone="warning"], [data-tone="danger"]) > .symbol',
+        selector: '[data-example="hono"] .ply-notice > .heading',
         property: "color",
-        threshold: 3,
+        threshold: 4.5,
       },
     ],
   },

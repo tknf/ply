@@ -1,0 +1,25 @@
+import { BackLink, Disclosure, DisclosureGroup } from "../../src/hono";
+
+export default () => (
+  <div class="ply-stack">
+    <div class="ply-cluster">
+      <BackLink href="/" label="Imbox" />
+      <BackLink href="/" label="設定" />
+    </div>
+    <DisclosureGroup label="形の違い">
+      <Disclosure summary="面を持たない太字とキーの印（Fizzy）" open>
+        <BackLink href="/" label="Playgroundへ戻る" tone="plain" shortcut="ESC" />
+      </Disclosure>
+      <Disclosure summary="長い名前">
+        <div style="max-inline-size: 14rem">
+          <BackLink href="/" label="秋の読書会の準備と当日の受付" />
+        </div>
+      </Disclosure>
+      <Disclosure summary="右から左に読む場合">
+        <div dir="rtl" lang="ar">
+          <BackLink href="/" label="الإعدادات" />
+        </div>
+      </Disclosure>
+    </DisclosureGroup>
+  </div>
+);

@@ -14,6 +14,10 @@ export class BoardController extends Controller<HTMLElement> {
   } | null = null;
   private mode: "pointer" | "keyboard" | null = null;
   private ghost: HTMLElement | null = null;
+  /** 指で運ぶ間、運び込む先の入る位置に置く線の印。項目そのものは離すまで元の場所に残す。 */
+  private marker: HTMLElement | null = null;
+  /** 掴んだ位置。手に持った写しを、項目のどこを掴んだかのまま指に付いて動かす。 */
+  private grab = { x: 12, y: 12 };
   private frame = 0;
   private suppressClick = false;
   connect = () => {
@@ -60,6 +64,41 @@ export class BoardController extends Controller<HTMLElement> {
   private say = (message: string) => {
     const status = this.element.querySelector(":scope > [data-board-announcement]");
     if (status) status.textContent = message;
+  };
+  /** 列の開閉。表示だけを切り替え、取り消せるboard:toggleで利用側へ知らせる。 */
+  toggle = (event: Event) => {
+    const button = event.currentTarget;
+    if (!(button instanceof HTMLButtonElement)) return;
+    const column = button.closest("section");
+    if (!(column instanceof HTMLElement) || column.parentElement !== this.element) return;
+    const collapsed = column.dataset.collapsed !== "true";
+    const allowed = this.dispatch("toggle", {
+      cancelable: true,
+      detail: { column: column.dataset.columnId, collapsed },
+    });
+    if (allowed.defaultPrevented) return;
+    const locked =
+      column.dataset.disabled === "true" || !column.querySelector(':scope > .items[role="list"]');
+    if (collapsed) {
+      column.dataset.collapsed = "true";
+      column.dataset.dropDisabled = "true";
+      delete column.dataset.unfolding;
+    } else {
+      delete column.dataset.collapsed;
+      if (!locked) delete column.dataset.dropDisabled;
+      // 開いた時だけ、中の項目を一枚ずつ差し出す。読み込み時には動かさない。
+      column.dataset.unfolding = "true";
+      window.setTimeout(() => delete column.dataset.unfolding, 600);
+    }
+    button.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    // たたんだ列だけピルの幅にするため、列の幅の決め方を並び順どおりに作り直す。
+    this.element.style.setProperty(
+      "--ply-board-tracks",
+      this.columns()
+        .map((section) => (section.dataset.collapsed === "true" ? "auto" : "minmax(auto, 1fr)"))
+        .join(" "),
+    );
+    button.focus();
   };
   refresh = () => {
     for (const column of this.columns()) {
@@ -112,6 +151,25 @@ export class BoardController extends Controller<HTMLElement> {
       );
     }
   };
+  /** 指で運ぶ間の入る位置。Fizzyと同じく、項目は動かさずに先の列へ線の印だけを差し込む。 */
+  private aim = (column: HTMLElement, before: HTMLElement | null) => {
+    for (const other of this.columns()) if (other !== column) other.removeAttribute("data-over");
+    const container = column.querySelector(":scope > .items");
+    if (!container || column.dataset.dropDisabled === "true") {
+      this.marker?.remove();
+      column.removeAttribute("data-over");
+      return;
+    }
+    column.dataset.over = "true";
+    if (!this.marker) {
+      this.marker = document.createElement("div");
+      this.marker.className = "drop-marker";
+      this.marker.setAttribute("aria-hidden", "true");
+    }
+    if (this.marker.parentElement === container && this.marker.nextElementSibling === before)
+      return;
+    container.insertBefore(this.marker, before);
+  };
   private restore = () => {
     for (const { column, items } of this.snapshot)
       column.querySelector(":scope > .items")?.append(...items);
@@ -120,6 +178,11 @@ export class BoardController extends Controller<HTMLElement> {
     const item = this.item,
       origin = this.origin;
     const wasPointer = this.mode === "pointer";
+    // 指で運んだ時は、離した時に初めて項目を印の位置へ移す。
+    if (item && commit && wasPointer && this.marker?.parentElement)
+      this.marker.parentElement.insertBefore(item, this.marker);
+    this.marker?.remove();
+    this.marker = null;
     const destination = item ? this.locate(item) : null;
     let accepted = commit;
     if (item && origin && destination && commit) {
@@ -160,6 +223,34 @@ export class BoardController extends Controller<HTMLElement> {
     this.refresh();
   };
   private cancel = () => this.finish(false);
+  /**
+   * 手に持った項目。Fizzyのドラッグの像と同じく、項目そのものの写しを同じ幅・同じ列の染まりで作り、
+   * 掴んだ位置のまま指に付けて動かす。写しは読み上げ・操作・idの重複から外す。
+   */
+  private preview = (item: HTMLElement, pointer: { startX: number; startY: number }) => {
+    const rect = item.getBoundingClientRect();
+    this.grab = { x: pointer.startX - rect.left, y: pointer.startY - rect.top };
+    const ghost = document.createElement("div");
+    ghost.className = "drag-preview";
+    ghost.setAttribute("aria-hidden", "true");
+    ghost.inert = true;
+    const copy = item.cloneNode(true);
+    if (!(copy instanceof HTMLElement)) return ghost;
+    for (const element of [copy, ...copy.querySelectorAll("[id]")]) element.removeAttribute("id");
+    copy.removeAttribute("data-board-id");
+    copy.removeAttribute("data-moving");
+    copy.removeAttribute("role");
+    copy.dir = getComputedStyle(item).direction;
+    const column = item.closest("section");
+    if (column) {
+      const style = getComputedStyle(column);
+      for (const name of ["--ply-lane-accent", "--ply-board-tint"])
+        copy.style.setProperty(name, style.getPropertyValue(name));
+    }
+    copy.style.inlineSize = `${rect.width}px`;
+    ghost.append(copy);
+    return ghost;
+  };
   private down = (event: PointerEvent) => {
     const handle = this.handle(event.target);
     if (!handle || event.button !== 0 || !event.isPrimary) return;
@@ -184,10 +275,7 @@ export class BoardController extends Controller<HTMLElement> {
         this.pointer = null;
         return;
       }
-      this.ghost = document.createElement("div");
-      this.ghost.className = "drag-preview";
-      this.ghost.setAttribute("aria-hidden", "true");
-      this.ghost.textContent = item?.dataset.boardLabel ?? "";
+      this.ghost = this.preview(item, pointer);
       this.element.append(this.ghost);
       this.frame = requestAnimationFrame(this.tick);
     }
@@ -197,7 +285,7 @@ export class BoardController extends Controller<HTMLElement> {
     const pointer = this.pointer;
     if (!pointer || this.mode !== "pointer") return;
     if (this.ghost)
-      this.ghost.style.transform = `translate(${pointer.x + 12}px, ${pointer.y + 12}px)`;
+      this.ghost.style.transform = `translate(${pointer.x - this.grab.x}px, ${pointer.y - this.grab.y}px)`;
     const rect = this.element.getBoundingClientRect();
     if (
       pointer.x > rect.left &&
@@ -218,7 +306,7 @@ export class BoardController extends Controller<HTMLElement> {
               const box = item.getBoundingClientRect();
               return pointer.y < box.top + box.height / 2;
             }) ?? null;
-        this.place(column, before);
+        this.aim(column, before);
       }
     }
     if (pointer.y < 32 || pointer.y > window.innerHeight - 32)
@@ -238,6 +326,13 @@ export class BoardController extends Controller<HTMLElement> {
     } else this.pointer = null;
   };
   private click = (event: MouseEvent) => {
+    // たたんだピルは、どこを押しても中の「開く」を押したことにする（キーボードではボタンそのものを使う）。
+    const target = event.target instanceof Element ? event.target : null;
+    const pill = target?.closest<HTMLElement>("section[data-collapsed='true'] > .title");
+    if (pill && pill.parentElement?.parentElement === this.element && !target?.closest("button")) {
+      pill.querySelector<HTMLButtonElement>(":scope > button[data-board-toggle]")?.click();
+      return;
+    }
     const handle = this.handle(event.target);
     if (!handle || this.suppressClick) return;
     if (this.item) this.finish(true);

@@ -26,8 +26,8 @@ export default () => (
   <div class="ply-stack" data-space="small">
     <Surface
       context={
-        <ContextBar items={[{ label: "仕事場", href: "/example" }, { label: "記事" }]}>
-          <ActionLink href="/example" size="compact">
+        <ContextBar items={[{ label: "仕事場", href: "/apps/docs" }, { label: "記事" }]}>
+          <ActionLink href="/apps/docs" size="compact">
             記事を書く
           </ActionLink>
         </ContextBar>
@@ -43,7 +43,7 @@ export default () => (
         <Surface
           layout="document"
           context={
-            <ContextBar items={[{ label: "記事", href: "/example" }, { label: "秋の読書会" }]} />
+            <ContextBar items={[{ label: "記事", href: "/apps/docs" }, { label: "秋の読書会" }]} />
           }
         >
           <PageHeader title="秋の読書会" description="9月25日 18:00から、2階の小部屋で開きます。" />

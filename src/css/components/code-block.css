@@ -1,32 +1,13 @@
 @layer components {
   /*
-    コードは平らな淡い面に書く。名前は面の上に小さく置き、コピーの操作は同じ行の終わりに置く。
-    目印の行は平らな淡い黄色の地にし、行番号は余白に小さく書いてコピーには含めない。
+    コードは名前とコピーをLayerCardの層の見出しに置き、層の上の紙に書く（層と紙の見た目はLayerCardが持つ）。
+    ここではコードの書き方だけを決める。目印の行は平らな淡い黄色の地にし、行番号は余白に小さく書いてコピーには含めない。
   */
   .ply-code-block {
-    display: grid;
-    gap: var(--ply-space-2);
     min-inline-size: 0;
     margin: 0;
     color: var(--ply-text);
-    & > figcaption {
-      display: flex;
-      /* 文字を大きくして名前とButtonが並ばない時だけ、Buttonを次の行へ送る。 */
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--ply-space-2);
-      min-inline-size: 0;
-      color: var(--ply-muted);
-      font-size: var(--ply-small);
-      line-height: var(--ply-small-leading);
-      & > .label {
-        min-inline-size: 0;
-        font-weight: 600;
-        overflow-wrap: anywhere;
-      }
-    }
-    & > pre {
+    & > .ply-layer-card > .body > pre {
       /* 長い行は中でスクロールする。行の長さで外側の幅を押し広げないよう、横の大きさを内容から切り離す。 */
       contain: inline-size;
       max-inline-size: 100%;
@@ -35,8 +16,8 @@
       margin: 0;
       padding-block: var(--ply-space-4);
       padding-inline: var(--ply-space-5);
-      border-radius: var(--ply-radius-field);
-      background: var(--ply-background);
+      /* 紙の角丸の中でスクロールさせ、目印の行の地を角からはみ出させない。 */
+      border-radius: inherit;
       font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
       font-size: var(--ply-small);
       line-height: var(--ply-leading);
@@ -46,7 +27,7 @@
       text-align: start;
       overscroll-behavior-inline: contain;
       &:focus-visible {
-        outline-offset: 0.125rem;
+        outline-offset: -0.125rem;
       }
       & > code {
         display: block;
@@ -57,13 +38,13 @@
         & > .line {
           display: block;
           &[data-highlighted="true"] {
-            background: color-mix(in srgb, var(--ply-mark) 45%, var(--ply-background));
+            background: color-mix(in srgb, var(--ply-mark) 45%, var(--ply-surface));
           }
         }
       }
     }
     /* 行番号は、左の余白に小さく書く。横にスクロールしても余白に残り、下のコードを隠す。 */
-    &[data-line-numbers="true"] > pre > code > .line::before {
+    &[data-line-numbers="true"] > .ply-layer-card > .body > pre > code > .line::before {
       content: counter(ply-code-line);
       counter-increment: ply-code-line;
       position: sticky;
@@ -72,26 +53,30 @@
       min-inline-size: 3ch;
       margin-inline-end: var(--ply-space-4);
       padding-inline-end: var(--ply-space-2);
-      background: var(--ply-background);
+      background: var(--ply-surface);
       color: var(--ply-muted);
       text-align: end;
       user-select: none;
     }
-    &[data-line-numbers="true"] > pre > code > .line[data-highlighted="true"]::before {
-      background: color-mix(in srgb, var(--ply-mark) 45%, var(--ply-background));
+    &[data-line-numbers="true"]
+      > .ply-layer-card
+      > .body
+      > pre
+      > code
+      > .line[data-highlighted="true"]::before {
+      background: color-mix(in srgb, var(--ply-mark) 45%, var(--ply-surface));
     }
   }
   @media (forced-colors: active) {
     .ply-code-block {
-      & > pre {
-        outline: var(--ply-stroke-width) solid CanvasText;
+      & > .ply-layer-card > .body > pre {
         background: Canvas;
       }
-      &[data-line-numbers="true"] > pre > code > .line::before {
+      &[data-line-numbers="true"] > .ply-layer-card > .body > pre > code > .line::before {
         background: Canvas;
       }
-      & > pre > code > .line[data-highlighted="true"],
-      & > pre > code > .line[data-highlighted="true"]::before {
+      & > .ply-layer-card > .body > pre > code > .line[data-highlighted="true"],
+      & > .ply-layer-card > .body > pre > code > .line[data-highlighted="true"]::before {
         background: Mark;
         color: MarkText;
       }

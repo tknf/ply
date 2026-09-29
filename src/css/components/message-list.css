@@ -36,7 +36,8 @@
         align-items: center;
         gap: var(--ply-space-4);
         min-inline-size: 0;
-        padding-block: var(--ply-space-3);
+        /* 件名と書き出しの二段の間より、行の上下をはっきり広くし、行ごとのまとまりを見せる。 */
+        padding-block: var(--ply-space-4);
         padding-inline: var(--ply-space-3);
         border-radius: var(--ply-radius-field);
         color: inherit;
@@ -76,6 +77,14 @@
             align-items: baseline;
             min-inline-size: 0;
             font-weight: 400;
+            /*
+              状態の札。HEYの「DRAFT」と同じく件名の前に置き、形・大きさ・色は共通のBadgeに任せる（失敗は赤、他は灰）。
+              札は縮めず、件名の一行目の文字の並びにそろえる。
+            */
+            & > .state {
+              flex: none;
+              margin-inline-end: var(--ply-space-2);
+            }
             & > .subject {
               min-inline-size: 0;
               overflow: hidden;
@@ -122,13 +131,6 @@
               }
             }
           }
-          & > .status {
-            justify-self: start;
-            margin-block-start: var(--ply-space-1);
-            color: var(--ply-muted);
-            font-size: var(--ply-small);
-            line-height: var(--ply-small-leading);
-          }
         }
         & > .meta {
           grid-area: meta;
@@ -154,23 +156,28 @@
       &[data-unread="true"] > .row > .body > .summary > .sender {
         font-weight: 600;
       }
-      /* 今、隣で開いている連絡は、淡い青の面と開始側の青い2pxの印で示す。 */
-      &[data-current="true"] {
-        background: color-mix(in srgb, var(--ply-info-soft) 60%, transparent);
-        &::before {
-          content: "";
-          position: absolute;
-          inset-block: 0;
-          inset-inline-start: 0;
-          inline-size: var(--ply-frame-width);
-          background: var(--ply-link);
-        }
+      /* 今、隣で開いている連絡は、DataListと同じ角丸の淡い青の面で示す。 */
+      &[data-current="true"] > .row {
+        background: color-mix(in srgb, var(--ply-link) 8%, var(--ply-surface));
       }
-      &[data-state="failed"] > .row > .body > .status {
-        color: var(--ply-danger);
+      /* 送信中は届くまでの間なので、行全体を少しだけ控えめにする。 */
+      &[data-state="sending"] > .row {
+        opacity: 0.72;
       }
-      &[data-state="draft"] > .row > .body > .status {
-        font-weight: var(--ply-label-weight);
+      /* 閲覧できない連絡は、件名と差出人も淡い文字にして、開けないことを行全体で示す。 */
+      &[data-unavailable="true"] > .row > .body > :is(.title, .summary > .sender) {
+        color: var(--ply-muted);
+      }
+    }
+    /*
+      0件の表示はEmptyStateが余白を持つので、一覧の空の行の余白は持たない。
+      行を後から出し入れする画面でも、連絡の行が一つもない時だけ見せる。
+    */
+    & > .state[data-empty="true"] {
+      padding-block: 0;
+      padding-inline: 0;
+      &:not(:only-child) {
+        display: none;
       }
     }
     /* 差出人の円は左に置き、二段の本文をその右へ並べる。 */
@@ -197,8 +204,7 @@
       & > li > .row {
         grid-template-areas:
           "title meta"
-          "summary summary"
-          "status status";
+          "summary summary";
         /* 日時は行の幅の4割までにし、文字を大きくしても本文の列を押し出さず折り返す。 */
         grid-template-columns: minmax(0, 1fr) fit-content(40%);
         column-gap: var(--ply-space-3);
@@ -209,9 +215,10 @@
           & > .title {
             grid-area: title;
             align-self: first baseline;
-            /* 件数と添付の数が入らない時は、件名の次の行へ回す。 */
-            flex-wrap: wrap;
+            /* 状態の札・件名・件数を一行に並べ、件名だけが縮んで二行まで折り返す。 */
+            flex-wrap: nowrap;
             & > .subject {
+              flex: 0 1 auto;
               display: -webkit-box;
               -webkit-box-orient: vertical;
               -webkit-line-clamp: 2;
@@ -221,9 +228,6 @@
           }
           & > .summary {
             grid-area: summary;
-          }
-          & > .status {
-            grid-area: status;
           }
         }
         /* 時刻は件名の一行目にそろえる。 */
@@ -239,8 +243,7 @@
         grid-template-columns: 2.5rem minmax(0, 1fr) fit-content(40%);
         grid-template-areas:
           "avatar title meta"
-          "avatar summary summary"
-          "avatar status status";
+          "avatar summary summary";
       }
     }
     /* さらに狭い時（文字を大きくした時を含む）は、人の円と日時を件名の上下へ回し、件名に幅を残す。 */
@@ -250,8 +253,11 @@
         grid-template-areas:
           "title"
           "summary"
-          "meta"
-          "status";
+          "meta";
+        /* 札・件名・件数が一行に入らない幅では、件数を次の行へ送り、行の外へはみ出さない。 */
+        & > .body > .title {
+          flex-wrap: wrap;
+        }
         & > .meta {
           justify-content: start;
           text-align: start;
@@ -263,8 +269,7 @@
           "avatar"
           "title"
           "summary"
-          "meta"
-          "status";
+          "meta";
         & > .avatar {
           justify-self: start;
         }

@@ -1,0 +1,29 @@
+import { Icon } from "./icon";
+import { Keycap } from "./keycap";
+import { classes, type ElementProps } from "./types";
+
+export type BackLinkProps = Omit<ElementProps<"a">, "children"> & {
+  href: string;
+  /** 戻る先の名前（「Imbox」「設定」など）。 */
+  label: string;
+  /** 表示用のキーの印（Fizzyの「ESC」など）。登録は利用側で行う。 */
+  shortcut?: string;
+  /** filledはHEYのように淡い青のピル（既定）、plainはFizzyのように面を持たない太字の文字。 */
+  tone?: "filled" | "plain";
+};
+
+/** 一つ上の場所へ戻るだけのピル。パンくずより軽く、画面の始まりの角に置く。 */
+export const BackLink = ({
+  href,
+  label,
+  shortcut,
+  tone = "filled",
+  class: className,
+  ...attributes
+}: BackLinkProps) => (
+  <a {...attributes} class={classes("ply-back-link", className)} href={href} data-tone={tone}>
+    <Icon name="back" />
+    <span class="label">{label}</span>
+    {shortcut && <Keycap keys={[shortcut]} aria-hidden="true" />}
+  </a>
+);

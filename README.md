@@ -25,10 +25,11 @@ vp run dev
 
 `http://127.0.0.1:5173`にカタログを表示します。ポート変更は`vp run dev --port 5178`。DB・認証・外部サービスは不要です。
 
-- `/`・`/components`：コンポーネント一覧
-- `/components/button`等：実表示、同じ表示のHTML、Honoコード、使い方
-- `/review/components`：全コンポーネントをまとめた確認
-- `/review/components/group-0`〜`group-5`：用途ごとの確認
+- `/`：カタログの入口。全コンポーネントを分類ごとに並べ、上部中央のコマンドから名前で探せる
+- `/components/button`等：見本、使い方、同じ見本のHTMLとHonoコード
+- `/apps/project`等：利用例のアプリ「つむぐ」。プロジェクト・受信トレイ・予定・文書・資料・売上・検索・メンバー・設定の9画面を、コンポーネントだけで組んでいる
+
+カタログ自体もコンポーネントだけで組んでいます（`catalog/layout.tsx`・`catalog/pages/catalog.tsx`）。利用例のアプリは`catalog/apps/`です。
 
 [HTMLの移行](docs/migration.md)も参照してください。
 
@@ -38,7 +39,7 @@ Buttonは文字・縦配置・状態を、Fieldはラベル・補足・エラー
 
 FileInputは標準ファイル選択と、必要に応じてファイル名一覧・ドロップ・選択解除を提供します。送信先や保存先を持ちません。CommandMenuは上部中央の全体移動、DropdownMenuは対象の操作、Dialogは判断、Popoverは近くの補足を担います。
 
-業務データ・権限・通信・永続化は利用アプリが持ちます。旧来の組み合わせ例はcatalogに残っていますが、特定のアプリ機能をライブラリへ含めません。`ply-writing`や`ply-save-status`など旧編集デモのスタイルもcatalog内の実装です。
+業務データ・権限・通信・永続化は利用アプリが持ちます。利用例のアプリの保存（受信トレイの整理・設定の保存など）はcatalogの中のデモで、ライブラリには含めません。
 
 ## ソースと配布
 
@@ -78,7 +79,7 @@ vp run preview
 Dialog・Popover・HoverCard・Toast・Tooltipを個別に読み込む場合は、共通の面と余白を定義する`components/overlay.css`も読み込みます。
 TaskList・DataList・MessageListには`components/list-frame.css`、ChartFrame内のデータ表には`components/table.css`を併せて読み込みます。
 
-通常のフォームとdetailsはJavaScriptなしで操作できます。`/reservation`では日付・時刻・数値入力、radio・checkbox、fieldsetの無効化、入れ子のdetails、標準入力検証とresetを試せます。HTMLのソースは`catalog/pages/reservation.ts`です。Dialog・DropdownMenu・Tabs・FileDropの追加動作にはcontroller登録が必要です。CSSのみで任意のJavaScriptから操作する場合も、同じHTML構造・状態属性を使用できます。
+通常のフォームとdetailsはJavaScriptなしで操作できます。利用例のアプリの検索・資料の絞り込み・予定の移動は、URLとフォームの送信だけで動きます。Dialog・DropdownMenu・Tabs・FileDropの追加動作にはcontroller登録が必要です。CSSのみで任意のJavaScriptから操作する場合も、同じHTML構造・状態属性を使用できます。
 
 ## Honoで使う
 

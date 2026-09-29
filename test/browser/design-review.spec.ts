@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { componentIds } from "./catalog-pages";
 
 test("Calendarの表示と選択、Overlayの共通構造と狭幅を確認する", async ({ page }) => {
   await page.setViewportSize({ width: 720, height: 800 });
@@ -43,7 +44,7 @@ test("Calendarの表示と選択、Overlayの共通構造と狭幅を確認す�
     page.locator('[data-example="hono"] .ply-calendar[data-view="agenda"]').last(),
   ).toContainText("この期間に予定はありません");
 
-  await page.goto("/examples/schedule?year=2026&month=9&view=month");
+  await page.goto("/apps/schedule?year=2026&month=9&view=month");
   const schedule = page.locator(".ply-calendar");
   await schedule.getByRole("link", { name: "翌月" }).click();
   await expect(schedule).toContainText("2026年10月");
@@ -76,8 +77,8 @@ test("Calendarの表示と選択、Overlayの共通構造と狭幅を確認す�
   ).toBeGreaterThan(100);
 
   for (const view of ["agenda", "year"] as const) {
-    await page.goto(`/examples/schedule?view=${view}`);
-    const body = page.locator(".ply-surface > .body");
+    await page.goto(`/apps/schedule?view=${view}`);
+    const body = page.locator(".ply-app-shell > .workspace");
     expect(
       await body.evaluate((element) => element.scrollWidth - element.clientWidth),
     ).toBeLessThanOrEqual(1);
@@ -123,13 +124,31 @@ test("タッチ画面の補足と確認を操作できる", async ({ browser }) 
 });
 
 test("全コンポーネントの狭幅で外側にはみ出さない", async ({ page }) => {
+  test.setTimeout(600_000);
+  for (const id of componentIds) {
+    await page.setViewportSize({ width: 1024, height: 800 });
+    await page.goto(`/components/${id}`);
+    await page
+      .locator("details")
+      .evaluateAll((elements) => elements.forEach((element) => element.setAttribute("open", "")));
+    for (const width of [320, 360, 390, 414, 480, 600, 768, 1024]) {
+      await page.setViewportSize({ width, height: 800 });
+      const overflow = await page.evaluate(() =>
+        Math.max(0, document.documentElement.scrollWidth - innerWidth),
+      );
+      expect.soft(overflow, `${id}・${width}px幅でページ外へのはみ出し`).toBeLessThanOrEqual(1);
+    }
+  }
+});
+
+test("PageHeaderの見出しは幅を広げても寸法が飛ばない", async ({ page }) => {
   test.setTimeout(300_000);
-  await page.goto("/review/components");
+  await page.goto("/components/page-header/preview");
   let previousTitleSize: number | undefined;
   for (let width = 320; width <= 1024; width += 1) {
     await page.setViewportSize({ width, height: 800 });
     const { overflow, titleSize } = await page.evaluate(() => {
-      const title = document.querySelector("#review-page-header .ply-page-header h1");
+      const title = document.querySelector(".ply-page-header h1");
       if (!title) throw new Error("PageHeaderの見出しが見つかりません");
       return {
         overflow: Math.max(0, document.documentElement.scrollWidth - innerWidth),

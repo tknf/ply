@@ -4,7 +4,14 @@ import { Button } from "./button";
 import { Icon } from "./icon";
 import { classes, type ElementProps, type Tone } from "./types";
 
-export type BoardEntry = { id: string; label: string; content: Child; disabled?: boolean };
+export type BoardEntry = {
+  id: string;
+  label: string;
+  content: Child;
+  disabled?: boolean;
+  /** 項目の番号など。Fizzyのカードの札のように、紙の上の始まりの角に列の色で置く。 */
+  code?: string;
+};
 type Column = {
   id?: string;
   title: string;
@@ -12,8 +19,13 @@ type Column = {
   current?: boolean;
   empty?: Child;
   disabled?: boolean;
-  /** たたんだ列。件数と縦書きの名前を載せた縦長のピルになり、中の項目は隠す。移動先にはならない。開閉の状態は利用側が持つ。 */
+  /** たたんだ列。件数と縦書きの名前を載せた縦長のピルになり、中の項目は隠す。移動先にはならない。 */
   collapsed?: boolean;
+  /**
+   * 列を押して開閉できるようにする。たたんだピルに「開く」、開いた列の見出しに「たたむ」を置き、
+   * 押すとBoardControllerが表示を切り替えて、取り消せるboard:toggleで知らせる。開閉の保存は利用側が持つ。
+   */
+  collapsible?: boolean;
 } & (
   | { items: readonly BoardEntry[]; content?: never; count?: never }
   | { content: Child; count: number; items?: never }
@@ -51,7 +63,9 @@ export const Board = ({
       role="region"
       aria-label={label}
       tabindex={0}
-      data-controller={movable ? "board" : undefined}
+      data-controller={
+        movable || columns.some((column) => column.collapsible) ? "board" : undefined
+      }
       data-movable={movable ? "true" : undefined}
     >
       {columns.map((column, index) => (
@@ -68,6 +82,20 @@ export const Board = ({
           <h3 class="title">
             <span class="label">{column.title}</span>
             <small>{column.items?.length ?? column.count}</small>
+            {column.collapsible && (
+              <Button
+                class="toggle"
+                variant="link"
+                data-icon-only="true"
+                data-action="board#toggle"
+                data-board-toggle
+                aria-expanded={column.collapsed ? "false" : "true"}
+                aria-label={`「${column.title}」の列を開閉`}
+              >
+                <Icon name="expand" class="expand" />
+                <Icon name="collapse" class="collapse" />
+              </Button>
+            )}
           </h3>
           <div
             class="items"
@@ -83,6 +111,7 @@ export const Board = ({
                     data-board-label={item.label}
                     data-disabled={item.disabled ? "true" : undefined}
                   >
+                    {item.code && <span class="code">{item.code}</span>}
                     <div class="body">{item.content}</div>
                     {movable && (
                       <Button

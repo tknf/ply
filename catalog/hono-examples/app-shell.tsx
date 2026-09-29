@@ -2,7 +2,7 @@ import { AppShell, ActionLink, CommandMenu, PageHeader, Avatar } from "../../src
 export default () => (
   <AppShell
     home={
-      <ActionLink href="/review/workspace" variant="link">
+      <ActionLink href="/apps/project" variant="link">
         ホーム
       </ActionLink>
     }
@@ -11,17 +11,17 @@ export default () => (
         id="shell-commands"
         label="つむぐチーム"
         shortcuts={[
-          { label: "プロジェクト", href: "/review/workspace", icon: "layers", accent: "green" },
-          { label: "受信トレイ", href: "/review/mail", icon: "mail", accent: "blue" },
-          { label: "資料", href: "/files", icon: "file", accent: "amber" },
-          { label: "売上", href: "/sales", icon: "chart", accent: "coral" },
+          { label: "プロジェクト", href: "/apps/project", icon: "layers", accent: "green" },
+          { label: "受信トレイ", href: "/apps/inbox", icon: "mail", accent: "blue" },
+          { label: "資料", href: "/apps/files", icon: "file", accent: "amber" },
+          { label: "売上", href: "/apps/sales", icon: "chart", accent: "coral" },
         ]}
         groups={[
           {
             label: "移動",
             items: [
-              { label: "プロジェクト", href: "/review/workspace", icon: "layers" },
-              { label: "受信トレイ", href: "/review/mail", icon: "mail" },
+              { label: "プロジェクト", href: "/apps/project", icon: "layers" },
+              { label: "受信トレイ", href: "/apps/inbox", icon: "mail" },
             ],
           },
         ]}

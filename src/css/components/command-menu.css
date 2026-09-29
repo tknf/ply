@@ -67,69 +67,10 @@
         grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: var(--ply-space-3);
         padding-inline: var(--ply-space-3);
+        /* 入口の見た目はActionTile（action-tile.css）が持つ。ここでは格子に並べるだけ。 */
         & > .shortcut {
-          --ply-command-accent: var(--ply-link);
+          display: grid;
           min-inline-size: 0;
-          &[data-accent="green"] {
-            --ply-command-accent: var(--ply-green);
-          }
-          &[data-accent="amber"] {
-            --ply-command-accent: var(--ply-amber);
-          }
-          &[data-accent="coral"] {
-            --ply-command-accent: var(--ply-coral);
-          }
-          &[data-disabled="true"] {
-            opacity: 0.5;
-          }
-          & > .link {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0.375rem;
-            min-block-size: 4.625rem;
-            padding-block: var(--ply-space-2);
-            padding-inline: var(--ply-space-2);
-            /* 入口の名前を「プロジェク／ト」のように語の途中で折り返さない。 */
-            word-break: auto-phrase;
-            border-radius: var(--ply-radius-control);
-            /* 入口は押す物。Buttonと同じかすかな縦の陰影と影で、平らな面から少し浮かせる。 */
-            background: var(--ply-surface);
-            background-image: var(--ply-fill-control);
-            color: var(--ply-text);
-            font-size: var(--ply-label);
-            font-weight: 500;
-            line-height: calc(10 / 7);
-            text-align: center;
-            text-decoration: none;
-            box-shadow: var(--ply-shadow-control);
-            transition:
-              background var(--ply-duration) ease,
-              box-shadow var(--ply-duration) ease;
-            &:is(a):hover {
-              background: color-mix(in srgb, var(--ply-command-accent) 8%, var(--ply-surface));
-              background-image: var(--ply-fill-control);
-              box-shadow: var(--ply-shadow-control-hover);
-            }
-            &:is(a):active {
-              box-shadow: var(--ply-shadow-control-pressed);
-            }
-            &:focus-visible {
-              outline-offset: -0.125rem;
-            }
-            & > .icon {
-              display: flex;
-              color: var(--ply-command-accent);
-            }
-            & > .icon > .ply-icon {
-              inline-size: 1.5rem;
-              block-size: 1.5rem;
-            }
-            & > :is(.context, .current) {
-              display: none;
-            }
-          }
         }
         &[data-columns="3"] {
           grid-template-columns: repeat(3, minmax(0, 1fr));

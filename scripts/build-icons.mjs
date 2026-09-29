@@ -26,6 +26,12 @@ for (const [name, file] of Object.entries(manifest)) {
   );
   // 同じ素材をSVG useとCSS background/maskのどちらからも使えるようにする。
   await writeFile(`src/css/assets/${name}.svg`, svg);
+  // 小さく置いても線が細くならないよう、CSSの印に使う太字の版も書き出す（Tagの外す×など）。
+  const bold = await readFile(
+    `node_modules/@phosphor-icons/core/assets/bold/${file}-bold.svg`,
+    "utf8",
+  );
+  await writeFile(`src/css/assets/${name}-bold.svg`, bold);
 }
 const license = await readFile("node_modules/@phosphor-icons/core/LICENSE", "utf8");
 const sprite = `<svg xmlns="http://www.w3.org/2000/svg">\n<!-- Phosphor Icons / MIT\n${license.replaceAll("--", "—")}-->\n${symbols.join("\n")}\n</svg>\n`;

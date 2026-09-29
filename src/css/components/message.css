@@ -1,5 +1,9 @@
 @layer components {
   .ply-message {
+    /* 人の円の列の幅。円をこの大きさにそろえ、返信の糸の位置もここから決める。 */
+    --ply-message-avatar: 2rem;
+    --ply-message-thread: color-mix(in srgb, var(--ply-ink) 16%, var(--ply-surface));
+    container: ply-message / inline-size;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: var(--ply-space-1) var(--ply-space-2);
@@ -10,11 +14,29 @@
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
     &:has(> .avatar) {
-      grid-template-columns: 2rem minmax(0, 1fr);
+      grid-template-columns: var(--ply-message-avatar) minmax(0, 1fr);
     }
+    /* 人の円は名前の行の横に置き、列の幅の円にそろえる。本文・操作・返信はその下の行に積む。 */
     & > .avatar {
       grid-column: 1;
-      grid-row: 1 / span 3;
+      grid-row: 1;
+      & > .ply-avatar {
+        inline-size: var(--ply-message-avatar);
+        block-size: var(--ply-message-avatar);
+        font-size: var(--ply-small);
+      }
+    }
+    & > .heading {
+      grid-row: 1;
+    }
+    & > .body {
+      grid-row: 2;
+    }
+    & > .actions {
+      grid-row: 3;
+    }
+    & > .replies {
+      grid-row: 4;
     }
     & > .heading > strong {
       font-weight: 600;
@@ -32,11 +54,41 @@
     &:has(> .avatar) > :is(.heading, .body, .actions, .replies) {
       grid-column: 2;
     }
+    /* 人の円がある時は、名前の行を円の高さにして中央にそろえる。 */
+    &:has(> .avatar) > .heading {
+      align-content: center;
+      min-block-size: var(--ply-message-avatar);
+    }
+    /* 狭いMessageでは、人の円は名前の行の横だけに置き、本文・操作・返信は円の下から全幅で書く。 */
+    &:has(> .avatar) > :is(.body, .actions) {
+      @container ply-message (inline-size < 20rem) {
+        grid-column: 1 / -1;
+      }
+    }
+    /*
+      会話の本文はHEYのメモと同じく吹き出しにする。人の側の上の角だけを立て、誰の言葉かを形で示す。
+      吹き出しは文の長さに合わせて縮む。
+    */
     & > .body {
+      justify-self: start;
       min-inline-size: 0;
+      max-inline-size: 100%;
+      padding-block: var(--ply-space-3);
+      padding-inline: var(--ply-space-4);
+      border-radius: var(--ply-radius-surface);
+      border-start-start-radius: var(--ply-radius-mark);
+      background: var(--ply-background);
       overflow-wrap: anywhere;
+      /* 吹き出しの中の段落は、行の間（約6px）より少し広いだけの間にし、吹き出しの余白より狭く見せる。 */
       & > * + * {
-        margin-block-start: var(--ply-space-3);
+        margin-block-start: var(--ply-space-1);
+      }
+      /* 本文に添えたファイルは、行の上下の余白を持ち込まず、本文から少しだけ離して添える。 */
+      & > .ply-file-item {
+        padding-block: 0;
+      }
+      & > * + .ply-file-item {
+        margin-block-start: var(--ply-space-2);
       }
     }
     & > .actions {
@@ -44,31 +96,118 @@
       flex-wrap: wrap;
       gap: var(--ply-space-2);
     }
+    /*
+      文書の形はHEYのスレッドと同じく、一通を一枚の紙にする。日付は見出しの行の終わりに寄せる。
+      続くメッセージの紙は前の紙に少し重ねて積み、スレッドを一束の紙に見せる。
+      後ろの紙が前の紙の文字より上に来るよう、配置済みにしてDOMの順に重ねる。
+    */
     &[data-layout="document"] {
-      row-gap: var(--ply-space-4);
-      padding-block: var(--ply-space-4);
+      position: relative;
+      /* 本文の行高は1.75で行の余りが大きいので、段の間を詰めて紙の余白よりはっきり狭く見せる。 */
+      row-gap: var(--ply-space-2);
+      max-inline-size: none;
+      padding-block: var(--ply-space-6);
+      padding-inline: var(--ply-space-6);
+      border-radius: var(--ply-radius-surface);
+      background: var(--ply-surface) var(--ply-fill-paper);
+      box-shadow: var(--ply-shadow-paper);
       & > .avatar {
         grid-row: 1;
       }
       & > .heading {
         align-items: center;
         min-block-size: 2rem;
+        & > time {
+          margin-inline-start: auto;
+        }
       }
       & > .body {
         grid-column: 1 / -1;
+        justify-self: stretch;
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
         font-size: var(--ply-body);
         line-height: 1.75;
+        /* 行の間が12pxあるので、段落の間は4px足すだけで切れ目が分かる。 */
         & > * + * {
-          margin-block-start: var(--ply-space-4);
+          margin-block-start: var(--ply-space-1);
+        }
+      }
+      /* 操作は本文と同じ書き始め（紙の内側の端）にそろえる。 */
+      & > .actions {
+        grid-column: 1 / -1;
+      }
+      &:has(+ .ply-message[data-layout="document"]) {
+        padding-block-end: calc(var(--ply-space-6) + var(--ply-space-4));
+      }
+      & + .ply-message[data-layout="document"] {
+        margin-block-start: calc(-1 * var(--ply-space-4));
+      }
+    }
+    /*
+      返信は糸でつなぐ。親の人の円の下から返信の手前まで幹を下ろし、返信それぞれへ角丸の枝を曲げて人の円に結ぶ。
+      途中の返信は次の返信まで幹を伸ばす。糸の位置は人の円の列の中央。
+    */
+    & > .replies {
+      /* 糸の横の位置は親の人の円から決めるので、返信の円が小さくなっても親の円の大きさを渡しておく。 */
+      --ply-message-parent-avatar: var(--ply-message-avatar);
+      min-inline-size: 0;
+      & > .ply-message {
+        position: relative;
+        /* とても狭いMessage（文字を大きくした時など）の返信は、人の円を小さくして、入れ子が深くなっても名前の行の幅を残す。 */
+        @container ply-message (inline-size < 16rem) {
+          --ply-message-avatar: 1.5rem;
         }
       }
     }
-    & > .replies {
-      min-inline-size: 0;
-      margin-block-start: var(--ply-space-1);
-      padding-inline-start: var(--ply-space-3);
-      border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
-      border-end-start-radius: var(--ply-radius-field);
+    &:has(> .avatar):has(> .replies)::before {
+      content: "";
+      grid-column: 1;
+      grid-row: 2 / 4;
+      justify-self: center;
+      inline-size: var(--ply-frame-width);
+      background: var(--ply-message-thread);
+    }
+    &:has(> .avatar) > .replies > .ply-message:has(> .avatar) {
+      --ply-message-branch-start: calc(
+        -1 * (var(--ply-message-parent-avatar) / 2 + var(--ply-space-2)) - var(--ply-stroke-width)
+      );
+      &::after {
+        content: "";
+        position: absolute;
+        inset-block-start: calc(-1 * var(--ply-space-1));
+        inset-inline-start: var(--ply-message-branch-start);
+        inline-size: calc(
+          var(--ply-message-parent-avatar) / 2 + var(--ply-space-2) + var(--ply-stroke-width)
+        );
+        block-size: calc(
+          var(--ply-space-1) + var(--ply-space-2) + var(--ply-message-avatar) / 2 +
+            var(--ply-stroke-width)
+        );
+        border-inline-start: var(--ply-frame-width) solid var(--ply-message-thread);
+        border-block-end: var(--ply-frame-width) solid var(--ply-message-thread);
+        border-end-start-radius: var(--ply-radius-field);
+      }
+      &:not(:last-child)::before {
+        content: "";
+        position: absolute;
+        inset-block: calc(-1 * var(--ply-space-1)) 0;
+        inset-inline-start: var(--ply-message-branch-start);
+        inline-size: var(--ply-frame-width);
+        background: var(--ply-message-thread);
+      }
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-message > .body,
+    .ply-message[data-layout="document"] {
+      border: var(--ply-stroke-width) solid CanvasText;
+      background: Canvas;
+      box-shadow: none;
+    }
+    .ply-message[data-layout="document"] > .body {
+      border: 0;
     }
   }
 }

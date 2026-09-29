@@ -1,4 +1,5 @@
 import { Button } from "./button";
+import { ActionTile } from "./action-tile";
 import { InputGroup } from "./input-group";
 import { Icon, type IconName } from "./icon";
 import { Keycap } from "./keycap";
@@ -107,12 +108,18 @@ export const CommandMenu = ({
       {shortcuts.length > 0 && (
         <nav class="shortcuts" aria-label="よく使う場所" data-columns={columns}>
           {shortcuts.map((item) => (
-            <div
-              class="shortcut"
-              data-accent={item.accent}
-              data-disabled={item.disabled ? "true" : undefined}
-            >
-              <Destination item={item} />
+            <div class="shortcut">
+              {/* 入口はActionTile。Tableの一括操作と同じタイルを使う。 */}
+              <ActionTile
+                label={item.label}
+                icon={item.icon ?? "arrow"}
+                accent={item.accent}
+                href={item.href}
+                current={item.current}
+                disabled={item.disabled}
+                tabindex={0}
+                aria-description={item.description}
+              />
             </div>
           ))}
         </nav>

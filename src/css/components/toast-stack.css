@@ -1,0 +1,69 @@
+@layer components {
+  /*
+    ToastStackは開いているToastを束ねる。新しいものを手前に置き、古いものは上へ少しずつずらして小さく重ね、
+    奥ほど薄れて上端から消える。押すと一枚ずつ少し遅れて上へ広がり、外を押すかEscで畳む（FizzyのPinの束と同じ振る舞い）。
+    順番（--ply-toast-index）・広げた時の持ち上げ幅（--ply-toast-offset）・手前の高さはToastStackControllerが渡す。
+    重ね方はtransformで作り、出入りの動き（overlay.cssのtranslate・scale・opacity）と分ける。
+  */
+  .ply-toast-stack {
+    --ply-toast-front-size: auto;
+    display: contents;
+    /* 広げた時のToastの間。controllerが計算済みの値で読む。 */
+    row-gap: var(--ply-space-2);
+    &[data-placement="center"] > .ply-toast {
+      margin-inline: auto;
+    }
+    &[data-placement="start"] > .ply-toast {
+      margin-inline: 0 auto;
+    }
+    /*
+      出入りの動き（overlay.css）より強い指定にして、重ね方のtransformの動きを足す。
+      束の中は幅をそろえ、奥のToastが手前と同じ幅の縁として覗くようにする。
+    */
+    & > .ply-toast.ply-overlay[popover] {
+      --ply-toast-index: 0;
+      --ply-toast-offset: 0rem;
+      inline-size: min(24rem, calc(100% - 2 * var(--ply-space-4)));
+      interpolate-size: allow-keywords;
+      transform-origin: top center;
+      transform: translateY(calc(var(--ply-toast-index) * -0.625rem))
+        scale(calc(1 - var(--ply-toast-index) * 0.05));
+      transition:
+        opacity var(--ply-duration-fade) ease-out,
+        scale var(--ply-duration-pop) var(--ply-ease-pop),
+        translate var(--ply-motion-slide) var(--ply-ease-slide),
+        display var(--ply-duration-pop) allow-discrete,
+        overlay var(--ply-duration-pop) allow-discrete,
+        transform calc(var(--ply-duration) * 2) var(--ply-ease-slide)
+          calc(var(--ply-toast-index) * var(--ply-duration) / 8),
+        block-size calc(var(--ply-duration) * 2) var(--ply-ease-slide);
+      & > * {
+        transition: opacity var(--ply-duration) ease;
+      }
+    }
+    /*
+      畳んだ束の奥のToastは、手前と同じ高さに縮めて中身を隠し、上へずらした縁だけを見せる。
+      縁は上端へ向かって薄れ、三枚目より奥は消える。
+    */
+    &:not([data-expanded="true"]) > .ply-toast[data-stack="back"] {
+      block-size: var(--ply-toast-front-size);
+      overflow: clip;
+      opacity: clamp(0, calc(1 - var(--ply-toast-index) * 0.3), 1);
+      /* 覗く縁（上へずらした幅）の中だけで、上端へ向かって薄れさせる。 */
+      mask-image: linear-gradient(to bottom, transparent, currentColor 0.625rem);
+      cursor: pointer;
+      & > * {
+        opacity: 0;
+      }
+    }
+    /* 手前のToastは、奥にToastがある時だけ押して広げられることを示す。 */
+    &[data-count]:not([data-count="0"], [data-count="1"]) > .ply-toast[data-stack="front"] {
+      cursor: pointer;
+    }
+    /* 広げた束は、新しいものから上へ積む。四枚目より上は上端へ向かって薄れて消える。 */
+    &[data-expanded="true"] > .ply-toast[data-stack] {
+      transform: translateY(calc(-1 * var(--ply-toast-offset)));
+      opacity: clamp(0, calc(1 - (var(--ply-toast-index) - 3) * 0.35), 1);
+    }
+  }
+}

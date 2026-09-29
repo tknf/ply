@@ -61,8 +61,9 @@
     & > .body:not(:empty) {
       margin-block-start: var(--ply-space-2);
     }
+    /* 段落の間は紙の余白よりはっきり狭くする。行の余りと合わせて、段落の切れ目だけが分かる幅にする。 */
     & > .body > * + * {
-      margin-block-start: var(--ply-space-3);
+      margin-block-start: var(--ply-space-2);
     }
     & > .meta {
       display: flex;
@@ -71,7 +72,8 @@
       justify-content: start;
       gap: var(--ply-space-2) var(--ply-space-3);
       margin-block-start: auto;
-      padding-block-start: var(--ply-space-5);
+      /* メタ情報は本文のすぐ下に添える。本文との間は紙の余白より狭くし、紙の中の一まとまりに見せる。 */
+      padding-block-start: var(--ply-space-2);
       color: var(--ply-muted);
       font-size: var(--ply-small);
       line-height: var(--ply-small-leading);
@@ -88,17 +90,11 @@
         max-inline-size: calc(100% - 3rem);
       }
     }
-    &:has(> .meta) {
-      padding-block-end: var(--ply-space-4);
-    }
     &[data-density="compact"] {
       padding-block: var(--ply-space-3);
       padding-inline: var(--ply-space-4);
-      &:has(> .meta) {
-        padding-block-end: var(--ply-space-2);
-      }
       & > .meta {
-        padding-block-start: var(--ply-space-3);
+        padding-block-start: var(--ply-space-1);
       }
     }
     /* 完了は縁取りではなく、淡い成功の色の地で示す。 */

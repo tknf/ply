@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 test.use({ reducedMotion: "reduce" });
 
-import { redesignedComponentIds as components } from "../../catalog/redesigned-components";
+import { componentIds as components } from "./catalog-pages";
 
 for (const width of [375, 768, 1280]) {
   test(`カタログ全変種が${width}pxと文字200%で利用できる`, async ({ page }) => {
@@ -9,9 +9,9 @@ for (const width of [375, 768, 1280]) {
     await page.setViewportSize({ width, height: 1000 });
     for (const id of components) {
       await page.goto(`/components/${id}`);
-      await expect(page.locator("main > .ply-surface > .body > .ply-page-header h1")).toHaveCount(
-        1,
-      );
+      await expect(
+        page.locator("main > .ply-app-shell > .workspace > .ply-page-header h1"),
+      ).toHaveCount(1);
       await page.getByText("Hono JSX", { exact: true }).click();
       await expect(
         page
@@ -94,11 +94,15 @@ test("タブの無効項目を飛ばしメニュー選択と内側コンポー�
 
 test("検索の0件・ファイル群・進捗の境界値に到達できる", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 1000 });
-  await page.goto("/search");
-  await page.getByLabel("キーワード", { exact: true }).fill("存在しない記事");
+  await page.goto("/apps/search");
+  await page.getByRole("searchbox", { name: "記事と資料を探す" }).fill("存在しない記事");
+  await page.getByRole("button", { name: "検索", exact: true }).click();
   await expect(page.getByText("見つかりませんでした", { exact: true })).toBeVisible();
-  await page.getByRole("link", { name: "条件をクリアする" }).click();
-  await expect(page.getByRole("status")).toHaveText("6件の記事");
+  await page.getByRole("searchbox", { name: "記事と資料を探す" }).fill("");
+  await page.getByRole("button", { name: "検索", exact: true }).click();
+  await expect(
+    page.getByRole("list", { name: "記事の検索結果" }).getByRole("listitem"),
+  ).toHaveCount(6);
   await page.goto("/components/file-input");
   await page.getByLabel("添付資料", { exact: true }).setInputFiles({
     name: "資料.pdf",
@@ -176,42 +180,48 @@ test("動作コンポーネントのフォーカスがforced-colorsでも見え�
   }
 });
 
-test("塗った操作は色を保ったまま影で応え、各操作のfocusで輪郭が見える", async ({ page }) => {
+test("押す操作は浮かせず、指を載せると面が濃くなり、押すと内側へへこみ、focusで輪郭が見える", async ({
+  page,
+}) => {
+  // 2026年9月29日、ユーザーの指定で「浮かせる影」をやめ、普段は平ら・押すとへこむ手触りに変えた。
   await page.goto("/components/button");
   const buttons = page.locator('[data-example="hono"] .ply-button:not(:disabled)');
   for (const button of await buttons.all()) {
-    const colors = () =>
+    const look = () =>
       button.evaluate((element) => {
         const style = getComputedStyle(element);
         return {
           color: style.color,
-          background: style.backgroundColor,
           border: style.borderInlineStartColor,
+          surface: `${style.backgroundColor} ${style.backgroundImage}`,
+          shadow: style.boxShadow,
         };
       });
-    const shadow = () => button.evaluate((element) => getComputedStyle(element).boxShadow);
     await page.mouse.move(0, 0);
-    const before = await colors();
-    const restingShadow = await shadow();
+    const before = await look();
+    // 普段は影を持たない（浮かせない）。
+    expect(before.shadow).toBe("none");
     await button.hover();
-    const hovered = await colors();
-    // 主操作と危険も白い操作と同じく、塗りの色は変えず、指を載せると影が広がり、押すと内側へ移る。
-    expect(hovered).toEqual(before);
+    const hovered = await look();
+    // 指を載せると面だけが変わり、文字と縁の色は変えない。影は付けない。
+    expect({ color: hovered.color, border: hovered.border }).toEqual({
+      color: before.color,
+      border: before.border,
+    });
+    expect(hovered.surface).not.toBe(before.surface);
+    expect(hovered.shadow).toBe("none");
     const variant = await button.getAttribute("data-variant");
-    if (variant === "primary" || variant === "danger") {
-      const hoveredShadow = await shadow();
-      expect(hoveredShadow).not.toBe(restingShadow);
+    if (variant === "link") {
+      // 文字だけの操作は下線を引かず、指を載せると淡い青のピルの面が現れる。
+      expect(before.surface.startsWith("rgba(0, 0, 0, 0)")).toBe(true);
+    } else {
       await page.mouse.down();
-      expect(await colors()).toEqual(hovered);
-      const pressedShadow = await shadow();
-      expect(pressedShadow).not.toBe(hoveredShadow);
-      expect(pressedShadow.split("),")[0]).toContain("inset");
+      const pressed = await look();
+      expect(pressed.shadow.split("),")[0]).toContain("inset");
       await page.mouse.move(0, 0);
       await page.mouse.up();
-      await button.hover();
     }
     await button.focus();
-    expect(await colors()).toEqual(hovered);
     await page.keyboard.press("Tab");
     await button.focus();
     await expect(button).toBeFocused();

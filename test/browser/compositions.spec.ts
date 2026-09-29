@@ -1,30 +1,28 @@
 import { expect, test } from "@playwright/test";
+import { appPaths, componentIds } from "./catalog-pages";
 
-test("コンポーネント一覧は56種類を重複なく案内する", async ({ page }) => {
-  await page.goto("/components");
-  const links = page.locator(".catalog-component-index a");
-  await expect(links).toHaveCount(56);
+test("カタログの入口は全部品を分類ごとに重複なく案内する", async ({ page }) => {
+  await page.goto("/");
+  const links = page.locator('section[id^="group-"] .ply-action-list a');
+  await expect(links).toHaveCount(componentIds.length);
   const hrefs = await links.evaluateAll((elements) =>
     elements.map((element) => element.getAttribute("href")),
   );
-  expect(new Set(hrefs).size).toBe(56);
+  expect(new Set(hrefs).size).toBe(componentIds.length);
+  expect(hrefs).toEqual(componentIds.map((id) => `/components/${id}`));
 });
 
-test("案件で追加した仕事を移動しても名前と件数を保つ", async ({ page }) => {
-  await page.goto("/examples/project");
-  await page.getByRole("textbox", { name: "仕事を追加" }).fill("公開前の読み合わせ");
-  await page.getByRole("button", { name: "追加する", exact: true }).click();
-  const board = page.getByRole("region", { name: "案内制作の進行" });
-  await expect(board.locator("section").nth(0).locator("h3 > small")).toHaveText("2");
-  await page.getByRole("combobox", { name: "公開前の読み合わせの状態" }).selectOption("2");
-  await expect(board.locator("section").nth(2)).toContainText("公開前の読み合わせ");
-  await expect(board.locator("section").nth(0).locator("h3 > small")).toHaveText("1");
-  await expect(board.locator("section").nth(2).locator("h3 > small")).toHaveText("1");
-  await expect(page.getByRole("combobox", { name: "公開前の読み合わせの状態" })).toBeFocused();
+test("カタログのコマンドから部品の名前で探して移れる", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "部品を探す" }).click();
+  await page.getByRole("combobox").fill("EmojiPicker");
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/\/components\/emoji-picker$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("EmojiPicker");
 });
 
 test("設定を保存して再読込で復元し期間エラーでも入力を保つ", async ({ page }) => {
-  await page.goto("/examples/settings");
+  await page.goto("/apps/settings");
   await page.getByRole("textbox", { name: "仕事場の名前" }).fill("編集の仕事場");
   const category = page.getByRole("combobox", { name: "分類（自由入力可）", exact: true });
   await page.getByRole("button", { name: "分類（自由入力可）の候補を開閉", exact: true }).click();
@@ -63,7 +61,7 @@ test("設定を保存して再読込で復元し期間エラーでも入力を�
 });
 
 test("設定の再保存に失敗しても入力と前回保存を保ち成功通知を残さない", async ({ page }) => {
-  await page.goto("/examples/settings");
+  await page.goto("/apps/settings");
   const name = page.getByRole("textbox", { name: "仕事場の名前" });
   const save = page.getByRole("button", { name: "設定を保存", exact: true });
   await name.fill("保存済みの仕事場");
@@ -86,7 +84,7 @@ test("設定の再保存に失敗しても入力と前回保存を保ち成功�
 });
 
 test("設定の期間エラーでは前の成功通知を閉じる", async ({ page }) => {
-  await page.goto("/examples/settings");
+  await page.goto("/apps/settings");
   const save = page.getByRole("button", { name: "設定を保存", exact: true });
   await save.click();
   await expect(page.locator(".ply-toast")).toBeVisible();
@@ -106,7 +104,7 @@ test("Popoverの表示APIがなくても設定の保存と初期値への復帰�
     Object.defineProperty(HTMLElement.prototype, "showPopover", { value: undefined });
     Object.defineProperty(HTMLElement.prototype, "hidePopover", { value: undefined });
   });
-  await page.goto("/examples/settings");
+  await page.goto("/apps/settings");
   const name = page.getByRole("textbox", { name: "仕事場の名前" });
   const status = page.locator('[data-settings-demo-target="status"]');
   await name.fill("通知なしで保存する仕事場");
@@ -131,28 +129,26 @@ test("追加した標準コンポーネントはJavaScript無効でも操作で�
   await expect(example.locator("#hono-popover")).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(example.locator("#hono-popover")).not.toBeVisible();
-  await page.goto("/examples/schedule");
-  await page.getByRole("link", { name: "8月", exact: true }).click();
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("8月の予定");
+  await page.goto("/apps/schedule");
+  await page.getByRole("link", { name: "前月", exact: true }).click();
+  await expect(page).toHaveURL(/month=8/);
+  await expect(page.getByText("2026年8月", { exact: true })).toBeVisible();
   await context.close();
 });
 
 for (const width of [375, 768, 1280]) {
-  test(`コンポーネント一覧と組み合わせ事例が${width}pxで収まる`, async ({ page }, testInfo) => {
+  test(`カタログの入口と利用例のアプリの画面が${width}pxで収まる`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width, height: 1000 });
-    for (const route of [
-      "components",
-      "examples/project",
-      "examples/settings",
-      "examples/schedule",
-    ]) {
-      await page.goto(`/${route}`);
-      await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+    for (const path of ["/", ...appPaths]) {
+      await page.goto(path);
+      await expect(page.getByRole("heading", { level: 1 }), path).toHaveCount(1);
       await expect
-        .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
+        .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), {
+          message: path,
+        })
         .toBe(true);
       await page.screenshot({
-        path: testInfo.outputPath(`${route.replaceAll("/", "-")}-${width}.png`),
+        path: testInfo.outputPath(`${path.replace(/[^a-z0-9]+/gi, "-")}-${width}.png`),
         fullPage: true,
       });
     }

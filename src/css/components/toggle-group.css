@@ -5,8 +5,14 @@
     align-items: start;
     gap: var(--ply-space-1);
     min-inline-size: 0;
+    /* 縦に並べる時は、Fizzyのカードの段と同じく、ピルの幅をいちばん長い名前にそろえ、名前を始まりに寄せる。 */
     &[data-orientation="vertical"] {
       flex-direction: column;
+      align-items: stretch;
+      inline-size: fit-content;
+      & > .ply-button {
+        justify-content: start;
+      }
     }
     /* オンはFilterBarと同じ青い塗り。形は共通Buttonのピル。 */
     & > .ply-button[data-state="on"] {
@@ -14,7 +20,7 @@
       background: var(--ply-link);
       background-image: var(--ply-fill-primary);
       color: var(--ply-surface);
-      box-shadow: var(--ply-shadow-control-primary);
+      box-shadow: none;
     }
   }
 }

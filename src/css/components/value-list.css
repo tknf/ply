@@ -1,4 +1,8 @@
 @layer components {
+  /*
+    一つの対象の属性。HEYの連絡先の一覧と同じく、各行の下に墨の細い線を行の幅いっぱいに引いて区切る。
+    項目名は淡いMedium、値は墨の文字にする。項目名の前には、HEYの操作の並びのように塗りつぶしの印を色の淡い丸に入れて添えられる。
+  */
   .ply-value-list {
     container: ply-value-list / inline-size;
     min-inline-size: 0;
@@ -9,14 +13,50 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr);
       gap: var(--ply-space-1);
-      padding-block: 0.375rem;
+      padding-block: var(--ply-space-3);
+      border-block-end: var(--ply-stroke-width) solid
+        color-mix(in srgb, var(--ply-ink) 12%, transparent);
+      --ply-value-list-accent: var(--ply-link);
+      --ply-value-list-soft: var(--ply-info-soft);
+      &[data-accent="green"] {
+        --ply-value-list-accent: var(--ply-success);
+        --ply-value-list-soft: var(--ply-success-soft);
+      }
+      &[data-accent="amber"] {
+        --ply-value-list-accent: var(--ply-amber);
+        --ply-value-list-soft: var(--ply-warning-soft);
+      }
+      &[data-accent="coral"] {
+        --ply-value-list-accent: var(--ply-coral-dark);
+        --ply-value-list-soft: var(--ply-danger-soft);
+      }
       & > dt {
+        display: flex;
+        align-items: center;
+        gap: var(--ply-space-2);
         color: var(--ply-muted);
-        font-weight: var(--ply-label-weight);
+        font-weight: 500;
+        & > .icon {
+          display: grid;
+          flex: none;
+          place-items: center;
+          inline-size: 1.75rem;
+          block-size: 1.75rem;
+          border-radius: 50%;
+          background: var(--ply-value-list-soft);
+          color: var(--ply-value-list-accent);
+          & > .ply-icon {
+            font-size: 1rem;
+          }
+        }
       }
       & > dd {
         min-inline-size: 0;
+        color: var(--ply-text);
         overflow-wrap: anywhere;
+        &[data-empty="true"] {
+          color: var(--ply-muted);
+        }
         & > * + * {
           margin-block-start: var(--ply-space-2);
         }

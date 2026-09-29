@@ -3,7 +3,7 @@ import { formatFileSize } from "../internal/file-size";
 
 /** 上流のドロップ処理に、選択内容の表示・解除・標準入力への通知を加える。 */
 export class FileInputController extends FileDropController {
-  static targets = [...FileDropController.targets, "files", "hint", "clear", "status"];
+  static targets = [...FileDropController.targets, "files", "hint", "clear", "status", "template"];
   declare readonly filesTarget: HTMLElement;
   declare readonly hasFilesTarget: boolean;
   declare readonly hintTarget: HTMLElement;
@@ -12,6 +12,8 @@ export class FileInputController extends FileDropController {
   declare readonly hasClearTarget: boolean;
   declare readonly statusTarget: HTMLElement;
   declare readonly hasStatusTarget: boolean;
+  declare readonly templateTarget: HTMLTemplateElement;
+  declare readonly hasTemplateTarget: boolean;
   private fileForm: HTMLFormElement | null = null;
   private resetTask: number | undefined;
 
@@ -67,15 +69,7 @@ export class FileInputController extends FileDropController {
     const files = Array.from(input?.files ?? []);
     if (this.hasFilesTarget) {
       const fragment = document.createDocumentFragment();
-      for (const file of files) {
-        const item = document.createElement("li");
-        const name = document.createElement("span");
-        const size = document.createElement("small");
-        name.textContent = file.name;
-        size.textContent = formatFileSize(file.size);
-        item.append(name, size);
-        fragment.append(item);
-      }
+      for (const file of files) fragment.append(this.fileRow(file));
       this.filesTarget.replaceChildren(fragment);
       this.filesTarget.hidden = files.length === 0;
     }
@@ -87,6 +81,20 @@ export class FileInputController extends FileDropController {
       this.report(
         files.length ? `${files.length}件のファイルを選択しました。` : "選択を解除しました。",
       );
+  };
+  /** 選んだファイルの行。型（FileItem）があれば複製し、なければ名前と大きさだけの行にする。 */
+  private fileRow = (file: File) => {
+    const row = this.hasTemplateTarget
+      ? this.templateTarget.content.firstElementChild?.cloneNode(true)
+      : null;
+    const item = row instanceof HTMLLIElement ? row : document.createElement("li");
+    const name = item.querySelector(".title > strong");
+    const size = item.querySelector(".description");
+    if (name && size) {
+      name.textContent = file.name;
+      size.textContent = formatFileSize(file.size);
+    } else item.textContent = `${file.name} ${formatFileSize(file.size)}`;
+    return item;
   };
   private inputChanged = (event: Event) => {
     if (event.target === this.fileInput()) this.reflectFiles(true);

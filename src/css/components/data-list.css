@@ -1,5 +1,8 @@
 @layer components {
-  /* 比べる行の一覧。行を枠で囲まず、始まりと終わりに罫線を引き、行の間は淡い線で区切る。 */
+  /*
+    比べる行の一覧。MessageList（HEYのメールの一覧）と同じ作りにする。罫線を引かず行間で区切り、
+    指を載せた行と今開いている行だけを角丸の淡い面で示す。題名は太字、説明とメタ情報は一段小さい淡い文字。
+  */
   .ply-data-list {
     container: ply-data-list / inline-size;
     display: grid;
@@ -7,7 +10,6 @@
     min-inline-size: 0;
     margin: 0;
     padding: 0;
-    border-block-end: var(--ply-stroke-width) solid var(--ply-border);
     color: var(--ply-text);
     font-size: var(--ply-body);
     line-height: var(--ply-label-leading);
@@ -16,58 +18,63 @@
       position: relative;
       display: grid;
       grid-template-columns: minmax(0, 1fr);
-      gap: var(--ply-space-2) var(--ply-space-4);
-      align-items: start;
+      gap: 0.125rem var(--ply-space-4);
+      align-items: center;
       min-inline-size: 0;
       padding-block: var(--ply-space-4);
-      padding-inline: var(--ply-space-4);
-      border-block-start: var(--ply-stroke-width) solid var(--ply-border);
-      & + li {
-        border-block-start-color: color-mix(in srgb, var(--ply-ink) 8%, var(--ply-surface));
+      padding-inline: var(--ply-space-3);
+      border-radius: var(--ply-radius-field);
+      transition:
+        background-color var(--ply-duration) ease,
+        box-shadow var(--ply-duration) ease;
+      &:has(> .body > a.title):hover {
+        background: color-mix(in srgb, var(--ply-ink) 4%, var(--ply-surface));
       }
-      /* 今、隣で開いている行は、淡い青の面と開始側の青い2pxの印で示す。 */
+      /* 押した時はActionListの行と同じく、面を少し濃くして内側へへこませる。 */
+      &:has(> .body > a.title:active) {
+        background: color-mix(in srgb, var(--ply-ink) 6%, var(--ply-surface));
+        box-shadow: var(--ply-shadow-control-pressed);
+      }
       &[data-current="true"] {
-        background: color-mix(in srgb, var(--ply-info-soft) 60%, transparent);
-        &::before {
-          content: "";
-          position: absolute;
-          inset-block: 0;
-          inset-inline-start: 0;
-          inline-size: var(--ply-frame-width);
-          background: var(--ply-link);
-        }
+        background: color-mix(in srgb, var(--ply-link) 8%, var(--ply-surface));
       }
       & > .start {
         grid-column: 1;
         grid-row: 1 / span 2;
         display: flex;
-        align-items: start;
+        align-items: center;
         gap: var(--ply-space-2);
       }
       & > .body {
         min-inline-size: 0;
         overflow-wrap: anywhere;
-        /* 項目の題名は太字。Card・ActionList・BoardのItemと同じ構造にする。 */
+        /* 項目の題名は太字にする。行全体が面で応えるので、題名の色は変えない。 */
         & > .title {
           color: var(--ply-text);
           font-size: var(--ply-body);
           font-weight: 600;
           line-height: var(--ply-label-leading);
         }
+        /*
+          HEYの連絡先の一覧と同じく、題名のリンクの押せる範囲を行全体に広げる。指を載せた時の面と押せる範囲をそろえ、
+          行の終わりの操作は、その上に重ねて押せるようにする。
+        */
         & > a.title {
           text-decoration: none;
-          &:hover {
-            color: var(--ply-link);
-            text-decoration: underline;
-            text-underline-offset: 0.2em;
+          &::before {
+            content: "";
+            position: absolute;
+            inset-block: 0;
+            inset-inline: 0;
           }
           &:focus-visible {
             outline: 0.125rem solid var(--ply-link);
             outline-offset: 0.125rem;
           }
         }
+        /* 説明は本文より一段小さい淡い文字にし、題名に寄せて一人分・一件分のまとまりに見せる。 */
         & > .description {
-          margin-block-start: var(--ply-space-1);
+          margin-block-start: 0.125rem;
           color: var(--ply-muted);
           font-size: var(--ply-small);
           line-height: var(--ply-small-leading);
@@ -80,6 +87,8 @@
         }
       }
       & > .end {
+        position: relative;
+        z-index: 1;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -115,8 +124,9 @@
     }
   }
   @media (forced-colors: active) {
-    .ply-data-list > li[data-current="true"]::before {
-      background: CanvasText;
+    .ply-data-list > li[data-current="true"] {
+      outline: var(--ply-frame-width) solid Highlight;
+      outline-offset: calc(-1 * var(--ply-frame-width));
     }
   }
 }

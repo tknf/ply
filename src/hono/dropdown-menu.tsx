@@ -1,4 +1,5 @@
 import { Button, ActionLink, type ButtonProps } from "./button";
+import { Keycap } from "./keycap";
 import { Icon, type IconName } from "./icon";
 
 type MenuItemLabel = {
@@ -88,9 +89,13 @@ const MenuItems = ({ items, id }: { items: readonly MenuItem[]; id: string }) =>
               <span>{item.label}</span>
             </span>
             {item.shortcut && (
-              <span class="shortcut" aria-hidden="true">
-                {item.shortcut}
-              </span>
+              <Keycap
+                class="shortcut"
+                keys={[item.shortcut]}
+                size="small"
+                inverse
+                aria-hidden="true"
+              />
             )}
             {item.kind === "submenu" && (
               <span class="caret">

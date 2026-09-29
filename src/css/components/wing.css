@@ -9,6 +9,12 @@
     --ply-wing-panel: 14rem;
     --ply-wing-tuck: var(--ply-radius-surface);
     --ply-wing-inset: var(--ply-space-6);
+    /*
+      開閉の動きはDialog・Popoverと同じ時間と加速にする（overlay.cssの定義）。閉じる時は短くease-inで、
+      開く時（[open]で上書き）は少し長く、滑らかに減速して止まる。中身の出入りは短いease-outで薄れる。
+    */
+    --ply-wing-duration: var(--ply-duration-out);
+    --ply-wing-ease: ease-in;
     container: ply-wing / inline-size;
     min-inline-size: 0;
     /* 狭い配置で、閉じた高さ0から内容の高さ（auto）へ伸び縮みさせる。 */
@@ -71,7 +77,7 @@
             border-radius: inherit;
             background: linear-gradient(var(--ply-background), var(--ply-surface));
             opacity: 0;
-            transition: opacity calc(var(--ply-duration) * 2) ease;
+            transition: opacity var(--ply-duration-fade) ease-out;
           }
           /* 名前のツールチップは、広い配置で閉じている時だけ出す。 */
           & > .tip {
@@ -90,7 +96,7 @@
           & > .handle {
             flex: none;
             &[data-fallback="caret"] > .ply-icon {
-              transition: rotate calc(var(--ply-duration) * 2) ease;
+              transition: rotate var(--ply-wing-duration) var(--ply-wing-ease);
             }
           }
           & > .label {
@@ -108,7 +114,7 @@
           font-size: var(--ply-label);
           line-height: var(--ply-label-leading);
           overflow-wrap: anywhere;
-          transition: opacity calc(var(--ply-duration) * 2) ease;
+          transition: opacity var(--ply-duration-fade) ease-out;
           @starting-style {
             opacity: 0;
           }
@@ -118,14 +124,16 @@
           block-size: 0;
           overflow: clip;
           transition:
-            block-size calc(var(--ply-duration) * 2) ease,
-            content-visibility calc(var(--ply-duration) * 2) allow-discrete;
+            block-size var(--ply-wing-duration) var(--ply-wing-ease),
+            content-visibility var(--ply-wing-duration) allow-discrete;
         }
         &:not([open]) > .body {
           opacity: 0;
         }
       }
       & > :is(.start, .end)[open] {
+        --ply-wing-duration: var(--ply-duration-pop);
+        --ply-wing-ease: var(--ply-ease-slide);
         &::details-content {
           block-size: auto;
         }
@@ -173,7 +181,7 @@
           */
           overflow: visible;
           inline-size: calc(0.625rem + var(--ply-wing-tuck));
-          transition: inline-size calc(var(--ply-duration) * 2) ease;
+          transition: inline-size var(--ply-wing-duration) var(--ply-wing-ease);
           &:not([open]):has(> summary:is(:hover, :focus-visible)) {
             inline-size: calc(1.125rem + var(--ply-wing-tuck));
           }
@@ -188,8 +196,8 @@
             inline-size: calc(var(--ply-wing-handle) + var(--ply-wing-panel));
             transition:
               color var(--ply-duration) ease,
-              inset-inline-start calc(var(--ply-duration) * 2) ease,
-              inset-inline-end calc(var(--ply-duration) * 2) ease;
+              inset-inline-start var(--ply-wing-duration) var(--ply-wing-ease),
+              inset-inline-end var(--ply-wing-duration) var(--ply-wing-ease);
             &:focus-visible {
               outline: none;
               & > .handle {
@@ -259,8 +267,8 @@
             visibility: visible;
             /* 閉じた直後に指が残っていても、紙が縮み切ってから出す。 */
             transition:
-              opacity var(--ply-duration) ease calc(var(--ply-duration) * 2 + 150ms),
-              visibility 0s linear calc(var(--ply-duration) * 2 + 150ms);
+              opacity var(--ply-duration) ease calc(var(--ply-duration-out) + 150ms),
+              visibility 0s linear calc(var(--ply-duration-out) + 150ms);
           }
         }
         /* 開いた紙は幅が伸び、潜っていた名前と中身が出てくる。 */

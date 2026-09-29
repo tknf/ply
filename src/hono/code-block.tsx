@@ -1,4 +1,5 @@
 import { Button } from "./button";
+import { LayerCard } from "./layer-card";
 import { useId } from "hono/jsx";
 import { Toast } from "./toast";
 import { classes, type ElementProps } from "./types";
@@ -53,10 +54,11 @@ export const CodeBlock = ({
           : attributes["data-controller"]
       }
     >
-      <figcaption data-copy={copy ? "true" : undefined}>
-        <span class="label">{label}</span>
-        {copy && (
-          <>
+      {/* 名前とコピーはLayerCardの層の見出しの行に置き、コードは層の上の紙に書く。 */}
+      <LayerCard
+        title={label}
+        actions={
+          copy && (
             <Button
               size="compact"
               aria-label={`${label}をコピー`}
@@ -66,24 +68,25 @@ export const CodeBlock = ({
             >
               コピー
             </Button>
-          </>
-        )}
-      </figcaption>
-      <pre tabindex={0} role="region" aria-label={label}>
-        <code data-clipboard-target={copy ? "source" : undefined}>
-          {lines.map((line, index) => (
-            <span
-              class="line"
-              data-highlighted={highlight?.includes(index + 1) ? "true" : undefined}
-            >
-              {line.map(({ content, color }) =>
-                color && content.trim() ? <span style={{ color }}>{content}</span> : content,
-              )}
-              {index < lines.length - 1 && "\n"}
-            </span>
-          ))}
-        </code>
-      </pre>
+          )
+        }
+      >
+        <pre tabindex={0} role="region" aria-label={label}>
+          <code data-clipboard-target={copy ? "source" : undefined}>
+            {lines.map((line, index) => (
+              <span
+                class="line"
+                data-highlighted={highlight?.includes(index + 1) ? "true" : undefined}
+              >
+                {line.map(({ content, color }) =>
+                  color && content.trim() ? <span style={{ color }}>{content}</span> : content,
+                )}
+                {index < lines.length - 1 && "\n"}
+              </span>
+            ))}
+          </code>
+        </pre>
+      </LayerCard>
       {copy && (
         <Toast id={notificationId} tone="success" closeLabel="コピー結果の通知を閉じる">
           <span data-code-block-target="status" />

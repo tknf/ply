@@ -2,9 +2,9 @@ import { Wing, wingCookieName, ActionLink, Card, Surface, Timeline } from "../..
 
 const actions = (
   <>
-    <ActionLink href="/examples/project">新しいプロジェクト</ActionLink>
-    <ActionLink href="/examples/contact">メンバーを招待</ActionLink>
-    <ActionLink href="/examples/settings" variant="link">
+    <ActionLink href="/apps/project">新しいプロジェクト</ActionLink>
+    <ActionLink href="/apps/people">メンバーを招待</ActionLink>
+    <ActionLink href="/apps/settings" variant="link">
       アカウントの管理
     </ActionLink>
   </>
@@ -32,10 +32,10 @@ const activity = (
 const sheet = (
   <Surface>
     <div class="ply-stack">
-      <Card title="秋の読書会" href="/reservation" footer={<span>3人 · 9月25日更新</span>}>
+      <Card title="秋の読書会" href="/apps/schedule" footer={<span>3人 · 9月25日更新</span>}>
         <p>最近読んだ本を持ち寄る会の準備です。</p>
       </Card>
-      <Card title="仕事場の案内" href="/example" footer={<span>2人 · 9月24日更新</span>}>
+      <Card title="仕事場の案内" href="/apps/docs" footer={<span>2人 · 9月24日更新</span>}>
         <p>利用時間とキャンセル条件を見直します。</p>
       </Card>
     </div>

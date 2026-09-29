@@ -13,7 +13,8 @@
       grid-template-columns: minmax(0, 1fr) auto auto;
       align-items: start;
       gap: var(--ply-space-2) var(--ply-space-3);
-      padding-block: var(--ply-space-3) var(--ply-space-2);
+      /* 操作の段の間（8px）より、上端と下の罫線までをはっきり広くする。 */
+      padding-block: var(--ply-space-3);
       border-block-end: var(--ply-stroke-width) solid var(--ply-border);
       & > h2 {
         min-inline-size: 0;
@@ -59,16 +60,16 @@
         outline: 0.125rem solid var(--ply-link);
         outline-offset: -0.125rem;
       }
-      /* 月は罫線と日付だけの静かな表。今日は日付の丸だけで示し、セル全体を塗らない。 */
+      /*
+        月はHEYのカレンダーの週と同じく、外枠を持たず、日の間の淡い線だけで区切る静かな表。
+        日付は日の終わりの側の上に置き、今日は日付だけをマーカーで塗って、セル全体を塗らない。
+      */
       & > table {
         inline-size: 100%;
         min-inline-size: 35rem;
         table-layout: fixed;
         border-collapse: separate;
         border-spacing: 0;
-        overflow: hidden;
-        border: var(--ply-stroke-width) solid var(--ply-border);
-        border-radius: var(--ply-radius-control);
         background: var(--ply-surface);
         & > caption {
           position: absolute;
@@ -90,12 +91,14 @@
           text-align: center;
         }
         & > tbody > tr > td {
+          position: relative;
           block-size: 6.5rem;
           padding-block: var(--ply-space-1) var(--ply-space-2);
           padding-inline: var(--ply-space-1);
           border-inline-end: var(--ply-stroke-width) solid var(--ply-border);
           border-block-end: var(--ply-stroke-width) solid var(--ply-border);
           background: var(--ply-surface);
+          text-align: end;
           vertical-align: top;
           &:last-child {
             border-inline-end: 0;
@@ -108,12 +111,13 @@
           }
           & > .events {
             display: grid;
-            gap: var(--ply-space-1);
+            gap: 0.125rem;
             min-inline-size: 0;
             margin: 0;
             margin-block-start: var(--ply-space-1);
             padding: 0;
             list-style: none;
+            text-align: start;
             & > li {
               min-inline-size: 0;
             }
@@ -122,25 +126,42 @@
         & > tbody > tr:last-child > :is(td, th) {
           border-block-end: 0;
         }
-        /* 使えない日は斜線、今日を含む週は濃い太枠で「今」を示す。 */
+        /* 使えない日は斜線。今日を含む週は、HEYの今週と同じく墨の太い角丸の枠で一週間をまとめて囲む。 */
         & > tbody > tr > td[data-disabled="true"] {
           background-image: var(--ply-hatch);
         }
+        /* 行に疑似要素を置くと表の列が一つ増えるため、枠は各セルの内側の影で描き、両端のセルだけ角を丸める。 */
         & > tbody > tr[data-current="true"] > :is(td, th) {
           box-shadow:
-            inset 0 var(--ply-frame-width) 0 var(--ply-frame-color),
-            inset 0 calc(var(--ply-frame-width) * -1) 0 var(--ply-frame-color);
+            inset 0 var(--ply-frame-width) 0 var(--ply-ink),
+            inset 0 calc(var(--ply-frame-width) * -1) 0 var(--ply-ink);
           &:first-child {
+            border-start-start-radius: var(--ply-radius-control);
+            border-end-start-radius: var(--ply-radius-control);
             box-shadow:
-              inset 0 var(--ply-frame-width) 0 var(--ply-frame-color),
-              inset 0 calc(var(--ply-frame-width) * -1) 0 var(--ply-frame-color),
-              inset var(--ply-frame-width) 0 0 var(--ply-frame-color);
+              inset 0 var(--ply-frame-width) 0 var(--ply-ink),
+              inset 0 calc(var(--ply-frame-width) * -1) 0 var(--ply-ink),
+              inset var(--ply-frame-width) 0 0 var(--ply-ink);
+            &:dir(rtl) {
+              box-shadow:
+                inset 0 var(--ply-frame-width) 0 var(--ply-ink),
+                inset 0 calc(var(--ply-frame-width) * -1) 0 var(--ply-ink),
+                inset calc(var(--ply-frame-width) * -1) 0 0 var(--ply-ink);
+            }
           }
           &:last-child {
+            border-start-end-radius: var(--ply-radius-control);
+            border-end-end-radius: var(--ply-radius-control);
             box-shadow:
-              inset 0 var(--ply-frame-width) 0 var(--ply-frame-color),
-              inset 0 calc(var(--ply-frame-width) * -1) 0 var(--ply-frame-color),
-              inset calc(var(--ply-frame-width) * -1) 0 0 var(--ply-frame-color);
+              inset 0 var(--ply-frame-width) 0 var(--ply-ink),
+              inset 0 calc(var(--ply-frame-width) * -1) 0 var(--ply-ink),
+              inset calc(var(--ply-frame-width) * -1) 0 0 var(--ply-ink);
+            &:dir(rtl) {
+              box-shadow:
+                inset 0 var(--ply-frame-width) 0 var(--ply-ink),
+                inset 0 calc(var(--ply-frame-width) * -1) 0 var(--ply-ink),
+                inset var(--ply-frame-width) 0 0 var(--ply-ink);
+            }
           }
         }
         /* 週番号は日付の数字と同じ高さの淡い列。 */
@@ -165,10 +186,11 @@
     }
     & > .viewport > table > tbody > tr > td[data-outside="true"] > :is(a, time).day {
       color: var(--ply-muted);
+      font-weight: 500;
     }
     /* 選択用の日付は共通Buttonを使い、面と影を外して数字の丸にそろえる。button.cssより強い詳細度を保ち、読み込み順に左右されない。 */
     & > .viewport > table > tbody > tr > td,
-    & > .viewport > .week > .column > .heading {
+    & > .viewport > .week > .column > .heading > .date {
       & > .ply-button.day {
         border-color: transparent;
         background: transparent;
@@ -195,7 +217,7 @@
           background: var(--ply-link);
           background-image: var(--ply-fill-primary);
           color: var(--ply-surface);
-          box-shadow: var(--ply-shadow-control-primary);
+          box-shadow: none;
         }
         &[data-state="in-range"] {
           background: var(--ply-info-soft);
@@ -204,8 +226,8 @@
       }
     }
     /*
-      予定は色の面で叫ばず、2pxの線と文字色で区別する。面を塗るのは終日と時間割のブロックだけ。
-      既定は青。過去の予定は線と同じ淡い色へ下げる。
+      予定はHEYのカレンダーと同じく、分類の色で淡く塗った小さな札にし、淡い時刻と太字の題名を一行に並べる。
+      色は面だけに使い、文字は墨にする。既定は青。過去の予定は面と文字を淡くする。
     */
     & > .viewport > table > tbody > tr > td > .events > li > .event,
     & > .viewport > .week > .column > .all-day > ul > li > .event,
@@ -220,16 +242,31 @@
         var(--ply-surface)
       );
       display: flex;
-      align-items: stretch;
+      align-items: baseline;
       gap: var(--ply-space-1);
       min-inline-size: 0;
+      padding-block: 0.125rem;
+      padding-inline: 0.375rem;
       border-radius: var(--ply-radius-mark);
+      background: var(--ply-calendar-event-fill);
       color: var(--ply-text);
       font-size: var(--ply-small);
       line-height: 1rem;
       text-decoration: none;
+      transition: background-color var(--ply-duration) ease;
+      /* 詳細を持つ予定の札はbutton。リンクの札と同じ見た目にそろえ、文字の指定はこのファイルが持つ。 */
+      &:is(button) {
+        appearance: none;
+        inline-size: 100%;
+        margin: 0;
+        border: 0;
+        font-family: inherit;
+        font-weight: inherit;
+        text-align: start;
+        cursor: pointer;
+      }
       &:hover {
-        background: var(--ply-calendar-quiet);
+        background: color-mix(in srgb, var(--ply-calendar-event-fill) 88%, var(--ply-ink));
       }
       &:focus-visible {
         outline: 0.125rem solid var(--ply-link);
@@ -247,47 +284,37 @@
         --ply-calendar-event-color: var(--ply-coral);
         --ply-calendar-event-soft: var(--ply-danger-soft);
       }
+      /* 色は面だけで示すので、以前の縦の線は描かない。 */
       & > .bar {
-        flex: none;
-        inline-size: 0.125rem;
-        border-radius: var(--ply-radius-pill);
-        background: var(--ply-calendar-event-line);
+        display: none;
       }
       & > .time {
         flex: none;
-        color: var(--ply-muted);
+        color: color-mix(in srgb, var(--ply-calendar-event-color) 70%, var(--ply-text));
         font-size: var(--ply-calendar-meta-size);
         font-variant-numeric: tabular-nums;
       }
       & > .label {
         min-inline-size: 0;
         overflow: hidden;
-        font-weight: 500;
+        font-weight: 700;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-      /* 終日も時刻のある予定と同じ16pxの行にし、面の有無だけで区別する。 */
+      /* 終日は時刻の代わりに、分類の色の文字で題名を書く。 */
       &[data-all-day="true"] {
-        /* 線を面の左端に置き、時刻のある予定の線と同じ位置にそろえる。 */
-        padding-inline: 0 0.25rem;
-        background: var(--ply-calendar-event-fill);
         color: var(--ply-calendar-event-color);
       }
-      /* 過去は各色の面と文字を同じ割合で淡くし、色の組み合わせを保ったまま読める濃さに留める。 */
       /*
-        仮の予定は「まだ確定していない」なので破線だけで示す。
+        仮の予定は「まだ確定していない」なので、面を塗らずに破線の縁だけで示す。
         斜線は「使えない」の語彙なので重ねない。
       */
       &[data-tentative="true"] {
         --ply-calendar-event-fill: var(--ply-surface);
-        & > .bar {
-          background: repeating-linear-gradient(
-            to bottom,
-            var(--ply-perforation) 0 var(--ply-dash),
-            transparent var(--ply-dash) calc(var(--ply-dash) + var(--ply-dash-gap))
-          );
-        }
+        outline: var(--ply-stroke-width) dashed var(--ply-perforation);
+        outline-offset: calc(var(--ply-stroke-width) * -1);
       }
+      /* 過去は各色の面と文字を同じ割合で淡くし、色の組み合わせを保ったまま読める濃さに留める。 */
       &[data-past="true"] {
         --ply-calendar-event-fill: color-mix(
           in srgb,
@@ -295,6 +322,9 @@
           var(--ply-surface)
         );
         color: var(--ply-muted);
+        & > .time {
+          color: var(--ply-muted);
+        }
         &[data-all-day="true"] {
           color: color-mix(in srgb, var(--ply-calendar-event-color) 75%, var(--ply-surface));
         }
@@ -304,11 +334,10 @@
       週・日の時間割は0〜24時を描画し、画面に収まる高さでスクロールする。見出しと終日の行は上に固定する。
       高さは--ply-calendar-scroll-sizeで変えられる。
     */
+    /* 時間割も外枠を持たず、日の間の淡い線だけで区切る。 */
     &[data-view="week"] > .viewport {
       max-block-size: var(--ply-calendar-scroll-size);
       overscroll-behavior: contain;
-      border: var(--ply-stroke-width) solid var(--ply-border);
-      border-radius: var(--ply-radius-control);
     }
     /* 1時間を52pxとし、予定の位置と長さを0時からの分で求める。 */
     & > .viewport > .week {
@@ -385,19 +414,18 @@
             translate: none;
           }
         }
+        /* 現在時刻はHEYと同じく、塗らずに線と同じ色の太字で書く。下の時刻は地の色で隠す。 */
         & > .now-label {
           --ply-calendar-now: 0;
           inset-block-start: calc(
             (var(--ply-calendar-now) - var(--ply-calendar-first-hour) * 60) *
               var(--ply-calendar-hour) / 60
           );
-          inset-inline-end: var(--ply-space-1);
           z-index: 1;
           padding-block: 0.125rem;
           padding-inline: 0.25rem;
-          border-radius: var(--ply-radius-pill);
-          background: var(--ply-coral);
-          color: var(--ply-surface);
+          background: var(--ply-surface);
+          color: var(--ply-coral);
           font-weight: 700;
         }
       }
@@ -410,27 +438,32 @@
           position: sticky;
           inset-block-start: 0;
           z-index: 3;
+          /* 曜日と日付はHEYの週と同じく、日の終わりの側に「木 24」と並べる。 */
           display: flex;
-          justify-content: center;
+          justify-content: end;
           align-items: center;
-          gap: var(--ply-space-1);
           block-size: var(--ply-calendar-heading-size);
-          padding-inline: var(--ply-space-1);
+          padding-inline: var(--ply-space-2);
           border-block-end: var(--ply-stroke-width) solid var(--ply-border);
           background: var(--ply-surface);
-          & > .weekday {
-            color: var(--ply-muted);
-            font-size: var(--ply-small);
-            font-weight: 500;
+          & > .date {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.125rem;
+            & > .weekday {
+              color: var(--ply-muted);
+              font-size: var(--ply-small);
+              font-weight: 500;
+            }
           }
         }
-        &[data-current="true"] > .heading > .weekday {
+        &[data-current="true"] > .heading > .date > .weekday {
           color: var(--ply-text);
         }
-        &[data-weekend="true"]:not([data-current="true"]) > .heading > :is(.weekday, .day) {
+        &[data-weekend="true"]:not([data-current="true"]) > .heading > .date > :is(.weekday, .day) {
           color: color-mix(in srgb, var(--ply-muted) 65%, var(--ply-surface));
         }
-        &[data-outside="true"] > .heading > :is(.weekday, .day) {
+        &[data-outside="true"] > .heading > .date > :is(.weekday, .day) {
           color: var(--ply-muted);
         }
         & > :is(.all-day, .timed) {
@@ -525,24 +558,13 @@
               & > .event {
                 position: relative;
                 flex-direction: column;
+                align-items: stretch;
                 gap: 0;
                 block-size: 100%;
                 padding-block: 0.1875rem;
-                padding-inline: 0.625rem 0.25rem;
+                padding-inline: 0.375rem;
                 overflow: hidden;
-                border-radius: var(--ply-radius-mark);
-                background: var(--ply-calendar-event-fill);
-                color: var(--ply-calendar-event-color);
                 font-size: var(--ply-calendar-meta-size);
-                &:hover {
-                  background: var(--ply-calendar-event-fill);
-                  box-shadow: var(--ply-shadow-chip);
-                }
-                & > .bar {
-                  position: absolute;
-                  inset-block: 0.1875rem;
-                  inset-inline-start: 0.25rem;
-                }
                 & > .label {
                   order: -1;
                   flex: none;
@@ -551,20 +573,8 @@
                 }
                 & > .time {
                   overflow: hidden;
-                  color: inherit;
                   text-overflow: ellipsis;
                   white-space: nowrap;
-                }
-                &[data-tentative="true"] {
-                  outline: var(--ply-stroke-width) dashed var(--ply-perforation);
-                  outline-offset: calc(var(--ply-stroke-width) * -1);
-                }
-                &[data-past="true"] {
-                  color: color-mix(
-                    in srgb,
-                    var(--ply-calendar-event-color) 75%,
-                    var(--ply-surface)
-                  );
                 }
               }
               /* 45分未満は高さが一行分なので、題名と時刻を一行に並べて題名を優先する。 */
@@ -583,33 +593,26 @@
                   flex: 0 1 auto;
                   min-inline-size: 0;
                 }
-                & > .bar {
-                  inset-block: 0.125rem;
-                }
               }
             }
           }
+          /* 現在時刻はHEYと同じく、今日の列を横切る細い破線。 */
           & > .now {
             --ply-calendar-now: 0;
             position: absolute;
             inset-block-start: calc(
               (var(--ply-calendar-now) - var(--ply-calendar-first-hour) * 60) *
-                var(--ply-calendar-hour) / 60
+                var(--ply-calendar-hour) / 60 - var(--ply-stroke-width)
             );
             inset-inline: 0;
             z-index: 1;
-            border-block-start: 0.125rem solid var(--ply-coral);
+            block-size: calc(var(--ply-stroke-width) * 2);
+            background: repeating-linear-gradient(
+              to right,
+              var(--ply-coral) 0 var(--ply-dash),
+              transparent var(--ply-dash) calc(var(--ply-dash) + var(--ply-dash-gap))
+            );
             pointer-events: none;
-            &::before {
-              content: "";
-              position: absolute;
-              inset-block-start: -0.3125rem;
-              inset-inline-start: -0.25rem;
-              inline-size: 0.5rem;
-              block-size: 0.5rem;
-              border-radius: 50%;
-              background: var(--ply-coral);
-            }
           }
         }
       }
@@ -622,10 +625,12 @@
       & > .year-grid {
         display: grid;
         grid-template-columns: repeat(7, minmax(0, 1fr));
+        /*
+          月・週の表示と同じく、格子は外枠に角丸を付けず、升の線だけで区切る
+          （角丸で切り抜くと、角の升の縁の線と、升いっぱいの指を載せた時の枠が角で欠けてずれる）。
+        */
         border-block-start: var(--ply-stroke-width) solid var(--ply-border);
         border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
-        border-radius: var(--ply-radius-control);
-        overflow: hidden;
         & > :is(.lead, .year-day) {
           min-inline-size: 0;
           min-block-size: 3.25rem;
@@ -647,9 +652,13 @@
           &[data-events="true"] {
             background: var(--ply-info-soft);
           }
+          /*
+            指を載せた時の面と枠は角丸にし、升の線から上下左右とも同じ2pxだけ内側に離して浮かべる
+            （升いっぱいに角丸を置くと、辺は升の線に接するのに角だけ離れて、ずれて見える）。
+          */
           & > .month-link {
             position: absolute;
-            inset: 0;
+            inset: 0.125rem;
             z-index: 2;
             border-radius: var(--ply-radius-control);
             color: inherit;
@@ -658,7 +667,7 @@
             &:focus-visible {
               background: var(--ply-info-soft);
               outline: 0.125rem solid var(--ply-link);
-              outline-offset: -0.125rem;
+              outline-offset: 0;
             }
           }
           & > .month-label,
@@ -679,12 +688,15 @@
           }
           & > .date-link {
             position: absolute;
-            inset: 0;
+            inset: 0.125rem;
             z-index: 1;
             display: flex;
             justify-content: end;
-            padding-block: var(--ply-space-1);
-            padding-inline: var(--ply-space-1);
+            /* 日付を上に置き、今日の印が升の高さまで伸びないようにする。 */
+            align-items: start;
+            /* 内側へ離した2pxの分だけ余白を減らし、リンクのない日と数字の位置をそろえる。 */
+            padding-block: calc(var(--ply-space-1) - 0.125rem);
+            padding-inline: calc(var(--ply-space-1) - 0.125rem);
             border-radius: var(--ply-radius-control);
             color: inherit;
             text-decoration: none;
@@ -692,7 +704,7 @@
             &:focus-visible {
               background: var(--ply-info-soft);
               outline: 0.125rem solid var(--ply-link);
-              outline-offset: -0.125rem;
+              outline-offset: 0;
             }
             &:is(:hover, :focus-visible) > time > .number {
               color: var(--ply-link);
@@ -720,9 +732,13 @@
               font-weight: 600;
             }
           }
-          &[data-current="true"] > time > .number,
-          &[data-current="true"] > .date-link > time > .number {
-            color: var(--ply-link);
+          &[data-current="true"] > time,
+          &[data-current="true"] > .date-link > time {
+            color: var(--ply-ink);
+            & > .number {
+              color: var(--ply-ink);
+              font-weight: 700;
+            }
           }
           & > .event-mark {
             position: absolute;
@@ -779,15 +795,18 @@
         align-items: start;
         gap: var(--ply-space-3);
         min-inline-size: 0;
-        padding-block: var(--ply-space-3);
+        /* 一日のまとまりの上下は、予定の行の間より広くし、日ごとの切れ目を見せる。 */
+        padding-block: var(--ply-space-5);
         border-block-start: var(--ply-stroke-width) solid var(--ply-border);
         &:first-of-type {
           border-block-start: 0;
         }
         & > h3 {
           margin: 0;
+          /* 日付の幅は中身に合わせ、今日の印を行の幅まで伸ばさない。 */
           & > time {
             display: flex;
+            inline-size: fit-content;
             align-items: center;
             gap: var(--ply-space-1);
             color: var(--ply-muted);
@@ -807,9 +826,11 @@
             }
           }
         }
-        &[data-current="true"] > h3 > time > .number {
-          background: var(--ply-coral);
-          color: var(--ply-surface);
+        &[data-current="true"] > h3 > time {
+          color: var(--ply-ink);
+          & > .number {
+            font-weight: 700;
+          }
         }
         & > .events {
           display: grid;
@@ -842,10 +863,10 @@
     }
   }
   /* 月の表と週の見出しの日付は同じ見た目。経路をまとめても詳細度が上がらないよう:whereで包む。 */
-  /* 日付は数字だけ。今日は塗った丸、月の初日は月を添える。 */
+  /* 日付は太字の数字だけ。今日はマーカーで塗り、月の初日には月の旗を立てる。 */
   :where(
     .ply-calendar > .viewport > table > tbody > tr > td,
-    .ply-calendar > .viewport > .week > .column > .heading
+    .ply-calendar > .viewport > .week > .column > .heading > .date
   ) {
     & > :is(a, time).day {
       display: inline-grid;
@@ -856,15 +877,13 @@
       border-radius: var(--ply-radius-pill);
       color: var(--ply-text);
       font-size: var(--ply-small);
-      font-weight: 500;
+      font-weight: 700;
       line-height: 1rem;
       font-variant-numeric: tabular-nums;
       text-decoration: none;
       vertical-align: middle;
       &[data-current="true"] {
-        background: var(--ply-coral);
-        color: var(--ply-surface);
-        font-weight: 600;
+        color: var(--ply-ink);
       }
     }
     & > a.day:not([data-current="true"]):hover {
@@ -874,19 +893,56 @@
       outline: 0.125rem solid var(--ply-link);
       outline-offset: 0.0625rem;
     }
+    /*
+      月の始まりは、HEYの年の表示と同じ小さな旗。日の始まりの側の縁に淡い竿を立て、上に月の名前の札を掲げる。
+    */
     & > .month-start {
-      display: inline-block;
-      margin-inline-end: 0.125rem;
-      padding-block: 0.125rem;
-      padding-inline: 0.375rem;
-      border-radius: var(--ply-radius-pill);
-      background: var(--ply-blue);
+      position: absolute;
+      inset-block: 0;
+      inset-inline-start: 0;
+      z-index: 1;
+      padding-inline: 0.3125rem;
+      background: linear-gradient(var(--ply-muted), var(--ply-muted)) 0 0 / 100% 1.25rem no-repeat;
+      box-shadow: inset var(--ply-frame-width) 0 0 var(--ply-perforation);
       color: var(--ply-surface);
       font-size: var(--ply-calendar-meta-size);
-      font-weight: 600;
-      line-height: 1rem;
-      vertical-align: middle;
+      font-weight: 700;
+      line-height: 1.25rem;
+      pointer-events: none;
+      &:dir(rtl) {
+        box-shadow: inset calc(var(--ply-frame-width) * -1) 0 0 var(--ply-perforation);
+      }
     }
+  }
+  /*
+    今日の印。HEYのカレンダーの今日と同じ蛍光ペンの黄を、傾けずに素直なピルで日付の後ろに敷く。
+    月の日付、週の見出し（曜日と日付）、一覧の日付、年の日付で同じ印にする。
+  */
+  :where(
+    .ply-calendar > .viewport > table > tbody > tr > td > :is(a, time).day[data-current="true"],
+    .ply-calendar > .viewport > .week > .column > .heading > .date[data-current="true"],
+    .ply-calendar > .agenda > .agenda-group[data-current="true"] > h3 > time,
+    .ply-calendar > .year-overview > .year-grid > .year-day[data-current="true"] > time,
+    .ply-calendar > .year-overview > .year-grid > .year-day[data-current="true"] > .date-link > time
+  ) {
+    position: relative;
+    isolation: isolate;
+    &::before {
+      content: "";
+      position: absolute;
+      inset-block: -0.1875rem;
+      inset-inline: -0.25rem;
+      z-index: -1;
+      background: var(--ply-mark);
+      border-radius: var(--ply-radius-pill);
+      pointer-events: none;
+    }
+  }
+  /* 月の日付は数字の箱そのものが丸なので、印を箱の外へ張り出さず、隣の日の線に触れないようにする。 */
+  :where(
+    .ply-calendar > .viewport > table > tbody > tr > td > :is(a, time).day[data-current="true"]
+  )::before {
+    inset: 0;
   }
   @media (max-width: 40rem) {
     .ply-calendar {
@@ -968,6 +1024,16 @@
     }
   }
   @media (forced-colors: active) {
+    /* 強制カラーでは地の色が消えるため、今日の印をシステムの強調色で塗る。 */
+    :where(
+      .ply-calendar > .viewport > table > tbody > tr > td > :is(a, time).day[data-current="true"],
+      .ply-calendar > .viewport > .week > .column > .heading > .date[data-current="true"],
+      .ply-calendar > .agenda > .agenda-group[data-current="true"] > h3 > time,
+      .ply-calendar > .year-overview > .year-grid > .year-day[data-current="true"] time
+    )::before {
+      forced-color-adjust: none;
+      background: Mark;
+    }
     .ply-calendar > .viewport > table > tbody > tr > td:is(:hover, :focus-within) {
       outline: var(--ply-stroke-width) solid Highlight;
       outline-offset: -0.0625rem;

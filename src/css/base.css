@@ -20,9 +20,27 @@
     overflow-wrap: anywhere;
   }
 
+  /*
+    リンクはHEYと同じく下線を引かず、青い文字にする。
+    文章（段落・引用・図の説明）の中に混ざるリンクだけは、色だけに頼らないよう細く淡い下線を残す。
+    コンポーネントが持つリンク（クラスを持つ物）は、それぞれのコンポーネントが見た目を決める。
+  */
   a {
     color: var(--ply-link);
+    text-decoration: none;
+    transition: color var(--ply-duration) ease;
+    &:hover {
+      color: var(--ply-blue-dark);
+    }
+  }
+  :where(p, blockquote, figcaption) a:not([class]) {
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+    text-decoration-thickness: var(--ply-stroke-width);
     text-underline-offset: 0.2em;
+    &:hover {
+      text-decoration-color: currentColor;
+    }
   }
 
   :focus-visible {
@@ -41,7 +59,8 @@
 }
 
 @layer utilities {
-  [hidden] {
+  /* Carouselのスライドは隠しても場所を残し、切り替えで高さが変わらないようにする（carousel.cssが見えなくする）。 */
+  [hidden]:not(.ply-carousel > .viewport > .slide) {
     display: none;
   }
 
@@ -49,7 +68,6 @@
   :where(
     .ply-card > .title > a,
     .ply-table > table > tbody > tr > :is(th, td) > a:only-child,
-    .ply-data-list > li > .body > a.title,
     .ply-file-item > .body > .title > a
   ) {
     position: relative;

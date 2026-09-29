@@ -89,10 +89,14 @@ export class TableController extends Controller<HTMLElement> {
     }
     const bar = this.element.querySelector<HTMLElement>(":scope > .selection-bar");
     if (bar) {
-      bar.hidden = selected.length === 0;
+      // 帯は浮かぶ板（popover）。選んでいる間だけ出し、表は動かさない。
+      const open = bar.matches(":popover-open");
+      if (selected.length > 0 && !open) bar.showPopover();
+      if (selected.length === 0 && open) bar.hidePopover();
+      // 閉じる動きの途中で「0件選択」に変わらないよう、件数は選んでいる間だけ書き換える。
       const count = bar.querySelector(".count");
       const text = selected.length + "件選択";
-      if (count && count.textContent !== text) count.textContent = text;
+      if (selected.length > 0 && count && count.textContent !== text) count.textContent = text;
     }
     if (notify)
       this.element.dispatchEvent(

@@ -8,6 +8,8 @@ export type FileItemProps = ElementProps<"div"> & {
   href?: string;
   state?: "ready" | "pending" | "error";
   actions?: Child;
+  /** 画像やPDFの1ページ目の縮小。渡すとファイルの印の代わりに中身を見せる（HEYのファイル一覧と同じ）。 */
+  preview?: Child;
 };
 export const FileItem = ({
   name,
@@ -15,13 +17,18 @@ export const FileItem = ({
   href,
   state = "ready",
   actions,
+  preview,
   class: className,
   ...attributes
 }: FileItemProps) => (
   <div {...attributes} class={classes("ply-file-item", className)} data-state={state}>
-    <span class="icon">
-      <Icon name="file" />
-    </span>
+    {preview != null && preview !== false ? (
+      <span class="preview">{preview}</span>
+    ) : (
+      <span class="icon">
+        <Icon name="file" />
+      </span>
+    )}
     <div class="body">
       <p class="title">{href ? <a href={href}>{name}</a> : <strong>{name}</strong>}</p>
       <p class="description">

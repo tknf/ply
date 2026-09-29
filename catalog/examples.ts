@@ -12,7 +12,7 @@ export const examples = [
     name: "MessageList",
     description: "差出人・件名・プレビュー・時刻をまとめる受信一覧。",
     usage:
-      "itemsへid・sender・title・href、任意のpreview・time・datetime・avatar・unreadを渡します。件名と差出人の空文字には代替表示を出し、アバターの有無が混在しても列を揃えます。threadCount・attachments・current・state（draft/sending/failed）・unavailableReasonに対応します。hrefなしの行はリンクにしません。一覧のstateはready/loading/error、0件も表示できます。previewLinesは1（既定、差出人と書き出しを一行）または2（書き出しを二行）です。",
+      "itemsへid・sender・title・href、任意のpreview・time・datetime・avatar・unreadを渡します。件名と差出人の空文字には代替表示を出し、アバターの有無が混在しても列を揃えます。threadCount・attachments・current・state（draft/sending/failed）・unavailableReasonに対応します。状態はHEYの「DRAFT」と同じく件名の前に共通のBadgeで示し（送信失敗は赤、下書き・送信中・閲覧不可は灰。送信中は行も控えめに）、閲覧できない理由は書き出しの位置に出します。今開いている行は角丸の淡い青の面です。hrefなしの行はリンクにしません。一覧のstateはready/loading/error、0件も表示できます。previewLinesは1（既定、差出人と書き出しを一行）または2（書き出しを二行）です。",
   },
   {
     id: "app-shell",
@@ -47,7 +47,7 @@ export const examples = [
     name: "Message",
     description: "人・時刻・本文を同じ読み順で伝える。",
     usage:
-      "author・time・datetimeを指定し、avatar・actions・repliesは任意です。layout=documentはメール等の本文を1rem／1.75rem、投稿者の下の全幅で読みます。既定はconversationです。本文は任意のHTMLを受け取ります。送信・既読・返信のデータ処理は利用側が持ちます。",
+      "author・time・datetimeを指定し、avatar・actions・repliesは任意です。既定のconversationは本文を、人の側の上の角だけを立てた淡い吹き出しにします。layout=documentはHEYのスレッドと同じく一通を一枚の紙にし、日付を見出しの行の終わりに寄せ、本文を1rem／1.75remで投稿者の下の全幅に読みます。documentのMessageを続けて置くと、紙を少し重ねて積みます。repliesに渡した返信は、人の円から下ろした糸でつなぎます。本文は任意のHTMLを受け取ります。送信・既読・返信のデータ処理は利用側が持ちます。",
   },
   {
     id: "surface",
@@ -76,7 +76,7 @@ export const examples = [
     name: "Button",
     description: "操作の主従、無効、処理中を表します。",
     usage:
-      "通常・compactは文字0.875rem・行高20/14、largeは文字1rem・行高1.5です。画面幅で文字サイズは変わりません。通常・compactの高さは文字の18/7倍（約2.25rem）、largeは文字の2.5倍です。左右余白は通常1.25em・compact0.875em・large1.375em。上のHono例は通常・compact・largeの順です。data-variantはprimary（青の塗り）・secondary（白の縦の陰影）・danger（赤の塗り）・link。影の付き方と、指を載せると影が広がり押すと内側へ沈む変化は、primary・secondary・dangerで同じです。Iconは文字の前後に配置でき、components/icon.cssと共通SVGスプライトも読み込みます。アイコンだけの操作はdata-icon-only=trueで正方形にし、aria-labelで操作名を付けます。titleはマウス向けの補助で、aria-labelの代わりにはしません。処理中はアイコンを含む内容を処理中文言に置き換えます。data-busy=true、disabled、aria-busy=trueを併記します。移動にはhrefを持つaを使います。",
+      "通常・compactは文字0.875rem・行高20/14、largeは文字1rem・行高1.5です。画面幅で文字サイズは変わりません。通常・compactの高さは文字の18/7倍（約2.25rem）、largeは文字の2.5倍です。左右余白は通常1.25em・compact0.875em・large1.375em。上のHono例は通常・compact・largeの順です。data-variantはprimary（青の塗り）・secondary（白の縦の陰影）・danger（赤の塗り）・link。影の付き方と、指を載せると影が広がり押すと内側へ沈む変化は、primary・secondary・dangerで同じです。Iconは文字の前後に配置でき、components/icon.cssと共通SVGスプライトも読み込みます。アイコンだけの操作はdata-icon-only=trueで正方形にし、aria-labelで操作名を付けます。格子に並べる印と名前のタイルはActionTileを使います。titleはマウス向けの補助で、aria-labelの代わりにはしません。処理中はアイコンを含む内容を処理中文言に置き換えます。data-busy=true、disabled、aria-busy=trueを併記します。移動にはhrefを持つaを使います。",
   },
   {
     id: "field",
@@ -97,14 +97,14 @@ export const examples = [
     name: "Notice",
     description: "事実・影響・次の操作を、継続して読める形で示します。",
     usage:
-      "data-toneはinfo・success・warning・danger。動的な通知の読み上げや寿命は利用側で扱います。重大なエラーを自動消去しません。",
+      "data-toneはinfo・success・warning・danger。白い紙に、役割の色で塗った印と題名のピルを上の縁にまたがせ、本文と操作をその下に置きます（ピルの半分の高さだけ上を空けます）。動的な通知の読み上げや寿命は利用側で扱います。重大なエラーを自動消去しません。",
   },
   {
     id: "table",
     name: "Table",
     description: "数値・短い状態・長文を列の役割に合わせて表示します。",
     usage:
-      '標準tableの構造に、sort="local"の並べ替え、selectableの選択欄、stickyHeaderを追加できます。TableSortはthを出力し、TableSelectionはセル内へ配置します。数値・日付はdata-sort-valueで表示と分け、空の値は末尾に保ちます。選択値は通常のフォームとtable:selectionchangeで受け取り、selectionActionsへ一括操作を置けます。sort="manual"はtable:sortを通知し、サーバー側の並べ替えへ接続します。stateはready/loading/empty/errorで、状態表示中もtheadを保ち、本文行だけを隠します。TableControllerをtable、TableSortControllerをtable-sort、TableSelectControllerをtable-selectへ登録してください。',
+      '標準tableの構造に、sort="local"の並べ替え、selectableの選択欄、stickyHeaderを追加できます。TableSortはthを出力し、TableSelectionはセル内へ配置します。数値・日付はdata-sort-valueで表示と分け、空の値は末尾に保ちます。選択値は通常のフォームとtable:selectionchangeで受け取り、selectionActionsへ一括操作を置けます。選択すると、ActionDockと同じ棚が画面の下の中央に浮かんで現れます。始まりに件数、続けてselectionActionsの一括操作を横一列に並べ（ActionTileは面を持たない平らなタイル、Buttonもそのまま同じ列に置きます）、入らない時は操作の列を横にスクロールします。解除の×（aria-labelは「選択を解除」）はDialogと同じく紙の角に置きます。表は動きません。閉じる間も件数と並びは変わりません。sort="manual"はtable:sortを通知し、サーバー側の並べ替えへ接続します。stateはready/loading/empty/errorで、状態表示中もtheadを保ち、本文行だけを隠します。TableControllerをtable、TableSortControllerをtable-sort、TableSelectControllerをtable-selectへ登録してください。',
   },
   {
     id: "grid",
@@ -131,13 +131,15 @@ export const examples = [
     id: "value-list",
     name: "ValueList",
     description: "現在値を補足より明確に表示します。",
-    usage: "値の0と未登録を区別します。数値や日時の書式は利用側で決めます。",
+    usage:
+      "値の0と未登録を区別します。数値や日時の書式は利用側で決めます。各行の下に細い線を引きます。itemsのiconに印（塗りつぶしのIconなど）を渡すと、項目名の前に色の淡い丸に入れて添え、accent（blue・green・amber・coral）で色を選べます。",
   },
   {
     id: "file-item",
     name: "FileItem",
     description: "既存ファイルの名前と状態を示します。",
-    usage: "名前は折り返します。data-stateはready・pending・error。状態を文言でも説明します。",
+    usage:
+      "名前は折り返します。data-stateはready・pending・error。状態を文言でも説明します。previewに画像やPDFの1ページ目の縮小を渡すと、ファイルの印の代わりに中身を見せます（角丸なしの淡い縁で囲み、正方形に切り抜きます）。",
   },
   {
     id: "image-frame",
@@ -165,7 +167,7 @@ export const examples = [
     name: "Carousel",
     description: "関連する内容を一枚ずつ読み、前後へ移動します。",
     usage:
-      "Cardの内容をslideとして渡します。2件以上でCarouselControllerを登録すると前後移動が循環し、任意のintervalは利用者が再生を選んだ場合だけ動きます。1件では操作を表示せず、0件では空状態を示します。",
+      "Cardの内容をslideとして渡します。2件以上でCarouselControllerを登録すると前後移動が循環し、任意のintervalは利用者が再生を選んだ場合だけ動きます。1件では操作を表示せず、0件では空状態を示します。スライドは同じ場所に重ねて高さを一番高いスライドにそろえ、切り替えても下の内容を動かしません。新しいスライドは少し横から滑りながら現れます。前後の丸は紙の左右の縁をまたいで載り、狭い幅では紙の下に並びます。",
   },
   {
     id: "disclosure",
@@ -179,7 +181,7 @@ export const examples = [
     name: "Progress",
     description: "確定または不確定の進行状況です。",
     usage:
-      "進捗不明ならvalueを省略します。表示値を経過時間から捏造しません。Honoのvalueは0〜maxに収め、有限でない値は未確定にします。maxの初期値は100、不正なmaxはnativeと同じ1です。棒は実際の割合で描き、表示は0.1%単位で切り捨てます。完了前に100%とは表示しません。labelには処理名を指定します。",
+      "進捗不明ならvalueを省略します。表示値を経過時間から捏造しません。Honoのvalueは0〜maxに収め、有限でない値は未確定にします。maxの初期値は100、不正なmaxはnativeと同じ1です。棒は実際の割合で描き、表示は0.1%単位で切り捨てます。完了前に100%とは表示しません。labelには処理名を指定します。帯は青から紫へ塗り、終わると緑になります。終わりが分からない時は、溝いっぱいの帯の中で青と紫の色がゆっくり流れ続けます。",
   },
   {
     id: "pagination",
@@ -191,7 +193,8 @@ export const examples = [
     id: "data-list",
     name: "DataList",
     description: "主情報・補足・状態を行で比較します。",
-    usage: "狭幅では順序を保って積みます。長文を省略せず、意味を保って折り返します。",
+    usage:
+      "MessageListと同じく、罫線を引かず行間で区切り、指を載せた行と今開いている行（current）を角丸の淡い面で示します。題名のリンクは行全体を押せる範囲にし、endの操作はその上で押せます。狭幅では順序を保って積みます。長文を省略せず、意味を保って折り返します。",
   },
   {
     id: "action-list",
@@ -204,6 +207,7 @@ export const examples = [
     id: "empty-state",
     name: "EmptyState",
     description: "情報がない理由と次の行動を示します。",
-    usage: "0件と検索エラーは区別します。架空の件数を表示しません。",
+    usage:
+      "0件と検索エラーは区別します。架空の件数を表示しません。Fizzyの空の場所と同じく、場面の色（0件は灰、初めては青、終わった時は緑）の破線の札に太字の題名と説明を書き、操作は札の下に置きます。iconは渡した時だけ置き、終わった時はペンで描くチェックを既定にします。",
   },
 ] as const;

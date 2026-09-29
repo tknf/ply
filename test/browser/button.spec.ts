@@ -7,7 +7,7 @@ test("Buttonは画面幅で文字サイズが緩やかに変わり文字拡大�
   for (const width of [375, 960, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/components/button");
-    const example = page.getByRole("region", { name: "Honoの利用例" });
+    const example = page.getByRole("region", { name: "見本" });
     const buttons = example.getByRole("button", {
       name: /^(保存する|編集する|確定する|プレビュー|削除する)$/,
     });

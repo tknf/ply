@@ -28,10 +28,10 @@
       border-color: var(--ply-border);
       background: var(--ply-surface) var(--ply-fill-control);
       color: var(--ply-text);
-      box-shadow: var(--ply-shadow-control);
+      /* Buttonと同じく浮かせず、指を載せると縁を青くし、押すと内側へへこむ。 */
+      box-shadow: none;
       &:hover {
         border-color: var(--ply-link);
-        box-shadow: var(--ply-shadow-control-hover);
       }
       &:active {
         box-shadow: var(--ply-shadow-control-pressed);
@@ -47,7 +47,7 @@
       color: var(--ply-surface);
       background: var(--ply-fill-primary);
       border-color: var(--ply-link);
-      box-shadow: var(--ply-shadow-control-primary);
+      box-shadow: none;
     }
     @media (pointer: coarse) {
       & > ul > li > :is(a, span) {

@@ -5,7 +5,7 @@ export default () => (
     <DisclosureGroup label="公開と提出資料">
       <Disclosure summary="公開範囲について" description="リンクを共有する前に確認してください。">
         <p>この案件に参加しているメンバーが閲覧できます。</p>
-        <a href="/examples/settings">共有設定を開く</a>
+        <a href="/apps/settings">共有設定を開く</a>
       </Disclosure>
       <Disclosure summary="提出する資料について" open>
         <p>提出する資料はPDFで用意してください。提出後も期限内なら差し替えできます。</p>
@@ -32,7 +32,7 @@ export default () => (
           <p>案件の一覧から確認できます。</p>
         </Disclosure>
         <Disclosure name="disclosure-faq" summary="問い合わせ先">
-          <a href="/examples/contact">担当者に問い合わせる</a>
+          <a href="/apps/people">担当者に問い合わせる</a>
         </Disclosure>
       </DisclosureGroup>
     </section>
@@ -49,7 +49,7 @@ export default () => (
       </Disclosure>
     </Disclosure>
     <Disclosure summary="通知先を変更する" description="開閉しても入力中の内容は保持されます。">
-      <form action="/examples/settings" method="get" class="ply-stack">
+      <form action="/apps/settings" method="get" class="ply-stack">
         <Field id="disclosure-email" label="メールアドレス">
           {(attributes) => <Input {...attributes} name="email" type="email" required />}
         </Field>

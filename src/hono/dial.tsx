@@ -1,0 +1,57 @@
+import { classes, type ElementProps } from "./types";
+
+export type DialOption = { value: string; label: string };
+export type DialProps = Omit<ElementProps<"fieldset">, "children"> & {
+  legend: string;
+  name: string;
+  /** 目盛りの値。左下から時計回りに右下まで、3〜8個を並べる。 */
+  options: readonly DialOption[];
+  value?: string;
+  /** つまみの下に添える単位（「日」など）。 */
+  unit?: string;
+  disabled?: boolean;
+};
+
+/**
+ * Fizzyの自動で閉じる日数と同じ、金属のつまみのダイヤル。周りの目盛りから一つを選ぶと、つまみの針がその値へ回る。
+ * 実体は一つを選ぶラジオボタンの束なので、送信・キーボードの操作（矢印キー）・読み上げは標準のまま使える。
+ */
+export const Dial = ({
+  legend,
+  name,
+  options,
+  value,
+  unit,
+  disabled,
+  class: className,
+  style,
+  ...attributes
+}: DialProps) => (
+  <fieldset
+    {...attributes}
+    class={classes("ply-dial", className)}
+    style={`--ply-dial-count: ${Math.max(options.length, 2)}${typeof style === "string" ? `; ${style}` : ""}`}
+    disabled={disabled}
+  >
+    <legend>{legend}</legend>
+    <div class="face">
+      {options.map((option, index) => (
+        <label class="stop" style={`--ply-dial-i: ${index}`}>
+          <input type="radio" name={name} value={option.value} checked={option.value === value} />
+          <span class="value">{option.label}</span>
+        </label>
+      ))}
+      <span class="knob" aria-hidden="true">
+        {options.map((_, index) => (
+          <span class="tick" style={`--ply-dial-i: ${index}`} />
+        ))}
+        <span class="pointer" />
+      </span>
+    </div>
+    {unit && (
+      <span class="unit" aria-hidden="true">
+        {unit}
+      </span>
+    )}
+  </fieldset>
+);

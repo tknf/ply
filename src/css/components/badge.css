@@ -49,5 +49,13 @@
       --ply-badge-ink: var(--ply-muted);
       background: color-mix(in srgb, var(--ply-badge-ink) 11%, var(--ply-surface));
     }
+    /* タイルの印の上などに重ねる小さな札。一行の高さは16px。 */
+    &[data-size="small"] {
+      padding-block: 0;
+      padding-inline: 0.375rem;
+      font-size: 0.625rem;
+      font-weight: 700;
+      line-height: 1rem;
+    }
   }
 }

@@ -253,11 +253,9 @@
       margin: 0;
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: var(--ply-radius-mark);
-      background: linear-gradient(
-        var(--ply-surface),
-        color-mix(in srgb, var(--ply-surface) 96%, var(--ply-ink))
-      );
-      box-shadow: var(--ply-shadow-hardware);
+      /* 印の枠は浮かせず、入力欄と同じく内側へ少し沈めた升にする。 */
+      background: var(--ply-surface);
+      box-shadow: var(--ply-shadow-input);
       color: var(--ply-surface);
       cursor: inherit;
       transition:
@@ -280,7 +278,7 @@
       &:indeterminate {
         background: var(--ply-fill-primary);
         border-color: var(--ply-link);
-        box-shadow: var(--ply-shadow-control-primary);
+        box-shadow: none;
       }
       &:checked::before,
       &:indeterminate::before {
@@ -336,22 +334,22 @@
       cursor: not-allowed;
     }
     /*
-      説明を伴う選択肢は、押す物と同じ縦の陰影と影の面。枠線は引かない。
-      選んだ面は淡い青にし、影を内側へ移して押し込んだ状態にする。
+      説明を伴う選択肢は、ActionTileと同じく浮かせない平らな淡い面。枠線は引かない。
+      指を載せると面を少し濃くし、選んだ面は淡い青にして内側へへこませる。
     */
     &[data-kind="option"] {
       padding-block: var(--ply-space-3);
       padding-inline: var(--ply-space-4);
       border: var(--ply-stroke-width) solid transparent;
       border-radius: var(--ply-radius-field);
-      background: var(--ply-surface) var(--ply-fill-control);
-      box-shadow: var(--ply-shadow-control);
+      background: color-mix(in srgb, var(--ply-ink) 3%, var(--ply-surface));
+      box-shadow: none;
       transition:
         background-color var(--ply-duration) ease,
         box-shadow var(--ply-duration) ease;
     }
     &[data-kind="option"]:hover:not(:has(> input:disabled)) {
-      box-shadow: var(--ply-shadow-control-hover);
+      background: color-mix(in srgb, var(--ply-ink) 5%, var(--ply-surface));
     }
     &[data-kind="option"]:has(> input:checked) {
       background: var(--ply-info-soft);

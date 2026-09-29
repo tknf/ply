@@ -1,6 +1,6 @@
 @layer components {
   /*
-    結果の知らせは、画面の下から差し出して浮かべる小さな帯。知らせは見落とされてはいけないので、
+    結果の知らせは、画面の右下（書き終わりの側の下）から差し出して浮かべる小さな帯。知らせは見落とされてはいけないので、
     DropdownMenuと同じく白い紙ではなく、知らせの種類の色（知らせ・成功・注意・失敗）で塗って白い文字で出す。
     文と操作は一行に並べ、入らなければ文を先に折り返して操作を終わりの側へ送る。
     角の閉じる操作が入る分だけ、終わりの側を空ける。閉じる操作は塗った面に沈まないよう白地に反転する。
@@ -16,7 +16,7 @@
     /* 角の閉じる操作をはみ出させるため、紙は切り取らない。 */
     overflow: visible;
     margin: 0;
-    margin-inline: auto;
+    margin-inline-start: auto;
     padding-block: var(--ply-space-3);
     padding-inline: var(--ply-space-5)
       calc(var(--ply-overlay-close-size) - var(--ply-overlay-close-offset) + var(--ply-space-2));
@@ -68,7 +68,8 @@
       & > .message {
         display: flex;
         align-items: start;
-        gap: var(--ply-space-2);
+        /* 印と文は一つの塊として読ませるので、段の間より詰める。Noticeのピルと同じ間隔。 */
+        gap: 0.375rem;
         font-weight: 500;
         & > .ply-icon {
           flex: none;
