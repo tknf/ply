@@ -3,7 +3,7 @@ import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "test/browser",
   fullyParallel: false,
-  workers: 1,
+  workers: 4,
   retries: 0,
   reporter: [["list"], ["json", { outputFile: "test-results/browser.json" }]],
   use: {
