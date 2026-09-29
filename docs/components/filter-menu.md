@@ -1,0 +1,1106 @@
+<!-- このファイルはvp run docs:componentsで生成します。直接編集しないでください。 -->
+
+# FilterMenu
+
+候補を打って絞り込みながら選ぶ、青の面の小さな紙
+
+## 使いどころ
+
+- ラベル付けや担当の割り当てのように、多めの候補から打って絞り込みながら選ぶ時に使います。
+- 候補が少なく、打って探す必要が無い操作は `DropdownMenu` を使います。
+- フォームの欄として値を入力・選択する時は、`Select`・`Suggestion`・`Picker` など欄の部品を使います。
+
+## 使い方
+
+`FilterMenuController` を `filter-menu` として登録します。`id` は画面内で一意にし、`label` に開く操作の文言、`title` に紙の見出し、`options` に候補を渡します。
+
+見た目は `DropdownMenu` と同じ青の面ですが、中に文字の欄を持つため、メニューではなく、コンボボックス（絞り込みの欄）とリストボックス（候補）を載せた紙にしています。紙は標準のPopover APIで開き、開く操作に揃えて置きます。Escapeと紙の外側を押すと閉じます。
+
+開くと前に打った文字を消し、絞り込みの欄へ移ります。打った文字を名前に含む候補だけを残し（大文字と小文字は区別しません）、残った最初の候補を選ぶ位置にします。当てはまる候補が無い時は `emptyLabel` を出します。
+
+`multiple` なら開いたまま選んだ印を切り替え、そうでなければ選んだ一つに印を付けて閉じます。一つだけの時は、選んだ候補を選び直しても外れません。候補には `icon`・`shortcut`・`disabled` を添えられます。`shortcut` は表示だけで、キーの登録は利用側が行います。
+
+選ぶたびに `filter-menu:select` を出します。`name` を渡すと、候補ごとに隠し入力を置き、選んだ候補の値だけをフォームで送ります。
+
+`createLabel` を渡すと絞り込みの欄の隣に作る操作を置き、押すと `filter-menu:create` で打った文字を知らせます。候補を作って紙の候補に加える処理と、選んだ結果の保存は利用側が行います。
+
+JavaScriptなしでも紙は標準のPopover APIで開閉し、初めから選んだ候補の値は送信されますが、絞り込みと選択はできません。
+
+## キーボード
+
+| キー                      | 動作                                                     |
+| ------------------------- | -------------------------------------------------------- |
+| Enter / Space（開く操作） | 紙を開き、絞り込みの欄へ移ります。                       |
+| 文字                      | 候補を名前で絞り込みます。                               |
+| ↓ / ↑                     | 次・前の選べる候補へ移ります。端では反対の端へ戻ります。 |
+| Enter                     | 選ぶ位置の候補を選びます。                               |
+| Escape                    | 紙を閉じます。                                           |
+
+## アクセシビリティ
+
+- 開く操作は `aria-haspopup="dialog"`・`aria-controls` を持ち、紙は `title` を名前にした `role="dialog"` です。`iconOnly` の時は `label` を開く操作の `aria-label` にします。
+- 絞り込みの欄は `role="combobox"` で、`placeholder` を `aria-label` にし、選ぶ位置の候補を `aria-activedescendant` で伝えます。
+- 候補は `role="listbox"` の `option` で、選んだ状態を `aria-selected`、選べない候補を `aria-disabled` で伝えます。`multiple` の時は `aria-multiselectable="true"` を付けます。
+- 日本語の変換中の矢印とEnterは、候補の移動や選択に使いません。
+- `shortcut` の表記は読み上げから外します（`aria-hidden`）。
+
+## イベント
+
+| イベント             | 内容                                                                                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `filter-menu:select` | 候補を選んだ時。`detail` は `value`（候補の値）と `selected`（選んだ後の状態）です。`multiple` では外した時に `selected` が `false` になります。 |
+| `filter-menu:create` | 作る操作を押した時。`detail.query` に絞り込みの欄の文字（前後の空白を除く）を渡します。                                                          |
+
+## API
+
+### FilterMenu
+
+ラベル付けや担当の割り当てのように、候補を打って絞り込みながら選ぶ小さな紙。見た目はDropdownMenuと同じ青の面だが、中に文字の欄を持つので、メニューではなくコンボボックス（絞り込みの欄）とリストボックス（候補）の組み合わせにする。選ぶとfilter-menu:selectで値と選んだかどうかを知らせる。
+
+| 名前              | 型                            | 既定値                         | 説明                                                                                             |
+| ----------------- | ----------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `id`（必須）      | `string`                      |                                | 紙と候補のidの元。画面内で一意にする。紙は`<id>-panel`、候補の一覧は`<id>-list`になる。          |
+| `label`（必須）   | `string`                      |                                | 開く操作の名前。                                                                                 |
+| `title`（必須）   | `string`                      |                                | 紙の見出し（「ラベルを選ぶ」「担当を決める」など）。                                             |
+| `options`（必須） | `readonly FilterMenuOption[]` |                                | 候補。                                                                                           |
+| `multiple`        | `boolean`                     | `false`                        | 複数を選べる時（ラベル・タグ）。一つだけの時（担当）は選ぶと閉じる。                             |
+| `name`            | `string`                      |                                | 渡すと、選んだ値をこの名前の隠し入力で送る。                                                     |
+| `placeholder`     | `string`                      | `"絞り込む…"`                  | 絞り込みの欄の見本の文字。欄の`aria-label`にもなる。                                             |
+| `createLabel`     | `string`                      |                                | 渡すと、絞り込みの欄の隣に「新しく作る」を置き、押すとfilter-menu:createで打った文字を知らせる。 |
+| `emptyLabel`      | `string`                      | `"当てはまる候補はありません"` | 当てはまる候補が無い時に出す文言。                                                               |
+| `icon`            | `IconName`                    |                                | 開く操作の文言の前に置く印。                                                                     |
+| `iconOnly`        | `boolean`                     | `false`                        | 開く操作を印だけにする。iconと一緒に渡す。labelは`aria-label`として読み上げる。                  |
+| `variant`         | `ButtonProps["variant"]`      | `"secondary"`                  | 開く操作の見た目。値の意味はButtonと同じ。                                                       |
+| `align`           | `"start" \| "end"`            | `"start"`                      | 紙を開く操作のどちらの端に揃えるか。endは行の終わりの側に置いた操作に使う。                      |
+| `disabled`        | `boolean`                     |                                | 開く操作を押せなくする。                                                                         |
+
+登録するcontroller：`filter-menu`（`FilterMenuController`）
+
+読み込むCSS：`layers.css`、`reset.css`、`tokens.css`、`base.css`、`layout.css`、`components/button.css`、`components/overlay.css`、`components/icon.css`、`components/keycap.css`、`components/filter-menu.css`
+
+#### `FilterMenuOption`
+
+| 名前            | 型         | 既定値 | 説明                                                                                         |
+| --------------- | ---------- | ------ | -------------------------------------------------------------------------------------------- |
+| `value`（必須） | `string`   |        | 選んだ時に`filter-menu:select`の`detail.value`で知らせる値。nameがあれば送信する値にもなる。 |
+| `label`（必須） | `string`   |        | 候補の名前。絞り込みは、打った文字をこの名前に含むかで決める（大文字と小文字は区別しない）。 |
+| `icon`          | `IconName` |        | 選んだ印の代わりに前に置く印。渡すと、選んだ印は行の終わりに出す。                           |
+| `shortcut`      | `string`   |        | 表示用の補助表記。ショートカットの登録は利用側で行う。                                       |
+| `selected`      | `boolean`  |        | 初めから選んでおく。                                                                         |
+| `disabled`      | `boolean`  |        | 選べない候補にする。矢印の移動でも飛ばす。                                                   |
+
+#### `IconName`
+
+値：docs/icons.mdの「使えるアイコン」の名前
+
+#### `ButtonProps`
+
+[Button](button.md)のpropsと同じです。
+
+## コード
+
+```tsx
+import { FilterMenu, Disclosure, DisclosureGroup } from "ply/hono";
+
+export default () => (
+  <div class="ply-stack">
+    <div class="ply-cluster">
+      <FilterMenu
+        id="label-menu"
+        label="ラベル"
+        icon="layers"
+        title="ラベルを選ぶ"
+        multiple
+        name="labels"
+        createLabel="新しく作る"
+        options={[
+          { value: "guide", label: "案内", selected: true },
+          { value: "invoice", label: "請求" },
+          { value: "event", label: "イベント" },
+          { value: "later", label: "あとで読む" },
+        ]}
+      />
+      <FilterMenu
+        id="assign-menu"
+        label="担当"
+        title="担当を決める"
+        name="assignee"
+        options={[
+          { value: "me", label: "自分", shortcut: "M", selected: true },
+          { value: "tanaka", label: "田中 遥" },
+          { value: "sato", label: "佐藤 健" },
+          { value: "mori", label: "森 美咲", disabled: true },
+        ]}
+      />
+    </div>
+    <DisclosureGroup label="候補と置き場所の違い">
+      <Disclosure summary="候補にアイコンとキーを添える・終わりの側に開く">
+        <div class="ply-cluster" style="justify-content: end">
+          <FilterMenu
+            id="move-menu"
+            label="移動"
+            title="移動する先"
+            align="end"
+            options={[
+              {
+                value: "inbox",
+                label: "受信トレイ",
+                icon: "mail",
+                shortcut: "1",
+                selected: true,
+              },
+              { value: "feed", label: "お知らせ", icon: "files", shortcut: "2" },
+              { value: "paper", label: "控え", icon: "file", shortcut: "3" },
+            ]}
+          />
+        </div>
+      </Disclosure>
+      <Disclosure summary="当てはまる候補がない時">
+        <FilterMenu
+          id="empty-menu"
+          label="タグ"
+          title="タグを選ぶ"
+          multiple
+          createLabel="新しく作る"
+          emptyLabel="まだタグがありません"
+          options={[]}
+        />
+      </Disclosure>
+      <Disclosure summary="使えない時・右から左に読む場合">
+        <div class="ply-cluster">
+          <FilterMenu
+            id="disabled-menu"
+            label="ラベル"
+            title="ラベルを選ぶ"
+            disabled
+            options={[]}
+          />
+          <div dir="rtl" lang="ar">
+            <FilterMenu
+              id="rtl-menu"
+              label="التسمية"
+              title="اختر تسمية"
+              placeholder="تصفية…"
+              options={[
+                { value: "a", label: "دليل", selected: true },
+                { value: "b", label: "فاتورة" },
+              ]}
+            />
+          </div>
+        </div>
+      </Disclosure>
+    </DisclosureGroup>
+  </div>
+);
+```
+
+<details>
+<summary>出力されるHTML</summary>
+
+```html
+<div class="ply-stack">
+  <div class="ply-cluster">
+    <div
+      class="ply-filter-menu"
+      data-controller="filter-menu"
+      data-filter-menu-multiple-value="true"
+      data-align="start"
+    >
+      <button
+        popovertarget="label-menu-panel"
+        style="anchor-name: --ply-popover-6c-61-62-65-6c-2d-6d-65-6e-75"
+        aria-haspopup="dialog"
+        aria-controls="label-menu-panel"
+        class="ply-button"
+        type="button"
+        data-variant="secondary"
+        data-size="default"
+      >
+        <svg
+          class="ply-icon"
+          viewBox="0 0 256 256"
+          fill="currentColor"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <use href="/assets/ply-icons.svg#ply-layers"></use></svg
+        >ラベル<svg
+          class="ply-icon"
+          viewBox="0 0 256 256"
+          fill="currentColor"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <use href="/assets/ply-icons.svg#ply-caret"></use>
+        </svg>
+      </button>
+      <div
+        id="label-menu-panel"
+        popover="auto"
+        class="panel ply-overlay"
+        data-placement="anchor"
+        data-align="start"
+        style="--ply-overlay-anchor: --ply-popover-6c-61-62-65-6c-2d-6d-65-6e-75"
+        role="dialog"
+        aria-labelledby="label-menu-title"
+        data-filter-menu-target="panel"
+        data-action="toggle-&gt;filter-menu#opened"
+      >
+        <div class="search">
+          <span class="field"
+            ><svg
+              class="ply-icon"
+              viewBox="0 0 256 256"
+              fill="currentColor"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <use href="/assets/ply-icons.svg#ply-search"></use></svg
+            ><input
+              type="text"
+              role="combobox"
+              aria-expanded="true"
+              aria-controls="label-menu-list"
+              aria-autocomplete="list"
+              aria-label="絞り込む…"
+              placeholder="絞り込む…"
+              autocomplete="off"
+              data-filter-menu-target="input"
+              data-action="input-&gt;filter-menu#filter keydown-&gt;filter-menu#key" /></span
+          ><button
+            data-action="filter-menu#create"
+            class="ply-button create"
+            type="button"
+            data-variant="secondary"
+            data-size="compact"
+          >
+            <svg
+              class="ply-icon"
+              viewBox="0 0 256 256"
+              fill="currentColor"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <use href="/assets/ply-icons.svg#ply-plus"></use></svg
+            >新しく作る
+          </button>
+        </div>
+        <p class="title" id="label-menu-title">ラベルを選ぶ</p>
+        <ul
+          class="options"
+          id="label-menu-list"
+          role="listbox"
+          aria-labelledby="label-menu-title"
+          aria-multiselectable="true"
+        >
+          <li
+            id="label-menu-option-0"
+            class="option"
+            role="option"
+            aria-selected="true"
+            data-selected="true"
+            data-value="guide"
+            data-label="案内"
+            data-filter-menu-target="option"
+            data-action="click-&gt;filter-menu#choose"
+          >
+            <span class="mark" aria-hidden="true"
+              ><svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-check"></use></svg></span
+            ><span class="label">案内</span
+            ><input type="hidden" name="labels" value="guide" />
+          </li>
+          <li
+            id="label-menu-option-1"
+            class="option"
+            role="option"
+            aria-selected="false"
+            data-selected="false"
+            data-value="invoice"
+            data-label="請求"
+            data-filter-menu-target="option"
+            data-action="click-&gt;filter-menu#choose"
+          >
+            <span class="mark" aria-hidden="true"
+              ><svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-check"></use></svg></span
+            ><span class="label">請求</span
+            ><input type="hidden" name="labels" value="invoice" disabled="" />
+          </li>
+          <li
+            id="label-menu-option-2"
+            class="option"
+            role="option"
+            aria-selected="false"
+            data-selected="false"
+            data-value="event"
+            data-label="イベント"
+            data-filter-menu-target="option"
+            data-action="click-&gt;filter-menu#choose"
+          >
+            <span class="mark" aria-hidden="true"
+              ><svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-check"></use></svg></span
+            ><span class="label">イベント</span
+            ><input type="hidden" name="labels" value="event" disabled="" />
+          </li>
+          <li
+            id="label-menu-option-3"
+            class="option"
+            role="option"
+            aria-selected="false"
+            data-selected="false"
+            data-value="later"
+            data-label="あとで読む"
+            data-filter-menu-target="option"
+            data-action="click-&gt;filter-menu#choose"
+          >
+            <span class="mark" aria-hidden="true"
+              ><svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-check"></use></svg></span
+            ><span class="label">あとで読む</span
+            ><input type="hidden" name="labels" value="later" disabled="" />
+          </li>
+        </ul>
+        <p class="empty" data-filter-menu-target="empty" hidden="">
+          当てはまる候補はありません
+        </p>
+      </div>
+    </div>
+    <div
+      class="ply-filter-menu"
+      data-controller="filter-menu"
+      data-filter-menu-multiple-value="false"
+      data-align="start"
+    >
+      <button
+        popovertarget="assign-menu-panel"
+        style="anchor-name: --ply-popover-61-73-73-69-67-6e-2d-6d-65-6e-75"
+        aria-haspopup="dialog"
+        aria-controls="assign-menu-panel"
+        class="ply-button"
+        type="button"
+        data-variant="secondary"
+        data-size="default"
+      >
+        担当<svg
+          class="ply-icon"
+          viewBox="0 0 256 256"
+          fill="currentColor"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <use href="/assets/ply-icons.svg#ply-caret"></use>
+        </svg>
+      </button>
+      <div
+        id="assign-menu-panel"
+        popover="auto"
+        class="panel ply-overlay"
+        data-placement="anchor"
+        data-align="start"
+        style="--ply-overlay-anchor: --ply-popover-61-73-73-69-67-6e-2d-6d-65-6e-75"
+        role="dialog"
+        aria-labelledby="assign-menu-title"
+        data-filter-menu-target="panel"
+        data-action="toggle-&gt;filter-menu#opened"
+      >
+        <div class="search">
+          <span class="field"
+            ><svg
+              class="ply-icon"
+              viewBox="0 0 256 256"
+              fill="currentColor"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <use href="/assets/ply-icons.svg#ply-search"></use></svg
+            ><input
+              type="text"
+              role="combobox"
+              aria-expanded="true"
+              aria-controls="assign-menu-list"
+              aria-autocomplete="list"
+              aria-label="絞り込む…"
+              placeholder="絞り込む…"
+              autocomplete="off"
+              data-filter-menu-target="input"
+              data-action="input-&gt;filter-menu#filter keydown-&gt;filter-menu#key"
+          /></span>
+        </div>
+        <p class="title" id="assign-menu-title">担当を決める</p>
+        <ul
+          class="options"
+          id="assign-menu-list"
+          role="listbox"
+          aria-labelledby="assign-menu-title"
+        >
+          <li
+            id="assign-menu-option-0"
+            class="option"
+            role="option"
+            aria-selected="true"
+            data-selected="true"
+            data-value="me"
+            data-label="自分"
+            data-filter-menu-target="option"
+            data-action="click-&gt;filter-menu#choose"
+          >
+            <span class="mark" aria-hidden="true"
+              ><svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-check"></use></svg></span
+            ><span class="label">自分</span
+            ><span
+              aria-hidden="true"
+              class="ply-keycap shortcut"
+              data-size="small"
+              data-inverse="true"
+              ><kbd>M</kbd></span
+            ><input type="hidden" name="assignee" value="me" />
+          </li>
+          <li
+            id="assign-menu-option-1"
+            class="option"
+            role="option"
+            aria-selected="false"
+            data-selected="false"
+            data-value="tanaka"
+            data-label="田中 遥"
+            data-filter-menu-target="option"
+            data-action="click-&gt;filter-menu#choose"
+          >
+            <span class="mark" aria-hidden="true"
+              ><svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-check"></use></svg></span
+            ><span class="label">田中 遥</span
+            ><input type="hidden" name="assignee" value="tanaka" disabled="" />
+          </li>
+          <li
+            id="assign-menu-option-2"
+            class="option"
+            role="option"
+            aria-selected="false"
+            data-selected="false"
+            data-value="sato"
+            data-label="佐藤 健"
+            data-filter-menu-target="option"
+            data-action="click-&gt;filter-menu#choose"
+          >
+            <span class="mark" aria-hidden="true"
+              ><svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-check"></use></svg></span
+            ><span class="label">佐藤 健</span
+            ><input type="hidden" name="assignee" value="sato" disabled="" />
+          </li>
+          <li
+            id="assign-menu-option-3"
+            class="option"
+            role="option"
+            aria-selected="false"
+            aria-disabled="true"
+            data-selected="false"
+            data-disabled="true"
+            data-value="mori"
+            data-label="森 美咲"
+            data-filter-menu-target="option"
+            data-action="click-&gt;filter-menu#choose"
+          >
+            <span class="mark" aria-hidden="true"
+              ><svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-check"></use></svg></span
+            ><span class="label">森 美咲</span
+            ><input type="hidden" name="assignee" value="mori" disabled="" />
+          </li>
+        </ul>
+        <p class="empty" data-filter-menu-target="empty" hidden="">
+          当てはまる候補はありません
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="ply-disclosure-group" role="group" aria-label="候補と置き場所の違い">
+    <details class="ply-disclosure">
+      <summary>
+        <span class="marker" aria-hidden="true"
+          ><svg
+            class="ply-icon"
+            viewBox="0 0 256 256"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
+        ><span class="label"
+          ><span class="title"
+            >候補にアイコンとキーを添える・終わりの側に開く</span
+          ></span
+        >
+      </summary>
+      <div class="body">
+        <div class="ply-cluster" style="justify-content: end">
+          <div
+            class="ply-filter-menu"
+            data-controller="filter-menu"
+            data-filter-menu-multiple-value="false"
+            data-align="end"
+          >
+            <button
+              popovertarget="move-menu-panel"
+              style="anchor-name: --ply-popover-6d-6f-76-65-2d-6d-65-6e-75"
+              aria-haspopup="dialog"
+              aria-controls="move-menu-panel"
+              class="ply-button"
+              type="button"
+              data-variant="secondary"
+              data-size="default"
+            >
+              移動<svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-caret"></use>
+              </svg>
+            </button>
+            <div
+              id="move-menu-panel"
+              popover="auto"
+              class="panel ply-overlay"
+              data-placement="anchor"
+              data-align="end"
+              style="--ply-overlay-anchor: --ply-popover-6d-6f-76-65-2d-6d-65-6e-75"
+              role="dialog"
+              aria-labelledby="move-menu-title"
+              data-filter-menu-target="panel"
+              data-action="toggle-&gt;filter-menu#opened"
+            >
+              <div class="search">
+                <span class="field"
+                  ><svg
+                    class="ply-icon"
+                    viewBox="0 0 256 256"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <use href="/assets/ply-icons.svg#ply-search"></use></svg
+                  ><input
+                    type="text"
+                    role="combobox"
+                    aria-expanded="true"
+                    aria-controls="move-menu-list"
+                    aria-autocomplete="list"
+                    aria-label="絞り込む…"
+                    placeholder="絞り込む…"
+                    autocomplete="off"
+                    data-filter-menu-target="input"
+                    data-action="input-&gt;filter-menu#filter keydown-&gt;filter-menu#key"
+                /></span>
+              </div>
+              <p class="title" id="move-menu-title">移動する先</p>
+              <ul
+                class="options"
+                id="move-menu-list"
+                role="listbox"
+                aria-labelledby="move-menu-title"
+              >
+                <li
+                  id="move-menu-option-0"
+                  class="option"
+                  role="option"
+                  aria-selected="true"
+                  data-selected="true"
+                  data-value="inbox"
+                  data-label="受信トレイ"
+                  data-filter-menu-target="option"
+                  data-action="click-&gt;filter-menu#choose"
+                >
+                  <span class="mark" aria-hidden="true"
+                    ><svg
+                      class="ply-icon"
+                      viewBox="0 0 256 256"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="/assets/ply-icons.svg#ply-mail"></use></svg></span
+                  ><span class="label">受信トレイ</span
+                  ><span
+                    aria-hidden="true"
+                    class="ply-keycap shortcut"
+                    data-size="small"
+                    data-inverse="true"
+                    ><kbd>1</kbd></span
+                  ><span class="check" aria-hidden="true"
+                    ><svg
+                      class="ply-icon"
+                      viewBox="0 0 256 256"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="/assets/ply-icons.svg#ply-check"></use></svg
+                  ></span>
+                </li>
+                <li
+                  id="move-menu-option-1"
+                  class="option"
+                  role="option"
+                  aria-selected="false"
+                  data-selected="false"
+                  data-value="feed"
+                  data-label="お知らせ"
+                  data-filter-menu-target="option"
+                  data-action="click-&gt;filter-menu#choose"
+                >
+                  <span class="mark" aria-hidden="true"
+                    ><svg
+                      class="ply-icon"
+                      viewBox="0 0 256 256"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="/assets/ply-icons.svg#ply-files"></use></svg></span
+                  ><span class="label">お知らせ</span
+                  ><span
+                    aria-hidden="true"
+                    class="ply-keycap shortcut"
+                    data-size="small"
+                    data-inverse="true"
+                    ><kbd>2</kbd></span
+                  ><span class="check" aria-hidden="true"
+                    ><svg
+                      class="ply-icon"
+                      viewBox="0 0 256 256"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="/assets/ply-icons.svg#ply-check"></use></svg
+                  ></span>
+                </li>
+                <li
+                  id="move-menu-option-2"
+                  class="option"
+                  role="option"
+                  aria-selected="false"
+                  data-selected="false"
+                  data-value="paper"
+                  data-label="控え"
+                  data-filter-menu-target="option"
+                  data-action="click-&gt;filter-menu#choose"
+                >
+                  <span class="mark" aria-hidden="true"
+                    ><svg
+                      class="ply-icon"
+                      viewBox="0 0 256 256"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="/assets/ply-icons.svg#ply-file"></use></svg></span
+                  ><span class="label">控え</span
+                  ><span
+                    aria-hidden="true"
+                    class="ply-keycap shortcut"
+                    data-size="small"
+                    data-inverse="true"
+                    ><kbd>3</kbd></span
+                  ><span class="check" aria-hidden="true"
+                    ><svg
+                      class="ply-icon"
+                      viewBox="0 0 256 256"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="/assets/ply-icons.svg#ply-check"></use></svg
+                  ></span>
+                </li>
+              </ul>
+              <p class="empty" data-filter-menu-target="empty" hidden="">
+                当てはまる候補はありません
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="ply-disclosure">
+      <summary>
+        <span class="marker" aria-hidden="true"
+          ><svg
+            class="ply-icon"
+            viewBox="0 0 256 256"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
+        ><span class="label"><span class="title">当てはまる候補がない時</span></span>
+      </summary>
+      <div class="body">
+        <div
+          class="ply-filter-menu"
+          data-controller="filter-menu"
+          data-filter-menu-multiple-value="true"
+          data-align="start"
+        >
+          <button
+            popovertarget="empty-menu-panel"
+            style="anchor-name: --ply-popover-65-6d-70-74-79-2d-6d-65-6e-75"
+            aria-haspopup="dialog"
+            aria-controls="empty-menu-panel"
+            class="ply-button"
+            type="button"
+            data-variant="secondary"
+            data-size="default"
+          >
+            タグ<svg
+              class="ply-icon"
+              viewBox="0 0 256 256"
+              fill="currentColor"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <use href="/assets/ply-icons.svg#ply-caret"></use>
+            </svg>
+          </button>
+          <div
+            id="empty-menu-panel"
+            popover="auto"
+            class="panel ply-overlay"
+            data-placement="anchor"
+            data-align="start"
+            style="--ply-overlay-anchor: --ply-popover-65-6d-70-74-79-2d-6d-65-6e-75"
+            role="dialog"
+            aria-labelledby="empty-menu-title"
+            data-filter-menu-target="panel"
+            data-action="toggle-&gt;filter-menu#opened"
+          >
+            <div class="search">
+              <span class="field"
+                ><svg
+                  class="ply-icon"
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <use href="/assets/ply-icons.svg#ply-search"></use></svg
+                ><input
+                  type="text"
+                  role="combobox"
+                  aria-expanded="true"
+                  aria-controls="empty-menu-list"
+                  aria-autocomplete="list"
+                  aria-label="絞り込む…"
+                  placeholder="絞り込む…"
+                  autocomplete="off"
+                  data-filter-menu-target="input"
+                  data-action="input-&gt;filter-menu#filter keydown-&gt;filter-menu#key" /></span
+              ><button
+                data-action="filter-menu#create"
+                class="ply-button create"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                <svg
+                  class="ply-icon"
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <use href="/assets/ply-icons.svg#ply-plus"></use></svg
+                >新しく作る
+              </button>
+            </div>
+            <p class="title" id="empty-menu-title">タグを選ぶ</p>
+            <ul
+              class="options"
+              id="empty-menu-list"
+              role="listbox"
+              aria-labelledby="empty-menu-title"
+              aria-multiselectable="true"
+            ></ul>
+            <p class="empty" data-filter-menu-target="empty" hidden="">
+              まだタグがありません
+            </p>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="ply-disclosure">
+      <summary>
+        <span class="marker" aria-hidden="true"
+          ><svg
+            class="ply-icon"
+            viewBox="0 0 256 256"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
+        ><span class="label"
+          ><span class="title">使えない時・右から左に読む場合</span></span
+        >
+      </summary>
+      <div class="body">
+        <div class="ply-cluster">
+          <div
+            class="ply-filter-menu"
+            data-controller="filter-menu"
+            data-filter-menu-multiple-value="false"
+            data-align="start"
+          >
+            <button
+              popovertarget="disabled-menu-panel"
+              style="anchor-name: --ply-popover-64-69-73-61-62-6c-65-64-2d-6d-65-6e-75"
+              aria-haspopup="dialog"
+              aria-controls="disabled-menu-panel"
+              class="ply-button"
+              type="button"
+              data-variant="secondary"
+              data-size="default"
+              disabled=""
+            >
+              ラベル<svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-caret"></use>
+              </svg>
+            </button>
+            <div
+              id="disabled-menu-panel"
+              popover="auto"
+              class="panel ply-overlay"
+              data-placement="anchor"
+              data-align="start"
+              style="
+                --ply-overlay-anchor: --ply-popover-64-69-73-61-62-6c-65-64-2d-6d-65-6e-75;
+              "
+              role="dialog"
+              aria-labelledby="disabled-menu-title"
+              data-filter-menu-target="panel"
+              data-action="toggle-&gt;filter-menu#opened"
+            >
+              <div class="search">
+                <span class="field"
+                  ><svg
+                    class="ply-icon"
+                    viewBox="0 0 256 256"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <use href="/assets/ply-icons.svg#ply-search"></use></svg
+                  ><input
+                    type="text"
+                    role="combobox"
+                    aria-expanded="true"
+                    aria-controls="disabled-menu-list"
+                    aria-autocomplete="list"
+                    aria-label="絞り込む…"
+                    placeholder="絞り込む…"
+                    autocomplete="off"
+                    data-filter-menu-target="input"
+                    data-action="input-&gt;filter-menu#filter keydown-&gt;filter-menu#key"
+                /></span>
+              </div>
+              <p class="title" id="disabled-menu-title">ラベルを選ぶ</p>
+              <ul
+                class="options"
+                id="disabled-menu-list"
+                role="listbox"
+                aria-labelledby="disabled-menu-title"
+              ></ul>
+              <p class="empty" data-filter-menu-target="empty" hidden="">
+                当てはまる候補はありません
+              </p>
+            </div>
+          </div>
+          <div dir="rtl" lang="ar">
+            <div
+              class="ply-filter-menu"
+              data-controller="filter-menu"
+              data-filter-menu-multiple-value="false"
+              data-align="start"
+            >
+              <button
+                popovertarget="rtl-menu-panel"
+                style="anchor-name: --ply-popover-72-74-6c-2d-6d-65-6e-75"
+                aria-haspopup="dialog"
+                aria-controls="rtl-menu-panel"
+                class="ply-button"
+                type="button"
+                data-variant="secondary"
+                data-size="default"
+              >
+                التسمية<svg
+                  class="ply-icon"
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <use href="/assets/ply-icons.svg#ply-caret"></use>
+                </svg>
+              </button>
+              <div
+                id="rtl-menu-panel"
+                popover="auto"
+                class="panel ply-overlay"
+                data-placement="anchor"
+                data-align="start"
+                style="--ply-overlay-anchor: --ply-popover-72-74-6c-2d-6d-65-6e-75"
+                role="dialog"
+                aria-labelledby="rtl-menu-title"
+                data-filter-menu-target="panel"
+                data-action="toggle-&gt;filter-menu#opened"
+              >
+                <div class="search">
+                  <span class="field"
+                    ><svg
+                      class="ply-icon"
+                      viewBox="0 0 256 256"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="/assets/ply-icons.svg#ply-search"></use></svg
+                    ><input
+                      type="text"
+                      role="combobox"
+                      aria-expanded="true"
+                      aria-controls="rtl-menu-list"
+                      aria-autocomplete="list"
+                      aria-label="تصفية…"
+                      placeholder="تصفية…"
+                      autocomplete="off"
+                      data-filter-menu-target="input"
+                      data-action="input-&gt;filter-menu#filter keydown-&gt;filter-menu#key"
+                  /></span>
+                </div>
+                <p class="title" id="rtl-menu-title">اختر تسمية</p>
+                <ul
+                  class="options"
+                  id="rtl-menu-list"
+                  role="listbox"
+                  aria-labelledby="rtl-menu-title"
+                >
+                  <li
+                    id="rtl-menu-option-0"
+                    class="option"
+                    role="option"
+                    aria-selected="true"
+                    data-selected="true"
+                    data-value="a"
+                    data-label="دليل"
+                    data-filter-menu-target="option"
+                    data-action="click-&gt;filter-menu#choose"
+                  >
+                    <span class="mark" aria-hidden="true"
+                      ><svg
+                        class="ply-icon"
+                        viewBox="0 0 256 256"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <use href="/assets/ply-icons.svg#ply-check"></use></svg></span
+                    ><span class="label">دليل</span>
+                  </li>
+                  <li
+                    id="rtl-menu-option-1"
+                    class="option"
+                    role="option"
+                    aria-selected="false"
+                    data-selected="false"
+                    data-value="b"
+                    data-label="فاتورة"
+                    data-filter-menu-target="option"
+                    data-action="click-&gt;filter-menu#choose"
+                  >
+                    <span class="mark" aria-hidden="true"
+                      ><svg
+                        class="ply-icon"
+                        viewBox="0 0 256 256"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <use href="/assets/ply-icons.svg#ply-check"></use></svg></span
+                    ><span class="label">فاتورة</span>
+                  </li>
+                </ul>
+                <p class="empty" data-filter-menu-target="empty" hidden="">
+                  当てはまる候補はありません
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+</div>
+```
+
+</details>

@@ -4,7 +4,7 @@ import { getCookie } from "hono/cookie";
 import { stylesheets } from "../src/hono/index";
 import { getHonoExample } from "./hono-examples";
 import { formatExample } from "./code-format";
-import { catalogComponents } from "./components";
+import { componentDocs } from "./reference";
 import { Document } from "./layout";
 import { CatalogIndex, ComponentPage } from "./pages/catalog";
 import { appPath, screens } from "./apps/frame";
@@ -23,7 +23,7 @@ const inboxMessages = ["categories", "meeting", "review"] as const;
 /** 静的に書き出すページ。カタログの入口・部品のページ・利用例のアプリの画面だけを持つ。 */
 export const paths = [
   "/",
-  ...catalogComponents.map(({ id }) => `/components/${id}`),
+  ...componentDocs.map(({ id }) => `/components/${id}`),
   "/components/page-header/preview",
   ...screens.map((screen) => appPath(screen.id)),
   ...inboxMessages.map((id) => `${appPath("inbox")}/${id}`),
@@ -35,7 +35,7 @@ app.get("/", (c) =>
   c.html(
     html`<!doctype html>${(
         <Document title="カタログ">
-          <CatalogIndex components={catalogComponents} />
+          <CatalogIndex components={componentDocs} />
         </Document>
       )}`,
   ),
@@ -60,22 +60,27 @@ app.get("/components/page-header/preview", (c) =>
   ),
 );
 
-app.get("/components/:id", async (c) => {
-  const entry = catalogComponents.find(({ id }) => id === c.req.param("id"));
-  if (!entry) return c.notFound();
-  const example = getHonoExample(entry.id);
-  const markup = String(await html`${example.render({ cookies: getCookie(c) })}`);
+/** 部品の見本の出力HTMLと、整形したHTML・Honoのコード。 */
+export const renderExample = async (id: string, cookies: Record<string, string> = {}) => {
+  const example = getHonoExample(id);
+  const markup = String(await html`${example.render({ cookies })}`);
   const [htmlCode, jsxCode] = await Promise.all([
     formatExample(markup, "html"),
     formatExample(example.source, "tsx"),
   ]);
+  return { markup, htmlCode, jsxCode };
+};
+
+app.get("/components/:id", async (c) => {
+  const entry = componentDocs.find(({ id }) => id === c.req.param("id"));
+  if (!entry) return c.notFound();
+  const { markup, htmlCode, jsxCode } = await renderExample(entry.id, getCookie(c));
   return c.html(
     html`<!doctype html>${(
         <Document title={entry.name}>
           <ComponentPage
-            components={catalogComponents}
+            components={componentDocs}
             entry={entry}
-            usage={entry.usage}
             markup={markup}
             htmlCode={htmlCode}
             jsxCode={jsxCode}

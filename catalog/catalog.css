@@ -69,4 +69,29 @@
     color: var(--ply-muted);
     font-size: var(--ply-small);
   }
+  /* 部品のページの説明とAPI。文中のコード、箇条、型の見出し、必須の印。 */
+  .catalog-reference {
+    & :where(code) {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: 0.875em;
+      overflow-wrap: anywhere;
+    }
+    & :where(ul) {
+      display: grid;
+      gap: var(--ply-space-2);
+      padding-inline-start: 1.25em;
+      list-style: disc;
+    }
+    & :where(h4) {
+      margin: 0;
+      font-size: var(--ply-body);
+      font-weight: 600;
+    }
+    & .catalog-required {
+      display: block;
+      color: var(--ply-danger);
+      font-size: var(--ply-small);
+      font-weight: 400;
+    }
+  }
 }

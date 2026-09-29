@@ -1,4 +1,5 @@
 import { raw } from "hono/html";
+import type { Child } from "hono/jsx";
 import {
   ActionLink,
   ActionList,
@@ -10,10 +11,21 @@ import {
   LayerCard,
   PageHeader,
   Section,
+  Table,
 } from "../../src/hono";
+import type { PropDoc, TypeDoc } from "../../scripts/component-api";
 import { appPath, screens } from "../apps/frame";
 import { componentGroups } from "../component-groups";
 import { CatalogFrame, groupAnchor, type ComponentEntry } from "../layout";
+import {
+  componentApi,
+  elementNote,
+  pageOf,
+  propDescription,
+  requiredLabel,
+  typeHeading,
+  type ComponentDoc,
+} from "../reference";
 
 /** カタログの入口。利用例のアプリの画面と、分類ごとの全部品を並べる。 */
 export const CatalogIndex = ({ components }: { components: readonly ComponentEntry[] }) => (
@@ -60,20 +72,225 @@ export const CatalogIndex = ({ components }: { components: readonly ComponentEnt
   </CatalogFrame>
 );
 
+/** 文中の`code`をcode要素にする。 */
+const inline = (text: string): Child[] =>
+  text.split("`").map((part, index) => (index % 2 === 1 ? <code>{part}</code> : part));
+
+const PropTable = ({
+  doc,
+  component,
+  caption,
+  props,
+}: {
+  doc: ComponentDoc;
+  component: string;
+  caption: string;
+  props: readonly PropDoc[];
+}) => (
+  <Table caption={caption}>
+    <thead>
+      <tr>
+        <th scope="col">名前</th>
+        <th scope="col">型</th>
+        <th scope="col">既定値</th>
+        <th scope="col">説明</th>
+      </tr>
+    </thead>
+    <tbody>
+      {props.map((prop) => (
+        <tr>
+          <th scope="row">
+            <code>{prop.name}</code>
+            {prop.required !== "no" && (
+              <span class="catalog-required">{requiredLabel[prop.required]}</span>
+            )}
+          </th>
+          <td>
+            <code>{prop.type}</code>
+          </td>
+          <td>{prop.defaultValue && <code>{prop.defaultValue}</code>}</td>
+          <td>{inline(propDescription(doc, component, prop))}</td>
+        </tr>
+      ))}
+    </tbody>
+  </Table>
+);
+
+const TypeReference = ({
+  doc,
+  component,
+  type,
+}: {
+  doc: ComponentDoc;
+  component: string;
+  type: TypeDoc;
+}) => (
+  <section class="ply-stack" data-space="small">
+    <h4>{inline(typeHeading(type))}</h4>
+    {type.description && <p>{inline(type.description)}</p>}
+    {type.component && (
+      <p>
+        <a href={`/components/${pageOf(type.component)}`}>{type.component}</a>
+        のpropsと同じです。
+      </p>
+    )}
+    {type.values && (
+      <p>
+        値：
+        {type.values.includes("docs/") ? (
+          <a href="/components/icon">Iconの見本</a>
+        ) : (
+          <code>{type.values}</code>
+        )}
+      </p>
+    )}
+    {type.variants.map((variant) => (
+      <PropTable
+        doc={doc}
+        component={component}
+        caption={`${type.inline ? `${type.name}の項目` : type.name}${variant.label ? `（${variant.label}）` : ""}`}
+        props={variant.props}
+      />
+    ))}
+  </section>
+);
+
+/** 部品のページの説明とAPI。docs/components/<id>.mdと同じ内容を持つ。 */
+const Reference = ({ doc }: { doc: ComponentDoc }) => {
+  const apis = componentApi();
+  return (
+    <div class="ply-stack catalog-reference">
+      <Section title="使いどころ">
+        <ul>
+          {doc.guidance.map((item) => (
+            <li>{inline(item)}</li>
+          ))}
+        </ul>
+      </Section>
+      <Section title="使い方">
+        <div class="ply-stack" data-space="small">
+          {doc.usage.map((paragraph) => (
+            <p>{inline(paragraph)}</p>
+          ))}
+        </div>
+      </Section>
+      {doc.keyboard && doc.keyboard.length > 0 && (
+        <Section title="キーボード">
+          <Table caption={`${doc.name}のキーボード操作`}>
+            <thead>
+              <tr>
+                <th scope="col">キー</th>
+                <th scope="col">動作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {doc.keyboard.map(([key, action]) => (
+                <tr>
+                  <th scope="row">{inline(key)}</th>
+                  <td>{inline(action)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Section>
+      )}
+      {doc.accessibility && doc.accessibility.length > 0 && (
+        <Section title="アクセシビリティ">
+          <ul>
+            {doc.accessibility.map((item) => (
+              <li>{inline(item)}</li>
+            ))}
+          </ul>
+        </Section>
+      )}
+      {doc.events && doc.events.length > 0 && (
+        <Section title="イベント">
+          <Table caption={`${doc.name}が知らせるイベント`}>
+            <thead>
+              <tr>
+                <th scope="col">イベント</th>
+                <th scope="col">内容</th>
+              </tr>
+            </thead>
+            <tbody>
+              {doc.events.map(([name, detail]) => (
+                <tr>
+                  <th scope="row">
+                    <code>{name}</code>
+                  </th>
+                  <td>{inline(detail)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Section>
+      )}
+      <Section title="API">
+        <div class="ply-stack">
+          {doc.api.map((name) => {
+            const api = apis.get(name);
+            if (!api) throw new Error(`公開されていないコンポーネントです: ${name}`);
+            return (
+              <LayerCard title={name}>
+                <div class="ply-stack" data-space="small">
+                  {api.description && <p>{inline(api.description)}</p>}
+                  {api.props.length > 0 && (
+                    <PropTable
+                      doc={doc}
+                      component={name}
+                      caption={`${name}のprops`}
+                      props={api.props}
+                    />
+                  )}
+                  {api.element && <p>{inline(elementNote(api.element))}</p>}
+                  {api.controllers.length > 0 && (
+                    <p>
+                      登録するcontroller：
+                      {api.controllers.map((entry, index) => {
+                        const [identifier, controller] = entry.split(":");
+                        return (
+                          <>
+                            {index > 0 && "、"}
+                            <code>{identifier}</code>（<code>{controller}</code>）
+                          </>
+                        );
+                      })}
+                    </p>
+                  )}
+                  <p>
+                    読み込むCSS：
+                    {api.stylesheets.map((file, index) => (
+                      <>
+                        {index > 0 && "、"}
+                        <code>{file}</code>
+                      </>
+                    ))}
+                  </p>
+                  {api.types.map((type) => (
+                    <TypeReference doc={doc} component={name} type={type} />
+                  ))}
+                </div>
+              </LayerCard>
+            );
+          })}
+        </div>
+      </Section>
+    </div>
+  );
+};
+
 type Code = Awaited<ReturnType<typeof import("../code-format").formatExample>>;
 
-/** 部品のページ。見本・使い方・同じ見本のHTMLとHono JSXを並べ、分類の中で前後の部品へ移れる。 */
+/** 部品のページ。見本・説明・API・同じ見本のHTMLとHono JSXを並べ、分類の中で前後の部品へ移れる。 */
 export const ComponentPage = ({
   components,
   entry,
-  usage,
   markup,
   htmlCode,
   jsxCode,
 }: {
   components: readonly ComponentEntry[];
-  entry: ComponentEntry;
-  usage: string;
+  entry: ComponentDoc;
   markup: string;
   htmlCode: Code;
   jsxCode: Code;
@@ -110,9 +327,7 @@ export const ComponentPage = ({
           )}
         </div>
       </section>
-      <Section title="使い方">
-        <p>{usage}</p>
-      </Section>
+      <Reference doc={entry} />
       <Section title="コード">
         <DisclosureGroup label="見本のコード">
           <Disclosure
