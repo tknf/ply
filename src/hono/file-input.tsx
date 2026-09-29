@@ -9,8 +9,11 @@ export type FileInputProps = Omit<
   ElementProps<"input">,
   "type" | "value" | "readonly" | "children"
 > & {
+  /** 欄の名前。選んだファイルの一覧の読み上げ名（「〜で選択したファイル」）にも使う。 */
   label: string;
+  /** 欄の下に出す補足。ファイル入力のaria-describedbyに関連付ける。 */
   help?: string;
+  /** 欄の下に出す誤りの文。ファイル入力をaria-invalidにする。形式・容量の確かめは利用側で行う。 */
   error?: string;
 };
 

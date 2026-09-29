@@ -5,16 +5,27 @@ import { OverlayClose, OverlayContent, overlayAnchorName } from "./overlay-conte
 import { Tooltip } from "./tooltip";
 
 export type PopoverProps = PropsWithChildren<{
+  /** 紙のid。画面内で一意にする。開く操作の`popovertarget`と、CSSのアンカー名の元になる。 */
   id: string;
+  /** 開く操作の文言。iconOnlyの時は`aria-label`として読み上げる。 */
   label: string;
+  /** 紙の見出し。省略するとlabelを使う。 */
   title?: string;
+  /** 見出しの下に置く短い説明。紙の説明（`aria-describedby`）になる。 */
   description?: string;
+  /** 紙を開く操作のどちらの端に揃えるか。 */
   align?: "start" | "end";
+  /** 紙の幅。compactは16rem、defaultは20rem、wideは28remを上限にする。 */
   size?: "compact" | "default" | "wide";
+  /** 開く操作の文言の前に置く印。 */
   icon?: IconName;
+  /** 開く操作を印だけにする。iconが無ければinfoの印を出す。 */
   iconOnly?: boolean;
+  /** 開く操作を押せなくする。 */
   disabled?: boolean;
+  /** 開く操作の見た目。値の意味はButtonと同じ。 */
   triggerVariant?: ButtonProps["variant"];
+  /** 見出しの横の閉じる操作の名前。 */
   closeLabel?: string;
   /**
    * 開いた時に移る先。titleは見出し（既定）。contentは中身のautofocusを付けた欄へ移り、
@@ -25,7 +36,9 @@ export type PopoverProps = PropsWithChildren<{
   titleHidden?: boolean;
   /** 印だけの開く操作に、指を載せた時とフォーカスした時の名前をTooltipで出す。既定は出さない。 */
   tooltip?: boolean;
+  /** 紙の下の操作欄に並べる操作。 */
   actions?: Child;
+  /** 文字の向き。rtlでは始端と末端が入れ替わる。 */
   dir?: "ltr" | "rtl";
 }>;
 

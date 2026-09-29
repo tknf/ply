@@ -1,12 +1,18 @@
 import type { PropsWithChildren } from "hono/jsx";
 import { classes, type ElementProps, type ButtonVariant } from "./types";
 
+/** 関連する操作を隙間なくつなげ、一つのまとまりとして読ませる。 */
 export const ButtonGroup = ({
   children,
   label,
   class: className,
   ...attributes
-}: PropsWithChildren<ElementProps<"div"> & { label: string }>) => (
+}: PropsWithChildren<
+  ElementProps<"div"> & {
+    /** まとまりの名前。`aria-label`として読み上げる。 */
+    label: string;
+  }
+>) => (
   <div
     {...attributes}
     class={classes("ply-button-group", className)}
@@ -19,13 +25,24 @@ export const ButtonGroup = ({
 
 export type ButtonProps = PropsWithChildren<
   ElementProps<"button"> & {
+    /**
+     * 見た目の役割。primaryは画面の主操作、secondaryは通常の操作、
+     * dangerは取り返しのつかない操作、linkは文字だけの軽い操作。
+     */
     variant?: ButtonVariant;
+    /**
+     * 大きさ。compactは同じ高さで左右の余白を狭め、largeはフォーム末尾などの大きな操作に使う。
+     * tagはTagの中の解除操作用で、タッチ環境でも小さな札の高さを保つ。
+     */
     size?: "default" | "compact" | "large" | "tag";
+    /** 処理中にする。内容をbusyLabelに置き換え、押せなくし、aria-busyを付ける。 */
     busy?: boolean;
+    /** 処理中に内容の代わりに出す文言。アイコンも含めて置き換える。 */
     busyLabel?: string;
   }
 >;
 
+/** 操作のボタン。文字・太さ・行高・上下の余白・縦配置はbutton.cssが持つ。外から上書きしない。 */
 export const Button = ({
   children,
   class: className,
@@ -53,11 +70,16 @@ export const Button = ({
 
 export type ActionLinkProps = PropsWithChildren<
   ElementProps<"a"> & {
+    /** 移動先。ページの移動にはButtonではなくこのリンクを使う。 */
     href: string;
+    /** 見た目の役割。値の意味はButtonと同じ。 */
     variant?: ButtonVariant;
+    /** 大きさ。値の意味はButtonと同じ。 */
     size?: "default" | "compact" | "large";
   }
 >;
+
+/** Buttonと同じ見た目の移動リンク。 */
 export const ActionLink = ({
   children,
   class: className,

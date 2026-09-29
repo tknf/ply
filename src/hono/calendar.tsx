@@ -23,6 +23,7 @@ import {
 export type { WeekStart } from "../internal/calendar-date";
 
 export type CalendarEvent = {
+  /** 予定の題名。札に太字で書き、長い時は一行で省略する。 */
   label: string;
   /** 予定のページ。detailsを渡す時は省略でき、札は詳細の紙を開く操作になる。 */
   href?: string;
@@ -30,49 +31,98 @@ export type CalendarEvent = {
    * 札を押すとPopoverと同じ紙で開く、予定の詳細（場所・参加者・メモなど）。idは紙のidで、画面の中で一意にする。
    * 開閉と位置決めはPopoverと同じ（PopoverControllerをpopoverとして登録する）。
    */
-  details?: { id: string; content: Child };
+  details?: {
+    /** 詳細の紙のid。札の`popovertarget`が指すので、画面の中で一意にする。 */
+    id: string;
+    /** 紙に書く中身（場所・参加者・メモなど）。 */
+    content: Child;
+  };
   /** 開始時刻（HH:MM）。省略すると終日の予定。 */
   start?: string;
   /** 終了時刻（HH:MM）。省略すると開始から1時間。 */
   end?: string;
+  /** 分類の色。札の面をその色で淡く塗る。省略すると青。 */
   accent?: Accent;
   /** 仮の予定。破線の縁と斜線で、まだ確定していないことを示す。 */
   tentative?: boolean;
 };
 export type CalendarDay = {
+  /** 表示する日の数字。 */
   day: number;
+  /** 日付（YYYY-MM-DD）。time要素のdatetime、選択の値、曜日と週番号の計算に使う。 */
   date: string;
+  /** 日付の読み上げ名（「9月15日（火）」など）。省略するとdateを読む。 */
   label?: string;
+  /** 日のページ。selectionが無い時、日付の数字をこのリンクにする。 */
   href?: string;
+  /** 今日。日付を蛍光ペンで塗り、aria-current="date"を付ける。現在時刻の線と、過去の予定を淡くする基準にもなる。 */
   current?: boolean;
+  /** 選べない日。リンクにせず、選択のボタンを無効にする。 */
   disabled?: boolean;
+  /** 表示している月の外の日（前後の月の端）。淡く書き、一覧・年表示・狭い幅の月の下の予定一覧には出さない。 */
   outside?: boolean;
+  /** その日の予定。並べ替えはCalendarが行う（終日を先に、時刻のある予定は開始の早い順）。 */
   events?: readonly CalendarEvent[];
 };
 export type CalendarSelection =
-  | { mode: "single"; value?: string }
-  | { mode: "range"; start?: string; end?: string };
-export type CalendarPeriodLink = { label: string; href: string };
-export type CalendarMonth = {
+  | {
+      /** 一日を選ぶ。 */
+      mode: "single";
+      /** 選んでいる日（YYYY-MM-DD）。 */
+      value?: string;
+    }
+  | {
+      /**
+       * 開始と終了の二日で期間を選ぶ。開始の無い時に押した日が開始、開始以降の日を押すと終了になる。
+       * 開始より前の日を押すか、終了まで決まった後に押すと、その日から選び直す。
+       */
+      mode: "range";
+      /** 期間の開始日（YYYY-MM-DD）。 */
+      start?: string;
+      /** 期間の終了日（YYYY-MM-DD）。start以降の日にする。 */
+      end?: string;
+    };
+export type CalendarPeriodLink = {
+  /** 操作の名前。今日への移動は文字で書き、前後への移動は矢印の読み上げ名とtitleにする。 */
   label: string;
+  /** 移る先のURL。期間を変えた表示は利用側がこのURLで返す。 */
+  href: string;
+};
+export type CalendarMonth = {
+  /** 月の名前（「9月」など）。年表示の月の始まりに置く。 */
+  label: string;
+  /** 月表示へのリンク。渡すと月の名前をリンクにする。月の初日は、日付のリンクの代わりにこのリンクを置く。 */
   href?: string;
+  /** その月の日付。Calendarのweeksと同じ形で、outsideの日は年表示に出さない。 */
   weeks: readonly (readonly (CalendarDay | null)[])[];
 };
 type CalendarBaseProps = Omit<ElementProps<"div">, "children"> & {
+  /** 表示している期間の名前（「2026年9月」など）。上の見出しに書き、Calendar全体の読み上げ名にもする。 */
   label: string;
   /** 時間割の稼働時間（時）。外側を淡く塗り、今日が含まれない時は開始時刻へスクロールする。 */
-  hours?: { start: number; end: number };
+  hours?: {
+    /** 稼働の始まりの時（0〜24）。 */
+    start: number;
+    /** 稼働の終わりの時（0〜24）。 */
+    end: number;
+  };
   /** currentの日に引く現在時刻（HH:MM）。時間割は開いた時にこの時刻を表示する。 */
   now?: string;
   /** 週の開始曜日。weeksの各行もこの曜日から並べる。 */
   weekStart?: WeekStart;
   /** 月の各行と週の見出しにISO週番号を表示する。 */
   weekNumbers?: boolean;
+  /** 前の期間へのリンク。矢印だけのボタンにする。 */
   previous?: CalendarPeriodLink;
+  /** 次の期間へのリンク。矢印だけのボタンにする。 */
   next?: CalendarPeriodLink;
+  /** 今日を含む期間へのリンク。前後の矢印の間に文字のボタンで置く。 */
   today?: CalendarPeriodLink;
+  /** 表示形式（月・週・年・一覧など）の切り替え。FilterBarのセグメントで置く。今の形式の項目にはcurrentを渡す。 */
   views?: readonly FilterBarItem[];
+  /** 見出しの行の終わりに置く操作（「予定を追加」など）。 */
   actions?: Child;
+  /** 表示する日付や予定が無い時に書く文。 */
   emptyLabel?: string;
 };
 export type CalendarProps = CalendarBaseProps &
@@ -80,12 +130,21 @@ export type CalendarProps = CalendarBaseProps &
     | {
         /** weekは先頭の一行を時間割で表示する。1日なら日、5日なら稼働日の表示になる。 */
         view?: "month" | "week";
+        /**
+         * 表示する日付。一行が一週で、weekStartの曜日から並べる。月の前後の空きはnullか、outsideの日で埋める。
+         * agendaでは予定のある日だけを日付の順に並べる。
+         */
         weeks: readonly (readonly (CalendarDay | null)[])[];
         months?: never;
+        /**
+         * 日付を押して選べるようにする。日付はボタンになり、CalendarControllerをcalendarとして登録する。
+         * 選んだ値はcalendar:changeで受け取る。
+         */
         selection?: CalendarSelection;
       }
     | {
         view: "year";
+        /** 年表示の月。日付を月をまたいで一続きに並べ、月の始まりに月の名前を置く。 */
         months: readonly CalendarMonth[];
         weeks?: never;
         selection?: never;

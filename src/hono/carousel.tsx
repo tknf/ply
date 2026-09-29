@@ -5,18 +5,28 @@ import { EmptyState } from "./empty-state";
 import { Icon } from "./icon";
 import { classes, type ElementProps } from "./types";
 
+/** 一枚のスライド。Cardとして描く。 */
 export type CarouselSlide = {
+  /** スライドの見出し。読み上げのスライド名「n / 全件: title」にも使う。 */
   title: string;
+  /** スライドの本文。 */
   content: Child;
+  /** 本文の横に置く画像など。狭い幅では本文の上に積む。 */
   preview?: Child;
+  /** 見出しの上の小さな行。「n / 全件」の位置の後ろに並べる。 */
   eyebrow?: Child;
+  /** 本文の下に淡い文字で添える日付などの補足。 */
   footer?: Child;
+  /** 渡すと見出しをリンクにする。 */
   href?: string;
 };
 
 export type CarouselProps = ElementProps<"section"> & {
+  /** まとまりの名前。ルートのaria-labelにする。 */
   label: string;
+  /** 並べるスライド。2件以上で前後の操作を置き、1件では操作を置かず、0件では空状態を示す。 */
   slides: readonly CarouselSlide[];
+  /** 最初に見せるスライドの位置（0から数える）。範囲外や整数でない値は0として扱う。 */
   initialIndex?: number;
   /** 0は自動送り操作なし。正の値では利用者が再生を選ぶまで停止する。 */
   interval?: number;

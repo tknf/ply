@@ -6,16 +6,24 @@ import { parseWingState } from "../internal/wing-state";
 export { wingCookieName } from "../internal/wing-state";
 
 export type WingPanel = {
+  /**
+   * パネルの名前。持ち手の読み上げ名になり、開くと上端の見出しに出す。
+   * 広い配置で閉じている間は、持ち手に指を載せた時のツールチップで示す。
+   */
   label: string;
+  /** パネルの中身。パネルの中でスクロールする。 */
   content: Child;
+  /** 持ち手の印。省略すると開閉の向きを示す印を出す。 */
   icon?: IconName;
-  /** 初期状態。既定は展開。 */
+  /** 初期状態。既定は展開。savedStateやcookieに保存した状態があれば、そちらを優先する。 */
   open?: boolean;
 };
 
 export type WingProps = PropsWithChildren<
   ElementProps<"div"> & {
+    /** 作業面の始まりの側（左から右へ書く言語では左）のパネル。省略するとその側を出さない。 */
     start?: WingPanel;
+    /** 作業面の終わりの側（左から右へ書く言語では右）のパネル。省略するとその側を出さない。 */
     end?: WingPanel;
     /** 指定するとWingControllerが開閉状態をcookieへ保存する。サイト内で一意にする。 */
     storageKey?: string;

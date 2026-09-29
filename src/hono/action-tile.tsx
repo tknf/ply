@@ -5,11 +5,15 @@ import { Keycap } from "./keycap";
 import { classes, type Accent } from "./types";
 
 type TileContent = {
+  /** 名前。印の下に置き、長い時は文節の切れ目で折り返す。 */
   label: string;
+  /** 塗りつぶしで上に置く印。 */
   icon: IconName;
   /** 印の色。既定は青。 */
   accent?: Accent;
+  /** 使えない状態にする。リンクは`href`を外して移動しない印（`aria-disabled`）にし、ボタンは押せなくする。 */
   disabled?: boolean;
+  /** ルートに足すクラス。`ply-action-tile`は常に付く。 */
   class?: string;
   /** 表示用のキーの印。Keycapの小さい形で、印の終わりの側の上に添える。登録は利用側で行う。 */
   shortcut?: string;
@@ -17,10 +21,12 @@ type TileContent = {
   badge?: string;
 };
 export type ActionTileProps =
-  | (TileContent & { href: string; current?: boolean } & Omit<
-        JSX.IntrinsicElements["a"],
-        "class" | "children"
-      >)
+  | (TileContent & {
+      /** 移動先。渡すとリンクになり、渡さなければ`type="button"`のボタンになる。 */
+      href: string;
+      /** 今いる場所の入口として`aria-current="page"`を付ける。 */
+      current?: boolean;
+    } & Omit<JSX.IntrinsicElements["a"], "class" | "children">)
   | (TileContent & { href?: never } & Omit<JSX.IntrinsicElements["button"], "class" | "children">);
 
 /**

@@ -3,10 +3,13 @@ import { DropdownMenu, type MenuItem } from "./dropdown-menu";
 import { classes } from "./types";
 
 export type SplitButtonProps = Omit<ButtonProps, "children"> & {
+  /** ▾のメニューのidの元。メニューは`<id>-menu`になる。画面内で一意にする。主操作のボタンのidには使わない。 */
   id: string;
+  /** 主操作の文言。 */
   label: string;
   /** ▾で開くほかのやり方（「送信の予約」「下書きとして保存」など）。 */
   items: readonly MenuItem[];
+  /** ▾の操作の名前。印だけの操作なので`aria-label`として読み上げる。 */
   menuLabel?: string;
 };
 

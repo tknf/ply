@@ -2,16 +2,25 @@ import { useId } from "hono/jsx";
 import { classes, type ElementProps } from "./types";
 
 export type RangeProps = Omit<ElementProps<"input">, "type" | "value" | "children"> & {
+  /** 名前。単一値ではラベル、範囲指定ではfieldsetのlegendになる。単位はここにも含める。 */
   label: string;
+  /** 下限。スライダーの始まりの端に数として出す。 */
   min: number;
+  /** 上限。スライダーの終わりの端に数として出す。 */
   max: number;
+  /** 数値なら単一値、[下限, 上限]なら範囲指定になる。省略すると単一値で、位置はブラウザの既定（minとmaxの中間）になる。 */
   value?: number | readonly [number, number];
+  /** 単一値の時、現在値の表示に添える単位。範囲指定では使わない。 */
   unit?: string;
 };
 
 const isInterval = (value: RangeProps["value"]): value is readonly [number, number] =>
   Array.isArray(value);
 
+/**
+ * 連続する数値を調整するスライダー。範囲指定は2本のスライダーと数の入力で下限と上限を選ぶ。
+ * 残りの属性（stepなど）はスライダーのinputへ渡す。
+ */
 export const Range = ({
   id,
   label,

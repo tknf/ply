@@ -6,34 +6,65 @@ import { Icon } from "./icon";
 import { classes, type ElementProps } from "./types";
 
 export type MessageListItem = {
+  /** 連絡を識別する値。行のdata-message-idに入れ、newSinceの位置合わせにも使う。 */
   id: string;
+  /** 差出人の名前。空白だけの時は「差出人不明」と出す。 */
   sender: string;
+  /** 件名。空白だけの時は「（件名なし）」と出す。一行に収まらない分は省略する（幅が30rem未満では二行まで折り返す）。 */
   title: string;
+  /** 本文の書き出し。差出人の後ろに続け、previewLinesの行数に収まらない分は省略する。 */
   preview?: string;
+  /** 行を開く移動先。省略すると行はリンクにならない。 */
   href?: string;
+  /** 行の終わりに出す時刻の文字。書式は利用側で決める。 */
   time?: string;
+  /** timeに対応する機械可読の日時。日時として読める値の時だけtime要素にする。 */
   datetime?: string;
+  /** 差出人の円（Avatarなど）。一覧のどれかの行に渡すと全ての行に円の列を設け、無い行には手紙の印を置く。 */
   avatar?: Child;
+  /** 未読。件名と差出人を太字にし、時刻の後ろに青い点と読み上げ用の「未読」を添える。 */
   unread?: boolean;
+  /** 今開いている連絡。行を淡い青の面にし、aria-current="page"を付ける。 */
   current?: boolean;
+  /** 会話の件数。2以上の時だけ件名の後ろに数を出す。 */
   threadCount?: number;
+  /** 添付ファイルの数。1以上の時だけ件名の後ろにファイルの印と数を出す。 */
   attachments?: number;
+  /** 送信の状態。件名の前に札を置く（draftは「下書き」、sendingは「送信中」で行を控えめに、failedは赤い「送信失敗」）。 */
   state?: "draft" | "sending" | "failed";
+  /** 閲覧できない理由。指定するとstateより優先して「閲覧不可」の札を出し、書き出しの位置に理由を出す。 */
   unavailableReason?: string;
 };
 export type MessageListProps = ElementProps<"ul"> & {
+  /** 一覧の名前。ulのaria-labelに入れる。 */
   label: string;
+  /** 並べる連絡。並び順と絞り込みは利用側で決める。 */
   items: readonly MessageListItem[];
+  /** 一覧全体の状態。loadingとerrorでは行を出さず、一覧の場所に状態の文を出す。loadingではaria-busyを付ける。 */
   state?: "ready" | "loading" | "error";
+  /** 状態の文の代わりに出す内容。readyでは0件の時の表示（empty）の代わりになる。 */
   stateContent?: Child;
+  /** 書き出しの行数。1は差出人と書き出しを一行に並べ、2は差出人の下で書き出しを二行まで折り返す。 */
   previewLines?: 1 | 2;
   /** この項目の直前に区切りの線とラベルを置き、ここから新しいことを示す。 */
-  newSince?: { id: string; label?: string };
+  newSince?: {
+    /** 区切りを置く項目のid。この項目の直前に線とラベルを置く。一致する項目が無ければ何も置かない。 */
+    id: string;
+    /** 区切りのラベル。既定は「ここから新着」。 */
+    label?: string;
+  };
   /**
    * 連絡が一件もない時の表示。EmptyStateで描く。行を後から出し入れしても、行が一つもない時だけ見える。
    * 既定は「連絡はまだありません」。
    */
-  empty?: { title: string; description?: Child; kind?: EmptyStateProps["kind"] };
+  empty?: {
+    /** 空の時の題名。 */
+    title: string;
+    /** 題名の下に添える説明。 */
+    description?: Child;
+    /** EmptyStateの場面（`empty`・`start`・`complete`）。 */
+    kind?: EmptyStateProps["kind"];
+  };
 };
 export const MessageList = ({
   label,

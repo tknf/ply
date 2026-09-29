@@ -4,6 +4,7 @@ import { LayerCard } from "./layer-card";
 import { classes, type ElementProps } from "./types";
 
 export type PromptChoice = {
+  /** 送信のボタンの時にnameと一緒に送る値。hrefを渡した選択肢では使わない。 */
   value: string;
   /** 選択肢の要点。太字で書く。 */
   title: string;
@@ -13,13 +14,15 @@ export type PromptChoice = {
   href?: string;
 };
 export type PromptProps = ElementProps<"section"> & {
+  /** 問い。層の見出し（h3）に書き、読み上げ名（aria-label）にもする。 */
   question: string;
+  /** 答えの行。並べた順に上から置く。 */
   choices: readonly PromptChoice[];
   /** ボタンの選択肢が送る名前。 */
   name?: string;
   /** 選ばずに閉じる操作（「今は答えない」など）。見出しの行の終わりに置く。 */
   dismiss?: Child;
-  /** 渡すと、層の下に尾を付けて、すぐ下の物を指す。 */
+  /** 層の下に尾を付けて、すぐ下の物を指す。falseで尾を外す。 */
   pointer?: boolean;
 };
 

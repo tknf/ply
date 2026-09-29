@@ -4,14 +4,26 @@ import type { ButtonVariant } from "./types";
 import { OverlayClose, OverlayContent } from "./overlay-content";
 
 export type DialogProps = PropsWithChildren<{
+  /** `dialog`要素のid。画面内で一意にする。見出しは`<id>-title`、説明は`<id>-description`になる。 */
   id: string;
+  /** 見出し。ダイアログの名前として読み上げる。 */
   title: string;
+  /** 開く操作の文言。 */
   trigger: string;
+  /** 見出しの下に置く短い説明。ダイアログの説明（`aria-describedby`）になる。 */
   description?: string;
+  /** 開く操作の見た目。削除の確認ならdangerにする。 */
   triggerVariant?: ButtonVariant;
+  /** 開く操作を押せなくする。 */
   triggerDisabled?: boolean;
+  /** 紙の幅。compactは26rem、defaultは32rem、wideは52remを上限にする。 */
   size?: "compact" | "default" | "wide";
+  /** 見出しの横の閉じる操作の名前。actionsがある時は、操作欄の先頭に置くやめる操作の文言にもなる。 */
   closeLabel?: string;
+  /**
+   * 操作欄に並べる操作。渡すと、閉じる操作（closeLabel）の後ろに置く。
+   * 押して閉じる操作には`data-dialog-target="close"`を付ける。
+   */
   actions?: Child;
   /** contentでは本文内のautofocus、または最初の操作へ移る。 */
   initialFocus?: "title" | "content";

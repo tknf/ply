@@ -2,14 +2,21 @@ import type { Child } from "hono/jsx";
 import { classes, type Accent, type ElementProps } from "./types";
 
 export type ValueItem = {
+  /** 項目名。dtに入れる。 */
   label: string;
+  /** 現在の値。ddに入れる。nullかundefinedの時は淡い「未登録」を出し、0や空文字はそのまま出す。書式は利用側で決める。 */
   value: Child;
+  /** 値の下に添える淡い補足。 */
   description?: string;
   /** 項目名の前に置く印。塗りつぶしの印を色の淡い丸に入れる。 */
   icon?: Child;
+  /** 印の丸の色。iconを渡した時だけ効き、省略時はblueにする。 */
   accent?: Accent;
 };
-export type ValueListProps = ElementProps<"dl"> & { items: readonly ValueItem[] };
+export type ValueListProps = ElementProps<"dl"> & {
+  /** 並べる項目。一項目を項目名と値の一行にする。 */
+  items: readonly ValueItem[];
+};
 export const ValueList = ({ items, class: className, ...attributes }: ValueListProps) => (
   <dl {...attributes} class={classes("ply-value-list", className)}>
     {items.map(({ label, value, description, icon, accent = "blue" }) => (

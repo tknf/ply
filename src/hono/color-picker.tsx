@@ -6,24 +6,43 @@ import { Tag } from "./tag";
 import { classes } from "./types";
 
 export type ColorPickerValue = {
+  /** 色を解釈する色空間。画面からは変えられず、`${name}[colorSpace]`でそのまま送る。 */
   colorSpace: "srgb" | "display-p3";
+  /** 色相。0〜360の度。範囲外は端に丸める。 */
   hue: number;
+  /** HSVの彩度。0〜100のパーセント。範囲外は端に丸める。 */
   saturation: number;
+  /** HSVの明度。0〜100のパーセント。範囲外は端に丸める。 */
   brightness: number;
+  /** 不透明度。0〜1。範囲外は端に丸める。 */
   alpha: number;
 };
 
 export type ColorPickerProps = {
+  /** ルートのfieldsetのID。中の欄のIDの頭にも使う。渡さなければ自動で作る。 */
   id?: string;
+  /** ルートのfieldsetに足すクラス。 */
   class?: string;
+  /** 欄全体の名前。legendに出し、色の面の読み上げ名にも使う。 */
   label: string;
+  /** 送る名前の頭。`${name}[hue]`・`[saturation]`・`[brightness]`・`[alpha]`・`[colorSpace]`で送る。 */
   name: string;
+  /** 初めの色。 */
   value?: ColorPickerValue;
+  /** 欄の下に出す補足。fieldsetのaria-describedbyに関連付ける。 */
   help?: string;
+  /** 欄の下に出す誤りの文。fieldsetをaria-invalidにする。確かめは利用側で行う。 */
   error?: string;
+  /** 色の面とスライダーをすべて使えなくする。値は送信しない。 */
   disabled?: boolean;
+  /** 別の場所にあるformのID。送信する全ての欄に付ける。 */
   form?: string;
+  /** 色の面を矢印キーで動かす時の、彩度・明度の幅（0より大きく100以下）。Shiftを押すと10倍。 */
   step?: number;
+  /**
+   * 上流のcolor-pickerが色相の輪を矢印キーで動かす時の幅（0より大きく360以下）。
+   * この部品は輪を持たないので、色相のスライダーの動きには効かない。
+   */
   hueStep?: number;
 };
 

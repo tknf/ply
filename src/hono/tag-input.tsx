@@ -4,15 +4,25 @@ import { Field, Input } from "./field";
 import { Tag } from "./tag";
 
 export type TagInputProps = {
+  /** 入力欄のID。ラベル・補足・誤りの文のIDの頭にも使う。渡さなければ自動で作る。 */
   id?: string;
+  /** 欄の名前。タグの一覧の読み上げ名（「〜のタグ」）にも使う。 */
   label: string;
+  /** タグを「, 」でつないだ一つの値を送るフィールドの名前。 */
   name: string;
+  /** 初めのタグ。前後の空白を除き、空・カンマを含むもの・重複は捨てる。フォームのリセットでこの並びへ戻る。 */
   values?: readonly string[];
+  /** 入力欄の薄い文字。 */
   placeholder?: string;
+  /** 欄の下に出す補足。入力欄のaria-describedbyに関連付ける。 */
   help?: string;
+  /** 欄の下に出す誤りの文。入力欄をaria-invalidにする。確かめは利用側で行う。 */
   error?: string;
+  /** タグが一つも無い時に送信を止める。 */
   required?: boolean;
+  /** 追加・解除を止め、値を送信しない。 */
   disabled?: boolean;
+  /** 別の場所にあるformのID。 */
   form?: string;
 };
 

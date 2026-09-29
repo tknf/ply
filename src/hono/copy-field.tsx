@@ -4,11 +4,17 @@ import { Field, Input } from "./field";
 import { Icon } from "./icon";
 
 export type CopyFieldProps = {
+  /** 欄のid。ラベルと補足の関連付けに使う。 */
   id: string;
+  /** 欄のラベル。 */
   label: string;
+  /** 写す値。読み取り専用の欄に出し、送信はしない。 */
   value: string;
+  /** 欄の下に出す淡い補足。 */
   help?: string;
+  /** 写す印の読み上げ名とツールチップ。 */
   copyLabel?: string;
+  /** 写せた時に読み上げる文言。 */
   copiedLabel?: string;
   /** 欄の終わりに置く操作（リンクを作り直すなど）。 */
   actions?: Child;

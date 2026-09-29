@@ -2,6 +2,7 @@ import type { Child } from "hono/jsx";
 import { classes, type ElementProps } from "./types";
 
 export type SettingListItem = {
+  /** 設定の名前。太字にする。操作の名前（aria-labelなど）は利用側がcontrolに付ける。 */
   label: string;
   /** 名前の下に添える淡い補足（メールアドレスなど）。 */
   description?: Child;
@@ -11,7 +12,9 @@ export type SettingListItem = {
   control: Child;
 };
 export type SettingListProps = ElementProps<"ul"> & {
+  /** 一覧の名前。ulのaria-labelに入れる。 */
   label: string;
+  /** 並べる設定の行。 */
   items: readonly SettingListItem[];
 };
 

@@ -3,18 +3,31 @@ import { Button } from "./button";
 import { Icon } from "./icon";
 
 export type TreeItem = {
+  /**
+   * 項目を識別する値。tree:changeのdetail.valueで知らせる。
+   * 空白だけの値と、全階層を通じて二つ目以降に現れた値の項目は、子ごと出さない。
+   */
   value: string;
+  /** 項目の名前。空白だけの時はvalueを名前にする。 */
   label: string;
+  /** 名前をリンクにする時のURL。無効な項目ではリンクにしない。 */
   href?: string;
+  /** 選べない項目。開閉のボタンも押せず、矢印キーの移動の対象から外す。 */
   disabled?: boolean;
+  /** 子の項目。一件以上あると、開閉のボタンを付けた親になる。 */
   children?: readonly TreeItem[];
 };
 
 export type TreeProps = {
+  /** ルートのid。省略すると自動で作る。各項目のidの元になる。 */
   id?: string;
+  /** treeの読み上げ名。空白だけの時は「項目一覧」にする。 */
   label: string;
+  /** 最上位の項目。重複や空の値を除いて一件も残らない時は、「項目はありません。」の状態文を出す。 */
   items: readonly TreeItem[];
+  /** 初めに選んでおく項目のvalue。見つからない値は選択なしとして扱う。 */
   value?: string;
+  /** 初めに開いておく親の項目のvalue。子を持たない値は無視する。 */
   expanded?: readonly string[];
 };
 

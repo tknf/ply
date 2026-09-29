@@ -5,19 +5,32 @@ import { Icon } from "./icon";
 import { classes, type ElementProps, type Tone } from "./types";
 
 export type BoardEntry = {
+  /** 項目のid。board:beforemoveとboard:moveのdetail.idで返る。Boardの中で一意にする。 */
   id: string;
+  /** 項目の名前。持ち手の読み上げ名（「〜を移動」）と、運ぶ間の読み上げに使う。 */
   label: string;
+  /** 紙に載せる中身。見出し・本文・TagGroup・Progressなど任意の要素を置ける。 */
   content: Child;
+  /** 動かせない項目。持ち手を無効にする。 */
   disabled?: boolean;
   /** 項目の番号など。札にして、紙の上の始まりの角に列の色で置く。 */
   code?: string;
 };
 type Column = {
+  /** 列のid。移動と開閉のイベントで列を指す値になる。省略すると並び順の番号（"0"から）。 */
   id?: string;
+  /** 列の名前。見出しに書き、項目の一覧の読み上げ名にもする。 */
   title: string;
+  /** 列の役割の色。見出しの文字と、項目の紙の斜めの染まり・角の札に出す。neutralは染めない。 */
   tone?: Tone;
+  /** 今の列（今日の担当など）。toneに関わらず青で染める。 */
   current?: boolean;
+  /**
+   * 項目が無い時に置く文。省略すると、movableなら「ここへ移動できます」（受け付けない列は「この列には移動できません」）、
+   * movableでなければ「項目はありません」を置く。
+   */
   empty?: Child;
+  /** 項目を受け付けない列。斜線を引き、移動先にしない。 */
   disabled?: boolean;
   /** たたんだ列。件数と縦書きの名前を載せた縦長のピルになり、中の項目は隠す。移動先にはならない。 */
   collapsed?: boolean;
@@ -27,12 +40,29 @@ type Column = {
    */
   collapsible?: boolean;
 } & (
-  | { items: readonly BoardEntry[]; content?: never; count?: never }
-  | { content: Child; count: number; items?: never }
+  | {
+      /** 列の項目。渡した順に上から並べる。件数は項目の数から数える。 */
+      items: readonly BoardEntry[];
+      content?: never;
+      count?: never;
+    }
+  | {
+      /** 項目の代わりに置く任意の中身。移動先にはならない。 */
+      content: Child;
+      /** contentの時に見出しへ添える件数。 */
+      count: number;
+      items?: never;
+    }
 );
 export type BoardProps = ElementProps<"div"> & {
+  /** Board全体（role="region"）の読み上げ名。 */
   label: string;
+  /** 列。渡した順に書き始めの側から並べる。 */
   columns: readonly Column[];
+  /**
+   * 項目に持ち手を置き、列の間の移動と並べ替えを有効にする。BoardControllerをboardとして登録する。
+   * 持ち手はcontrollerが接続するまで無効のまま。
+   */
   movable?: boolean;
 };
 export const Board = ({

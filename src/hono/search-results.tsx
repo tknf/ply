@@ -2,7 +2,9 @@ import type { Child } from "hono/jsx";
 import { classes, type ElementProps } from "./types";
 
 export type SearchResult = {
+  /** 結果の題名。リンクの文字にし、queryに一致した語を強調する。 */
   title: string;
+  /** 題名のリンクの移動先。 */
   href: string;
   /** 本文の抜粋。文字で渡すと、queryに一致した語を強調する。 */
   excerpt?: Child;
@@ -12,9 +14,11 @@ export type SearchResult = {
   leading?: Child;
 };
 export type SearchResultsProps = ElementProps<"ol"> & {
+  /** 結果の一覧の名前。olのaria-labelに入れる。 */
   label: string;
   /** 一致した語。題名と文字の抜粋の中で強調する。 */
   query?: string;
+  /** 並べる結果。並び順は利用側で決める。 */
   results: readonly SearchResult[];
 };
 

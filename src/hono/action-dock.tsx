@@ -2,7 +2,9 @@ import { ActionTile, type ActionTileProps } from "./action-tile";
 import { classes, type ElementProps } from "./types";
 
 export type ActionDockProps = ElementProps<"nav"> & {
+  /** 棚の名前。`nav`の`aria-label`として読み上げる。 */
   label: string;
+  /** 並べる操作。ActionTileと同じ指定で、hrefがあればリンク、無ければボタンになる。 */
   items: readonly ActionTileProps[];
   /** fixedは画面の下の中央に浮かべ、stickyは置いた場所の下端に留める（既定）。 */
   placement?: "sticky" | "fixed";

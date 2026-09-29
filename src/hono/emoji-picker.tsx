@@ -3,13 +3,19 @@ import { InputGroup } from "./input-group";
 import { classes, type ElementProps } from "./types";
 
 export type Emoji = {
+  /** 格子に出し、選んだ時にemoji-picker:pickで知らせる絵文字。 */
   emoji: string;
   /** 読み上げと指を載せた時の名前。 */
   name: string;
   /** 探す時に当てる別の言葉。 */
   keywords?: readonly string[];
 };
-export type EmojiGroup = { label: string; emojis: readonly Emoji[] };
+export type EmojiGroup = {
+  /** 種類の見出し。格子のまとまりの読み上げ名にもなる。 */
+  label: string;
+  /** この種類に並べる絵文字。並べた順に格子へ置く。 */
+  emojis: readonly Emoji[];
+};
 
 /** 既定の絵文字。反応によく使うものだけに絞る。全ての絵文字を並べたい時は利用側でgroupsを渡す。 */
 export const defaultEmojiGroups: readonly EmojiGroup[] = [
@@ -76,10 +82,15 @@ export const defaultEmojiGroups: readonly EmojiGroup[] = [
 ];
 
 export type EmojiPickerProps = Omit<ElementProps<"div">, "children"> & {
+  /** 探す欄と種類の見出しのIDの頭。ページ内で一意にする。 */
   id: string;
+  /** 板全体（role="group"）の読み上げ名。 */
   label?: string;
+  /** 種類ごとの絵文字。渡さなければ反応によく使う40個（defaultEmojiGroups）を並べる。 */
   groups?: readonly EmojiGroup[];
+  /** 探す欄の薄い文字。欄の読み上げ名にも使う。 */
   placeholder?: string;
+  /** 探した言葉に当てはまる絵文字が無い時に出す文。 */
   emptyLabel?: string;
   /** Popoverの中に置く時。開いた時に探す欄へ移る。 */
   autofocus?: boolean;

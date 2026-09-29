@@ -1,9 +1,12 @@
 import { useId } from "hono/jsx";
 import type { ElementProps } from "./types";
 export type SwitchProps = Omit<ElementProps<"input">, "type"> & {
+  /** 設定の名前。スイッチの読み上げ名になる（aria-labelかaria-labelledbyを渡すとそちらを使う）。 */
   label: string;
+  /** 名前の下に添える淡い説明。スイッチの説明として読み上げる。 */
   description?: string;
 };
+/** 標準のcheckboxにrole="switch"を付けた、オン・オフの切り替え。残りの属性はinputへ渡す。 */
 export const Switch = ({ id, label, description, ...attributes }: SwitchProps) => {
   const generatedId = useId();
   const inputId = id ?? `ply-switch-${generatedId}`;

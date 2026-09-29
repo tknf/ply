@@ -1,11 +1,18 @@
 import { Icon } from "./icon";
 import { classes, type ElementProps } from "./types";
 
-export type InlineSelectOption = { value: string; label: string };
+export type InlineSelectOption = {
+  /** 送信する値。 */
+  value: string;
+  /** 文の中に見せる語。前後の文とつないで読める形で書く（「30分前に」など）。 */
+  label: string;
+};
 export type InlineSelectProps = Omit<ElementProps<"select">, "children"> & {
   /** 読み上げの名前。文の中では前後の文が見出しになるので、何を選ぶかを短く書く。 */
   label: string;
+  /** 選べる語。並べた順にoptionにする。 */
   options: readonly InlineSelectOption[];
+  /** 初めに選んでおく選択肢のvalue。渡さなければ先頭を選ぶ。 */
   value?: string;
 };
 

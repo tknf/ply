@@ -4,18 +4,30 @@ import { Switch } from "./switch";
 import { TimeField } from "./time-field";
 import { classes, type ElementProps } from "./types";
 
-type Point = { date?: string; time?: string };
+type Point = {
+  /** 日付（YYYY-MM-DD）。 */
+  date?: string;
+  /** 時刻（HH:MM）。 */
+  time?: string;
+};
 export type DateTimeRangeProps = ElementProps<"fieldset"> & {
+  /** 枠全体の名前。legendに出す。 */
   legend: string;
   /** 送る名前の頭。`${name}[start_date]`・`[start_time]`・`[end_date]`・`[end_time]`・`[all_day]`で送る。 */
   name: string;
+  /** 開始の初めの日付と時刻。 */
   start?: Point;
+  /** 終了の初めの日付と時刻。 */
   end?: Point;
+  /** 終日のSwitchを入れておく。入っている間は時刻の欄を隠す。 */
   allDay?: boolean;
   /** 渡すと、終わりの側に地球の印とタイムゾーンを添える。 */
   timezone?: string;
+  /** 開始の側の小さな名前。日付と時刻の欄の読み上げ名（「開始の日付」など）の頭にも使う。 */
   startLabel?: string;
+  /** 終了の側の小さな名前。日付と時刻の欄の読み上げ名の頭にも使う。 */
   endLabel?: string;
+  /** 終日のSwitchの名前。 */
   allDayLabel?: string;
 };
 

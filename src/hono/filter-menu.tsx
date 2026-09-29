@@ -5,33 +5,47 @@ import { Keycap } from "./keycap";
 import { overlayAnchorName } from "./overlay-content";
 
 export type FilterMenuOption = {
+  /** 選んだ時に`filter-menu:select`の`detail.value`で知らせる値。nameがあれば送信する値にもなる。 */
   value: string;
+  /** 候補の名前。絞り込みは、打った文字をこの名前に含むかで決める（大文字と小文字は区別しない）。 */
   label: string;
+  /** 選んだ印の代わりに前に置く印。渡すと、選んだ印は行の終わりに出す。 */
   icon?: IconName;
   /** 表示用の補助表記。ショートカットの登録は利用側で行う。 */
   shortcut?: string;
+  /** 初めから選んでおく。 */
   selected?: boolean;
+  /** 選べない候補にする。矢印の移動でも飛ばす。 */
   disabled?: boolean;
 };
 export type FilterMenuProps = {
+  /** 紙と候補のidの元。画面内で一意にする。紙は`<id>-panel`、候補の一覧は`<id>-list`になる。 */
   id: string;
   /** 開く操作の名前。 */
   label: string;
   /** 紙の見出し（「ラベルを選ぶ」「担当を決める」など）。 */
   title: string;
+  /** 候補。 */
   options: readonly FilterMenuOption[];
   /** 複数を選べる時（ラベル・タグ）。一つだけの時（担当）は選ぶと閉じる。 */
   multiple?: boolean;
   /** 渡すと、選んだ値をこの名前の隠し入力で送る。 */
   name?: string;
+  /** 絞り込みの欄の見本の文字。欄の`aria-label`にもなる。 */
   placeholder?: string;
   /** 渡すと、絞り込みの欄の隣に「新しく作る」を置き、押すとfilter-menu:createで打った文字を知らせる。 */
   createLabel?: string;
+  /** 当てはまる候補が無い時に出す文言。 */
   emptyLabel?: string;
+  /** 開く操作の文言の前に置く印。 */
   icon?: IconName;
+  /** 開く操作を印だけにする。iconと一緒に渡す。labelは`aria-label`として読み上げる。 */
   iconOnly?: boolean;
+  /** 開く操作の見た目。値の意味はButtonと同じ。 */
   variant?: ButtonProps["variant"];
+  /** 紙を開く操作のどちらの端に揃えるか。endは行の終わりの側に置いた操作に使う。 */
   align?: "start" | "end";
+  /** 開く操作を押せなくする。 */
   disabled?: boolean;
 };
 

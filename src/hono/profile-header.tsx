@@ -2,6 +2,7 @@ import type { Child } from "hono/jsx";
 import { classes, type ElementProps } from "./types";
 
 export type ProfileHeaderProps = ElementProps<"header"> & {
+  /** 人やグループの名前。headingLevelの見出しで出す。 */
   name: string;
   /** 大きな人の円（Avatarのlarge）。 */
   avatar: Child;

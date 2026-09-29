@@ -2,10 +2,21 @@ import { useId, type Child } from "hono/jsx";
 import { classes, type ElementProps } from "./types";
 
 export type SplitViewProps = ElementProps<"div"> & {
+  /** 先に読む領域。広い配置では始まりの側、狭い配置では上に置く。 */
   primary: Child;
+  /** 後に読む領域。広い配置では終わりの側、狭い配置では下に置く。 */
   secondary: Child;
+  /** inspectorはprimaryを広く取る作業＋補足、readerはprimaryを狭く取る一覧＋本文。 */
   layout?: "inspector" | "reader";
+  /**
+   * 境目に持ち手を置き、ドラッグと矢印キーで幅を変えられるようにする。
+   * SplitterControllerをsplitterとして登録した時だけ働き、未接続ではlayoutの固定の比率で並べる。
+   */
   resizable?: boolean;
+  /**
+   * resizableの時のprimaryの幅の初期値。全体に対する百分率で、20〜80に丸める。
+   * 既定はreaderで38、inspectorで68。
+   */
   initialSize?: number;
 };
 

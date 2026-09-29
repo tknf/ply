@@ -1,7 +1,19 @@
 /** 単日と同日の期間も、呼び出し側が指定した種別のまま扱う。 */
 export type DatePickerSelection =
-  | { kind: "single"; start: string }
-  | { kind: "range"; start: string; end: string };
+  | {
+      /** 単日。 */
+      kind: "single";
+      /** 日付（YYYY-MM-DD）。未入力は空文字。 */
+      start: string;
+    }
+  | {
+      /** 期間。開始日と終了日が同じ日でも期間として扱う。 */
+      kind: "range";
+      /** 開始日（YYYY-MM-DD）。未入力は空文字。 */
+      start: string;
+      /** 終了日（YYYY-MM-DD）。未入力は空文字。 */
+      end: string;
+    };
 
 export const isoDate = (date: Date) =>
   `${String(date.getUTCFullYear()).padStart(4, "0")}-${String(date.getUTCMonth() + 1).padStart(2, "0")}-${String(date.getUTCDate()).padStart(2, "0")}`;
@@ -21,8 +33,11 @@ export const formatSelection = (selection: DatePickerSelection) => {
 
 /** idはDatePickerのルート、または通常の日付inputを参照する。 */
 export type DatePickerBoundReference = {
+  /** 参照するDatePickerのルートID、またはYYYY-MM-DDを値に持つinputのID。 */
   id: string;
+  /** 参照先が期間の時に、開始日と終了日のどちらを使うか。通常のinputでは使わない。 */
   bound?: "start" | "end";
+  /** 参照先の日に足す日数。1で翌日から、-1で前日まで、のように差を付ける。 */
   offsetDays?: number;
 };
 export type DatePickerBounds = { min: string; max: string; empty: boolean };

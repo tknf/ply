@@ -34,7 +34,12 @@ const tools: Record<TextEditorTool, { label: string; icon: IconName }> = {
 };
 
 export type TextEditorProps = Omit<ElementProps<"textarea">, "children"> & {
+  /**
+   * 書く面のID。textareaに付け、道具の並びのaria-controlsが指す。
+   * editorを渡す時は、その書く面の要素に同じIDを付ける。
+   */
   id: string;
+  /** 書く面の読み上げ名。道具の並びの名前（「〜の書式」）にも使う。editorを渡した時は書く面に付かない。 */
   label: string;
   /** 道具の並び。"|"で区切りを入れる。 */
   tools?: readonly (TextEditorTool | "|")[];

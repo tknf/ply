@@ -2,6 +2,7 @@ import type { ElementProps } from "./types";
 import { classes } from "./types";
 
 export type KeycapProps = ElementProps<"span"> & {
+  /** 同時に押すキーの表記。一つずつ`kbd`にして並べる。記号だけの時は読み上げ用に`aria-label`を添える。 */
   keys: readonly string[];
   /** smallはタイルの角やメニューの行の終わりに添える小さな印。 */
   size?: "default" | "small";

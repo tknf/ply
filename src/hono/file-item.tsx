@@ -3,10 +3,18 @@ import { Icon } from "./icon";
 import { classes, type ElementProps } from "./types";
 
 export type FileItemProps = ElementProps<"div"> & {
+  /** ファイル名。長い名前も省略せずに折り返す。 */
   name: string;
+  /** 名前の下に淡い文字で添える形式・大きさ・日付など。エラーの時は直し方を書く。 */
   description: string;
+  /** 渡すと名前をリンクにする。開く・ダウンロードするURLは利用側が用意する。 */
   href?: string;
+  /**
+   * readyは通常の表示。pendingは印を控えめにして説明の前に「待機中 · 」を、
+   * errorは印と文言を危険の色にして「送信失敗 · 」を付ける。送信や再送の処理は利用側が持つ。
+   */
   state?: "ready" | "pending" | "error";
+  /** 行の終わりに置く操作（確認・再送信など）。広い幅では右端、狭い幅では名前の下に積む。 */
   actions?: Child;
   /** 画像やPDFの1ページ目の縮小。渡すとファイルの印の代わりに中身を見せる。 */
   preview?: Child;

@@ -4,6 +4,10 @@ import type { JSX } from "hono/jsx";
 export type ElementProps<Tag extends keyof JSX.IntrinsicElements> = JSX.IntrinsicElements[Tag];
 export type Accent = "blue" | "green" | "amber" | "coral";
 export type Tone = "neutral" | "info" | "success" | "warning" | "danger";
+/**
+ * 操作の見た目の役割。primaryは青の塗り、secondaryは白い面と枠、dangerは赤の塗り、
+ * linkは面も枠も持たない青い文字。形はどれもピルで、違いは塗りの色で出す。
+ */
 export type ButtonVariant = "primary" | "secondary" | "danger" | "link";
 
 /** 利用側の配置クラスは残し、コンポーネントのルートクラスを必ず付ける。 */

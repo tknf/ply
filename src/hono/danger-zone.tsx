@@ -3,8 +3,11 @@ import { classes, type ElementProps } from "./types";
 
 export type DangerZoneProps = PropsWithChildren<
   ElementProps<"section"> & {
+    /** 操作の名前。`h2`で置く。 */
     title?: string;
+    /** 操作の影響。何が消え、元に戻せるかを書く。 */
     description?: string;
+    /** 説明の下に並べる操作。ButtonやActionLink、確認を挟む時はDialogを渡す。幅が足りなければ折り返す。 */
     actions?: Child;
   }
 >;

@@ -4,11 +4,27 @@ import { useId } from "hono/jsx";
 import { Toast } from "./toast";
 import { classes, type ElementProps } from "./types";
 
-export type CodeToken = { content: string; color?: string };
+/** 着色の一区切り。 */
+export type CodeToken = {
+  /** 区切りの文字列。改行を含めてよい。全てのcontentをつなぐとcodeと同じになるようにする。 */
+  content: string;
+  /** 文字の色（CSSの色の値）。渡さなければ地の文字の色で書く。空白だけの区切りには色を付けない。 */
+  color?: string;
+};
 export type CodeBlockProps = ElementProps<"figure"> & {
+  /** 表示してコピーするコードの全文。改行と字下げをそのまま保ち、HTMLも文字として書く。 */
   code: string;
+  /** コードの名前（ファイル名や用途）。見出しの行と、コード領域のaria-labelにする。 */
   label: string;
+  /**
+   * 着色した区切りの並び。全てのcontentをつないだ文字列がcodeと一致する時だけ使い、
+   * 一致しなければ着色せずにcodeを書く。ハイライトは利用側で行う（Shikiの結果などを渡す）。
+   */
   tokens?: readonly CodeToken[];
+  /**
+   * 見出しの行にコピーの操作を置く。クリップボードに書き込める環境でだけ表示し、結果をToastで知らせる。
+   * ClipboardController・CodeBlockController・ToastControllerの登録が要る。
+   */
   copy?: boolean;
   /** 行の頭に番号を振る。番号はコピーする内容に含めない。 */
   lineNumbers?: boolean;

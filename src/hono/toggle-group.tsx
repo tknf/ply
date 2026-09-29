@@ -1,11 +1,23 @@
 import { Button } from "./button";
 
-export type ToggleGroupItem = { value: string; label: string; disabled?: boolean };
-export type ToggleGroupProps = {
+export type ToggleGroupItem = {
+  /** 選択の値。空白だけの値と、重なった値の二つ目以降は出さない。 */
+  value: string;
+  /** ボタンの文言。 */
   label: string;
+  /** 押せなくする。矢印キーの移動でも飛ばす。 */
+  disabled?: boolean;
+};
+export type ToggleGroupProps = {
+  /** まとまりの読み上げ名。 */
+  label: string;
+  /** 切り替えるボタン。 */
   items: readonly ToggleGroupItem[];
+  /** 最初にオンにする値。multipleでない時は先頭の一つだけを使う。 */
   selected?: readonly string[];
+  /** trueで複数をオンにできる。falseは一つだけで、オンのボタンを押すと全てオフになる。 */
   multiple?: boolean;
+  /** 並べる向き。矢印キーもhorizontalは左右、verticalは上下で移る。 */
   orientation?: "horizontal" | "vertical";
 };
 

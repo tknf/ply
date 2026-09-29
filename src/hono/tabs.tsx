@@ -1,11 +1,17 @@
 import type { Child } from "hono/jsx";
 
 export type TabItem = {
+  /** タブを識別する値。Tabsの中で一意にする。selectedとtabs:changeのdetail.valueに使う。 */
   value: string;
+  /** タブの名前。パネルの読み上げ名にもなる。 */
   label: string;
+  /** タブを選んだ時に出すパネルの中身。 */
   content: Child;
+  /** 選べないタブ。表示はするが押せず、矢印キーの移動でも飛ばす。 */
   disabled?: boolean;
+  /** 名前の前の印（Iconなど）。 */
   icon?: Child;
+  /** 名前の後に出す件数。0も表示し、省略すると出さない。 */
   count?: number;
 };
 export const Tabs = ({
@@ -14,9 +20,13 @@ export const Tabs = ({
   items,
   selected,
 }: {
+  /** タブとパネルのidの元。ページ内で一意にする。 */
   id: string;
+  /** tablistの読み上げ名。 */
   label: string;
+  /** 並べるタブとパネル。選べるタブが一つもない時は「利用可能な項目はありません。」を出す。 */
   items: readonly TabItem[];
+  /** 初めに選んでおくタブのvalue。省略した時、見つからない時、無効なタブの時は、最初の選べるタブにする。 */
   selected?: string;
 }) => {
   const active =

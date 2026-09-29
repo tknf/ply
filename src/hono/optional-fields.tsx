@@ -4,8 +4,11 @@ import { Icon, type IconName } from "./icon";
 import { classes, type ElementProps } from "./types";
 
 export type OptionalField = {
+  /** 項目のid。欄の置き場は`<id>-slot`になり、optional-fields:addのdetail.idで返る。画面内で一意にする。 */
   id: string;
+  /** チップに出す項目名。 */
   label: string;
+  /** チップの名前の前に置く印。省略するとplus。 */
   icon?: IconName;
   /** 押した時に現れる欄。 */
   field: Child;
@@ -13,7 +16,9 @@ export type OptionalField = {
   open?: boolean;
 };
 export type OptionalFieldsProps = ElementProps<"div"> & {
+  /** チップの並びの読み上げ名（「予定に足す項目」など）。 */
   label: string;
+  /** 足せる項目。並べた順にチップと欄を置く。 */
   items: readonly OptionalField[];
   /** inlineは予定の入力のようにチップを横に並べ（既定）、stackは検索の条件のように縦に並べる。 */
   layout?: "inline" | "stack";

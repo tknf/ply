@@ -4,17 +4,32 @@ import { Field, Textarea } from "./field";
 import { classes, type ElementProps } from "./types";
 
 export type ComposerProps = Omit<ElementProps<"form">, "children"> & {
+  /** formのID。本文の欄のIDの頭にも使う。 */
   id: string;
+  /** 本文の欄の名前。題名の行の始まりに出す。 */
   label: string;
+  /** 本文を送るフィールドの名前。editorを渡した時は使わない。 */
   name: string;
+  /** 本文の初めの文。editorを渡した時は使わない。 */
   value?: string;
+  /** 本文の欄の薄い文字。editorを渡した時は使わない。 */
   placeholder?: string;
+  /**
+   * 本文の欄の行数。field-sizingに対応しないブラウザでの高さになる。
+   * 対応するブラウザでは4行から書いた分だけ伸び（20行まで）、この値は使わない。
+   */
   rows?: number;
+  /** 本文が空の時に送信を止める。editorを渡した時は使わない。 */
   required?: boolean;
+  /** 送信ボタンの文言（「送信する」「投稿する」など）。 */
   submitLabel: string;
+  /** 送信中にする。送信ボタンを「送信中…」にして押せなくし、formにaria-busyを付ける。 */
   busy?: boolean;
+  /** 本文の欄の下に出す誤りの文。本文の欄をaria-invalidにする。editorを渡した時は出さない。 */
   error?: string;
+  /** 本文の下に置く添付（FileInputや選んだファイルの一覧など）。 */
   attachments?: Child;
+  /** 下の行の始まりの側に並べる操作（添付・書式・下書きの保存など）。送信ボタンは終わりの側に置く。 */
   actions?: Child;
   /** 見出しで、名前の隣へ置く宛先（人やチャンネル）。 */
   to?: Child;

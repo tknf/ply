@@ -2,8 +2,18 @@ import { classes, type ElementProps } from "./types";
 import { Icon } from "./icon";
 
 export type ErrorSummaryProps = ElementProps<"aside"> & {
+  /** 見出しのピルに書く題名。読み上げ名（aria-label）にもする。 */
   title?: string;
-  errors: readonly { label: string; href: string }[];
+  /**
+   * 直すところの一覧。labelは直し方の文、hrefは直す欄へのリンク（欄のidを指す`#id`）。
+   * 空の配列を渡すと何も描かない。
+   */
+  errors: readonly {
+    /** 直し方の文。リンクの文字になる。 */
+    label: string;
+    /** 直す欄へのリンク。欄のidを指す`#id`にする。 */
+    href: string;
+  }[];
 };
 /**
  * 直すところを、各欄へ移るリンクの一覧にまとめる。見た目はNoticeの危険の役割そのもの（紙と、印と見出しのピル）で、

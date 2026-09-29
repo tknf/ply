@@ -3,14 +3,23 @@ import { Input, Textarea } from "./field";
 import { Icon } from "./icon";
 
 export type EditablePropertyProps = {
+  /** 部品の中の要素のidの元。`${id}-label`・`${id}-input`・`${id}-editor`を作るので、画面の中で一意にする。 */
   id: string;
+  /** 項目名。値の上に出し、欄の名前（aria-labelledby）と鉛筆の読み上げ名「〇〇を編集」にも使う。 */
   label: string;
+  /** 欄のname。フォームで送る時の名前になる。 */
   name: string;
+  /** 最初の値。確定した値は欄に残り、フォームで送れる。 */
   value?: string;
+  /** 値が空の時に表示の位置へ出す淡い文字。 */
   emptyLabel?: string;
+  /** 空のままでは確定できなくする。確定の時に欄の標準の検証を行う。 */
   required?: boolean;
+  /** 編集できなくする。鉛筆を押せず、値を押しても書き始めない。欄も無効になるので、フォームでは送られない。 */
   disabled?: boolean;
+  /** 欄を結び付けるformのid。部品がformの外にある時に使う。 */
   form?: string;
+  /** 入力できる文字数の上限。欄のmaxlengthに入れる。 */
   maxLength?: number;
   /** 複数行の値。複数行の欄で書き、改行はそのまま表示する。 */
   multiline?: boolean;

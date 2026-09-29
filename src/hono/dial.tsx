@@ -1,14 +1,23 @@
 import { classes, type ElementProps } from "./types";
 
-export type DialOption = { value: string; label: string };
+export type DialOption = {
+  /** 送信する値。 */
+  value: string;
+  /** 目盛りに出す文言。短い数や語にする。ラジオボタンの読み上げ名になる。 */
+  label: string;
+};
 export type DialProps = Omit<ElementProps<"fieldset">, "children"> & {
+  /** 選ぶものの名前。fieldsetのlegendになり、つまみの上に出す。 */
   legend: string;
+  /** ラジオボタンのname。選んだ値をこの名前で送信する。 */
   name: string;
   /** 目盛りの値。左下から時計回りに右下まで、3〜8個を並べる。 */
   options: readonly DialOption[];
+  /** 最初に選んでおく値。どの値にも合わなければ何も選ばず、針は最初の目盛りを指す。 */
   value?: string;
   /** つまみの下に添える単位（「日」など）。 */
   unit?: string;
+  /** 全ての目盛りを使えなくし、全体を淡くする。 */
   disabled?: boolean;
 };
 

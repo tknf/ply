@@ -4,10 +4,18 @@ import { OverlayClose, OverlayContent } from "./overlay-content";
 import { classes, type ElementProps, type Tone } from "./types";
 
 export type ToastProps = PropsWithChildren<{
+  /** popoverのid。開く操作のpopovertargetや、showPopover()で開く時に指す。画面の中で一意にする。 */
   id: string;
+  /** 知らせの下に置く操作（「記事を確認する」「もう一度保存する」など）。 */
   actions?: Child;
+  /** 閉じるボタンの読み上げ名。 */
   closeLabel?: string;
+  /**
+   * 開いてから自動で閉じるまでのミリ秒。0は閉じるボタンを押すまで残す。
+   * フォーカスが中にある間は数えず、外へ出てから数え直す。
+   */
   duration?: number;
+  /** 読み上げの急ぎ方。politeはrole="status"、assertiveはrole="alert"にする。失敗の知らせはassertiveにする。 */
   live?: "polite" | "assertive";
   /** 知らせの種類。面をその役割の色で塗る。 */
   tone?: Exclude<Tone, "neutral">;

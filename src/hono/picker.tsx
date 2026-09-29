@@ -4,19 +4,38 @@ import { Input, Select } from "./field";
 import { Button } from "./button";
 import { Tag } from "./tag";
 
-export type PickerOption = { value: string; label: string; disabled?: boolean };
-export type PickerProps = {
-  id?: string;
+export type PickerOption = {
+  /** 送信する値。空白だけの値と、重なった値の二つ目以降は出さない。 */
+  value: string;
+  /** 候補に出す名前。検索はこの名前で絞り込む。 */
   label: string;
-  name: string;
-  options: readonly PickerOption[];
-  value?: string | readonly string[];
-  multiple?: boolean;
-  required?: boolean;
+  /** 一覧に出すが選べなくする。 */
   disabled?: boolean;
+};
+export type PickerProps = {
+  /** idの元。省略すると生成する。標準selectは`<id>-native`、検索欄は`<id>-search`になる。 */
+  id?: string;
+  /** 欄の名前。 */
+  label: string;
+  /** 標準selectのname。選んだ値をこの名前で送信する。 */
+  name: string;
+  /** 選べる候補。取得後に入れ替える時はPickerController.replaceOptions()を使う。 */
+  options: readonly PickerOption[];
+  /** 最初に選んでおく値。multipleの時は配列で渡す。 */
+  value?: string | readonly string[];
+  /** trueで複数を選べる。選ぶたびに加え、同じ候補をもう一度選ぶか、Tagの解除で外す。 */
+  multiple?: boolean;
+  /** 標準selectのrequired。未選択で送信すると検索欄へ移り、「候補を選択してください。」と出す。 */
+  required?: boolean;
+  /** 標準selectと検索欄を使えなくする。 */
+  disabled?: boolean;
+  /** 欄の下に出す淡い補足。説明として読み上げる。 */
   help?: string;
+  /** 直す所を書くエラー文。欄をaria-invalidにし、説明として読み上げる。 */
   error?: string;
+  /** 検索欄のplaceholder。 */
   placeholder?: string;
+  /** 標準selectのform属性。フォームの外に置く時に、送信するformのidを渡す。 */
   form?: string;
 };
 

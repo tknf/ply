@@ -9,6 +9,7 @@ export type CountdownProps = ElementProps<"span"> & {
   after?: string;
   /** 読み上げの全文（「自動で閉じるまであと70日」など）。 */
   label: string;
+  /** 輪の役割の色。期限が迫る時はdanger、ただの残数はinfoなど、意味に合わせて選ぶ。 */
   tone?: Tone;
 };
 

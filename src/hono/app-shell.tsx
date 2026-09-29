@@ -4,9 +4,16 @@ import { Wing, type WingProps } from "./wing";
 
 export type AppShellProps = PropsWithChildren<
   ElementProps<"div"> & {
+    /** 上部の帯の中央に置く共通コマンド。通常はCommandMenuを一つ渡す。 */
     commands: Child;
+    /** 上部の帯の始まりの側に置く、ホームへのリンクなど。省略すると枠ごと出さない。 */
     home?: Child;
+    /** 上部の帯の終わりの側に置く、利用者のAvatarやアカウントの入口など。省略すると枠ごと出さない。 */
     account?: Child;
+    /**
+     * 作業面の左右に付ける補助パネル。Wingのstart・end・storageKey・savedStateと同じ値を渡す。
+     * 省略するとWingを使わず、作業面だけを置く。
+     */
     wings?: Pick<WingProps, "start" | "end" | "storageKey" | "savedState">;
   }
 >;

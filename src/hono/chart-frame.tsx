@@ -1,19 +1,30 @@
 import type { Child } from "hono/jsx";
 import { Disclosure } from "./disclosure";
 
+/** 凡例の一件。 */
 export type ChartLegendItem = {
+  /** 系列の名前。 */
   label: string;
+  /** 印の色。図の系列の色と合わせる。 */
   tone: "blue" | "green" | "amber" | "coral";
 };
 
 export type ChartFrameProps = {
+  /** 図の題名。figcaptionに太字で書く。 */
   title: string;
+  /** 題名の下に淡い文字で書く図の要点。図を見なくても結論が分かる一文にする。 */
   description?: string;
+  /** 利用側で描いた図（SVGなど）。読み上げから外すので、同じ値をtableで渡す。 */
   graphic: Child;
+  /** graphicと同じ値の表。table要素を渡す。Disclosureに畳んで置く。 */
   table: Child;
+  /** 数値の表を開く見出し。 */
   tableLabel: string;
+  /** measureは幅36remまで、wideは置き場所の幅いっぱいに広げる。 */
   size?: "measure" | "wide";
+  /** 図の下に並べる凡例。空なら置かない。 */
   legend?: readonly ChartLegendItem[];
+  /** 図の最後に「出典：」を付けて書く出典。 */
   source?: string;
 };
 

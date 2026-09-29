@@ -3,6 +3,7 @@ import { Keycap } from "./keycap";
 import { classes, type ElementProps } from "./types";
 
 export type BackLinkProps = Omit<ElementProps<"a">, "children"> & {
+  /** 戻る先のURL。 */
   href: string;
   /** 戻る先の名前（「受信トレイ」「設定」など）。 */
   label: string;

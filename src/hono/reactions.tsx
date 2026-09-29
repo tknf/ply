@@ -14,7 +14,9 @@ export type Reaction = {
   mine?: boolean;
 };
 export type ReactionsProps = ElementProps<"div"> & {
+  /** 反応の一覧の名前。札の並びのaria-labelにする。画面には出さない。 */
   label: string;
+  /** 反応ごとに一件。付けた人（by）が空の反応は描かない。 */
   items: readonly Reaction[];
   /**
    * 渡すと、札を押して自分の反応を付け外しでき、終わりに反応を追加する操作を置く。
@@ -22,11 +24,17 @@ export type ReactionsProps = ElementProps<"div"> & {
    * 付け外しはreactions:toggleで内容と付けたかどうかを知らせる。保存は利用側が持つ。
    */
   add?: {
+    /** 追加の板（Popover）のid。ページ内で一意にする。言葉の欄と絵文字の板のidにも使う。 */
     id: string;
+    /** 自分の名前。付け外しでbyに足し引きする名前で、itemsのbyと同じ書き方にする。既定は「自分」。 */
     me?: string;
+    /** 追加の操作の名前。Tooltipと板の見出し（読み上げだけ）に使う。既定は「リアクションを追加」。 */
     label?: string;
+    /** EmojiPickerに並べる絵文字。渡さなければEmojiPickerの既定の絵文字を使う。 */
     groups?: readonly EmojiGroup[];
+    /** 言葉の欄の名前。placeholderは末尾に「…」を付けて使う。既定は「リアクションを入力」。 */
     textLabel?: string;
+    /** 言葉の欄の確定ボタンの文言。既定は「追加」。 */
     submitLabel?: string;
   };
 };

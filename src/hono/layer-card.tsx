@@ -3,7 +3,9 @@ import { classes, type ElementProps } from "./types";
 
 export type LayerCardProps = PropsWithChildren<
   ElementProps<"section"> & {
+    /** 淡い層に置く見出し（h3）の文字。墨の太字にする。 */
     title: string;
+    /** 見出しの行の終わりの側に置く操作（ActionLinkやButton）。題名が折り返しても一行目に残し、題名の幅が8remを割る時だけ次の行へ送る。 */
     actions?: Child;
   }
 >;

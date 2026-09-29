@@ -5,13 +5,24 @@ import { classes, type ElementProps } from "./types";
 
 export type TableProps = PropsWithChildren<
   ElementProps<"table"> & {
+    /** 表の名前。captionに出し、スクロールする囲み（role="region"）のaria-labelにも使う。 */
     caption: string;
+    /** 本文の行の密度。comfortableは本文の行の上下の余白を広げる。 */
     density?: "compact" | "comfortable";
+    /**
+     * 並べ替えの方式。TableSortの見出しを押すと、昇順・降順・元の順を順に切り替える。
+     * localは表示中の行をその場で並べ替え、manualは行を動かさずtable:sortだけを知らせる（サーバー側で並べ替える時に使う）。
+     */
     sort?: "local" | "manual";
+    /** 行の選択を有効にする。TableSelectionのチェックで選び、選んでいる間は画面の下の中央に選択の棚を出す。 */
     selectable?: boolean;
+    /** 選択の棚に件数に続けて並べる一括操作（ActionTileやButton）。selectableの時だけ出す。 */
     selectionActions?: Child;
+    /** 見出しの行をスクロールしても上に留める。表の囲みの高さを28remまでにし、囲みの中で縦にスクロールする。 */
     stickyHeader?: boolean;
+    /** 表の状態。ready以外ではtheadを残して本文の行を隠し、状態の文を出す。並べ替えと選択も止める。loadingではaria-busyを付ける。 */
     state?: "ready" | "loading" | "empty" | "error";
+    /** ready以外の時に、既定の状態の文の代わりに出す内容。 */
     stateContent?: Child;
   }
 >;
@@ -83,8 +94,14 @@ export const Table = ({
 
 export type TableSortProps = PropsWithChildren<
   ElementProps<"th"> & {
+    /** 列を識別する値。表の中で一意にし、table:sortのdetail.columnで知らせる。 */
     column: string;
+    /**
+     * sort="local"で値を比べる方法。textは文字の自然順、numberは桁区切りのカンマを除いた数、dateはDate.parseで読める日時で比べる。
+     * 比べる値はセルのdata-sort-value、無ければセルの文字から読む。読めない値と空の値は、昇順でも降順でも末尾に置く。
+     */
     type?: "text" | "number" | "date";
+    /** この列の並べ替えを止める。見出しのボタンを押せなくする。 */
     disabled?: boolean;
   }
 >;
@@ -120,7 +137,9 @@ export const TableSort = ({
 );
 
 export type TableSelectionProps = Omit<ElementProps<"input">, "type"> & {
+  /** チェックボックスの読み上げ名。aria-labelに入れる（例：「〇〇を選択」「すべての行を選択」）。 */
   label: string;
+  /** 行を識別する値。表の中で一意にし、table:selectionchangeのdetail.idsで知らせる。省略すると表の全ての行を選ぶチェックボックスになる。 */
   rowId?: string;
 };
 /** rowIdなしは現在の表の全選択。行のcheckboxは送信用name/value/formも指定できる。 */

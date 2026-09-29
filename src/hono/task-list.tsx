@@ -4,20 +4,36 @@ import { Icon } from "./icon";
 import { classes, type ElementProps } from "./types";
 
 export type TaskListProps = ElementProps<"div"> & {
+  /** 行の一覧（ul）の読み上げ名。 */
   label: string;
   /** 一覧の外側の見出し。開閉でき、終えた数と進み具合を添える。 */
   heading?: string;
   /** 行の一覧の上に書く、この一覧の名前。 */
   title?: string;
   /** 最後の行に置く、項目を書き足す欄。送信と追加は利用側のフォームで扱う。 */
-  add?: { name: string; placeholder: string; form?: string };
-  items: readonly {
+  add?: {
+    /** 書き足した文を送る名前。 */
     name: string;
+    /** 欄の淡い文。欄の読み上げ名にも使う。 */
+    placeholder: string;
+    /** 一覧の外にあるフォームのid。欄をそのフォームで送る。 */
+    form?: string;
+  };
+  /** 行の一覧。各行は標準のcheckbox。 */
+  items: readonly {
+    /** checkboxをフォームで送る名前。 */
+    name: string;
+    /** 項目の題名。checkboxのラベルになる。 */
     label: string;
+    /** 終えた項目。チェックを付け、題名に線を引く。 */
     checked?: boolean;
+    /** 操作できない項目。 */
     disabled?: boolean;
+    /** 題名の下に添える補足（担当・期日など）。 */
     detail?: Child;
+    /** checkboxの値。省くと標準どおり`on`を送る。 */
     value?: string;
+    /** 行の終わりに置く物（AvatarやBadgeなど）。 */
     end?: Child;
   }[];
 };

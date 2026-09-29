@@ -3,31 +3,47 @@ import { Button } from "./button";
 import { Icon } from "./icon";
 
 export type TreegridColumn = {
+  /** 列の見出しの文字。 */
   heading: string;
+  /** 列の文字の扱い。Tableのdata-cellと同じで、textは長文を折り返し、shortは折り返さず、numericは終わりの側へそろえて等幅の数字にする。 */
   cell?: "text" | "short" | "numeric";
 };
 
 export type TreegridItem = {
+  /** 行を識別する値。全ての階層で一意にする。空の値と重複した値の行は、その子孫ごと描かない。 */
   value: string;
+  /** 先頭の列に出す行の題名。空白だけの時はvalueを出す。 */
   label: string;
   /** 葉の行だけに設定する移動先。 */
   href?: string;
   /** 行のリンクを利用できない状態。行とセルのキーボード移動は維持する。 */
   disabled?: boolean;
+  /** 2列目以降のセル。columnsの2番目からの順に対応させ、足りないセルには「—」を出す。 */
   cells?: readonly Child[];
+  /** 子の行。渡すと行に開閉のつまみを付け、一つ深い階層として続けて描く。 */
   children?: readonly TreegridItem[];
 };
 
 export type TreegridProps = {
+  /** 表の名前。captionとaria-labelに入れる。空白だけの時は「階層表」にする。 */
   caption: string;
+  /** 列。先頭の列は行の題名（label）の列になる。空の時は「項目」の一列にする。 */
   columns: readonly TreegridColumn[];
+  /** 最上位の行。0件の時はstateがreadyでもemptyとして扱う。 */
   items: readonly TreegridItem[];
+  /** 最初に開いておく行のvalue。開閉はその後controllerが持ち、保存したい時はtreegrid:toggleで受け取る。 */
   expanded?: readonly string[];
+  /** 行の選択。singleは一行、multipleは複数行を選べ、noneは選択を持たない。 */
   selection?: "none" | "single" | "multiple";
+  /** 最初に選んでおく行のvalue。singleでは表の並びで最初の一つだけを使う。 */
   selected?: readonly string[];
+  /** PageUp・PageDownで移動する行数。1以上の整数でない時は10にする。 */
   pageSize?: number;
+  /** 本文の行の密度。Tableのdensityと同じ。 */
   density?: "compact" | "comfortable";
+  /** 表の状態。ready以外では見出しの行だけを残し、状態の文を出す。キー操作・開閉・選択も付けない。 */
   state?: "ready" | "loading" | "empty" | "error";
+  /** ready以外の時に、既定の状態の文の代わりに出す内容。 */
   stateContent?: Child;
 };
 
