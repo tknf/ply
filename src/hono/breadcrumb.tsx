@@ -16,9 +16,7 @@ export const Breadcrumb = ({ label = "現在の位置", items }: BreadcrumbProps
       {items.map((item, index) => (
         <li>
           {item.href && index < items.length - 1 ? (
-            <a href={item.href} aria-current={index === items.length - 1 ? "page" : undefined}>
-              {item.label}
-            </a>
+            <a href={item.href}>{item.label}</a>
           ) : (
             <span aria-current={index === items.length - 1 ? "page" : undefined}>{item.label}</span>
           )}

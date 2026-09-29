@@ -41,14 +41,14 @@
 
 ## イベント
 
-| イベント                | 内容                                                                                                                                                                                 |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `editable:beforeedit`   | 鉛筆で書き始める前に知らせます。取り消せます。detailは `{ value, previousValue, reason }` で、`reason` は `pointer`・`keyboard` です。値そのものを押して書き始めた時は知らせません。 |
-| `editable:edit`         | 鉛筆で書き始めた後に知らせます。detailは `editable:beforeedit` と同じです。                                                                                                          |
-| `editable:beforecommit` | 確定の前に、検証を通った時だけ知らせます。取り消せます（書いている状態のまま残ります）。detailの `value` は新しい値、`previousValue` は書き始める前の値です。                        |
-| `editable:commit`       | 確定した後に知らせます。detailは `editable:beforecommit` と同じで、ここで保存します。                                                                                                |
-| `editable:beforecancel` | 取消の前に知らせます。取り消せます。detailの `value` は戻す値、`previousValue` は書いていた値です。                                                                                  |
-| `editable:cancel`       | 取り消して元の値に戻した後に知らせます。detailは `editable:beforecancel` と同じです。                                                                                                |
+| イベント                | 内容                                                                                                                                                          |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `editable:beforeedit`   | 鉛筆か値そのものを押して書き始める前に知らせます。取り消せます。detailは `{ value, previousValue, reason }` で、`reason` は `pointer`・`keyboard` です。      |
+| `editable:edit`         | 書き始めた後に知らせます。detailは `editable:beforeedit` と同じです。                                                                                         |
+| `editable:beforecommit` | 確定の前に、検証を通った時だけ知らせます。取り消せます（書いている状態のまま残ります）。detailの `value` は新しい値、`previousValue` は書き始める前の値です。 |
+| `editable:commit`       | 確定した後に知らせます。detailは `editable:beforecommit` と同じで、ここで保存します。                                                                         |
+| `editable:beforecancel` | 取消の前に知らせます。取り消せます。detailの `value` は戻す値、`previousValue` は書いていた値です。                                                           |
+| `editable:cancel`       | 取り消して元の値に戻した後に知らせます。detailは `editable:beforecancel` と同じです。                                                                         |
 
 ## API
 

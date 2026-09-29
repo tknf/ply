@@ -44,6 +44,7 @@ JavaScriptなしでも、開くボタンと閉じるボタンは`popovertarget`�
 - 検索欄は`role="combobox"`、候補の一覧は`role="tree"`、各項目は`role="treeitem"`です。フォーカスを検索欄に残したまま、選んでいる候補を`aria-activedescendant`と`aria-selected`で伝えます。
 - 絞り込むたびに、候補の件数を`role="status"`で読み上げます。
 - 現在地の項目は`aria-current="page"`と「現在地」の読み上げで伝えます。無効な項目は`aria-disabled="true"`です。
+- `description`は、一覧の移動の項目では名前の後に表示し、操作の項目と入口のタイルでは画面に出さず`aria-description`で読み上げます（無効な入口でも保ちます）。見える名前だけで選べるようにし、欠かせない情報を`description`だけに置きません。
 
 ## イベント
 

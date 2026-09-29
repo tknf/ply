@@ -204,6 +204,17 @@ export default () => (
       view="week"
       selection={{ mode: "range", start: "2026-09-22", end: "2026-09-25" }}
     />
+    <h2>平日から選ぶ</h2>
+    <p>
+      週末と前後の月を空き（null）にした月です。↑↓は空きをまたいでも同じ曜日の前後の週へ移ります。
+    </p>
+    <Calendar
+      label="2026年9月の平日から選ぶ"
+      weeks={emptyWeeks.map((week) =>
+        week.map((day, index) => (day.outside || index >= 5 ? null : day)),
+      )}
+      selection={{ mode: "single", value: "2026-09-15" }}
+    />
     <h2>年の俯瞰</h2>
     <Calendar label="2026年" view="year" months={months} />
     <h2>時刻順の予定</h2>

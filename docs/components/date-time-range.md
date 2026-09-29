@@ -132,7 +132,7 @@ export default () => (
     <legend>日時</legend>
     <div class="range">
       <div class="point">
-        <span class="caption" id="event-start">開始</span
+        <span class="caption">開始</span
         ><input
           name="event[start_date]"
           value="2026-09-29"
@@ -161,7 +161,7 @@ export default () => (
           <use href="/assets/ply-icons.svg#ply-arrow"></use></svg
       ></span>
       <div class="point">
-        <span class="caption" id="event-end">終了</span
+        <span class="caption">終了</span
         ><input
           name="event[end_date]"
           value="2026-09-29"
@@ -182,15 +182,15 @@ export default () => (
     </div>
     <div class="options">
       <span class="all-day"
-        ><label class="ply-switch" for="ply-switch-:r1o:"
+        ><label class="ply-switch" for="ply-switch-:r1q:"
           ><input
             name="event[all_day]"
             value="1"
-            id="ply-switch-:r1o:"
+            id="ply-switch-:r1q:"
             type="checkbox"
             role="switch"
-            aria-labelledby="ply-switch-:r1o:-label"
-          /><span><span id="ply-switch-:r1o:-label">終日</span></span></label
+            aria-labelledby="ply-switch-:r1q:-label"
+          /><span><span id="ply-switch-:r1q:-label">終日</span></span></label
         ></span
       ><span class="timezone"
         ><svg
@@ -224,7 +224,7 @@ export default () => (
           <legend>休館日</legend>
           <div class="range">
             <div class="point">
-              <span class="caption" id="holiday-start">開始</span
+              <span class="caption">開始</span
               ><input
                 name="holiday[start_date]"
                 value="2026-10-12"
@@ -252,7 +252,7 @@ export default () => (
                 <use href="/assets/ply-icons.svg#ply-arrow"></use></svg
             ></span>
             <div class="point">
-              <span class="caption" id="holiday-end">終了</span
+              <span class="caption">終了</span
               ><input
                 name="holiday[end_date]"
                 value="2026-10-13"
@@ -272,16 +272,16 @@ export default () => (
           </div>
           <div class="options">
             <span class="all-day"
-              ><label class="ply-switch" for="ply-switch-:r1p:"
+              ><label class="ply-switch" for="ply-switch-:r1r:"
                 ><input
                   name="holiday[all_day]"
                   value="1"
                   checked=""
-                  id="ply-switch-:r1p:"
+                  id="ply-switch-:r1r:"
                   type="checkbox"
                   role="switch"
-                  aria-labelledby="ply-switch-:r1p:-label"
-                /><span><span id="ply-switch-:r1p:-label">終日</span></span></label
+                  aria-labelledby="ply-switch-:r1r:-label"
+                /><span><span id="ply-switch-:r1r:-label">終日</span></span></label
               ></span
             >
           </div>
@@ -309,7 +309,7 @@ export default () => (
             <legend>取材</legend>
             <div class="range">
               <div class="point">
-                <span class="caption" id="interview-start">開始</span
+                <span class="caption">開始</span
                 ><input
                   name="interview[start_date]"
                   value="2026-10-02"
@@ -338,7 +338,7 @@ export default () => (
                   <use href="/assets/ply-icons.svg#ply-arrow"></use></svg
               ></span>
               <div class="point">
-                <span class="caption" id="interview-end">終了</span
+                <span class="caption">終了</span
                 ><input
                   name="interview[end_date]"
                   value="2026-10-02"
@@ -359,15 +359,15 @@ export default () => (
             </div>
             <div class="options">
               <span class="all-day"
-                ><label class="ply-switch" for="ply-switch-:r1q:"
+                ><label class="ply-switch" for="ply-switch-:r1s:"
                   ><input
                     name="interview[all_day]"
                     value="1"
-                    id="ply-switch-:r1q:"
+                    id="ply-switch-:r1s:"
                     type="checkbox"
                     role="switch"
-                    aria-labelledby="ply-switch-:r1q:-label"
-                  /><span><span id="ply-switch-:r1q:-label">終日</span></span></label
+                    aria-labelledby="ply-switch-:r1s:-label"
+                  /><span><span id="ply-switch-:r1s:-label">終日</span></span></label
                 ></span
               >
             </div>
@@ -394,7 +394,7 @@ export default () => (
             <legend>الموعد</legend>
             <div class="range">
               <div class="point">
-                <span class="caption" id="rtl-event-start">البداية</span
+                <span class="caption">البداية</span
                 ><input
                   name="rtl-event[start_date]"
                   value="2026-09-29"
@@ -423,7 +423,7 @@ export default () => (
                   <use href="/assets/ply-icons.svg#ply-arrow"></use></svg
               ></span>
               <div class="point">
-                <span class="caption" id="rtl-event-end">النهاية</span
+                <span class="caption">النهاية</span
                 ><input
                   name="rtl-event[end_date]"
                   value="2026-09-29"
@@ -444,16 +444,16 @@ export default () => (
             </div>
             <div class="options">
               <span class="all-day"
-                ><label class="ply-switch" for="ply-switch-:r1r:"
+                ><label class="ply-switch" for="ply-switch-:r1t:"
                   ><input
                     name="rtl-event[all_day]"
                     value="1"
-                    id="ply-switch-:r1r:"
+                    id="ply-switch-:r1t:"
                     type="checkbox"
                     role="switch"
-                    aria-labelledby="ply-switch-:r1r:-label"
+                    aria-labelledby="ply-switch-:r1t:-label"
                   /><span
-                    ><span id="ply-switch-:r1r:-label">طوال اليوم</span></span
+                    ><span id="ply-switch-:r1t:-label">طوال اليوم</span></span
                   ></label
                 ></span
               >

@@ -1,6 +1,7 @@
 @layer components {
   /*
     必要な時だけ足す欄。足した欄を上に積み、足せる項目を細い縁のピルのチップで下に並べる。
+    足した欄の終わりには外す操作を置き、入力の行の下端にそろえる。
     stackはチップを縦に並べる。チップは墨の淡い文字で、指を載せると墨に濃くする。
   */
   .ply-optional-fields {
@@ -13,6 +14,20 @@
       min-inline-size: 0;
       &:not(:has(> .field:not([hidden]))) {
         display: none;
+      }
+      /* 隠れた欄をまとめて使えなくするfieldset。枠と余白は持たず、外す操作を欄の終わりに置く。 */
+      & > .field {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        align-items: end;
+        gap: var(--ply-space-2);
+        min-inline-size: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        &:has(> .remove:not([hidden])) {
+          grid-template-columns: minmax(0, 1fr) auto;
+        }
       }
     }
     & > .chips {

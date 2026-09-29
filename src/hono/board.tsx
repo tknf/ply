@@ -37,6 +37,7 @@ type Column = {
   /**
    * 列を押して開閉できるようにする。たたんだピルに「開く」、開いた列の見出しに「たたむ」を置き、
    * 押すとBoardControllerが表示を切り替えて、取り消せるboard:toggleで知らせる。開閉の保存は利用側が持つ。
+   * 開閉のボタンは、BoardControllerが接続するまで隠す。
    */
   collapsible?: boolean;
 } & (
@@ -119,6 +120,7 @@ export const Board = ({
                 data-icon-only="true"
                 data-action="board#toggle"
                 data-board-toggle
+                hidden
                 aria-expanded={column.collapsed ? "false" : "true"}
                 aria-label={`「${column.title}」の列を開閉`}
               >

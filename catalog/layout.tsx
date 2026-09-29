@@ -58,7 +58,8 @@ export const CatalogFrame = ({
         id="catalog-commands"
         label="部品を探す"
         icon="search"
-        shortcut="mod+k"
+        // 全体のキーは一つのCommandMenuにだけ登録する。CommandMenuのページでは見本がmod+kを使うので譲る。
+        shortcut={current === "command-menu" ? undefined : "mod+k"}
         columns={3}
         shortcuts={componentGroups.map((group, index) => ({
           label: group.name,

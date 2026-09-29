@@ -23,18 +23,27 @@ export class CharacterCountController extends BaseCharacterCountController {
       this.validationForm = field.form;
       field.addEventListener("input", this.validateOverflow);
       this.validationForm?.addEventListener("reset", this.afterReset);
-      queueMicrotask(this.validateOverflow);
+      // 上流が数え始めた後に、文字数の欄を出す。
+      queueMicrotask(() => {
+        this.validateOverflow();
+        this.setCounterHidden(!this.validationField);
+      });
     };
     this.disconnect = () => {
       this.validationField?.removeEventListener("input", this.validateOverflow);
       this.validationForm?.removeEventListener("reset", this.afterReset);
       window.clearTimeout(this.resetTask);
       this.clearOverflow();
+      this.setCounterHidden(true);
       this.validationField = null;
       this.validationForm = null;
       disconnectBase();
     };
   }
+
+  private setCounterHidden = (hidden: boolean) => {
+    for (const counter of this.counterTargets) counter.hidden = hidden;
+  };
 
   private error = () => this.element.querySelector<HTMLElement>(".over-error[id]");
 

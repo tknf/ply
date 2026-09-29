@@ -29,6 +29,11 @@ export class BoardController extends Controller<HTMLElement> {
     document.addEventListener("pointercancel", this.cancel);
     document.addEventListener("turbo:before-cache", this.cancel);
     window.addEventListener("blur", this.cancel);
+    // 開閉のボタンは、押して働く時だけ見せる。
+    for (const button of this.element.querySelectorAll<HTMLButtonElement>(
+      ":scope > section > .title > button[data-board-toggle]",
+    ))
+      button.hidden = false;
     this.refresh();
   };
   disconnect = () => {

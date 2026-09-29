@@ -38,15 +38,39 @@ export class EditablePropertyController extends Controller<HTMLElement> {
     this.savedTask = window.setTimeout(() => delete this.element.dataset.saved, 1600);
   };
 
-  /** 値そのものを押した時も、鉛筆と同じく書き始める。文字を選んでいる時は選ぶ操作を優先する。 */
-  start = () => {
+  /**
+   * 値そのものを押した時も、鉛筆と同じく書き始める。文字を選んでいる時は選ぶ操作を優先する。
+   * 上流は鉛筆の押下だけを利用者の操作として扱い、公開のedit()はイベントを出さないので、
+   * 鉛筆と同じeditable:beforeedit（取り消せる）とeditable:editをここで出す。
+   */
+  start = (event: Event) => {
     if (!window.getSelection()?.isCollapsed) return;
     const editable = this.application.getControllerForElementAndIdentifier(
       this.element,
       "editable",
     );
-    // 上流は利用者の操作による鉛筆の押下だけを受けるので、公開の操作で書き始め、全体を選ぶ。
-    if (editable instanceof EditableController && editable.edit()) this.select();
+    const input = this.inputTarget;
+    if (
+      !(editable instanceof EditableController) ||
+      editable.editing ||
+      input.matches(":disabled") ||
+      input.readOnly ||
+      this.element.querySelector('[data-editable-target="edit"]:disabled')
+    )
+      return;
+    const detail = {
+      value: input.value,
+      previousValue: input.value,
+      reason: event instanceof MouseEvent && event.detail === 0 ? "keyboard" : "pointer",
+    };
+    const before = new CustomEvent("editable:beforeedit", {
+      detail,
+      bubbles: true,
+      cancelable: true,
+    });
+    if (!this.element.dispatchEvent(before) || !editable.edit()) return;
+    // editable:editを受けて全体を選ぶ（data-actionのselect）。鉛筆で書き始めた時と同じ流れにする。
+    this.element.dispatchEvent(new CustomEvent("editable:edit", { detail, bubbles: true }));
   };
 
   /** 書き始めたら、一行の値は全体を選び、そのまま打てば置き換わるようにする。複数行は書き足せるよう末尾に置く。 */

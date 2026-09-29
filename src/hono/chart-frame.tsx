@@ -1,5 +1,6 @@
 import type { Child } from "hono/jsx";
 import { Disclosure } from "./disclosure";
+import { classes, type ElementProps } from "./types";
 
 /** 凡例の一件。 */
 export type ChartLegendItem = {
@@ -9,7 +10,7 @@ export type ChartLegendItem = {
   tone: "blue" | "green" | "amber" | "coral";
 };
 
-export type ChartFrameProps = {
+export type ChartFrameProps = ElementProps<"figure"> & {
   /** 図の題名。figcaptionに太字で書く。 */
   title: string;
   /** 題名の下に淡い文字で書く図の要点。図を見なくても結論が分かる一文にする。 */
@@ -38,8 +39,10 @@ export const ChartFrame = ({
   size = "measure",
   legend = [],
   source,
+  class: className,
+  ...attributes
 }: ChartFrameProps) => (
-  <figure class="ply-chart-frame" data-size={size}>
+  <figure {...attributes} class={classes("ply-chart-frame", className)} data-size={size}>
     <figcaption>
       <strong>{title}</strong>
       {description && <span>{description}</span>}

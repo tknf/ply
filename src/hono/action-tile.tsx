@@ -11,7 +11,10 @@ type TileContent = {
   icon: IconName;
   /** 印の色。既定は青。 */
   accent?: Accent;
-  /** 使えない状態にする。リンクは`href`を外して移動しない印（`aria-disabled`）にし、ボタンは押せなくする。 */
+  /**
+   * 使えない状態にする。リンクは`href`を外して移動しない印（`aria-disabled`）にし、ボタンは押せなくする。
+   * 移動しない印はTabで止まらず、リンクだけの属性（`target`・`rel`など）と`tabindex`を外し、ほかの属性は保つ。
+   */
   disabled?: boolean;
   /** ルートに足すクラス。`ply-action-tile`は常に付く。 */
   class?: string;
@@ -62,8 +65,21 @@ export const ActionTile = (props: ActionTileProps) => {
       badge: _b,
       ...attributes
     } = props;
+    // 移動しない印には、リンクだけの属性とTabの停止点を移さない。aria-descriptionやdata属性は残す。
+    const {
+      target: _target,
+      rel: _rel,
+      download: _download,
+      hreflang: _hreflang,
+      ping: _ping,
+      referrerpolicy: _referrerpolicy,
+      type: _type,
+      tabindex: _tabindex,
+      ...common
+    } = attributes;
     return disabled ? (
       <span
+        {...common}
         class={classes("ply-action-tile", className)}
         data-accent={accent}
         data-disabled="true"

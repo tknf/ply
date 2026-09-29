@@ -144,43 +144,43 @@ export default () => (
         <fieldset class="ply-choice-group" disabled="">
           <legend>管理者が管理している設定</legend>
           <div class="list">
-            <label class="ply-switch" for="ply-switch-:rb:"
+            <label class="ply-switch" for="ply-switch-:rd:"
               ><input
                 name="locked-news"
                 checked=""
-                id="ply-switch-:rb:"
+                id="ply-switch-:rd:"
                 type="checkbox"
                 role="switch"
-                aria-labelledby="ply-switch-:rb:-label"
+                aria-labelledby="ply-switch-:rd:-label"
               /><span
-                ><span id="ply-switch-:rb:-label">お知らせを受け取る</span></span
+                ><span id="ply-switch-:rd:-label">お知らせを受け取る</span></span
               ></label
-            ><label class="ply-switch" for="ply-switch-:rc:"
+            ><label class="ply-switch" for="ply-switch-:re:"
               ><input
                 name="locked-sharing"
                 disabled=""
-                id="ply-switch-:rc:"
+                id="ply-switch-:re:"
                 type="checkbox"
                 role="switch"
-                aria-labelledby="ply-switch-:rc:-label"
+                aria-labelledby="ply-switch-:re:-label"
               /><span
-                ><span id="ply-switch-:rc:-label">外部への共有を許可</span></span
+                ><span id="ply-switch-:re:-label">外部への共有を許可</span></span
               ></label
             >
           </div>
         </fieldset>
-        <label class="ply-switch" for="ply-switch-:rd:"
+        <label class="ply-switch" for="ply-switch-:rf:"
           ><input
             name="all-projects"
-            id="ply-switch-:rd:"
+            id="ply-switch-:rf:"
             type="checkbox"
             role="switch"
-            aria-labelledby="ply-switch-:rd:-label"
-            aria-describedby="ply-switch-:rd:-description"
+            aria-labelledby="ply-switch-:rf:-label"
+            aria-describedby="ply-switch-:rf:-description"
           /><span
-            ><span id="ply-switch-:rd:-label"
+            ><span id="ply-switch-:rf:-label"
               >担当するすべてのプロジェクトについて、今週の更新をまとめて受け取る</span
-            ><small id="ply-switch-:rd:-description"
+            ><small id="ply-switch-:rf:-description"
               >毎週月曜日の朝に、各プロジェクトの変更をお知らせします。</small
             ></span
           ></label

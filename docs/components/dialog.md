@@ -19,7 +19,7 @@
 
 操作欄の操作で閉じるには `data-dialog-target="close"` を付けます。確認の後の保存・削除・通信は利用側が行い、`dialog:close` などのイベントや、操作の `onclick` で受け取ります。
 
-フォームを載せる時は、`form` に `method="dialog"` を付けると、入力が有効な時だけ送信で閉じます。`initialFocus` を `content` にし、最初に入力する欄に `autofocus` を付けます。本文の外の操作欄から送る時は、送信の `Button` に `form` でフォームのidを渡します。
+フォームを載せる時は、`form` に `method="dialog"` を付けると、入力が有効な時だけ送信で閉じます。送信で閉じる時も `dialog:beforeclose`・`dialog:close` を出し、`dialog:beforeclose` を取り消すと開いたままにします。`initialFocus` を `content` にし、最初に入力する欄に `autofocus` を付けます。本文の外の操作欄から送る時は、送信の `Button` に `form` でフォームのidを渡します。
 
 `size` は紙の幅の上限で、`compact` は26rem、`default` は32rem、`wide` は52remです。画面が狭い時は、画面の幅から余白を引いた幅に収めます。
 
@@ -44,12 +44,12 @@
 
 ## イベント
 
-| イベント             | 内容                                                                                                                                                                                    |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dialog:beforeopen`  | 開く操作を押した直後、開く前。取り消せます。`detail.reason` は `pointer` または `keyboard` です。                                                                                       |
-| `dialog:open`        | 開いた後。`detail.reason` は `dialog:beforeopen` と同じです。                                                                                                                           |
-| `dialog:beforeclose` | 閉じる前。取り消せます（`preventDefault()` で開いたままにします）。`detail.reason` は `pointer`・`keyboard`・`swipe`（シートを下へ引いた時）、`detail.returnValue` は閉じた時の値です。 |
-| `dialog:close`       | 閉じた後。`detail` は `reason` と `returnValue` です。`method="dialog"` のフォームの送信で閉じた時は、`dialog:beforeclose` とともに出しません。                                         |
+| イベント             | 内容                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dialog:beforeopen`  | 開く操作を押した直後、開く前。取り消せます。`detail.reason` は `pointer` または `keyboard` です。                                                                                                                                                                                                                                                                                                                                              |
+| `dialog:open`        | 開いた後。`detail.reason` は `dialog:beforeopen` と同じです。                                                                                                                                                                                                                                                                                                                                                                                  |
+| `dialog:beforeclose` | 閉じる前。取り消せます（`preventDefault()` で開いたままにします）。`detail.reason` は `pointer`（閉じる操作や背景を押した時）・`keyboard`（Escapeや、キーで閉じる操作を押した時）・`swipe`（シートを下へ引いた時）・`submit`（`method="dialog"` のフォームを送信した時）、`detail.returnValue` は閉じた時の値（送信で閉じた時は送信した操作の `value`）です。背景を押した時は、ブラウザが `closedby` に対応しているかによらず `pointer` です。 |
+| `dialog:close`       | 閉じた後。`detail` は `reason` と `returnValue` です。                                                                                                                                                                                                                                                                                                                                                                                         |
 
 ## API
 

@@ -164,7 +164,7 @@
 | `toast`             | `ToastController`            | [CodeBlock](code-block.md)、[Toast](toast.md)                             |
 | `toast-stack`       | `ToastStackController`       | [ToastStack](toast.md)                                                    |
 | `toggle-group`      | `ToggleGroupController`      | [ToggleGroup](toggle-group.md)                                            |
-| `toolbar`           | `ToolbarController`          | [Toolbar](toolbar.md)                                                     |
+| `toolbar`           | `ToolbarController`          | [TextEditor](text-editor.md)、[Toolbar](toolbar.md)                       |
 | `tooltip`           | `TooltipController`          | [Popover](popover.md)、[Tooltip](tooltip.md)、[Reactions](reactions.md)   |
 | `tree`              | `TreeController`             | [Tree](tree.md)                                                           |
 | `tree-presentation` | `TreePresentationController` | [Tree](tree.md)                                                           |

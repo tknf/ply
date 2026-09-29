@@ -158,14 +158,14 @@ export default () => (
       ><span class="text"><span class="name">全員</span></span
       ><span class="leader" aria-hidden="true"></span
       ><span class="control"
-        ><label class="ply-switch" for="ply-switch-:r26:"
+        ><label class="ply-switch" for="ply-switch-:r28:"
           ><input
             checked=""
-            id="ply-switch-:r26:"
+            id="ply-switch-:r28:"
             type="checkbox"
             role="switch"
-            aria-labelledby="ply-switch-:r26:-label"
-          /><span><span id="ply-switch-:r26:-label">全員に見せる</span></span></label
+            aria-labelledby="ply-switch-:r28:-label"
+          /><span><span id="ply-switch-:r28:-label">全員に見せる</span></span></label
         ></span
       >
     </li>
@@ -311,14 +311,14 @@ export default () => (
                 ><small class="description">説明会の案内</small></span
               ><span class="leader" aria-hidden="true"></span
               ><span class="control"
-                ><label class="ply-switch" for="ply-switch-:r27:"
+                ><label class="ply-switch" for="ply-switch-:r29:"
                   ><input
-                    id="ply-switch-:r27:"
+                    id="ply-switch-:r29:"
                     type="checkbox"
                     role="switch"
-                    aria-labelledby="ply-switch-:r27:-label"
+                    aria-labelledby="ply-switch-:r29:-label"
                   /><span
-                    ><span id="ply-switch-:r27:-label">公開する</span></span
+                    ><span id="ply-switch-:r29:-label">公開する</span></span
                   ></label
                 ></span
               >
@@ -347,14 +347,14 @@ export default () => (
               <span class="text"><span class="name">الجميع</span></span
               ><span class="leader" aria-hidden="true"></span
               ><span class="control"
-                ><label class="ply-switch" for="ply-switch-:r28:"
+                ><label class="ply-switch" for="ply-switch-:r2a:"
                   ><input
                     checked=""
-                    id="ply-switch-:r28:"
+                    id="ply-switch-:r2a:"
                     type="checkbox"
                     role="switch"
-                    aria-labelledby="ply-switch-:r28:-label"
-                  /><span><span id="ply-switch-:r28:-label">مشاركة</span></span></label
+                    aria-labelledby="ply-switch-:r2a:-label"
+                  /><span><span id="ply-switch-:r2a:-label">مشاركة</span></span></label
                 ></span
               >
             </li>

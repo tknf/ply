@@ -606,6 +606,7 @@ const CalendarYear = ({
                 class="year-day"
                 data-weekend={isWeekend(day.date) ? "true" : undefined}
                 data-month-start={month ? "true" : undefined}
+                data-last-column={column === 6 ? "true" : undefined}
                 data-current={day.current ? "true" : undefined}
                 data-events={day.events?.length ? "true" : undefined}
               >

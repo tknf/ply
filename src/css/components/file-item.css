@@ -87,7 +87,7 @@
       min-inline-size: 0;
     }
     @container ply-file-item (inline-size >= 26rem) {
-      grid-template-columns: 2rem minmax(0, 1fr) auto;
+      grid-template-columns: 2.5rem minmax(0, 1fr) auto;
       & > .actions {
         grid-column: 3;
         grid-row: 1;

@@ -49,7 +49,7 @@ export const TaskList = ({
   const sheet = (
     <ul class="sheet" aria-label={label}>
       {title && (
-        <li class="heading" role="none">
+        <li class="heading">
           <h3 class="title">{title}</h3>
         </li>
       )}

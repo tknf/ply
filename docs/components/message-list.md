@@ -28,8 +28,9 @@
 ## アクセシビリティ
 
 - ルートは `label` を名前に持つ `ul` です。行のリンクは件名・差出人・書き出し・時刻をまとめて読み上げます。
-- `current` の行のリンクには `aria-current="page"` を付けます。未読は読み上げ用の「未読」を添え、会話の件数と添付の数は「4件の会話」「添付ファイル2件」のように名前を付けます。
-- 差出人の円は読み上げから外します。状態の文と0件の表示は `role="status"` で、`loading` では `aria-busy="true"` を付けます。
+- `current` の行のリンクには `aria-current="page"` を付けます。未読は読み上げ用の「未読」を添え、会話の件数と添付の数は、見える数を読み上げから外し、「4件の会話」「添付ファイル2件」の文を読み上げ用に添えます。
+- 差出人の円は読み上げから外します。状態の文と0件の表示は一覧の項目の中の `role="status"` で、`loading` では `aria-busy="true"` を付けます。
+- `newSince` の区切りは一覧の一項目で、ラベル（既定は「ここから新着」）を読み上げます。一覧の直下の `li` には項目以外の役割を付けません。
 
 ## API
 
@@ -236,15 +237,17 @@ export default () => (
     data-avatars="true"
     data-preview-lines="1"
   >
-    <li class="state" data-empty="true" role="status">
-      <section class="ply-empty-state" data-kind="empty">
-        <div class="slip">
-          <h3 class="title">連絡はまだありません</h3>
-          <div class="body"></div>
-        </div>
-      </section>
+    <li class="state" data-empty="true">
+      <div role="status">
+        <section class="ply-empty-state" data-kind="empty">
+          <div class="slip">
+            <h3 class="title">連絡はまだありません</h3>
+            <div class="body"></div>
+          </div>
+        </section>
+      </div>
     </li>
-    <li class="divider" role="none">
+    <li class="divider">
       <div class="ply-divider"><span>ここから新着</span></div>
     </li>
     <li data-message-id="sample-categories" data-unread="true">
@@ -261,8 +264,10 @@ export default () => (
         ><span class="body"
           ><strong class="title"
             ><span class="subject">カテゴリ案をまとめました</span
-            ><span class="count" aria-label="4件の会話">4</span
-            ><span class="attachment" aria-label="添付ファイル2件"
+            ><span class="count"
+              ><span aria-hidden="true">4</span
+              ><span class="ply-visually-hidden">4件の会話</span></span
+            ><span class="attachment"
               ><svg
                 class="ply-icon"
                 viewBox="0 0 256 256"
@@ -271,7 +276,8 @@ export default () => (
                 focusable="false"
               >
                 <use href="/assets/ply-icons.svg#ply-file"></use></svg
-              >2</span
+              ><span aria-hidden="true">2</span
+              ><span class="ply-visually-hidden">添付ファイル2件</span></span
             ></strong
           ><span class="summary"
             ><span class="sender">森 美咲</span
@@ -338,13 +344,15 @@ export default () => (
           data-avatars="true"
           data-preview-lines="1"
         >
-          <li class="state" data-empty="true" role="status">
-            <section class="ply-empty-state" data-kind="empty">
-              <div class="slip">
-                <h3 class="title">連絡はまだありません</h3>
-                <div class="body"></div>
-              </div>
-            </section>
+          <li class="state" data-empty="true">
+            <div role="status">
+              <section class="ply-empty-state" data-kind="empty">
+                <div class="slip">
+                  <h3 class="title">連絡はまだありません</h3>
+                  <div class="body"></div>
+                </div>
+              </section>
+            </div>
           </li>
           <li data-message-id="long-message" data-unread="true">
             <a class="row" href="/apps/inbox/categories"
@@ -362,7 +370,10 @@ export default () => (
                   ><span class="subject"
                     >Re: Re:
                     来年度の共同プロジェクトについて、担当窓口と申請時に必要な資料をまとめました</span
-                  ><span class="count" aria-label="128件の会話">128</span></strong
+                  ><span class="count"
+                    ><span aria-hidden="true">128</span
+                    ><span class="ply-visually-hidden">128件の会話</span></span
+                  ></strong
                 ><span class="summary"
                   ><span class="sender"
                     >株式会社とても長い名前の制作会社・海外事業部／山田</span
@@ -392,7 +403,7 @@ export default () => (
               ><span class="body"
                 ><strong class="title"
                   ><span class="subject">（件名なし）</span
-                  ><span class="attachment" aria-label="添付ファイル12件"
+                  ><span class="attachment"
                     ><svg
                       class="ply-icon"
                       viewBox="0 0 256 256"
@@ -401,7 +412,8 @@ export default () => (
                       focusable="false"
                     >
                       <use href="/assets/ply-icons.svg#ply-file"></use></svg
-                    >12</span
+                    ><span aria-hidden="true">12</span
+                    ><span class="ply-visually-hidden">添付ファイル12件</span></span
                   ></strong
                 ><span class="summary"
                   ><span class="sender">差出人不明</span></span
@@ -428,7 +440,7 @@ export default () => (
               ><span class="body"
                 ><strong class="title"
                   ><span class="subject">確認用の添付資料</span
-                  ><span class="attachment" aria-label="添付ファイル1件"
+                  ><span class="attachment"
                     ><svg
                       class="ply-icon"
                       viewBox="0 0 256 256"
@@ -437,7 +449,8 @@ export default () => (
                       focusable="false"
                     >
                       <use href="/assets/ply-icons.svg#ply-file"></use></svg
-                    >1</span
+                    ><span aria-hidden="true">1</span
+                    ><span class="ply-visually-hidden">添付ファイル1件</span></span
                   ></strong
                 ><span class="summary"><span class="sender">資料窓口</span></span></span
               ><span class="meta"
@@ -504,13 +517,15 @@ export default () => (
           data-avatars="false"
           data-preview-lines="1"
         >
-          <li class="state" data-empty="true" role="status">
-            <section class="ply-empty-state" data-kind="empty">
-              <div class="slip">
-                <h3 class="title">連絡はまだありません</h3>
-                <div class="body"></div>
-              </div>
-            </section>
+          <li class="state" data-empty="true">
+            <div role="status">
+              <section class="ply-empty-state" data-kind="empty">
+                <div class="slip">
+                  <h3 class="title">連絡はまだありません</h3>
+                  <div class="body"></div>
+                </div>
+              </section>
+            </div>
           </li>
           <li data-message-id="draft" data-unread="false" data-state="draft">
             <a class="row" href="/apps/inbox/meeting"
@@ -536,7 +551,7 @@ export default () => (
                 ><strong class="title"
                   ><span class="ply-badge state" data-tone="neutral">送信中</span
                   ><span class="subject">資料を送ります</span
-                  ><span class="attachment" aria-label="添付ファイル2件"
+                  ><span class="attachment"
                     ><svg
                       class="ply-icon"
                       viewBox="0 0 256 256"
@@ -545,7 +560,8 @@ export default () => (
                       focusable="false"
                     >
                       <use href="/assets/ply-icons.svg#ply-file"></use></svg
-                    >2</span
+                    ><span aria-hidden="true">2</span
+                    ><span class="ply-visually-hidden">添付ファイル2件</span></span
                   ></strong
                 ><span class="summary"><span class="sender">自分</span></span></span
               ><span class="meta"
@@ -623,13 +639,15 @@ export default () => (
           data-avatars="false"
           data-preview-lines="1"
         >
-          <li class="state" data-empty="true" role="status">
-            <section class="ply-empty-state" data-kind="empty">
-              <div class="slip">
-                <h3 class="title">連絡はまだありません</h3>
-                <div class="body"></div>
-              </div>
-            </section>
+          <li class="state" data-empty="true">
+            <div role="status">
+              <section class="ply-empty-state" data-kind="empty">
+                <div class="slip">
+                  <h3 class="title">連絡はまだありません</h3>
+                  <div class="body"></div>
+                </div>
+              </section>
+            </div>
           </li>
         </ul>
         <ul
@@ -640,7 +658,7 @@ export default () => (
           data-avatars="false"
           data-preview-lines="1"
         >
-          <li class="state" role="status">連絡を読み込んでいます…</li>
+          <li class="state"><div role="status">連絡を読み込んでいます…</div></li>
         </ul>
         <ul
           class="ply-message-list"
@@ -649,8 +667,10 @@ export default () => (
           data-avatars="false"
           data-preview-lines="1"
         >
-          <li class="state" role="status">
-            <p>連絡を読み込めませんでした。ページを再読み込みしてください。</p>
+          <li class="state">
+            <div role="status">
+              <p>連絡を読み込めませんでした。ページを再読み込みしてください。</p>
+            </div>
           </li>
         </ul>
       </div>

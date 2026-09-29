@@ -11,7 +11,7 @@ export type DialProps = Omit<ElementProps<"fieldset">, "children"> & {
   legend: string;
   /** ラジオボタンのname。選んだ値をこの名前で送信する。 */
   name: string;
-  /** 目盛りの値。左下から時計回りに右下まで、3〜8個を並べる。 */
+  /** 目盛りの値。左下から時計回りに右下まで、3〜8個を並べる。9個目以降を選んだ時は針を出さない。 */
   options: readonly DialOption[];
   /** 最初に選んでおく値。どの値にも合わなければ何も選ばず、針は最初の目盛りを指す。 */
   value?: string;

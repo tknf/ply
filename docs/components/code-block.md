@@ -19,7 +19,7 @@
 
 長い行は横に、高さが28remを超えるコードは縦に、コード領域の中でスクロールします。右から左に読むページでも、コードは左から右に書きます。
 
-`copy` を付ける時は、`ClipboardController` を `clipboard`、`CodeBlockController` を `code-block`、`ToastController` を `toast` として登録します。コピーの操作はクリップボードに書き込める環境でだけ表示し、表示した全文をコピーして結果をToastで知らせます。成功の知らせは4秒で閉じ、指やフォーカスが載っている間は待ちます。失敗の知らせは、コードを選んでコピーするよう促して閉じるまで残します。
+`copy` を付ける時は、`ClipboardController` を `clipboard`、`CodeBlockController` を `code-block`、`ToastController` を `toast` として登録します。コピーの操作はクリップボードに書き込める環境でだけ表示し、表示した全文をコピーして結果をToastで知らせます。成功の知らせは成功の色で出し、4秒で閉じ、指やフォーカスが載っている間は待ちます。失敗の知らせは危険の色で出し、コードを選んでコピーするよう促して閉じるまで残します。
 
 JavaScriptがない時はコピーの操作を出さず、コードは読めます。
 
@@ -33,7 +33,7 @@ JavaScriptがない時はコピーの操作を出さず、コードは読めま�
 ## アクセシビリティ
 
 - コード領域は `pre` に `role="region"`・`tabindex="0"` を付け、`label` を名前にします。
-- コピーの操作は「`label`をコピー」を名前に持ちます。結果は `role="status"` の知らせで読み上げます。
+- コピーの操作は「`label`をコピー」を名前に持ちます。成功は `role="status"` の知らせで控えめに、失敗は `role="alert"` の知らせですぐに読み上げます。
 - 知らせを閉じた時、フォーカスが知らせの中にあればコピーの操作へ戻します。
 - 行番号はCSSで描き、選択とコピーに含めません。
 
@@ -50,14 +50,14 @@ JavaScriptがない時はコピーの操作を出さず、コードは読めま�
 
 トークンも通常の文字としてエスケープし、表示とコピーの内容を一致させる。
 
-| 名前            | 型                     | 既定値  | 説明                                                                                                                                                                        |
-| --------------- | ---------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `code`（必須）  | `string`               |         | 表示してコピーするコードの全文。改行と字下げをそのまま保ち、HTMLも文字として書く。                                                                                          |
-| `label`（必須） | `string`               |         | コードの名前（ファイル名や用途）。見出しの行と、コード領域のaria-labelにする。                                                                                              |
-| `tokens`        | `readonly CodeToken[]` |         | 着色した区切りの並び。全てのcontentをつないだ文字列がcodeと一致する時だけ使い、一致しなければ着色せずにcodeを書く。ハイライトは利用側で行う（Shikiの結果などを渡す）。      |
-| `copy`          | `boolean`              | `false` | 見出しの行にコピーの操作を置く。クリップボードに書き込める環境でだけ表示し、結果をToastで知らせる。 ClipboardController・CodeBlockController・ToastControllerの登録が要る。 |
-| `lineNumbers`   | `boolean`              | `false` | 行の頭に番号を振る。番号はコピーする内容に含めない。                                                                                                                        |
-| `highlight`     | `readonly number[]`    |         | 淡い黄色の地で目印にする行（1から数える）。                                                                                                                                 |
+| 名前            | 型                     | 既定値  | 説明                                                                                                                                                                                                                                               |
+| --------------- | ---------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `code`（必須）  | `string`               |         | 表示してコピーするコードの全文。改行と字下げをそのまま保ち、HTMLも文字として書く。                                                                                                                                                                 |
+| `label`（必須） | `string`               |         | コードの名前（ファイル名や用途）。見出しの行と、コード領域のaria-labelにする。                                                                                                                                                                     |
+| `tokens`        | `readonly CodeToken[]` |         | 着色した区切りの並び。全てのcontentをつないだ文字列がcodeと一致する時だけ使い、一致しなければ着色せずにcodeを書く。ハイライトは利用側で行う（Shikiの結果などを渡す）。                                                                             |
+| `copy`          | `boolean`              | `false` | 見出しの行にコピーの操作を置く。クリップボードに書き込める環境でだけ表示し、結果をToastで知らせる。成功はrole="status"の成功の色、失敗はrole="alert"の危険の色で知らせる。 ClipboardController・CodeBlockController・ToastControllerの登録が要る。 |
+| `lineNumbers`   | `boolean`              | `false` | 行の頭に番号を振る。番号はコピーする内容に含めない。                                                                                                                                                                                               |
+| `highlight`     | `readonly number[]`    |         | 淡い黄色の地で目印にする行（1から数える）。                                                                                                                                                                                                        |
 
 ほかに、`<figure>`へ標準のHTML属性を渡せます。
 
@@ -214,7 +214,7 @@ export default async () => {
       </div>
     </section>
     <aside
-      id="code-copy-:r29:"
+      id="code-copy-:r2b:-done"
       class="ply-toast ply-overlay"
       popover="manual"
       role="status"
@@ -240,7 +240,58 @@ export default async () => {
           </div>
           <span class="close"
             ><button
-              data-toast-target="dismiss"
+              popovertarget="code-copy-:r2b:-done"
+              popovertargetaction="hide"
+              data-icon-only="true"
+              aria-label="コピー結果の通知を閉じる"
+              class="ply-button"
+              type="button"
+              data-variant="primary"
+              data-size="default"
+            >
+              <svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-x"></use>
+              </svg></button
+          ></span>
+        </div>
+      </header>
+      <div class="body"></div>
+    </aside>
+    <aside
+      id="code-copy-:r2b:-failed"
+      class="ply-toast ply-overlay"
+      popover="manual"
+      role="alert"
+      aria-live="assertive"
+      data-controller="toast"
+      data-toast-duration-value="0"
+      data-toast-live-value="assertive"
+      data-state="hidden"
+      data-tone="danger"
+    >
+      <header class="heading">
+        <div class="heading-row">
+          <div class="message">
+            <svg
+              class="ply-icon"
+              viewBox="0 0 256 256"
+              fill="currentColor"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <use href="/assets/ply-icons.svg#ply-x-circle-fill"></use></svg
+            ><span><span data-code-block-target="status"></span></span>
+          </div>
+          <span class="close"
+            ><button
+              popovertarget="code-copy-:r2b:-failed"
+              popovertargetaction="hide"
               data-icon-only="true"
               aria-label="コピー結果の通知を閉じる"
               class="ply-button"
@@ -299,7 +350,7 @@ export default async () => {
       </div>
     </section>
     <aside
-      id="code-copy-:r2a:"
+      id="code-copy-:r2c:-done"
       class="ply-toast ply-overlay"
       popover="manual"
       role="status"
@@ -325,7 +376,58 @@ export default async () => {
           </div>
           <span class="close"
             ><button
-              data-toast-target="dismiss"
+              popovertarget="code-copy-:r2c:-done"
+              popovertargetaction="hide"
+              data-icon-only="true"
+              aria-label="コピー結果の通知を閉じる"
+              class="ply-button"
+              type="button"
+              data-variant="primary"
+              data-size="default"
+            >
+              <svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-x"></use>
+              </svg></button
+          ></span>
+        </div>
+      </header>
+      <div class="body"></div>
+    </aside>
+    <aside
+      id="code-copy-:r2c:-failed"
+      class="ply-toast ply-overlay"
+      popover="manual"
+      role="alert"
+      aria-live="assertive"
+      data-controller="toast"
+      data-toast-duration-value="0"
+      data-toast-live-value="assertive"
+      data-state="hidden"
+      data-tone="danger"
+    >
+      <header class="heading">
+        <div class="heading-row">
+          <div class="message">
+            <svg
+              class="ply-icon"
+              viewBox="0 0 256 256"
+              fill="currentColor"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <use href="/assets/ply-icons.svg#ply-x-circle-fill"></use></svg
+            ><span><span data-code-block-target="status"></span></span>
+          </div>
+          <span class="close"
+            ><button
+              popovertarget="code-copy-:r2c:-failed"
+              popovertargetaction="hide"
               data-icon-only="true"
               aria-label="コピー結果の通知を閉じる"
               class="ply-button"
@@ -392,7 +494,7 @@ export default async () => {
             </div>
           </section>
           <aside
-            id="code-copy-:r2b:"
+            id="code-copy-:r2d:-done"
             class="ply-toast ply-overlay"
             popover="manual"
             role="status"
@@ -418,7 +520,58 @@ export default async () => {
                 </div>
                 <span class="close"
                   ><button
-                    data-toast-target="dismiss"
+                    popovertarget="code-copy-:r2d:-done"
+                    popovertargetaction="hide"
+                    data-icon-only="true"
+                    aria-label="コピー結果の通知を閉じる"
+                    class="ply-button"
+                    type="button"
+                    data-variant="primary"
+                    data-size="default"
+                  >
+                    <svg
+                      class="ply-icon"
+                      viewBox="0 0 256 256"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="/assets/ply-icons.svg#ply-x"></use>
+                    </svg></button
+                ></span>
+              </div>
+            </header>
+            <div class="body"></div>
+          </aside>
+          <aside
+            id="code-copy-:r2d:-failed"
+            class="ply-toast ply-overlay"
+            popover="manual"
+            role="alert"
+            aria-live="assertive"
+            data-controller="toast"
+            data-toast-duration-value="0"
+            data-toast-live-value="assertive"
+            data-state="hidden"
+            data-tone="danger"
+          >
+            <header class="heading">
+              <div class="heading-row">
+                <div class="message">
+                  <svg
+                    class="ply-icon"
+                    viewBox="0 0 256 256"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <use href="/assets/ply-icons.svg#ply-x-circle-fill"></use></svg
+                  ><span><span data-code-block-target="status"></span></span>
+                </div>
+                <span class="close"
+                  ><button
+                    popovertarget="code-copy-:r2d:-failed"
+                    popovertargetaction="hide"
                     data-icon-only="true"
                     aria-label="コピー結果の通知を閉じる"
                     class="ply-button"
@@ -499,7 +652,7 @@ export default async () => {
             </div>
           </section>
           <aside
-            id="code-copy-:r2c:"
+            id="code-copy-:r2e:-done"
             class="ply-toast ply-overlay"
             popover="manual"
             role="status"
@@ -525,7 +678,58 @@ export default async () => {
                 </div>
                 <span class="close"
                   ><button
-                    data-toast-target="dismiss"
+                    popovertarget="code-copy-:r2e:-done"
+                    popovertargetaction="hide"
+                    data-icon-only="true"
+                    aria-label="コピー結果の通知を閉じる"
+                    class="ply-button"
+                    type="button"
+                    data-variant="primary"
+                    data-size="default"
+                  >
+                    <svg
+                      class="ply-icon"
+                      viewBox="0 0 256 256"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="/assets/ply-icons.svg#ply-x"></use>
+                    </svg></button
+                ></span>
+              </div>
+            </header>
+            <div class="body"></div>
+          </aside>
+          <aside
+            id="code-copy-:r2e:-failed"
+            class="ply-toast ply-overlay"
+            popover="manual"
+            role="alert"
+            aria-live="assertive"
+            data-controller="toast"
+            data-toast-duration-value="0"
+            data-toast-live-value="assertive"
+            data-state="hidden"
+            data-tone="danger"
+          >
+            <header class="heading">
+              <div class="heading-row">
+                <div class="message">
+                  <svg
+                    class="ply-icon"
+                    viewBox="0 0 256 256"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <use href="/assets/ply-icons.svg#ply-x-circle-fill"></use></svg
+                  ><span><span data-code-block-target="status"></span></span>
+                </div>
+                <span class="close"
+                  ><button
+                    popovertarget="code-copy-:r2e:-failed"
+                    popovertargetaction="hide"
                     data-icon-only="true"
                     aria-label="コピー結果の通知を閉じる"
                     class="ply-button"
@@ -748,7 +952,7 @@ export default async () => {
               </div>
             </section>
             <aside
-              id="code-copy-:r2f:"
+              id="code-copy-:r2h:-done"
               class="ply-toast ply-overlay"
               popover="manual"
               role="status"
@@ -774,7 +978,58 @@ export default async () => {
                   </div>
                   <span class="close"
                     ><button
-                      data-toast-target="dismiss"
+                      popovertarget="code-copy-:r2h:-done"
+                      popovertargetaction="hide"
+                      data-icon-only="true"
+                      aria-label="コピー結果の通知を閉じる"
+                      class="ply-button"
+                      type="button"
+                      data-variant="primary"
+                      data-size="default"
+                    >
+                      <svg
+                        class="ply-icon"
+                        viewBox="0 0 256 256"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <use href="/assets/ply-icons.svg#ply-x"></use>
+                      </svg></button
+                  ></span>
+                </div>
+              </header>
+              <div class="body"></div>
+            </aside>
+            <aside
+              id="code-copy-:r2h:-failed"
+              class="ply-toast ply-overlay"
+              popover="manual"
+              role="alert"
+              aria-live="assertive"
+              data-controller="toast"
+              data-toast-duration-value="0"
+              data-toast-live-value="assertive"
+              data-state="hidden"
+              data-tone="danger"
+            >
+              <header class="heading">
+                <div class="heading-row">
+                  <div class="message">
+                    <svg
+                      class="ply-icon"
+                      viewBox="0 0 256 256"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <use href="/assets/ply-icons.svg#ply-x-circle-fill"></use></svg
+                    ><span><span data-code-block-target="status"></span></span>
+                  </div>
+                  <span class="close"
+                    ><button
+                      popovertarget="code-copy-:r2h:-failed"
+                      popovertargetaction="hide"
                       data-icon-only="true"
                       aria-label="コピー結果の通知を閉じる"
                       class="ply-button"

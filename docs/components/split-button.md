@@ -16,9 +16,9 @@
 
 `DropdownMenuController` を `dropdown-menu` として登録します。主操作は通常の `button` なので、controllerは要りません。
 
-`type`・`name`・`value`・`form`・`onclick`・`busy`・`busyLabel` など、`Button` へ渡す指定は主操作へそのまま渡ります。`class` だけはルートに付きます。`id` は▾のメニューのid（`<id>-menu`）に使い、主操作のボタンには付けません。
+`type`・`name`・`value`・`form`・`onclick`・`busy`・`busyLabel` など、`Button` へ渡す指定は主操作へそのまま渡ります。`class` だけはルートに付きます。`id` は主操作のボタンに付け、▾のメニューは `<id>-menu`、▾の操作は `<id>-menu-trigger` になります。
 
-`variant`・`size`・`disabled` は両方にかかり、`busy` は主操作だけにかかります。`variant` の既定は `primary` です。
+`variant`・`size`・`disabled` は両方にかかります。`busy` の間は主操作を `busyLabel` に置き換え、▾も押せなくします。`variant` の既定は `primary` です。
 
 二つの操作は見た目だけを一体にします。向き合う側の角を落とし、間に細い区切りを入れます（塗りの操作では白、`secondary` では枠の色）。指を載せた側、フォーカスのある側を手前に出します。
 
@@ -50,7 +50,7 @@
 
 | 名前            | 型                    | 既定値           | 説明                                                                                                   |
 | --------------- | --------------------- | ---------------- | ------------------------------------------------------------------------------------------------------ |
-| `id`（必須）    | `string`              |                  | ▾のメニューのidの元。メニューは`<id>-menu`になる。画面内で一意にする。主操作のボタンのidには使わない。 |
+| `id`（必須）    | `string`              |                  | 主操作のボタンのid。▾のメニューは`<id>-menu`、▾の操作は`<id>-menu-trigger`になる。画面内で一意にする。 |
 | `label`（必須） | `string`              |                  | 主操作の文言。                                                                                         |
 | `items`（必須） | `readonly MenuItem[]` |                  | ▾で開くほかのやり方（「送信の予約」「下書きとして保存」など）。                                        |
 | `menuLabel`     | `string`              | `"ほかのやり方"` | ▾の操作の名前。印だけの操作なので`aria-label`として読み上げる。                                        |
@@ -202,6 +202,7 @@ export default () => (
   <div class="ply-cluster">
     <div class="ply-split-button" data-variant="primary">
       <button
+        id="send"
         class="ply-button main"
         type="button"
         data-variant="primary"
@@ -329,6 +330,7 @@ export default () => (
     </div>
     <div class="ply-split-button" data-variant="secondary">
       <button
+        id="save"
         class="ply-button main"
         type="button"
         data-variant="secondary"
@@ -473,6 +475,7 @@ export default () => (
         <div class="ply-cluster">
           <div class="ply-split-button" data-variant="primary">
             <button
+              id="send-compact"
               class="ply-button main"
               type="button"
               data-variant="primary"
@@ -600,6 +603,7 @@ export default () => (
           </div>
           <div class="ply-split-button" data-variant="primary">
             <button
+              id="send-large"
               class="ply-button main"
               type="button"
               data-variant="primary"
@@ -745,6 +749,7 @@ export default () => (
         <div class="ply-cluster">
           <div class="ply-split-button" data-variant="primary">
             <button
+              id="send-disabled"
               class="ply-button main"
               type="button"
               data-variant="primary"
@@ -874,6 +879,7 @@ export default () => (
           </div>
           <div class="ply-split-button" data-variant="primary">
             <button
+              id="send-busy"
               class="ply-button main"
               type="button"
               data-variant="primary"
@@ -902,6 +908,9 @@ export default () => (
                 type="button"
                 data-variant="primary"
                 data-size="default"
+                data-busy="true"
+                disabled=""
+                aria-busy="true"
               >
                 <svg
                   class="ply-icon"
@@ -1022,6 +1031,7 @@ export default () => (
         <div dir="rtl" lang="ar">
           <div class="ply-split-button" data-variant="primary">
             <button
+              id="send-rtl"
               class="ply-button main"
               type="button"
               data-variant="primary"

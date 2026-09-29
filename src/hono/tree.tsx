@@ -10,7 +10,10 @@ export type TreeItem = {
   value: string;
   /** 項目の名前。空白だけの時はvalueを名前にする。 */
   label: string;
-  /** 名前をリンクにする時のURL。無効な項目ではリンクにしない。 */
+  /**
+   * 名前をリンクにする時のURL。名前を押すか、注目してEnterを押すと、選ぶと同時にリンク先へ移る。
+   * 無効な項目ではリンクにしない。
+   */
   href?: string;
   /** 選べない項目。開閉のボタンも押せず、矢印キーの移動の対象から外す。 */
   disabled?: boolean;
@@ -41,10 +44,13 @@ const uniqueItems = (items: readonly TreeItem[], seen: Set<string>): TreeItem[] 
 const renderItem = (item: TreeItem, path: string, rootId: string) => {
   const children = item.children ?? [];
   const itemLabel = item.label.trim() || item.value;
+  const itemId = `${rootId}-item-${path}`;
   return (
     <li
-      id={`${rootId}-item-${path}`}
+      id={itemId}
       role="treeitem"
+      // 開閉のボタンの名前を項目の名前に混ぜないよう、名前は見出しの文字だけから取る。
+      aria-labelledby={`${itemId}-label`}
       data-tree-target="item"
       data-tree-value={item.value}
       aria-disabled={item.disabled ? "true" : undefined}
@@ -66,9 +72,13 @@ const renderItem = (item: TreeItem, path: string, rootId: string) => {
           <span class="spacer" aria-hidden="true" />
         )}
         {item.href && !item.disabled ? (
-          <a href={item.href}>{itemLabel}</a>
+          <a id={`${itemId}-label`} href={item.href}>
+            {itemLabel}
+          </a>
         ) : (
-          <span class="label">{itemLabel}</span>
+          <span id={`${itemId}-label`} class="label">
+            {itemLabel}
+          </span>
         )}
       </div>
       {children.length > 0 && (

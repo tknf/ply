@@ -16,7 +16,7 @@
 
 各行の `name` と `value` は、囲むフォームで送る名前と値になります。完了の保存は、フォームの送信か、`change` を受ける利用側のcontrollerで行います。標準のcheckboxと同じく、チェックの無い行は送られません。
 
-`title` を渡すと、行の一覧の始まりに一覧の名前を置きます。
+`title` を渡すと、行の一覧の始まりの行に一覧の名前を見出し（`h3`）で置きます。
 
 `heading` を渡すと、一覧を開閉できる `details`（最初は開いた状態）で包み、見出しに終えた割合だけ塗る円と「終えた数/全体」を添えます。`TaskListController` を `task-list` として登録すると、チェックに合わせて数え直し、全て終えると円を緑にしてチェックを置きます。この時、渡した `data-controller` と `data-action` は `task-list` のものに足して付けます。
 
@@ -225,7 +225,7 @@ export default () => (
       >
     </summary>
     <ul class="sheet" aria-label="公開前の確認">
-      <li class="heading" role="none"><h3 class="title">公開前の確認</h3></li>
+      <li class="heading"><h3 class="title">公開前の確認</h3></li>
       <li>
         <label class="ply-choice" data-kind="plain"
           ><input name="proof" type="checkbox" /><span

@@ -35,9 +35,12 @@ export type ButtonProps = PropsWithChildren<
      * tagはTagの中の解除操作用で、タッチ環境でも小さな札の高さを保つ。
      */
     size?: "default" | "compact" | "large" | "tag";
-    /** 処理中にする。内容をbusyLabelに置き換え、押せなくし、aria-busyを付ける。 */
+    /**
+     * 処理中にする。役割の色をゆっくり流して示し、押せなくし、aria-busyを付ける。
+     * 内容はbusyLabelに置き換える。印だけの操作（data-icon-only="true"）は形を保つため印のまま残す。
+     */
     busy?: boolean;
-    /** 処理中に内容の代わりに出す文言。アイコンも含めて置き換える。 */
+    /** 処理中に内容の代わりに出す文言。アイコンも含めて置き換える。印だけの操作では使わない。 */
     busyLabel?: string;
   }
 >;
@@ -64,7 +67,7 @@ export const Button = ({
     disabled={disabled || busy}
     aria-busy={busy ? "true" : attributes["aria-busy"]}
   >
-    {busy ? busyLabel : children}
+    {busy && attributes["data-icon-only"] !== "true" ? busyLabel : children}
   </button>
 );
 

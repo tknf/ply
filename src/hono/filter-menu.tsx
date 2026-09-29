@@ -39,7 +39,7 @@ export type FilterMenuProps = {
   emptyLabel?: string;
   /** 開く操作の文言の前に置く印。 */
   icon?: IconName;
-  /** 開く操作を印だけにする。iconと一緒に渡す。labelは`aria-label`として読み上げる。 */
+  /** 開く操作を印だけにする。iconが無ければ▾の印を出す。labelは`aria-label`として読み上げる。 */
   iconOnly?: boolean;
   /** 開く操作の見た目。値の意味はButtonと同じ。 */
   variant?: ButtonProps["variant"];
@@ -88,10 +88,11 @@ export const FilterMenu = ({
         aria-controls={`${id}-panel`}
         aria-label={iconOnly ? label : undefined}
         data-icon-only={iconOnly ? "true" : undefined}
+        data-filter-menu-target="trigger"
       >
         {icon && <Icon name={icon} />}
         {!iconOnly && label}
-        {!iconOnly && <Icon name="caret" />}
+        {(!iconOnly || !icon) && <Icon name="caret" />}
       </Button>
       <div
         id={`${id}-panel`}

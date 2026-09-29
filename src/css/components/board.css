@@ -180,7 +180,7 @@
           }
         }
       }
-      &:has(> .title > .toggle) > .title {
+      &:has(> .title > .toggle:not([hidden])) > .title {
         cursor: pointer;
         &:hover {
           box-shadow: var(--ply-shadow-paper-lift);
@@ -271,7 +271,7 @@
           color-mix(in srgb, var(--ply-lane-accent) 12%, var(--ply-surface)),
           var(--ply-surface) 70%
         );
-        &:has(> .toggle) {
+        &:has(> .toggle:not([hidden])) {
           padding-inline-end: var(--ply-space-1);
         }
         & > .label {

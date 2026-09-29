@@ -29,7 +29,7 @@
 
 開閉の時、`BoardController` は表示だけを切り替え、取り消せる `board:toggle` で知らせます。開閉の状態は保存しないので、残す時は利用側で保存し、次に描く時の `collapsed` に反映します。
 
-JavaScriptが無い時は、持ち手は無効のまま置かれ、項目は動かせません。開閉のボタンも働かず、件数は描いた時の数のままです。
+JavaScriptが無い時は、持ち手は無効のまま置かれ、項目は動かせません。開閉のボタンは `BoardController` が接続するまで出さないので、列は描いた時の開閉のままです。件数は描いた時の数のままです。
 
 ## キーボード
 
@@ -81,32 +81,32 @@ JavaScriptが無い時は、持ち手は無効のまま置かれ、項目は動�
 
 itemsを持つ形
 
-| 名前            | 型                      | 既定値 | 説明                                                                                                                                                                                              |
-| --------------- | ----------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`            | `string`                |        | 列のid。移動と開閉のイベントで列を指す値になる。省略すると並び順の番号（"0"から）。                                                                                                               |
-| `title`（必須） | `string`                |        | 列の名前。見出しに書き、項目の一覧の読み上げ名にもする。                                                                                                                                          |
-| `tone`          | `Tone`                  |        | 列の役割の色。見出しの文字と、項目の紙の斜めの染まり・角の札に出す。neutralは染めない。                                                                                                           |
-| `current`       | `boolean`               |        | 今の列（今日の担当など）。toneに関わらず青で染める。                                                                                                                                              |
-| `empty`         | `Child`                 |        | 項目が無い時に置く文。省略すると、movableなら「ここへ移動できます」（受け付けない列は「この列には移動できません」）、 movableでなければ「項目はありません」を置く。                               |
-| `disabled`      | `boolean`               |        | 項目を受け付けない列。斜線を引き、移動先にしない。                                                                                                                                                |
-| `collapsed`     | `boolean`               |        | たたんだ列。件数と縦書きの名前を載せた縦長のピルになり、中の項目は隠す。移動先にはならない。                                                                                                      |
-| `collapsible`   | `boolean`               |        | 列を押して開閉できるようにする。たたんだピルに「開く」、開いた列の見出しに「たたむ」を置き、押すとBoardControllerが表示を切り替えて、取り消せるboard:toggleで知らせる。開閉の保存は利用側が持つ。 |
-| `items`（必須） | `readonly BoardEntry[]` |        | 列の項目。渡した順に上から並べる。件数は項目の数から数える。                                                                                                                                      |
+| 名前            | 型                      | 既定値 | 説明                                                                                                                                                                                                                                                 |
+| --------------- | ----------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`            | `string`                |        | 列のid。移動と開閉のイベントで列を指す値になる。省略すると並び順の番号（"0"から）。                                                                                                                                                                  |
+| `title`（必須） | `string`                |        | 列の名前。見出しに書き、項目の一覧の読み上げ名にもする。                                                                                                                                                                                             |
+| `tone`          | `Tone`                  |        | 列の役割の色。見出しの文字と、項目の紙の斜めの染まり・角の札に出す。neutralは染めない。                                                                                                                                                              |
+| `current`       | `boolean`               |        | 今の列（今日の担当など）。toneに関わらず青で染める。                                                                                                                                                                                                 |
+| `empty`         | `Child`                 |        | 項目が無い時に置く文。省略すると、movableなら「ここへ移動できます」（受け付けない列は「この列には移動できません」）、 movableでなければ「項目はありません」を置く。                                                                                  |
+| `disabled`      | `boolean`               |        | 項目を受け付けない列。斜線を引き、移動先にしない。                                                                                                                                                                                                   |
+| `collapsed`     | `boolean`               |        | たたんだ列。件数と縦書きの名前を載せた縦長のピルになり、中の項目は隠す。移動先にはならない。                                                                                                                                                         |
+| `collapsible`   | `boolean`               |        | 列を押して開閉できるようにする。たたんだピルに「開く」、開いた列の見出しに「たたむ」を置き、押すとBoardControllerが表示を切り替えて、取り消せるboard:toggleで知らせる。開閉の保存は利用側が持つ。開閉のボタンは、BoardControllerが接続するまで隠す。 |
+| `items`（必須） | `readonly BoardEntry[]` |        | 列の項目。渡した順に上から並べる。件数は項目の数から数える。                                                                                                                                                                                         |
 
 content・countを持つ形
 
-| 名前              | 型        | 既定値 | 説明                                                                                                                                                                                              |
-| ----------------- | --------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`              | `string`  |        | 列のid。移動と開閉のイベントで列を指す値になる。省略すると並び順の番号（"0"から）。                                                                                                               |
-| `title`（必須）   | `string`  |        | 列の名前。見出しに書き、項目の一覧の読み上げ名にもする。                                                                                                                                          |
-| `tone`            | `Tone`    |        | 列の役割の色。見出しの文字と、項目の紙の斜めの染まり・角の札に出す。neutralは染めない。                                                                                                           |
-| `current`         | `boolean` |        | 今の列（今日の担当など）。toneに関わらず青で染める。                                                                                                                                              |
-| `empty`           | `Child`   |        | 項目が無い時に置く文。省略すると、movableなら「ここへ移動できます」（受け付けない列は「この列には移動できません」）、 movableでなければ「項目はありません」を置く。                               |
-| `disabled`        | `boolean` |        | 項目を受け付けない列。斜線を引き、移動先にしない。                                                                                                                                                |
-| `collapsed`       | `boolean` |        | たたんだ列。件数と縦書きの名前を載せた縦長のピルになり、中の項目は隠す。移動先にはならない。                                                                                                      |
-| `collapsible`     | `boolean` |        | 列を押して開閉できるようにする。たたんだピルに「開く」、開いた列の見出しに「たたむ」を置き、押すとBoardControllerが表示を切り替えて、取り消せるboard:toggleで知らせる。開閉の保存は利用側が持つ。 |
-| `content`（必須） | `Child`   |        | 項目の代わりに置く任意の中身。移動先にはならない。                                                                                                                                                |
-| `count`（必須）   | `number`  |        | contentの時に見出しへ添える件数。                                                                                                                                                                 |
+| 名前              | 型        | 既定値 | 説明                                                                                                                                                                                                                                                 |
+| ----------------- | --------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`              | `string`  |        | 列のid。移動と開閉のイベントで列を指す値になる。省略すると並び順の番号（"0"から）。                                                                                                                                                                  |
+| `title`（必須）   | `string`  |        | 列の名前。見出しに書き、項目の一覧の読み上げ名にもする。                                                                                                                                                                                             |
+| `tone`            | `Tone`    |        | 列の役割の色。見出しの文字と、項目の紙の斜めの染まり・角の札に出す。neutralは染めない。                                                                                                                                                              |
+| `current`         | `boolean` |        | 今の列（今日の担当など）。toneに関わらず青で染める。                                                                                                                                                                                                 |
+| `empty`           | `Child`   |        | 項目が無い時に置く文。省略すると、movableなら「ここへ移動できます」（受け付けない列は「この列には移動できません」）、 movableでなければ「項目はありません」を置く。                                                                                  |
+| `disabled`        | `boolean` |        | 項目を受け付けない列。斜線を引き、移動先にしない。                                                                                                                                                                                                   |
+| `collapsed`       | `boolean` |        | たたんだ列。件数と縦書きの名前を載せた縦長のピルになり、中の項目は隠す。移動先にはならない。                                                                                                                                                         |
+| `collapsible`     | `boolean` |        | 列を押して開閉できるようにする。たたんだピルに「開く」、開いた列の見出しに「たたむ」を置き、押すとBoardControllerが表示を切り替えて、取り消せるboard:toggleで知らせる。開閉の保存は利用側が持つ。開閉のボタンは、BoardControllerが接続するまで隠す。 |
+| `content`（必須） | `Child`   |        | 項目の代わりに置く任意の中身。移動先にはならない。                                                                                                                                                                                                   |
+| `count`（必須）   | `number`  |        | contentの時に見出しへ添える件数。                                                                                                                                                                                                                    |
 
 #### `Tone`
 
@@ -508,7 +508,7 @@ export default () => (
 ```html
 <div class="ply-stack">
   <div
-    id="board-:r2h:"
+    id="board-:r2j:"
     class="ply-board"
     style="--ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr) minmax(auto, 1fr)"
     role="region"
@@ -539,7 +539,7 @@ export default () => (
             data-icon-only="true"
             data-board-handle="true"
             aria-label="「仕事場の案内を更新する」を移動"
-            aria-describedby="board-:r2h:-help"
+            aria-describedby="board-:r2j:-help"
             class="ply-button handle"
             type="button"
             data-variant="link"
@@ -586,7 +586,7 @@ export default () => (
             data-icon-only="true"
             data-board-handle="true"
             aria-label="「見積内容の確認」を移動"
-            aria-describedby="board-:r2h:-help"
+            aria-describedby="board-:r2j:-help"
             class="ply-button handle"
             type="button"
             data-variant="link"
@@ -644,7 +644,7 @@ export default () => (
             data-icon-only="true"
             data-board-handle="true"
             aria-label="「秋の読書会のお知らせ」を移動"
-            aria-describedby="board-:r2h:-help"
+            aria-describedby="board-:r2j:-help"
             class="ply-button handle"
             type="button"
             data-variant="link"
@@ -691,7 +691,7 @@ export default () => (
             data-icon-only="true"
             data-board-handle="true"
             aria-label="「仕事場の案内.pdf」を移動"
-            aria-describedby="board-:r2h:-help"
+            aria-describedby="board-:r2j:-help"
             class="ply-button handle"
             type="button"
             data-variant="link"
@@ -717,7 +717,7 @@ export default () => (
       <div class="items" role="list" aria-label="完了"></div>
       <div class="empty">終わった項目をここへ</div>
     </section>
-    <p id="board-:r2h:-help" class="ply-visually-hidden">
+    <p id="board-:r2j:-help" class="ply-visually-hidden">
       移動ボタンをドラッグします。キーボードではSpaceで持ち上げ、左右矢印で列、上下矢印で位置を選び、Enterで確定、Escapeで取り消します。
     </p>
     <p
@@ -749,7 +749,7 @@ export default () => (
       </summary>
       <div class="body">
         <div
-          id="board-:r2i:"
+          id="board-:r2k:"
           class="ply-board"
           style="
             --ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr) minmax(auto, 1fr)
@@ -844,7 +844,7 @@ export default () => (
       </summary>
       <div class="body">
         <div
-          id="board-:r2j:"
+          id="board-:r2l:"
           class="ply-board"
           style="
             --ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr) minmax(auto, 1fr);
@@ -869,7 +869,7 @@ export default () => (
                   data-icon-only="true"
                   data-board-handle="true"
                   aria-label="「10月の利用案内」を移動"
-                  aria-describedby="board-:r2j:-help"
+                  aria-describedby="board-:r2l:-help"
                   class="ply-button handle"
                   type="button"
                   data-variant="link"
@@ -898,7 +898,7 @@ export default () => (
                   data-icon-only="true"
                   data-board-handle="true"
                   aria-label="「年末年始の営業」を移動"
-                  aria-describedby="board-:r2j:-help"
+                  aria-describedby="board-:r2l:-help"
                   class="ply-button handle"
                   type="button"
                   data-variant="link"
@@ -936,7 +936,7 @@ export default () => (
                   data-icon-only="true"
                   data-board-handle="true"
                   aria-label="「9月の利用案内」を移動"
-                  aria-describedby="board-:r2j:-help"
+                  aria-describedby="board-:r2l:-help"
                   class="ply-button handle"
                   type="button"
                   data-variant="link"
@@ -971,7 +971,7 @@ export default () => (
                   data-icon-only="true"
                   data-board-handle="true"
                   aria-label="「夏の特別料金」を移動"
-                  aria-describedby="board-:r2j:-help"
+                  aria-describedby="board-:r2l:-help"
                   class="ply-button handle"
                   type="button"
                   data-variant="link"
@@ -992,7 +992,7 @@ export default () => (
             </div>
             <div class="empty">ここへ移動できます</div>
           </section>
-          <p id="board-:r2j:-help" class="ply-visually-hidden">
+          <p id="board-:r2l:-help" class="ply-visually-hidden">
             移動ボタンをドラッグします。キーボードではSpaceで持ち上げ、左右矢印で列、上下矢印で位置を選び、Enterで確定、Escapeで取り消します。
           </p>
           <p
@@ -1023,7 +1023,7 @@ export default () => (
       </summary>
       <div class="body">
         <div
-          id="board-:r2k:"
+          id="board-:r2m:"
           class="ply-board"
           style="--ply-board-tracks: auto minmax(auto, 1fr) minmax(auto, 1fr) auto"
           role="region"
@@ -1043,6 +1043,7 @@ export default () => (
                 data-icon-only="true"
                 data-action="board#toggle"
                 data-board-toggle="true"
+                hidden=""
                 aria-expanded="false"
                 aria-label="「応募」の列を開閉"
                 class="ply-button toggle"
@@ -1088,6 +1089,7 @@ export default () => (
                 data-icon-only="true"
                 data-action="board#toggle"
                 data-board-toggle="true"
+                hidden=""
                 aria-expanded="true"
                 aria-label="「面接」の列を開閉"
                 class="ply-button toggle"
@@ -1144,6 +1146,7 @@ export default () => (
                 data-icon-only="true"
                 data-action="board#toggle"
                 data-board-toggle="true"
+                hidden=""
                 aria-expanded="true"
                 aria-label="「内定」の列を開閉"
                 class="ply-button toggle"
@@ -1194,6 +1197,7 @@ export default () => (
                 data-icon-only="true"
                 data-action="board#toggle"
                 data-board-toggle="true"
+                hidden=""
                 aria-expanded="false"
                 aria-label="「見送り」の列を開閉"
                 class="ply-button toggle"
@@ -1270,7 +1274,7 @@ export default () => (
       </summary>
       <div class="body">
         <div
-          id="board-:r2l:"
+          id="board-:r2n:"
           class="ply-board"
           style="--ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr)"
           role="region"
@@ -1395,7 +1399,7 @@ export default () => (
       </summary>
       <div class="body">
         <div
-          id="board-:r2m:"
+          id="board-:r2o:"
           class="ply-board"
           style="--ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr)"
           role="region"
@@ -1502,7 +1506,7 @@ export default () => (
       </summary>
       <div class="body">
         <div
-          id="board-:r2n:"
+          id="board-:r2p:"
           class="ply-board"
           style="
             --ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr) minmax(auto, 1fr);
@@ -1531,7 +1535,7 @@ export default () => (
                   data-icon-only="true"
                   data-board-handle="true"
                   aria-label="「確認が完了した資料」を移動"
-                  aria-describedby="board-:r2n:-help"
+                  aria-describedby="board-:r2p:-help"
                   class="ply-button handle"
                   type="button"
                   data-variant="link"
@@ -1560,7 +1564,7 @@ export default () => (
                   data-icon-only="true"
                   data-board-handle="true"
                   aria-label="「動かせる資料」を移動"
-                  aria-describedby="board-:r2n:-help"
+                  aria-describedby="board-:r2p:-help"
                   class="ply-button handle"
                   type="button"
                   data-variant="link"
@@ -1596,7 +1600,7 @@ export default () => (
             <div class="items" role="list" aria-label="受付終了"></div>
             <div class="empty">この列へは移動できません</div>
           </section>
-          <p id="board-:r2n:-help" class="ply-visually-hidden">
+          <p id="board-:r2p:-help" class="ply-visually-hidden">
             移動ボタンをドラッグします。キーボードではSpaceで持ち上げ、左右矢印で列、上下矢印で位置を選び、Enterで確定、Escapeで取り消します。
           </p>
           <p
@@ -1626,7 +1630,7 @@ export default () => (
       <div class="body">
         <div style="max-inline-size: 28rem">
           <div
-            id="board-:r2o:"
+            id="board-:r2q:"
             class="ply-board"
             style="--ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr) auto"
             role="region"
@@ -1700,7 +1704,7 @@ export default () => (
       <div class="body">
         <div dir="rtl" lang="ar">
           <div
-            id="board-:r2p:"
+            id="board-:r2r:"
             class="ply-board"
             style="--ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr) auto"
             role="region"
@@ -1726,7 +1730,7 @@ export default () => (
                     data-icon-only="true"
                     data-board-handle="true"
                     aria-label="「تحديث دليل المكان」を移動"
-                    aria-describedby="board-:r2p:-help"
+                    aria-describedby="board-:r2r:-help"
                     class="ply-button handle"
                     type="button"
                     data-variant="link"
@@ -1763,7 +1767,7 @@ export default () => (
                     data-icon-only="true"
                     data-board-handle="true"
                     aria-label="「اختيار الصور」を移動"
-                    aria-describedby="board-:r2p:-help"
+                    aria-describedby="board-:r2r:-help"
                     class="ply-button handle"
                     type="button"
                     data-variant="link"
@@ -1803,7 +1807,7 @@ export default () => (
                     data-icon-only="true"
                     data-board-handle="true"
                     aria-label="「المقابلة」を移動"
-                    aria-describedby="board-:r2p:-help"
+                    aria-describedby="board-:r2r:-help"
                     class="ply-button handle"
                     type="button"
                     data-variant="link"
@@ -1824,7 +1828,7 @@ export default () => (
               </div>
               <div class="empty">ここへ移動できます</div>
             </section>
-            <p id="board-:r2p:-help" class="ply-visually-hidden">
+            <p id="board-:r2r:-help" class="ply-visually-hidden">
               移動ボタンをドラッグします。キーボードではSpaceで持ち上げ、左右矢印で列、上下矢印で位置を選び、Enterで確定、Escapeで取り消します。
             </p>
             <p

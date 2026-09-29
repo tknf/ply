@@ -1,10 +1,11 @@
 @layer components {
   /*
     書式の道具を並べた書く面。欄と同じ1pxの枠と内側の浅い影で沈め、道具の並びは細い線で書く面と分ける。
-    道具は墨の淡い印だけのButtonにし、指を載せた時だけ淡い面を出す。道具の間の区切りは細い縦線。
+    道具は墨の淡い印だけのButtonにし、指を載せた時だけ淡い面を出す。道具の間の区切りは細い縦線（狭い幅では間隔だけ）。
     フォーカスは他の欄と同じく、青い縁の外に淡い青の輪を広げる。
   */
   .ply-text-editor {
+    container-type: inline-size;
     display: grid;
     grid-template-rows: auto minmax(0, 1fr);
     min-inline-size: 0;
@@ -56,6 +57,17 @@
         align-items: center;
         gap: var(--ply-space-2);
         margin-inline-start: auto;
+      }
+      /*
+        既定の道具と操作が一行に収まらない幅（36rem未満）では道具が折り返し、区切りの縦線が行の始まりに来てしまう。
+        行の始まりはCSSで見分けられないので、この幅では縦線を引かず、まとまりの間を広げて分ける。
+      */
+      @container (inline-size < 36rem) {
+        column-gap: var(--ply-space-3);
+        & > .group + .group {
+          padding-inline-start: 0;
+          border-inline-start: 0;
+        }
       }
     }
     & > .area {

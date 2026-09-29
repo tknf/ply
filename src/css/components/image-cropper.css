@@ -149,6 +149,12 @@
       gap: var(--ply-space-3) var(--ply-space-4);
     }
 
+    /* JavaScriptが無いと動かないので、controllerが接続するまで持ち手と調整の欄を出さず、切り抜きの見本だけにする。 */
+    &:not([data-connected="true"]) > .layout > .settings,
+    &:not([data-connected="true"]) > .layout > .stage > .viewport > :is(.selection, .resize) {
+      display: none;
+    }
+
     & > .layout > .settings > .instructions {
       color: var(--ply-muted);
       font-size: var(--ply-small);

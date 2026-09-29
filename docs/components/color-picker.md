@@ -50,19 +50,19 @@ JavaScriptが無い時は色の面を隠し、四本の標準のスライダー�
 
 標準rangeがフォーム値を保持し、上流のcolor-pickerが操作面と値を同期する。
 
-| 名前            | 型                 | 既定値         | 説明                                                                                                                                         |
-| --------------- | ------------------ | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`            | `string`           |                | ルートのfieldsetのID。中の欄のIDの頭にも使う。渡さなければ自動で作る。                                                                       |
-| `class`         | `string`           |                | ルートのfieldsetに足すクラス。                                                                                                               |
-| `label`（必須） | `string`           |                | 欄全体の名前。legendに出し、色の面の読み上げ名にも使う。                                                                                     |
-| `name`（必須）  | `string`           |                | 送る名前の頭。`${name}[hue]`・`[saturation]`・`[brightness]`・`[alpha]`・`[colorSpace]`で送る。                                              |
-| `value`         | `ColorPickerValue` | `defaultValue` | 初めの色。                                                                                                                                   |
-| `help`          | `string`           |                | 欄の下に出す補足。fieldsetのaria-describedbyに関連付ける。                                                                                   |
-| `error`         | `string`           |                | 欄の下に出す誤りの文。fieldsetをaria-invalidにする。確かめは利用側で行う。                                                                   |
-| `disabled`      | `boolean`          |                | 色の面とスライダーをすべて使えなくする。値は送信しない。                                                                                     |
-| `form`          | `string`           |                | 別の場所にあるformのID。送信する全ての欄に付ける。                                                                                           |
-| `step`          | `number`           | `1`            | 色の面を矢印キーで動かす時の、彩度・明度の幅（0より大きく100以下）。Shiftを押すと10倍。                                                      |
-| `hueStep`       | `number`           | `1`            | 上流のcolor-pickerが色相の輪を矢印キーで動かす時の幅（0より大きく360以下）。この部品は輪を持たないので、色相のスライダーの動きには効かない。 |
+| 名前            | 型                 | 既定値         | 説明                                                                                                                                                                                                                 |
+| --------------- | ------------------ | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`            | `string`           |                | ルートのfieldsetのID。中の欄のIDの頭にも使う。渡さなければ自動で作る。                                                                                                                                               |
+| `class`         | `string`           |                | ルートのfieldsetに足すクラス。                                                                                                                                                                                       |
+| `label`（必須） | `string`           |                | 欄全体の名前。legendに出し、色の面の読み上げ名にも使う。                                                                                                                                                             |
+| `name`（必須）  | `string`           |                | 送る名前の頭。`${name}[hue]`・`[saturation]`・`[brightness]`・`[alpha]`・`[colorSpace]`で送る。                                                                                                                      |
+| `value`         | `ColorPickerValue` | `defaultValue` | 初めの色。                                                                                                                                                                                                           |
+| `help`          | `string`           |                | 欄の下に出す補足。fieldsetのaria-describedbyに関連付ける。                                                                                                                                                           |
+| `error`         | `string`           |                | 欄の下に出す誤りの文。fieldsetをaria-invalidにする。確かめは利用側で行う。                                                                                                                                           |
+| `disabled`      | `boolean`          |                | 色の面とスライダーをすべて使えなくする。値は送信しない。                                                                                                                                                             |
+| `form`          | `string`           |                | 別の場所にあるformのID。送信する全ての欄に付ける。                                                                                                                                                                   |
+| `step`          | `number`           | `1`            | 色の面を矢印キーで動かす時の、彩度・明度の幅（0より大きく100以下）。Shiftを押すと10倍。                                                                                                                              |
+| `hueStep`       | `number`           |                | 使わない。互換のために型だけを残し、渡しても何も変わらない。上流のcolor-pickerでは色相の輪を矢印キーで動かす幅だが、この部品は輪を持たず、色相のスライダーは他のスライダーと同じくブラウザの標準の動きで値を変える。 |
 
 登録するcontroller：`color-picker`（`ColorPickerController`）
 
@@ -167,7 +167,6 @@ export default () => (
     data-controller="color-picker"
     data-color-picker-value-value='{"colorSpace":"srgb","hue":215,"saturation":68,"brightness":84,"alpha":1}'
     data-color-picker-step-value="1"
-    data-color-picker-hue-step-value="1"
     style="
       --color-picker-hue: 215;
       --color-picker-saturation: 0.68;
@@ -332,7 +331,6 @@ export default () => (
           data-controller="color-picker"
           data-color-picker-value-value='{"colorSpace":"display-p3","hue":18,"saturation":83,"brightness":96,"alpha":0.52}'
           data-color-picker-step-value="1"
-          data-color-picker-hue-step-value="1"
           style="
             --color-picker-hue: 18;
             --color-picker-saturation: 0.83;
@@ -490,7 +488,6 @@ export default () => (
           data-controller="color-picker"
           data-color-picker-value-value='{"colorSpace":"srgb","hue":215,"saturation":68,"brightness":84,"alpha":1}'
           data-color-picker-step-value="1"
-          data-color-picker-hue-step-value="1"
           style="
             --color-picker-hue: 215;
             --color-picker-saturation: 0.68;
@@ -650,7 +647,6 @@ export default () => (
           data-controller="color-picker"
           data-color-picker-value-value='{"colorSpace":"srgb","hue":215,"saturation":68,"brightness":84,"alpha":1}'
           data-color-picker-step-value="1"
-          data-color-picker-hue-step-value="1"
           style="
             --color-picker-hue: 215;
             --color-picker-saturation: 0.68;
@@ -897,7 +893,6 @@ export default () => (
                 data-controller="color-picker"
                 data-color-picker-value-value='{"colorSpace":"srgb","hue":42,"saturation":86,"brightness":98,"alpha":0.8}'
                 data-color-picker-step-value="1"
-                data-color-picker-hue-step-value="1"
                 style="
                   --color-picker-hue: 42;
                   --color-picker-saturation: 0.86;

@@ -36,13 +36,13 @@ JavaScriptが無い時も、期間の移動と表示形式の切り替えはリ�
 
 ## キーボード
 
-| キー          | 動作                                                                                                                         |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Tab           | 選べる日付のうち、選んでいる日（無ければ最初の選べる日）だけに止まります。                                                   |
-| ← / →         | `selection` の時、前・後の選べる日へフォーカスを移します。選べない日は飛ばします。右から左に読む画面では向きが逆になります。 |
-| ↑ / ↓         | `selection` の時、7つ前・後の日へフォーカスを移します。その日が選べない時は動きません。                                      |
-| Enter / Space | フォーカスした日を選びます。                                                                                                 |
-| Escape        | 開いている予定の詳細の紙を閉じます。                                                                                         |
+| キー          | 動作                                                                                                                                                      |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tab           | 選べる日付のうち、選んでいる日（無ければ最初の選べる日）だけに止まります。                                                                                |
+| ← / →         | `selection` の時、前・後の選べる日へフォーカスを移します。選べない日は飛ばします。右から左に読む画面では向きが逆になります。                              |
+| ↑ / ↓         | `selection` の時、7日前・後の同じ曜日へフォーカスを移します。並びの空き（`null`）をまたいでも日付で数えます。その日が表示の外か、選べない時は動きません。 |
+| Enter / Space | フォーカスした日を選びます。                                                                                                                              |
+| Escape        | 開いている予定の詳細の紙を閉じます。                                                                                                                      |
 
 ## アクセシビリティ
 
@@ -420,6 +420,17 @@ export default () => (
       weeks={weeks.slice(3, 4)}
       view="week"
       selection={{ mode: "range", start: "2026-09-22", end: "2026-09-25" }}
+    />
+    <h2>平日から選ぶ</h2>
+    <p>
+      週末と前後の月を空き（null）にした月です。↑↓は空きをまたいでも同じ曜日の前後の週へ移ります。
+    </p>
+    <Calendar
+      label="2026年9月の平日から選ぶ"
+      weeks={emptyWeeks.map((week) =>
+        week.map((day, index) => (day.outside || index >= 5 ? null : day)),
+      )}
+      selection={{ mode: "single", value: "2026-09-15" }}
     />
     <h2>年の俯瞰</h2>
     <Calendar label="2026年" view="year" months={months} />
@@ -4458,6 +4469,404 @@ export default () => (
       </div>
     </div>
   </div>
+  <h2>平日から選ぶ</h2>
+  <p>
+    週末と前後の月を空き（null）にした月です。↑↓は空きをまたいでも同じ曜日の前後の週へ移ります。
+  </p>
+  <div
+    class="ply-calendar"
+    data-view="month"
+    data-controller="calendar"
+    data-calendar-mode-value="single"
+    data-calendar-value-value="2026-09-15"
+    role="region"
+    aria-label="2026年9月の平日から選ぶ"
+  >
+    <div class="controls"><h2>2026年9月の平日から選ぶ</h2></div>
+    <div
+      class="viewport"
+      tabindex="0"
+      role="group"
+      aria-label="2026年9月の平日から選ぶの日付グリッド"
+    >
+      <table>
+        <caption>
+          2026年9月の平日から選ぶ
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">月</th>
+            <th scope="col">火</th>
+            <th scope="col">水</th>
+            <th scope="col">木</th>
+            <th scope="col">金</th>
+            <th scope="col">土</th>
+            <th scope="col">日</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td>
+              <span class="weekday" aria-hidden="true">火</span
+              ><span class="month-start" aria-hidden="true">9月</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-01"
+                aria-pressed="false"
+                aria-label="9月1日火曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                1
+              </button>
+            </td>
+            <td>
+              <span class="weekday" aria-hidden="true">水</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-02"
+                aria-pressed="false"
+                aria-label="9月2日水曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                2
+              </button>
+            </td>
+            <td>
+              <span class="weekday" aria-hidden="true">木</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-03"
+                aria-pressed="false"
+                aria-label="9月3日木曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                3
+              </button>
+            </td>
+            <td>
+              <span class="weekday" aria-hidden="true">金</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-04"
+                aria-pressed="false"
+                aria-label="9月4日金曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                4
+              </button>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="weekday" aria-hidden="true">月</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-07"
+                aria-pressed="false"
+                aria-label="9月7日月曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                7
+              </button>
+            </td>
+            <td>
+              <span class="weekday" aria-hidden="true">火</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-08"
+                aria-pressed="false"
+                aria-label="9月8日火曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                8
+              </button>
+            </td>
+            <td>
+              <span class="weekday" aria-hidden="true">水</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-09"
+                aria-pressed="false"
+                aria-label="9月9日水曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                9
+              </button>
+            </td>
+            <td>
+              <span class="weekday" aria-hidden="true">木</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-10"
+                aria-pressed="false"
+                aria-label="9月10日木曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                10
+              </button>
+            </td>
+            <td>
+              <span class="weekday" aria-hidden="true">金</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-11"
+                aria-pressed="false"
+                aria-label="9月11日金曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                11
+              </button>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="weekday" aria-hidden="true">月</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-14"
+                aria-pressed="false"
+                aria-label="9月14日月曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                14
+              </button>
+            </td>
+            <td data-selected="true">
+              <span class="weekday" aria-hidden="true">火</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-15"
+                data-state="selected"
+                aria-pressed="true"
+                aria-label="9月15日火曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                15
+              </button>
+            </td>
+            <td>
+              <span class="weekday" aria-hidden="true">水</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-16"
+                aria-pressed="false"
+                aria-label="9月16日水曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                16
+              </button>
+            </td>
+            <td>
+              <span class="weekday" aria-hidden="true">木</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-17"
+                aria-pressed="false"
+                aria-label="9月17日木曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                17
+              </button>
+            </td>
+            <td>
+              <span class="weekday" aria-hidden="true">金</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-18"
+                aria-pressed="false"
+                aria-label="9月18日金曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                18
+              </button>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr data-current="true">
+            <td>
+              <span class="weekday" aria-hidden="true">月</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-21"
+                aria-pressed="false"
+                aria-label="9月21日月曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                21
+              </button>
+            </td>
+            <td>
+              <span class="weekday" aria-hidden="true">火</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-22"
+                aria-pressed="false"
+                aria-label="9月22日火曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                22
+              </button>
+            </td>
+            <td data-disabled="true">
+              <span class="weekday" aria-hidden="true">水</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-23"
+                aria-pressed="false"
+                aria-label="9月23日水曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+                disabled=""
+              >
+                23
+              </button>
+            </td>
+            <td data-current="true">
+              <span class="weekday" aria-hidden="true">木</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-24"
+                aria-pressed="false"
+                aria-current="date"
+                data-current="true"
+                aria-label="9月24日木曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                24
+              </button>
+            </td>
+            <td>
+              <span class="weekday" aria-hidden="true">金</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-25"
+                aria-pressed="false"
+                aria-label="9月25日金曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                25
+              </button>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="weekday" aria-hidden="true">月</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-28"
+                aria-pressed="false"
+                aria-label="9月28日月曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                28
+              </button>
+            </td>
+            <td>
+              <span class="weekday" aria-hidden="true">火</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-29"
+                aria-pressed="false"
+                aria-label="9月29日火曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                29
+              </button>
+            </td>
+            <td>
+              <span class="weekday" aria-hidden="true">水</span
+              ><button
+                data-calendar-target="day"
+                data-calendar-value="2026-09-30"
+                aria-pressed="false"
+                aria-label="9月30日水曜日"
+                class="ply-button day"
+                type="button"
+                data-variant="secondary"
+                data-size="compact"
+              >
+                30
+              </button>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <h2>年の俯瞰</h2>
   <div class="ply-calendar" data-view="year" role="region" aria-label="2026年">
     <div class="controls"><h2>2026年</h2></div>
@@ -4499,7 +4908,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=1&amp;view=week&amp;week=0"
@@ -4576,7 +4985,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=1&amp;view=week&amp;week=1"
@@ -4653,7 +5062,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=1&amp;view=week&amp;week=2"
@@ -4730,7 +5139,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=1&amp;view=week&amp;week=3"
@@ -4807,7 +5216,12 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true" data-month-start="true">
+        <div
+          class="year-day"
+          data-weekend="true"
+          data-month-start="true"
+          data-last-column="true"
+        >
           <a
             class="month-link"
             href="/apps/schedule?year=2026&amp;month=2&amp;view=month"
@@ -4884,7 +5298,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=2&amp;view=week&amp;week=1"
@@ -4961,7 +5375,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=2&amp;view=week&amp;week=2"
@@ -5038,7 +5452,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=2&amp;view=week&amp;week=3"
@@ -5115,7 +5529,12 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true" data-month-start="true">
+        <div
+          class="year-day"
+          data-weekend="true"
+          data-month-start="true"
+          data-last-column="true"
+        >
           <a
             class="month-link"
             href="/apps/schedule?year=2026&amp;month=3&amp;view=month"
@@ -5192,7 +5611,12 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true" data-events="true">
+        <div
+          class="year-day"
+          data-weekend="true"
+          data-last-column="true"
+          data-events="true"
+        >
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=3&amp;view=week&amp;week=1"
@@ -5271,7 +5695,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=3&amp;view=week&amp;week=2"
@@ -5348,7 +5772,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=3&amp;view=week&amp;week=3"
@@ -5425,7 +5849,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=3&amp;view=week&amp;week=4"
@@ -5502,7 +5926,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=4&amp;view=week&amp;week=0"
@@ -5579,7 +6003,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=4&amp;view=week&amp;week=1"
@@ -5656,7 +6080,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=4&amp;view=week&amp;week=2"
@@ -5733,7 +6157,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=4&amp;view=week&amp;week=3"
@@ -5810,7 +6234,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=5&amp;view=week&amp;week=0"
@@ -5887,7 +6311,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=5&amp;view=week&amp;week=1"
@@ -5964,7 +6388,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=5&amp;view=week&amp;week=2"
@@ -6041,7 +6465,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=5&amp;view=week&amp;week=3"
@@ -6118,7 +6542,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=5&amp;view=week&amp;week=4"
@@ -6195,7 +6619,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=6&amp;view=week&amp;week=0"
@@ -6272,7 +6696,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=6&amp;view=week&amp;week=1"
@@ -6351,7 +6775,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=6&amp;view=week&amp;week=2"
@@ -6428,7 +6852,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=6&amp;view=week&amp;week=3"
@@ -6505,7 +6929,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=7&amp;view=week&amp;week=0"
@@ -6582,7 +7006,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=7&amp;view=week&amp;week=1"
@@ -6659,7 +7083,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=7&amp;view=week&amp;week=2"
@@ -6736,7 +7160,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=7&amp;view=week&amp;week=3"
@@ -6813,7 +7237,7 @@ export default () => (
             ><span class="number" aria-hidden="true">1</span></time
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=8&amp;view=week&amp;week=0"
@@ -6890,7 +7314,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=8&amp;view=week&amp;week=1"
@@ -6967,7 +7391,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=8&amp;view=week&amp;week=2"
@@ -7044,7 +7468,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=8&amp;view=week&amp;week=3"
@@ -7121,7 +7545,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=8&amp;view=week&amp;week=4"
@@ -7198,7 +7622,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=9&amp;view=week&amp;week=0"
@@ -7275,7 +7699,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=9&amp;view=week&amp;week=1"
@@ -7358,7 +7782,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=9&amp;view=week&amp;week=2"
@@ -7435,7 +7859,7 @@ export default () => (
             ></a
           ><span class="event-mark" aria-hidden="true"></span>
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=9&amp;view=week&amp;week=3"
@@ -7516,7 +7940,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=10&amp;view=week&amp;week=0"
@@ -7593,7 +8017,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=10&amp;view=week&amp;week=1"
@@ -7670,7 +8094,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=10&amp;view=week&amp;week=2"
@@ -7747,7 +8171,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=10&amp;view=week&amp;week=3"
@@ -7824,7 +8248,12 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true" data-month-start="true">
+        <div
+          class="year-day"
+          data-weekend="true"
+          data-month-start="true"
+          data-last-column="true"
+        >
           <a
             class="month-link"
             href="/apps/schedule?year=2026&amp;month=11&amp;view=month"
@@ -7901,7 +8330,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=11&amp;view=week&amp;week=1"
@@ -7978,7 +8407,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=11&amp;view=week&amp;week=2"
@@ -8055,7 +8484,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=11&amp;view=week&amp;week=3"
@@ -8132,7 +8561,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=11&amp;view=week&amp;week=4"
@@ -8211,7 +8640,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=12&amp;view=week&amp;week=0"
@@ -8288,7 +8717,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=12&amp;view=week&amp;week=1"
@@ -8365,7 +8794,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=12&amp;view=week&amp;week=2"
@@ -8442,7 +8871,7 @@ export default () => (
             ></a
           >
         </div>
-        <div class="year-day" data-weekend="true">
+        <div class="year-day" data-weekend="true" data-last-column="true">
           <a
             class="date-link"
             href="/apps/schedule?year=2026&amp;month=12&amp;view=week&amp;week=3"

@@ -5,10 +5,14 @@ const readBy = (value: string | undefined): string[] => {
   return Array.isArray(parsed) ? parsed.filter((name) => typeof name === "string") : [];
 };
 
+/** reactions:beforetoggle・reactions:toggleのdetail。 */
+type ToggleDetail = { content: string; name: string; selected: boolean };
+
 /**
  * 反応の付け外し。札を押すと自分の反応を付けるか外し、数と付けた人を書き換える。
  * EmojiPickerで選んだ絵文字や書いた言葉は、同じ札があればそこへ自分を足し、なければ新しい札を作る。
- * どちらもreactions:toggleで内容と付けたかどうかを知らせる。数が0になった札は消す。
+ * どちらも書き換える前にreactions:beforetoggle（取り消せる）、書き換えた後にreactions:toggleで知らせる。
+ * 数が0になった札は消す。保存は利用側が持ち、失敗した時はsetReactionで札を戻す。
  */
 export class ReactionsController extends Controller<HTMLElement> {
   static targets = ["list", "text"];
@@ -30,28 +34,62 @@ export class ReactionsController extends Controller<HTMLElement> {
     if (count) count.textContent = String(by.length);
   };
 
-  private set = (chip: HTMLButtonElement, mine: boolean) => {
-    const others = readBy(chip.dataset.by).filter((name) => name !== this.meValue);
+  /**
+   * 札に自分を足すか引く。札が無ければ作り、数が0になれば消す。消した札にフォーカスがあった時か、
+   * 利用者の操作の時（focusNext）は、次の札か追加の操作へフォーカスを移す。
+   */
+  private apply = (
+    content: string,
+    name: string,
+    mine: boolean,
+    focusNext: boolean,
+  ): HTMLButtonElement | null => {
+    const found = this.chips().find((chip) => chip.dataset.content === content);
+    if (!found && !mine) return null;
+    const chip = found ?? this.create(content, name);
+    const others = readBy(chip.dataset.by).filter((person) => person !== this.meValue);
     const by = mine ? [...others, this.meValue] : others;
-    this.dispatch("toggle", { detail: { content: chip.dataset.content, selected: mine } });
     if (by.length === 0) {
       const item = chip.closest("li");
+      const focused = focusNext || chip === document.activeElement;
       const next = item?.nextElementSibling?.querySelector("button") ?? this.trigger();
       item?.remove();
-      next?.focus();
-      return;
+      if (focused) next?.focus();
+      return null;
     }
     this.render(chip, by, mine);
+    return chip;
   };
+
+  /** 利用者の操作を知らせる。beforetoggleが取り消されたらfalseを返し、何も変えない。 */
+  private request = (detail: ToggleDetail) =>
+    !this.dispatch("beforetoggle", { detail, cancelable: true }).defaultPrevented;
 
   private trigger = () =>
     this.element.querySelector<HTMLButtonElement>(".ply-popover > .ply-button");
 
   private chips = () => [...this.listTarget.querySelectorAll<HTMLButtonElement>("button.reaction")];
 
+  /**
+   * 自分の反応を、イベントを出さずに付ける（selected: true）か外す。保存に失敗した時に、
+   * reactions:toggleのdetail（content・name・selectedの逆）で札を元に戻すために使う。
+   */
+  setReaction = (content: string, selected: boolean, name = content) => {
+    if (content !== "") this.apply(content, name, selected, false);
+  };
+
   toggle = (event: Event) => {
     const chip = event.currentTarget;
-    if (chip instanceof HTMLButtonElement) this.set(chip, chip.dataset.mine !== "true");
+    if (!(chip instanceof HTMLButtonElement)) return;
+    const content = chip.dataset.content ?? "";
+    const detail = {
+      content,
+      name: chip.dataset.name ?? content,
+      selected: chip.dataset.mine !== "true",
+    };
+    if (!this.request(detail)) return;
+    this.apply(detail.content, detail.name, detail.selected, true);
+    this.dispatch("toggle", { detail });
   };
 
   pick = (event: Event) => {
@@ -79,14 +117,15 @@ export class ReactionsController extends Controller<HTMLElement> {
     if (content === "") return;
     if (source instanceof Element) source.closest<HTMLElement>("[popover]")?.hidePopover();
     const found = this.chips().find((chip) => chip.dataset.content === content);
-    if (found) {
-      if (found.dataset.mine !== "true") this.set(found, true);
+    if (found?.dataset.mine === "true") {
       found.focus();
       return;
     }
-    const chip = this.create(content, name);
-    this.set(chip, true);
-    chip.focus();
+    const detail = { content, name: found?.dataset.name ?? name, selected: true };
+    if (!this.request(detail)) return;
+    const chip = this.apply(content, detail.name, true, false);
+    this.dispatch("toggle", { detail });
+    chip?.focus();
   };
 
   /** 新しい札。サーバーが出す札と同じ形をここで組み、一覧の終わりに追加する。 */

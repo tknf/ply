@@ -49,7 +49,8 @@
         place-items: center;
         color: var(--ply-muted);
         font-size: 1.25rem;
-        &:dir(rtl) {
+        /* 詳細度を上げず、狭い幅の下向き（後のコンテナクエリ）が右から左でも勝つようにする。 */
+        &:where(:dir(rtl)) {
           rotate: 180deg;
         }
       }

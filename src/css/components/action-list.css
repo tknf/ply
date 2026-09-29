@@ -118,8 +118,9 @@
         /* 手当てが要る行は、印・名前・説明を危険の色で書く。 */
         &[data-attention="true"] {
           --ply-action-list-accent: var(--ply-danger);
+          /* 地の板の上でも本文と同じ7:1を保つよう、危険の色に墨を少し混ぜる。 */
           & > :is(.title, .description) {
-            color: var(--ply-danger);
+            color: color-mix(in srgb, var(--ply-danger) 88%, var(--ply-ink));
           }
         }
       }

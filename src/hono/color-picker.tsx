@@ -40,8 +40,10 @@ export type ColorPickerProps = {
   /** 色の面を矢印キーで動かす時の、彩度・明度の幅（0より大きく100以下）。Shiftを押すと10倍。 */
   step?: number;
   /**
-   * 上流のcolor-pickerが色相の輪を矢印キーで動かす時の幅（0より大きく360以下）。
-   * この部品は輪を持たないので、色相のスライダーの動きには効かない。
+   * 使わない。互換のために型だけを残し、渡しても何も変わらない。
+   * 上流のcolor-pickerでは色相の輪を矢印キーで動かす幅だが、この部品は輪を持たず、
+   * 色相のスライダーは他のスライダーと同じくブラウザの標準の動きで値を変える。
+   * @deprecated 効果が無い。渡さない。
    */
   hueStep?: number;
 };
@@ -79,7 +81,6 @@ export const ColorPicker = ({
   disabled,
   form,
   step = 1,
-  hueStep = 1,
 }: ColorPickerProps) => {
   const generatedId = useId();
   const pickerId = id ?? `ply-color-picker-${generatedId}`;
@@ -119,9 +120,6 @@ export const ColorPicker = ({
       data-controller="color-picker"
       data-color-picker-value-value={JSON.stringify(current)}
       data-color-picker-step-value={Number.isFinite(step) && step > 0 && step <= 100 ? step : 1}
-      data-color-picker-hue-step-value={
-        Number.isFinite(hueStep) && hueStep > 0 && hueStep <= 360 ? hueStep : 1
-      }
       style={`--color-picker-hue: ${current.hue}; --color-picker-saturation: ${current.saturation / 100}; --color-picker-brightness: ${current.brightness / 100}; --color-picker-alpha: ${current.alpha}; --color-picker-color: color(${current.colorSpace} ${rgb} / ${current.alpha}); --color-picker-hue-color: color(${current.colorSpace} ${hueColor} / 1); --color-picker-fallback: color(srgb ${rgb} / ${current.alpha})`}
     >
       <legend id={`${pickerId}-label`}>{label}</legend>

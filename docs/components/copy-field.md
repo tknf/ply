@@ -17,16 +17,16 @@
 
 欄に `name` は無く、フォームで送信しません。
 
-写す動きは `ClipboardController`、写した時の印と読み上げは `CopyFieldController` が持つので、`clipboard` と `copy-field` の両方を登録します。クリップボードへ書き込めないブラウザでは写す印を隠します。写せなかった時は印を変えません。
+写す動きは `ClipboardController`、写した時の印と読み上げは `CopyFieldController` が持つので、`clipboard` と `copy-field` の両方を登録します。写す印はcontrollerが接続してから出し、クリップボードへ書き込めないブラウザでは隠したままにします。写せなかった時は印を変えず、欄の下に `failedLabel`（既定は「写せませんでした。欄の値を選んでコピーしてください。」）を出し、次に写す操作をするまで残します。
 
 欄にフォーカスすると値を全て選ぶので、キーボードではそのままブラウザのコピーでも写せます。
 
-JavaScriptが無い時は、写す印を押しても何も起きません。欄の値を選んで、ブラウザのコピーで写します。
+JavaScriptが無い時は、写す印を出しません。欄の値を選んで、ブラウザのコピーで写します。
 
 ## アクセシビリティ
 
 - 写す印はアイコンだけのボタンで、`copyLabel` を読み上げ名とツールチップにします。
-- 写せた時は、見えない `role="status"` の領域で `copiedLabel` を読み上げます。
+- 写せた時は `copiedLabel`、写せなかった時は `failedLabel` を、見えない `role="status"` の領域で読み上げます。写せなかった知らせは色だけでなく、アイコンと文でも示します。
 
 ## イベント
 
@@ -39,17 +39,18 @@ JavaScriptが無い時は、写す印を押しても何も起きません。欄�
 
 ### CopyField
 
-公開リンクや招待リンクのような、写して使う値の欄。写す操作は欄の終わりの丸い印で、写すとチェックに変わり、しばらくして元に戻る。写す動きはClipboardController、結果の表示はCopyFieldControllerが持つ。
+公開リンクや招待リンクのような、写して使う値の欄。写す操作は欄の終わりの丸い印で、写すとチェックに変わり、しばらくして元に戻る。写せなかった時は欄の下に`failedLabel`を出す。写す動きはClipboardController、結果の表示はCopyFieldControllerが持ち、写す印は接続してから出す。
 
-| 名前            | 型       | 既定値         | 説明                                           |
-| --------------- | -------- | -------------- | ---------------------------------------------- |
-| `id`（必須）    | `string` |                | 欄のid。ラベルと補足の関連付けに使う。         |
-| `label`（必須） | `string` |                | 欄のラベル。                                   |
-| `value`（必須） | `string` |                | 写す値。読み取り専用の欄に出し、送信はしない。 |
-| `help`          | `string` |                | 欄の下に出す淡い補足。                         |
-| `copyLabel`     | `string` | `"写す"`       | 写す印の読み上げ名とツールチップ。             |
-| `copiedLabel`   | `string` | `"写しました"` | 写せた時に読み上げる文言。                     |
-| `actions`       | `Child`  |                | 欄の終わりに置く操作（リンクを作り直すなど）。 |
+| 名前            | 型       | 既定値                                                   | 説明                                                                           |
+| --------------- | -------- | -------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `id`（必須）    | `string` |                                                          | 欄のid。ラベルと補足の関連付けに使う。                                         |
+| `label`（必須） | `string` |                                                          | 欄のラベル。                                                                   |
+| `value`（必須） | `string` |                                                          | 写す値。読み取り専用の欄に出し、送信はしない。                                 |
+| `help`          | `string` |                                                          | 欄の下に出す淡い補足。                                                         |
+| `copyLabel`     | `string` | `"写す"`                                                 | 写す印の読み上げ名とツールチップ。                                             |
+| `copiedLabel`   | `string` | `"写しました"`                                           | 写せた時に読み上げる文言。                                                     |
+| `failedLabel`   | `string` | `"写せませんでした。欄の値を選んでコピーしてください。"` | 写せなかった時に欄の下へ出し、読み上げる文言。欄の値を選んで写す方法を含める。 |
+| `actions`       | `Child`  |                                                          | 欄の終わりに置く操作（リンクを作り直すなど）。                                 |
 
 登録するcontroller：`clipboard`（`ClipboardController`）、`copy-field`（`CopyFieldController`）
 
@@ -132,6 +133,7 @@ export default () => (
           title="写す"
           data-clipboard-target="trigger"
           data-copy-field-target="trigger"
+          hidden=""
           class="ply-button"
           type="button"
           data-variant="secondary"
@@ -162,6 +164,17 @@ export default () => (
         </p>
       </div>
     </div>
+    <p class="failure" data-copy-field-target="failure" hidden="">
+      <svg
+        class="ply-icon"
+        viewBox="0 0 256 256"
+        fill="currentColor"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <use href="/assets/ply-icons.svg#ply-x-circle"></use></svg
+      ><span>写せませんでした。欄の値を選んでコピーしてください。</span>
+    </p>
     <p class="ply-visually-hidden" role="status" data-copy-field-target="status"></p>
   </div>
   <div class="ply-disclosure-group" role="group" aria-label="操作と長さの違い">
@@ -203,6 +216,7 @@ export default () => (
                 title="写す"
                 data-clipboard-target="trigger"
                 data-copy-field-target="trigger"
+                hidden=""
                 class="ply-button"
                 type="button"
                 data-variant="secondary"
@@ -250,6 +264,17 @@ export default () => (
               </p>
             </div>
           </div>
+          <p class="failure" data-copy-field-target="failure" hidden="">
+            <svg
+              class="ply-icon"
+              viewBox="0 0 256 256"
+              fill="currentColor"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <use href="/assets/ply-icons.svg#ply-x-circle"></use></svg
+            ><span>写せませんでした。欄の値を選んでコピーしてください。</span>
+          </p>
           <p
             class="ply-visually-hidden"
             role="status"
@@ -296,6 +321,7 @@ export default () => (
                   title="写す"
                   data-clipboard-target="trigger"
                   data-copy-field-target="trigger"
+                  hidden=""
                   class="ply-button"
                   type="button"
                   data-variant="secondary"
@@ -321,6 +347,17 @@ export default () => (
                 </button>
               </div>
             </div>
+            <p class="failure" data-copy-field-target="failure" hidden="">
+              <svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-x-circle"></use></svg
+              ><span>写せませんでした。欄の値を選んでコピーしてください。</span>
+            </p>
             <p
               class="ply-visually-hidden"
               role="status"
@@ -366,6 +403,7 @@ export default () => (
                   title="写す"
                   data-clipboard-target="trigger"
                   data-copy-field-target="trigger"
+                  hidden=""
                   class="ply-button"
                   type="button"
                   data-variant="secondary"
@@ -391,6 +429,17 @@ export default () => (
                 </button>
               </div>
             </div>
+            <p class="failure" data-copy-field-target="failure" hidden="">
+              <svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-x-circle"></use></svg
+              ><span>写せませんでした。欄の値を選んでコピーしてください。</span>
+            </p>
             <p
               class="ply-visually-hidden"
               role="status"

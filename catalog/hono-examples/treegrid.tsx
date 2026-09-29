@@ -5,7 +5,7 @@ export default () => (
     <Treegrid
       caption="公開資料と進行状況"
       columns={[{ heading: "資料", cell: "text" }, { heading: "担当" }, { heading: "状態" }]}
-      expanded={["guide", "guide-admin"]}
+      expanded={["guide"]}
       selection="single"
       items={[
         {

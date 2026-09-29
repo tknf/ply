@@ -199,9 +199,10 @@
       color-mix(in srgb, var(--ply-surface) 99%, var(--ply-ink)) 48%,
       color-mix(in srgb, var(--ply-surface) 96%, var(--ply-ink)) 100%
     );
+    /* 明るい側は、白い文字との対比が4.5:1を下回らない割合（90%）にとどめる。 */
     --ply-fill-primary: linear-gradient(
       135deg,
-      color-mix(in srgb, var(--ply-link) 84%, white) 0%,
+      color-mix(in srgb, var(--ply-link) 90%, white) 0%,
       var(--ply-link) 100%
     );
     /*

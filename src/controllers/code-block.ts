@@ -1,22 +1,28 @@
 import { Controller } from "@hotwired/stimulus";
 import { ToastController } from "@tknf/stimulus-ui";
 
-/** コピー自体はstimulus-uiに任せ、利用可否と結果の表示を受け持つ。 */
+/**
+ * コピー自体はstimulus-uiに任せ、利用可否と結果の表示を受け持つ。
+ * 成功（role="status"）と失敗（role="alert"）は別のToastで知らせ、同時には一つだけ開く。
+ */
 export class CodeBlockController extends Controller<HTMLElement> {
-  private notification: HTMLElement | null = null;
+  private notifications: HTMLElement[] = [];
   private timer: number | null = null;
   connect = () => {
     const button = this.element.querySelector('[data-code-block-target="copy"]');
     if (button instanceof HTMLButtonElement) button.hidden = !navigator.clipboard?.writeText;
-    this.notification = this.element.querySelector<HTMLElement>(":scope > .ply-toast");
-    this.notification?.addEventListener("beforetoggle", this.toggled);
+    this.notifications = [...this.element.querySelectorAll<HTMLElement>(":scope > .ply-toast")];
+    for (const notification of this.notifications)
+      notification.addEventListener("beforetoggle", this.toggled);
     this.element.addEventListener("clipboard:copy", this.copied);
     this.element.addEventListener("keydown", this.dismiss);
     document.addEventListener("turbo:before-cache", this.hide);
   };
   disconnect = () => {
     this.hide();
-    this.notification?.removeEventListener("beforetoggle", this.toggled);
+    for (const notification of this.notifications)
+      notification.removeEventListener("beforetoggle", this.toggled);
+    this.notifications = [];
     this.element.removeEventListener("clipboard:copy", this.copied);
     this.element.removeEventListener("keydown", this.dismiss);
     document.removeEventListener("turbo:before-cache", this.hide);
@@ -25,39 +31,35 @@ export class CodeBlockController extends Controller<HTMLElement> {
     if (this.timer !== null) window.clearTimeout(this.timer);
     this.timer = null;
   };
-  private toast = () => {
-    if (!this.notification) return null;
-    const controller = this.application.getControllerForElementAndIdentifier(
-      this.notification,
-      "toast",
-    );
-    return controller instanceof ToastController ? controller : null;
+  private close = (notification: Element) => {
+    if (!(notification instanceof HTMLElement) || !notification.matches(":popover-open")) return;
+    const controller = this.application.getControllerForElementAndIdentifier(notification, "toast");
+    if (controller instanceof ToastController) controller.hide();
+    else notification.hidePopover();
   };
+  private open = () => this.notifications.find((element) => element.matches(":popover-open"));
   private hide = () => {
     this.clearTimer();
-    if (!this.notification?.matches(":popover-open")) return;
-    const toast = this.toast();
-    if (toast) toast.hide();
-    else this.notification.hidePopover();
+    for (const notification of this.notifications) this.close(notification);
   };
   private toggled = (event: Event) => {
     if (!(event instanceof ToggleEvent) || event.newState !== "closed") return;
+    if (!(event.currentTarget instanceof HTMLElement)) return;
     this.clearTimer();
-    if (this.notification?.contains(document.activeElement))
+    if (event.currentTarget.contains(document.activeElement))
       this.element
         .querySelector<HTMLButtonElement>('[data-code-block-target="copy"]')
         ?.focus({ preventScroll: true });
   };
   private dismiss = (event: KeyboardEvent) => {
-    if (event.key !== "Escape" || event.isComposing || !this.notification?.matches(":popover-open"))
-      return;
+    if (event.key !== "Escape" || event.isComposing || !this.open()) return;
     event.preventDefault();
     this.hide();
   };
-  private scheduleHide = () => {
+  private scheduleHide = (notification: HTMLElement) => {
     this.clearTimer();
     this.timer = window.setTimeout(() => {
-      if (this.notification?.matches(":hover, :focus-within")) this.scheduleHide();
+      if (notification.matches(":hover, :focus-within")) this.scheduleHide(notification);
       else this.hide();
     }, 4000);
   };
@@ -71,27 +73,24 @@ export class CodeBlockController extends Controller<HTMLElement> {
       typeof detail.ok !== "boolean"
     )
       return;
-    const status = this.element.querySelector('[data-code-block-target="status"]');
-    if (!status || !this.notification) return;
+    const notification = this.notifications.find(
+      (element) => element.dataset.tone === (detail.ok ? "success" : "danger"),
+    );
+    const status = notification?.querySelector('[data-code-block-target="status"]');
+    if (!notification || !status) return;
     this.clearTimer();
-    for (const other of document.querySelectorAll<HTMLElement>(
-      ".ply-code-block > .ply-toast:popover-open",
-    )) {
-      if (other === this.notification) continue;
-      const controller = this.application.getControllerForElementAndIdentifier(other, "toast");
-      if (controller instanceof ToastController) controller.hide();
-      else other.hidePopover();
-    }
+    for (const other of document.querySelectorAll(".ply-code-block > .ply-toast:popover-open"))
+      if (other !== notification) this.close(other);
     const label =
       this.element.querySelector(".ply-layer-card > .heading > .title")?.textContent ?? "コード";
     status.textContent = detail.ok
       ? `${label}をコピーしました`
       : "コピーできませんでした。コードを選択してコピーしてください。";
-    if (!this.notification.matches(":popover-open")) {
-      const toast = this.toast();
-      if (toast) toast.show();
-      else this.notification.showPopover();
+    if (!notification.matches(":popover-open")) {
+      const toast = this.application.getControllerForElementAndIdentifier(notification, "toast");
+      if (toast instanceof ToastController) toast.show();
+      else notification.showPopover();
     }
-    if (detail.ok) this.scheduleHide();
+    if (detail.ok) this.scheduleHide(notification);
   };
 }

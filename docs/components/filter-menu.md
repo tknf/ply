@@ -38,7 +38,8 @@ JavaScriptなしでも紙は標準のPopover APIで開閉し、初めから選�
 
 ## アクセシビリティ
 
-- 開く操作は `aria-haspopup="dialog"`・`aria-controls` を持ち、紙は `title` を名前にした `role="dialog"` です。`iconOnly` の時は `label` を開く操作の `aria-label` にします。
+- 開く操作は `aria-haspopup="dialog"`・`aria-controls` を持ち、紙は `title` を名前にした `role="dialog"` です。`iconOnly` の時は `label` を開く操作の `aria-label` にし、`icon` が無ければ▾の印を出します。
+- 開く操作の `aria-expanded` は、controllerが紙の開閉に合わせて切り替えます。JavaScriptなしでは初期HTMLに書かず、標準のPopover APIの開閉状態をブラウザが伝えます。
 - 絞り込みの欄は `role="combobox"` で、`placeholder` を `aria-label` にし、選ぶ位置の候補を `aria-activedescendant` で伝えます。
 - 候補は `role="listbox"` の `option` で、選んだ状態を `aria-selected`、選べない候補を `aria-disabled` で伝えます。`multiple` の時は `aria-multiselectable="true"` を付けます。
 - 日本語の変換中の矢印とEnterは、候補の移動や選択に使いません。
@@ -69,7 +70,7 @@ JavaScriptなしでも紙は標準のPopover APIで開閉し、初めから選�
 | `createLabel`     | `string`                      |                                | 渡すと、絞り込みの欄の隣に「新しく作る」を置き、押すとfilter-menu:createで打った文字を知らせる。 |
 | `emptyLabel`      | `string`                      | `"当てはまる候補はありません"` | 当てはまる候補が無い時に出す文言。                                                               |
 | `icon`            | `IconName`                    |                                | 開く操作の文言の前に置く印。                                                                     |
-| `iconOnly`        | `boolean`                     | `false`                        | 開く操作を印だけにする。iconと一緒に渡す。labelは`aria-label`として読み上げる。                  |
+| `iconOnly`        | `boolean`                     | `false`                        | 開く操作を印だけにする。iconが無ければ▾の印を出す。labelは`aria-label`として読み上げる。         |
 | `variant`         | `ButtonProps["variant"]`      | `"secondary"`                  | 開く操作の見た目。値の意味はButtonと同じ。                                                       |
 | `align`           | `"start" \| "end"`            | `"start"`                      | 紙を開く操作のどちらの端に揃えるか。endは行の終わりの側に置いた操作に使う。                      |
 | `disabled`        | `boolean`                     |                                | 開く操作を押せなくする。                                                                         |
@@ -211,6 +212,7 @@ export default () => (
         style="anchor-name: --ply-popover-6c-61-62-65-6c-2d-6d-65-6e-75"
         aria-haspopup="dialog"
         aria-controls="label-menu-panel"
+        data-filter-menu-target="trigger"
         class="ply-button"
         type="button"
         data-variant="secondary"
@@ -402,6 +404,7 @@ export default () => (
         style="anchor-name: --ply-popover-61-73-73-69-67-6e-2d-6d-65-6e-75"
         aria-haspopup="dialog"
         aria-controls="assign-menu-panel"
+        data-filter-menu-target="trigger"
         class="ply-button"
         type="button"
         data-variant="secondary"
@@ -597,6 +600,7 @@ export default () => (
               style="anchor-name: --ply-popover-6d-6f-76-65-2d-6d-65-6e-75"
               aria-haspopup="dialog"
               aria-controls="move-menu-panel"
+              data-filter-menu-target="trigger"
               class="ply-button"
               type="button"
               data-variant="secondary"
@@ -802,6 +806,7 @@ export default () => (
             style="anchor-name: --ply-popover-65-6d-70-74-79-2d-6d-65-6e-75"
             aria-haspopup="dialog"
             aria-controls="empty-menu-panel"
+            data-filter-menu-target="trigger"
             class="ply-button"
             type="button"
             data-variant="secondary"
@@ -911,6 +916,7 @@ export default () => (
               style="anchor-name: --ply-popover-64-69-73-61-62-6c-65-64-2d-6d-65-6e-75"
               aria-haspopup="dialog"
               aria-controls="disabled-menu-panel"
+              data-filter-menu-target="trigger"
               class="ply-button"
               type="button"
               data-variant="secondary"
@@ -988,6 +994,7 @@ export default () => (
                 style="anchor-name: --ply-popover-72-74-6c-2d-6d-65-6e-75"
                 aria-haspopup="dialog"
                 aria-controls="rtl-menu-panel"
+                data-filter-menu-target="trigger"
                 class="ply-button"
                 type="button"
                 data-variant="secondary"

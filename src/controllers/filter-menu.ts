@@ -5,8 +5,10 @@ import { Controller } from "@hotwired/stimulus";
  * 一つだけ選ぶ時は選ぶと閉じ、複数を選べる時は開いたまま選んだ印を切り替える。
  */
 export class FilterMenuController extends Controller<HTMLElement> {
-  static targets = ["panel", "input", "option", "empty"];
+  static targets = ["trigger", "panel", "input", "option", "empty"];
   static values = { multiple: Boolean };
+  declare readonly hasTriggerTarget: boolean;
+  declare readonly triggerTarget: HTMLElement;
   declare readonly panelTarget: HTMLElement;
   declare readonly inputTarget: HTMLInputElement;
   declare readonly optionTargets: HTMLElement[];
@@ -29,9 +31,24 @@ export class FilterMenuController extends Controller<HTMLElement> {
     option.scrollIntoView({ block: "nearest" });
   };
 
+  // 開閉の状態はcontrollerが持つ。JavaScriptなしではブラウザがpopovertargetから伝える。
+  private expanded = (open: boolean) => {
+    if (this.hasTriggerTarget) this.triggerTarget.setAttribute("aria-expanded", String(open));
+  };
+
+  connect = () => {
+    this.expanded(this.panelTarget.matches(":popover-open"));
+  };
+
+  disconnect = () => {
+    if (this.hasTriggerTarget) this.triggerTarget.removeAttribute("aria-expanded");
+  };
+
   /** 開いた時は、前に打った文字を消して絞り込みの欄へ移る。 */
   opened = (event: Event) => {
-    if (!(event instanceof ToggleEvent) || event.newState !== "open") return;
+    if (!(event instanceof ToggleEvent)) return;
+    this.expanded(event.newState === "open");
+    if (event.newState !== "open") return;
     this.inputTarget.value = "";
     this.filter();
     this.inputTarget.focus();

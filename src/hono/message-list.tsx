@@ -88,18 +88,23 @@ export const MessageList = ({
       data-avatars={String(avatars)}
       data-preview-lines={previewLines}
     >
+      {/* ulの直下のliにはlistitem以外の役割を付けられないので、状態の文の役割は中の要素に付ける。 */}
       {state !== "ready" ? (
-        <li class="state" role="status">
-          {stateContent ??
-            (state === "loading" ? "連絡を読み込んでいます…" : "連絡を読み込めませんでした。")}
+        <li class="state">
+          <div role="status">
+            {stateContent ??
+              (state === "loading" ? "連絡を読み込んでいます…" : "連絡を読み込めませんでした。")}
+          </div>
         </li>
       ) : (
-        <li class="state" data-empty="true" role="status">
-          {stateContent ?? (
-            <EmptyState title={empty.title} kind={empty.kind}>
-              {empty.description}
-            </EmptyState>
-          )}
+        <li class="state" data-empty="true">
+          <div role="status">
+            {stateContent ?? (
+              <EmptyState title={empty.title} kind={empty.kind}>
+                {empty.description}
+              </EmptyState>
+            )}
+          </div>
         </li>
       )}
       {state === "ready" &&
@@ -109,7 +114,7 @@ export const MessageList = ({
           return (
             <>
               {newSince?.id === item.id && (
-                <li class="divider" role="none">
+                <li class="divider">
                   <Divider label={newSince.label ?? "ここから新着"} />
                 </li>
               )}
@@ -149,15 +154,18 @@ export const MessageList = ({
                         </Badge>
                       )}
                       <span class="subject">{item.title.trim() || "（件名なし）"}</span>
+                      {/* spanにはaria-labelを付けられないので、見える数は読み上げから外し、読み上げ用の文を添える。 */}
                       {item.threadCount != null && item.threadCount > 1 && (
-                        <span class="count" aria-label={`${item.threadCount}件の会話`}>
-                          {item.threadCount}
+                        <span class="count">
+                          <span aria-hidden="true">{item.threadCount}</span>
+                          <span class="ply-visually-hidden">{`${item.threadCount}件の会話`}</span>
                         </span>
                       )}
                       {item.attachments != null && item.attachments > 0 && (
-                        <span class="attachment" aria-label={`添付ファイル${item.attachments}件`}>
+                        <span class="attachment">
                           <Icon name="file" />
-                          {item.attachments}
+                          <span aria-hidden="true">{item.attachments}</span>
+                          <span class="ply-visually-hidden">{`添付ファイル${item.attachments}件`}</span>
                         </span>
                       )}
                     </strong>

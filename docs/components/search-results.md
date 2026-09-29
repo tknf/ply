@@ -266,21 +266,42 @@ export default () => (
             data-layout="stack"
           >
             <div class="fields">
-              <div
+              <fieldset
                 class="field"
                 id="refine-from-slot"
-                hidden=""
+                data-open="false"
                 data-optional-fields-target="field"
               >
                 <div class="ply-field">
                   <div class="heading"><label for="refine-from">差出人</label></div>
                   <input id="refine-from" name="from" class="ply-input" />
                 </div>
-              </div>
-              <div
+                <button
+                  data-icon-only="true"
+                  aria-label="差出人を外す"
+                  title="差出人を外す"
+                  data-action="optional-fields#remove"
+                  hidden=""
+                  class="ply-button remove"
+                  type="button"
+                  data-variant="link"
+                  data-size="default"
+                >
+                  <svg
+                    class="ply-icon"
+                    viewBox="0 0 256 256"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <use href="/assets/ply-icons.svg#ply-x"></use>
+                  </svg>
+                </button>
+              </fieldset>
+              <fieldset
                 class="field"
                 id="refine-attach-slot"
-                hidden=""
+                data-open="false"
                 data-optional-fields-target="field"
               >
                 <div class="ply-field">
@@ -289,12 +310,34 @@ export default () => (
                   </div>
                   <input id="refine-attach" name="attach" class="ply-input" />
                 </div>
-              </div>
+                <button
+                  data-icon-only="true"
+                  aria-label="添付があるを外す"
+                  title="添付があるを外す"
+                  data-action="optional-fields#remove"
+                  hidden=""
+                  class="ply-button remove"
+                  type="button"
+                  data-variant="link"
+                  data-size="default"
+                >
+                  <svg
+                    class="ply-icon"
+                    viewBox="0 0 256 256"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <use href="/assets/ply-icons.svg#ply-x"></use>
+                  </svg>
+                </button>
+              </fieldset>
             </div>
             <div class="chips" role="group" aria-label="結果を絞る">
               <button
                 aria-controls="refine-from-slot"
                 aria-expanded="false"
+                hidden=""
                 data-action="optional-fields#add"
                 class="ply-button chip"
                 type="button"
@@ -313,6 +356,7 @@ export default () => (
               ><button
                 aria-controls="refine-attach-slot"
                 aria-expanded="false"
+                hidden=""
                 data-action="optional-fields#add"
                 class="ply-button chip"
                 type="button"

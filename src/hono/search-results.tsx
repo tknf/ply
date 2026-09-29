@@ -22,18 +22,51 @@ export type SearchResultsProps = ElementProps<"ol"> & {
   results: readonly SearchResult[];
 };
 
+/**
+ * 一文字ずつ小文字にし、小文字の各位置が元の文字のどこから始まりどこで終わるかを残す。
+ * 「İ」のように小文字で長さが変わる文字があっても、見つけた位置を元の文字へ戻せるようにする。
+ */
+const fold = (text: string) => {
+  let lower = "";
+  const starts: number[] = [];
+  const ends: number[] = [];
+  let index = 0;
+  for (const char of text) {
+    const folded = char.toLocaleLowerCase();
+    for (let unit = 0; unit < folded.length; unit++) {
+      starts.push(index);
+      ends.push(index + char.length);
+    }
+    lower += folded;
+    index += char.length;
+  }
+  return { lower, starts, ends };
+};
+
 /** 文字を一致した語の前後で分け、一致した部分をmarkで包む（大文字と小文字は区別しない）。 */
 const highlight = (text: string, query?: string): Child => {
   const needle = query?.trim();
   if (!needle) return text;
-  const lower = text.toLocaleLowerCase();
-  const target = needle.toLocaleLowerCase();
+  const { lower, starts, ends } = fold(text);
+  const target = fold(needle).lower;
   const parts: Child[] = [];
   let from = 0;
-  for (let at = lower.indexOf(target); at !== -1; at = lower.indexOf(target, from)) {
-    if (at > from) parts.push(text.slice(from, at));
-    parts.push(<mark>{text.slice(at, at + needle.length)}</mark>);
-    from = at + needle.length;
+  for (let at = lower.indexOf(target); at !== -1; at = lower.indexOf(target, at + 1)) {
+    const last = at + target.length - 1;
+    const start = starts[at],
+      end = ends[last];
+    // 一文字を小文字にした途中から始まる・途中で終わる一致は、元の文字で切れないので使わない。
+    if (
+      start === undefined ||
+      end === undefined ||
+      start < from ||
+      (at > 0 && starts[at - 1] === start) ||
+      (last + 1 < lower.length && starts[last + 1] === starts[last])
+    )
+      continue;
+    if (start > from) parts.push(text.slice(from, start));
+    parts.push(<mark>{text.slice(start, end)}</mark>);
+    from = end;
   }
   parts.push(text.slice(from));
   return <>{parts}</>;

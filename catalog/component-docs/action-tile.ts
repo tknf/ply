@@ -20,7 +20,7 @@ export default {
   ],
   accessibility: [
     'リンクは `a`、操作は `button` なので、標準のキー操作で押せます。`current` のリンクは `aria-current="page"` を持ちます。',
-    '`disabled` のリンクは `role="link"`・`aria-disabled="true"` の `span` になり、フォーカスできません。',
+    '`disabled` のリンクは `role="link"`・`aria-disabled="true"` の `span` になり、フォーカスできません。リンクだけの属性（`target`・`rel` など）と `tabindex` は外し、`aria-description` などほかの属性は保ちます。',
     "`shortcut` の表記は読み上げから外します（`aria-hidden`）。`badge` の文字は名前の前に続けて読み上げます。",
     "強制カラーモードでは、タイルに枠を引きます。",
   ],

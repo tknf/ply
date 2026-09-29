@@ -268,6 +268,7 @@ test("同日の期間はサーバーが指定した種別を保持する", async
   expect(result).toContain('data-date-picker-mode-value="range"');
 });
 
+// 全ページを描き、部品のページは型の解析も行うので、既定の5秒では足りない。
 test("カタログの全経路を生成でき内部routeへ到達できる", async () => {
   const generatedRoutes = new Set(paths);
   const unresolved = new Set<string>();
@@ -284,7 +285,7 @@ test("カタログの全経路を生成でき内部routeへ到達できる", asy
     }
   }
   expect([...unresolved]).toEqual([]);
-});
+}, 30_000);
 
 test("Toolbarの使用例は標準フォーム操作を持ち表示と掲載コードでIDを重複させない", async () => {
   const response = await app.request("http://localhost/components/toolbar");

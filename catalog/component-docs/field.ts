@@ -32,12 +32,12 @@ export default {
     "`help` は入力の下の淡い補足、`error` は直す所を書くエラー文です。`error` を渡すと入力を赤い縁にし、`aria-invalid` を付けます。現在値を淡い補足へ置かず、入力の値として見せます。`status` はラベルの行の終わりに保存の状態などを並べます。",
     '`Input`・`Textarea`・`Select` は標準の要素に `ply-input` を付けたもので、属性をそのまま渡します。`readonly` は面を淡くして値を読めるままにし、`disabled` は斜線の面にします。`Choice` は `label` で包んだチェックボックスかラジオボタンで、`kind="option"` は説明を伴う選択肢を淡い面に載せます。`Choice` の束は `fieldset.ply-choice-group` の `div.list` に並べ、`legend` で名前を付けます。',
     "`PasswordField` は右端の目の印で、入力を伏せ字と文字の表示で切り替えます。フォームを送信した時とリセットした時は伏せ字に戻します。`PasswordFieldController` を `password-field` として登録します。",
-    "`CountedTextarea` は入力の下に「12 / 40 文字」の形で文字数を出します。`limit` を超えても入力は止めず、`overflowMessage` を出して入力を無効な状態にし、フォームの送信を止めます。数えるのはUTF-16の単位の長さです。`CharacterCountController` を `character-count` として登録します。",
-    "`Combobox` は自由に入力できる欄に、候補の一覧を添えます。欄か右の矢印を押すと一覧が開き、候補を選ぶと値が欄に入って一覧を閉じます。打った文字では絞り込みません。`readonly`・`disabled` の間は一覧を開きません。`ComboboxController` を `combobox` として登録します。選んだ値は `combobox:change` で受け取ります。標準の `input`・`change` は発火しません。",
+    "`CountedTextarea` は入力の下に「12 / 40 文字」の形で文字数を出します。文字数はcontrollerが接続してから出します。`limit` を超えても入力は止めず、`overflowMessage` を出して入力を無効な状態にし、フォームの送信を止めます。数えるのはUTF-16の単位の長さです。`CharacterCountController` を `character-count` として登録します。",
+    '`Combobox` は自由に入力できる欄に、候補の一覧を添えます。欄か右の矢印を押すと一覧が開き、候補を選ぶと値が欄に入って一覧を閉じます。打った文字では絞り込みません。`readonly`・`disabled` の間は一覧を開きません。`ComboboxController` を `combobox` として登録します。候補を選ぶと `combobox:change` を出し、欄でも打って変えた時と同じく標準の `input`・`change` を発火します。開閉の矢印と `role="combobox"` はcontrollerが接続してから付けます。',
     "`CheckboxGroup` は先頭に全て選択の印を置き、全て選ぶとオン、一部だけの時は中間の印にします。全て選択は `disabled` の選択肢を切り替えません。選んだ値は `name` で一つずつ送信し、全て選択の印は送信しません。`value` が空白だけの選択肢と、重なった値の二つ目以降は出しません。`CheckboxGroupController` を `checkbox-group` として登録します。",
-    "`NumberField`・`DateField`・`TimeField` は標準の `number`・`date`・`time` の入力で、`min`・`max`・`step` をそのまま使います。値が `min`・`max` と等しいとルートの `data-state` を `min`・`max` にし、それ以外は `between` にします。`NumberField` は PageUp・PageDown で `pageStep` 倍のstepだけ動かします。この変更は標準の `input`・`change` を発火しないので、値の確定は `number-field:change` で受け取ります。それぞれ `NumberFieldController` を `number-field`、`DateFieldController` を `date-field`、`TimeFieldController` を `time-field` として登録します。",
+    "`NumberField`・`DateField`・`TimeField` は標準の `number`・`date`・`time` の入力で、`min`・`max`・`step` をそのまま使います。値が `min`・`max` と等しいとルートの `data-state` を `min`・`max` にし、それ以外は `between` にします。`NumberField` は PageUp・PageDown で `pageStep` 倍のstepだけ動かします。この変更も、矢印キーや打って変えた時と同じく標準の `input`・`change` を発火し、`number-field:change` を出します。それぞれ `NumberFieldController` を `number-field`、`DateFieldController` を `date-field`、`TimeFieldController` を `time-field` として登録します。",
     "入力のCSSは `components/field.css` にあります。`Field` の外で入力だけを使う場合も読み込みます。",
-    "controllerを登録しない時、またはJavaScriptが無い時は、標準の入力として動きます。`PasswordField` は切り替えの印を出さず、`CountedTextarea` は文字数を数えず上限でも送信を止めません。`Combobox` は一覧を開かない一行の入力、`CheckboxGroup` の全て選択は押しても他を切り替えません。入力の検証は送信先でも行います。",
+    "controllerを登録しない時、またはJavaScriptが無い時は、標準の入力として動きます。`PasswordField` は切り替えの印を出さず、`CountedTextarea` は文字数を出さず上限でも送信を止めません。`Combobox` は開閉の矢印の無い一行の入力、`CheckboxGroup` の全て選択は押しても他を切り替えません。入力の検証は送信先でも行います。",
   ],
   keyboard: [
     [
@@ -60,7 +60,7 @@ export default {
     "エラーは色だけでなく、アイコンと文で示します。何をどう直すかを文で書きます。",
     "`PasswordField` の切り替えの操作は `aria-controls` で入力を指し、状態に合わせて `showLabel`・`hideLabel` を読み上げ名にします。マウスで切り替えた後は入力へフォーカスと選択範囲を戻します。",
     "`CountedTextarea` は文字数を入力の説明として関連付け、超えた時はエラー文も関連付けます。",
-    '`Combobox` の欄は `role="combobox"` で、`aria-expanded` と `aria-activedescendant` で開閉と移った候補を伝えます。`toggleLabel`・`listLabel` には何の候補かを含めます。',
+    '`Combobox` の欄はcontrollerが接続すると `role="combobox"` になり、`aria-expanded` と `aria-activedescendant` で開閉と移った候補を伝えます。JavaScriptが無い時は標準の一行の入力として読み上げます。`toggleLabel`・`listLabel` には何の候補かを含めます。',
     "`CheckboxGroup` は `fieldset` と `legend` で束の名前を伝えます。一部だけ選んだ時の全て選択は中間の状態として読み上げます。",
   ],
   events: [

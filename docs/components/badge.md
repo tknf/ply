@@ -24,12 +24,14 @@ childrenに短い文言を渡し、`tone` で役割を選びます。役割の�
 ## アクセシビリティ
 
 - 文言をそのまま読み上げます。色は補助なので、状態の意味は文言で伝えます。
-- 「0件」のように文言だけでは何の状態か伝わらない時は、隣の文で何の数かを書きます。Badgeは `span` なので、`aria-label` だけで補うと読まれないことがあります。
+- 「0件」のように文言だけでは何の状態か伝わらない時は、隣の文で何の数かを書きます。Badgeは役割の無い `span` で、`aria-label` の名前は読み上げで無視されることがあるので、`aria-label` では補いません。
 - 強制カラーのモードでは地が消えるので、縁を表示します。
 
 ## API
 
 ### Badge
+
+短い状態を文言と色の役割で示す。役割の無いspanなので、意味はaria-labelではなく文言か隣の文で伝える。
 
 | 名前       | 型                     | 既定値      | 説明                                                                                                 |
 | ---------- | ---------------------- | ----------- | ---------------------------------------------------------------------------------------------------- |
@@ -61,7 +63,7 @@ export default () => (
       <Badge tone="danger">送信失敗</Badge>
     </div>
     <p>
-      今月の予約 <Badge aria-label="検索結果0件">0件</Badge>
+      今月の予約 <Badge>0件</Badge>
     </p>
     <Badge tone="info">担当者と管理者による公開前の最終確認を待っています</Badge>
     <DisclosureGroup label="役割と状態の組み合わせ">
@@ -126,10 +128,7 @@ export default () => (
     ><span class="ply-badge" data-tone="warning">期限が近づいています</span
     ><span class="ply-badge" data-tone="danger">送信失敗</span>
   </div>
-  <p>
-    今月の予約
-    <span aria-label="検索結果0件" class="ply-badge" data-tone="neutral">0件</span>
-  </p>
+  <p>今月の予約 <span class="ply-badge" data-tone="neutral">0件</span></p>
   <span class="ply-badge" data-tone="info"
     >担当者と管理者による公開前の最終確認を待っています</span
   >

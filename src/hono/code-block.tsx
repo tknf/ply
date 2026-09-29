@@ -23,6 +23,7 @@ export type CodeBlockProps = ElementProps<"figure"> & {
   tokens?: readonly CodeToken[];
   /**
    * 見出しの行にコピーの操作を置く。クリップボードに書き込める環境でだけ表示し、結果をToastで知らせる。
+   * 成功はrole="status"の成功の色、失敗はrole="alert"の危険の色で知らせる。
    * ClipboardController・CodeBlockController・ToastControllerの登録が要る。
    */
   copy?: boolean;
@@ -103,8 +104,19 @@ export const CodeBlock = ({
           </code>
         </pre>
       </LayerCard>
+      {/* 成功は控えめに読み上げ、失敗は直し方を急いで伝えるので、知らせを分けて持つ。 */}
       {copy && (
-        <Toast id={notificationId} tone="success" closeLabel="コピー結果の通知を閉じる">
+        <Toast id={`${notificationId}-done`} tone="success" closeLabel="コピー結果の通知を閉じる">
+          <span data-code-block-target="status" />
+        </Toast>
+      )}
+      {copy && (
+        <Toast
+          id={`${notificationId}-failed`}
+          tone="danger"
+          live="assertive"
+          closeLabel="コピー結果の通知を閉じる"
+        >
           <span data-code-block-target="status" />
         </Toast>
       )}

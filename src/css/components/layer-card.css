@@ -93,11 +93,6 @@
       &:has(> :is(.ply-data-list, .ply-action-list:not([data-layout="grid"])):last-child) {
         padding-block-end: var(--ply-space-2);
       }
-      /* コードだけを載せた紙（CodeBlock）は、コードの面が余白とスクロールを持つので、紙の余白を持たない。 */
-      &:has(> pre:only-child) {
-        padding-block: 0;
-        padding-inline: 0;
-      }
       /* 一覧だけを載せた紙は、行の内側の余白を引いて、行の題名を層の見出しと同じ書き始めにそろえる。 */
       &:has(> .ply-data-list:only-child) {
         padding-inline: calc(var(--ply-layer-card-inline) - var(--ply-space-4));

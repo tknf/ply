@@ -21,7 +21,8 @@ export type ReactionsProps = ElementProps<"div"> & {
   /**
    * 渡すと、札を押して自分の反応を付け外しでき、終わりに反応を追加する操作を置く。
    * 追加の板はEmojiPickerと、短い言葉で反応する欄（16文字まで）を持つ。
-   * 付け外しはreactions:toggleで内容と付けたかどうかを知らせる。保存は利用側が持つ。
+   * 付け外しは書き換える前にreactions:beforetoggle（取り消せる）、後にreactions:toggleで知らせる。
+   * 保存は利用側が持ち、失敗した時はReactionsControllerのsetReactionで札を戻す。
    */
   add?: {
     /** 追加の板（Popover）のid。ページ内で一意にする。言葉の欄と絵文字の板のidにも使う。 */

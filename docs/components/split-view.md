@@ -314,13 +314,15 @@ export default () => (
                 data-avatars="true"
                 data-preview-lines="1"
               >
-                <li class="state" data-empty="true" role="status">
-                  <section class="ply-empty-state" data-kind="empty">
-                    <div class="slip">
-                      <h3 class="title">連絡はまだありません</h3>
-                      <div class="body"></div>
-                    </div>
-                  </section>
+                <li class="state" data-empty="true">
+                  <div role="status">
+                    <section class="ply-empty-state" data-kind="empty">
+                      <div class="slip">
+                        <h3 class="title">連絡はまだありません</h3>
+                        <div class="body"></div>
+                      </div>
+                    </section>
+                  </div>
                 </li>
                 <li
                   data-message-id="split-categories"

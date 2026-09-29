@@ -49,15 +49,12 @@ export const DateTimeRange = ({
   class: className,
   ...attributes
 }: DateTimeRangeProps) => {
-  const base = id ?? name.replace(/[^\w-]/g, "-");
   return (
     <fieldset {...attributes} id={id} class={classes("ply-date-time-range", className)}>
       <legend>{legend}</legend>
       <div class="range">
         <div class="point">
-          <span class="caption" id={`${base}-start`}>
-            {startLabel}
-          </span>
+          <span class="caption">{startLabel}</span>
           <DateField
             name={`${name}[start_date]`}
             value={start.date}
@@ -75,9 +72,7 @@ export const DateTimeRange = ({
           <Icon name="arrow" />
         </span>
         <div class="point">
-          <span class="caption" id={`${base}-end`}>
-            {endLabel}
-          </span>
+          <span class="caption">{endLabel}</span>
           <DateField name={`${name}[end_date]`} value={end.date} aria-label={`${endLabel}の日付`} />
           <span class="time">
             <TimeField

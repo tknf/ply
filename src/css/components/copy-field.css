@@ -1,7 +1,7 @@
 @layer components {
   /*
     写して使う値の欄。読み取り専用の欄の終わりに、写す操作の丸い印を置く。写すと印がペンで描くチェックに変わり、
-    しばらくして元の印に戻る。
+    しばらくして元の印に戻る。写せなかった時は欄の下に理由を出す。
   */
   .ply-copy-field {
     min-inline-size: 0;
@@ -22,6 +22,22 @@
         & > .copied {
           display: none;
         }
+      }
+    }
+    /* 写せなかった時は、Fieldのエラーと同じく欄の下に危険の色の文字とアイコンで書く。 */
+    & > .failure {
+      display: grid;
+      grid-template-columns: 1em minmax(0, 1fr);
+      align-items: start;
+      gap: 0.375em;
+      margin-block-start: var(--ply-space-1);
+      color: var(--ply-danger);
+      font-size: var(--ply-label);
+      line-height: var(--ply-label-leading);
+      & > .ply-icon {
+        inline-size: 1em;
+        block-size: 1em;
+        margin-block-start: calc(3em / 14);
       }
     }
     &[data-copied="true"] > .ply-field > .row > .ply-button {

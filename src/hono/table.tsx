@@ -16,7 +16,10 @@ export type TableProps = PropsWithChildren<
     sort?: "local" | "manual";
     /** 行の選択を有効にする。TableSelectionのチェックで選び、選んでいる間は画面の下の中央に選択の棚を出す。 */
     selectable?: boolean;
-    /** 選択の棚に件数に続けて並べる一括操作（ActionTileやButton）。selectableの時だけ出す。 */
+    /**
+     * 選択の棚に件数に続けて並べる一括操作（ActionTileやButton）。selectableの時だけ出す。
+     * JavaScriptがない時は表の下に置くので、行のチェックと同じformの送信ボタンにすると選んだ行を送れる。
+     */
     selectionActions?: Child;
     /** 見出しの行をスクロールしても上に留める。表の囲みの高さを28remまでにし、囲みの中で縦にスクロールする。 */
     stickyHeader?: boolean;
@@ -49,18 +52,6 @@ export const Table = ({
     data-state={state}
     data-sticky={stickyHeader ? "true" : undefined}
   >
-    {selectable && (
-      // 選択の板はActionDockと同じ棚にし、画面の下の中央に浮かべて表を動かさない。件数と一括操作を横一列に並べ、解除の×はDialogと同じく紙の角に置く。開閉はTableControllerが持つ。
-      <div class="selection-bar" popover="manual" role="group" aria-label="選択した行の操作">
-        <header class="heading">
-          <span class="count" role="status" aria-live="polite" />
-          <OverlayClose label="選択を解除" data-table-clear />
-        </header>
-        {selectionActions != null && selectionActions !== false && (
-          <div class="actions">{selectionActions}</div>
-        )}
-      </div>
-    )}
     <table
       {...attributes}
       data-controller={classes(
@@ -84,6 +75,19 @@ export const Table = ({
             : state === "error"
               ? "一覧を読み込めませんでした。"
               : "表示する項目はありません。")}
+      </div>
+    )}
+    {selectable && (
+      // 選択の板はActionDockと同じ棚にし、画面の下の中央に浮かべて表を動かさない。件数と一括操作を横一列に並べ、解除の×はDialogと同じく紙の角に置く。
+      // 行のチェックの後にTabで届くよう、DOMでは表の後に置く。popoverにして開閉するのはTableControllerで、JavaScriptがない時は表の下に一括操作を置く。
+      <div class="selection-bar" role="group" aria-label="選択した行の操作">
+        <header class="heading">
+          <span class="count" role="status" aria-live="polite" />
+          <OverlayClose label="選択を解除" data-table-clear />
+        </header>
+        {selectionActions != null && selectionActions !== false && (
+          <div class="actions">{selectionActions}</div>
+        )}
       </div>
     )}
     {(sort || selectable) && (

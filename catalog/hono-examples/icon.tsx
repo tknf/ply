@@ -29,15 +29,15 @@ export default () => (
   <div class="ply-stack">
     <div class="ply-cluster">
       <Button>
-        <Icon name="pencil" class="icon" />
+        <Icon name="pencil" />
         編集する
       </Button>
       <ActionLink href="/apps/search">
-        <Icon name="search" class="icon" />
+        <Icon name="search" />
         記事を探す
       </ActionLink>
       <Button aria-label="削除する" data-icon-only="true" variant="danger">
-        <Icon name="trash" class="icon" />
+        <Icon name="trash" />
       </Button>
     </div>
     <div class="ply-cluster">
@@ -50,11 +50,11 @@ export default () => (
     </div>
     <div class="ply-cluster">
       <Button disabled>
-        <Icon name="check" class="icon" />
+        <Icon name="check" />
         確認済み
       </Button>
       <Button size="large">
-        <Icon name="pencil" class="icon" />
+        <Icon name="pencil" />
         記事を書く
       </Button>
     </div>

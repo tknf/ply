@@ -12,9 +12,9 @@ export default {
   usage: [
     "`columns` の先頭は行の題名（`label`）の列で、2列目以降に各行の `cells` を順に入れます。`children` を渡した行には開閉のつまみを付け、子の行を一つ深い階層として字下げして続けます。`value` は全ての階層で一意にします。空の `value` と、重複した `value` の行は、その子孫ごと描きません。",
     "`expanded` に最初に開いておく行、`selection` に選択の方式、`selected` に最初に選んでおく行を、それぞれ `value` で渡します。開閉と選択はその後controllerが持つので、保存したい時はイベントで受け取ります。つまみを押すと行を開閉し、`selection` が `none` 以外の時はセルを押すと行を選びます。選んだ行は淡い青の面で示します。",
-    "`href` は子を持たない行だけでリンクになります。`disabled` の行はリンクにせず、題名を淡くします。キーでの移動には残ります。",
+    "`href` は子を持たない行だけでリンクになります。`disabled` の行はリンクにせず、題名を淡くし、押してもShift + Spaceでも選べません。キーでの移動には残ります。",
     "`state` は `ready`・`loading`・`empty`・`error` です。`items` が0件なら `ready` でも `empty` として扱います。`ready` 以外では見出しの行だけを残して状態の文（または `stateContent`）を出し、controllerを付けません。",
-    "`TreegridController` を `treegrid` として登録します。JavaScriptなしでは、閉じた行の子も含めて全ての行を表示し、開閉と選択はできません。行のデータ・開閉と選択の保存は利用側が持ちます。",
+    "`TreegridController` を `treegrid` として登録します。JavaScriptなしでは、全ての行を開いた状態で表示し、動かない開閉のつまみは隠します。選択もできません。行のデータ・開閉と選択の保存は利用側が持ちます。",
   ],
   keyboard: [
     ["↑ / ↓", "表示中の上下の行の、同じ列のセルへ移動します。"],
@@ -25,7 +25,7 @@ export default {
     ["Enter", "子を持つ行の先頭のセルで、行を開閉します。"],
     [
       "Shift + Space",
-      "`selection` が `single`・`multiple` の時に、行を選びます。`multiple` では選択を切り替えます。",
+      "`selection` が `single`・`multiple` の時に、行を選びます。`multiple` では選択を切り替えます。`disabled` の行は選べません。",
     ],
   ],
   accessibility: [
@@ -46,7 +46,7 @@ export default {
     ],
     [
       "treegrid:beforechange",
-      "選択が変わる前に知らせます。取り消せます。detailは `{ selected, previousSelected, reason }` で、`selected` は選ばれる行の `value` の配列です。",
+      "選択が変わる前に知らせます。取り消せます。detailは `{ selected, previousSelected, reason }` で、`selected` は選ばれる行の `value` の配列です。`disabled` の行を押した時は知らせません。",
     ],
     [
       "treegrid:change",

@@ -26,23 +26,23 @@
 
 `state` は `ready`・`loading`・`empty`・`error` です。`ready` 以外では `thead` を保ったまま本文の行を隠し、状態の文（または `stateContent`）を出します。この間は並べ替えのボタンを押せず、選択も付けません。
 
-`sort` か `selectable` を使う時は、`TableController` を `table`、`TableSortController` を `table-sort`、`TableSelectController` を `table-select` として三つとも登録します。JavaScriptなしでは、並べ替えのボタンは押せないまま表示し、チェックボックスは通常のフォームの値として送れますが、選択の棚と一括操作は出ません。行のデータ・並べ替えの保存・一括操作の実行は利用側が持ちます。
+`sort` か `selectable` を使う時は、`TableController` を `table`、`TableSortController` を `table-sort`、`TableSelectController` を `table-select` として三つとも登録します。JavaScriptなしでは、並べ替えのボタンは押せないまま表示し、チェックボックスは通常のフォームの値として送れます。選択の棚は浮かべずに表の下へ置き、件数と×を除いた `selectionActions` を常に出すので、行のチェックと同じformの送信ボタンを渡すと選んだ行を送れます。行のデータ・並べ替えの保存・一括操作の実行は利用側が持ちます。
 
 ## キーボード
 
-| キー                             | 動作                                                                                                                                   |
-| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| Tab                              | 表の囲みへ移り、見出しのボタン・リンク・チェックボックスを順に移動します。囲みにフォーカスがある時は矢印キーで表をスクロールできます。 |
-| Enter / Space（見出し）          | その列で並べ替えます。押すたびに昇順・降順・元の順を切り替えます。                                                                     |
-| Space（チェックボックス）        | 行、または全ての行の選択を切り替えます。                                                                                               |
-| Shift + Space / Shift + クリック | 前に操作した行から、この行までをまとめて同じ選択の状態にします。                                                                       |
+| キー                             | 動作                                                                                                                                                                                         |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tab                              | 表の囲みへ移り、見出しのボタン・リンク・チェックボックスを順に移動します。行を選んでいる時は、表の後に選択の棚の操作へ進みます。囲みにフォーカスがある時は矢印キーで表をスクロールできます。 |
+| Enter / Space（見出し）          | その列で並べ替えます。押すたびに昇順・降順・元の順を切り替えます。                                                                                                                           |
+| Space（チェックボックス）        | 行、または全ての行の選択を切り替えます。                                                                                                                                                     |
+| Shift + Space / Shift + クリック | 前に操作した行から、この行までをまとめて同じ選択の状態にします。                                                                                                                             |
 
 ## アクセシビリティ
 
 - 表の囲みは `role="region"` で、`caption` を名前に持ち、Tabで止まってキーボードでスクロールできます。
 - 並べ替えている列の `th` には `aria-sort`（`ascending`・`descending`・`none`）を付けます。`local` で並べ替えると、「記事名を昇順に並べました。」のような文を読み上げ用の `role="status"` で知らせます。
 - `TableSelection` の `label` はチェックボックスの `aria-label` になります。どの行か分かる名前（「〇〇を選択」）を付けてください。
-- 選択の棚は `role="group"`（「選択した行の操作」）で、件数は `aria-live="polite"` で知らせます。棚は DOM では表より前にあるので、Tabの順では表の前に来ます。
+- 選択の棚は `role="group"`（「選択した行の操作」）で、件数は `aria-live="polite"` で知らせます。棚はDOMでは表の後にあるので、行を選んだ後はTabで表の後の一括操作へ進めます。
 - 状態の文は `role="status"` で、`loading` では表に `aria-busy="true"` を付けます。
 
 ## イベント
@@ -64,7 +64,7 @@
 | `density`          | `"compact" \| "comfortable"`                 | `"compact"` | 本文の行の密度。comfortableは本文の行の上下の余白を広げる。                                                                                                                                           |
 | `sort`             | `"local" \| "manual"`                        |             | 並べ替えの方式。TableSortの見出しを押すと、昇順・降順・元の順を順に切り替える。 localは表示中の行をその場で並べ替え、manualは行を動かさずtable:sortだけを知らせる（サーバー側で並べ替える時に使う）。 |
 | `selectable`       | `boolean`                                    | `false`     | 行の選択を有効にする。TableSelectionのチェックで選び、選んでいる間は画面の下の中央に選択の棚を出す。                                                                                                  |
-| `selectionActions` | `Child`                                      |             | 選択の棚に件数に続けて並べる一括操作（ActionTileやButton）。selectableの時だけ出す。                                                                                                                  |
+| `selectionActions` | `Child`                                      |             | 選択の棚に件数に続けて並べる一括操作（ActionTileやButton）。selectableの時だけ出す。 JavaScriptがない時は表の下に置くので、行のチェックと同じformの送信ボタンにすると選んだ行を送れる。               |
 | `stickyHeader`     | `boolean`                                    | `false`     | 見出しの行をスクロールしても上に留める。表の囲みの高さを28remまでにし、囲みの中で縦にスクロールする。                                                                                                 |
 | `state`            | `"ready" \| "loading" \| "empty" \| "error"` | `"ready"`   | 表の状態。ready以外ではtheadを残して本文の行を隠し、状態の文を出す。並べ替えと選択も止める。loadingではaria-busyを付ける。                                                                            |
 | `stateContent`     | `Child`                                      |             | ready以外の時に、既定の状態の文の代わりに出す内容。                                                                                                                                                   |
@@ -395,46 +395,6 @@ export default () => (
       data-state="ready"
       data-sticky="true"
     >
-      <div
-        class="selection-bar"
-        popover="manual"
-        role="group"
-        aria-label="選択した行の操作"
-      >
-        <header class="heading">
-          <span class="count" role="status" aria-live="polite"></span
-          ><span class="close"
-            ><button
-              data-table-clear="true"
-              data-icon-only="true"
-              aria-label="選択を解除"
-              class="ply-button"
-              type="button"
-              data-variant="primary"
-              data-size="default"
-            >
-              <svg
-                class="ply-icon"
-                viewBox="0 0 256 256"
-                fill="currentColor"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <use href="/assets/ply-icons.svg#ply-x"></use>
-              </svg></button
-          ></span>
-        </header>
-        <div class="actions">
-          <button
-            class="ply-button"
-            type="submit"
-            data-variant="secondary"
-            data-size="compact"
-          >
-            選択したIDを確認
-          </button>
-        </div>
-      </div>
       <table
         data-controller="table-sort table-select"
         data-density="compact"
@@ -736,6 +696,41 @@ export default () => (
           </tr>
         </tbody>
       </table>
+      <div class="selection-bar" role="group" aria-label="選択した行の操作">
+        <header class="heading">
+          <span class="count" role="status" aria-live="polite"></span
+          ><span class="close"
+            ><button
+              data-table-clear="true"
+              data-icon-only="true"
+              aria-label="選択を解除"
+              class="ply-button"
+              type="button"
+              data-variant="primary"
+              data-size="default"
+            >
+              <svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-x"></use>
+              </svg></button
+          ></span>
+        </header>
+        <div class="actions">
+          <button
+            class="ply-button"
+            type="submit"
+            data-variant="secondary"
+            data-size="compact"
+          >
+            選択したIDを確認
+          </button>
+        </div>
+      </div>
       <p class="ply-visually-hidden" data-table-announcement="true" role="status"></p>
     </div>
     <output data-table-demo-target="result" class="catalog-footnote"></output>
@@ -898,12 +893,74 @@ export default () => (
           data-controller="table"
           data-state="ready"
         >
-          <div
-            class="selection-bar"
-            popover="manual"
-            role="group"
-            aria-label="選択した行の操作"
-          >
+          <table data-controller="table-select" data-density="compact" class="table">
+            <caption>
+              資料の整理
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">
+                  <label class="ply-choice"
+                    ><input
+                      type="checkbox"
+                      aria-label="資料をすべて選択"
+                      data-table-select="all"
+                      data-table-select-target="all"
+                  /></label>
+                </th>
+                <th scope="col">資料</th>
+                <th scope="col">更新</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <label class="ply-choice"
+                    ><input
+                      type="checkbox"
+                      aria-label="利用案内を選択"
+                      data-table-select="row"
+                      data-row-id="guide"
+                      data-table-select-target="item"
+                      data-table-select-value="guide"
+                  /></label>
+                </td>
+                <th scope="row">利用案内</th>
+                <td>9月15日</td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="ply-choice"
+                    ><input
+                      type="checkbox"
+                      aria-label="利用規約を選択"
+                      data-table-select="row"
+                      data-row-id="terms"
+                      data-table-select-target="item"
+                      data-table-select-value="terms"
+                  /></label>
+                </td>
+                <th scope="row">利用規約</th>
+                <td>9月12日</td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="ply-choice"
+                    ><input
+                      type="checkbox"
+                      aria-label="料金表を選択"
+                      data-table-select="row"
+                      data-row-id="price"
+                      data-table-select-target="item"
+                      data-table-select-value="price"
+                  /></label>
+                </td>
+                <th scope="row">料金表</th>
+                <td>9月10日</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="selection-bar" role="group" aria-label="選択した行の操作">
             <header class="heading">
               <span class="count" role="status" aria-live="polite"></span
               ><span class="close"
@@ -997,73 +1054,6 @@ export default () => (
               </button>
             </div>
           </div>
-          <table data-controller="table-select" data-density="compact" class="table">
-            <caption>
-              資料の整理
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">
-                  <label class="ply-choice"
-                    ><input
-                      type="checkbox"
-                      aria-label="資料をすべて選択"
-                      data-table-select="all"
-                      data-table-select-target="all"
-                  /></label>
-                </th>
-                <th scope="col">資料</th>
-                <th scope="col">更新</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <label class="ply-choice"
-                    ><input
-                      type="checkbox"
-                      aria-label="利用案内を選択"
-                      data-table-select="row"
-                      data-row-id="guide"
-                      data-table-select-target="item"
-                      data-table-select-value="guide"
-                  /></label>
-                </td>
-                <th scope="row">利用案内</th>
-                <td>9月15日</td>
-              </tr>
-              <tr>
-                <td>
-                  <label class="ply-choice"
-                    ><input
-                      type="checkbox"
-                      aria-label="利用規約を選択"
-                      data-table-select="row"
-                      data-row-id="terms"
-                      data-table-select-target="item"
-                      data-table-select-value="terms"
-                  /></label>
-                </td>
-                <th scope="row">利用規約</th>
-                <td>9月12日</td>
-              </tr>
-              <tr>
-                <td>
-                  <label class="ply-choice"
-                    ><input
-                      type="checkbox"
-                      aria-label="料金表を選択"
-                      data-table-select="row"
-                      data-row-id="price"
-                      data-table-select-target="item"
-                      data-table-select-value="price"
-                  /></label>
-                </td>
-                <th scope="row">料金表</th>
-                <td>9月10日</td>
-              </tr>
-            </tbody>
-          </table>
           <p
             class="ply-visually-hidden"
             data-table-announcement="true"
@@ -1097,36 +1087,6 @@ export default () => (
           data-sort-mode="local"
           data-state="ready"
         >
-          <div
-            class="selection-bar"
-            popover="manual"
-            role="group"
-            aria-label="選択した行の操作"
-          >
-            <header class="heading">
-              <span class="count" role="status" aria-live="polite"></span
-              ><span class="close"
-                ><button
-                  data-table-clear="true"
-                  data-icon-only="true"
-                  aria-label="選択を解除"
-                  class="ply-button"
-                  type="button"
-                  data-variant="primary"
-                  data-size="default"
-                >
-                  <svg
-                    class="ply-icon"
-                    viewBox="0 0 256 256"
-                    fill="currentColor"
-                    aria-hidden="true"
-                    focusable="false"
-                  >
-                    <use href="/assets/ply-icons.svg#ply-x"></use>
-                  </svg></button
-              ></span>
-            </header>
-          </div>
           <table
             data-controller="table-sort table-select"
             data-density="comfortable"
@@ -1236,6 +1196,31 @@ export default () => (
               </tr>
             </tbody>
           </table>
+          <div class="selection-bar" role="group" aria-label="選択した行の操作">
+            <header class="heading">
+              <span class="count" role="status" aria-live="polite"></span
+              ><span class="close"
+                ><button
+                  data-table-clear="true"
+                  data-icon-only="true"
+                  aria-label="選択を解除"
+                  class="ply-button"
+                  type="button"
+                  data-variant="primary"
+                  data-size="default"
+                >
+                  <svg
+                    class="ply-icon"
+                    viewBox="0 0 256 256"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <use href="/assets/ply-icons.svg#ply-x"></use>
+                  </svg></button
+              ></span>
+            </header>
+          </div>
           <p
             class="ply-visually-hidden"
             data-table-announcement="true"

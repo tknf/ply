@@ -3,7 +3,7 @@ import { DropdownMenu, type MenuItem } from "./dropdown-menu";
 import { classes } from "./types";
 
 export type SplitButtonProps = Omit<ButtonProps, "children"> & {
-  /** ▾のメニューのidの元。メニューは`<id>-menu`になる。画面内で一意にする。主操作のボタンのidには使わない。 */
+  /** 主操作のボタンのid。▾のメニューは`<id>-menu`、▾の操作は`<id>-menu-trigger`になる。画面内で一意にする。 */
   id: string;
   /** 主操作の文言。 */
   label: string;
@@ -25,11 +25,20 @@ export const SplitButton = ({
   variant = "primary",
   size,
   disabled,
+  busy,
   class: className,
   ...attributes
 }: SplitButtonProps) => (
   <div class={classes("ply-split-button", className)} data-variant={variant}>
-    <Button {...attributes} class="main" variant={variant} size={size} disabled={disabled}>
+    <Button
+      {...attributes}
+      id={id}
+      class="main"
+      variant={variant}
+      size={size}
+      disabled={disabled}
+      busy={busy}
+    >
       {label}
     </Button>
     <DropdownMenu
@@ -40,6 +49,7 @@ export const SplitButton = ({
       variant={variant}
       size={size}
       disabled={disabled}
+      busy={busy}
       align="end"
     />
   </div>

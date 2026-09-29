@@ -18,7 +18,8 @@
       background: var(--ply-surface);
       box-shadow: 0 0.0625rem var(--ply-border);
     }
-    &:not([data-state="ready"]) > table > :is(tbody, tfoot) {
+    &:not([data-state="ready"]) > table > :is(tbody, tfoot),
+    &:not([data-state="ready"]) > .selection-bar:not([popover]) {
       display: none;
     }
     & > .state {
@@ -65,8 +66,27 @@
         align-items: stretch;
         gap: var(--ply-space-1);
       }
-      &:not(:popover-open) {
+      &[popover]:not(:popover-open) {
         translate: 0 1rem;
+      }
+      /*
+        JavaScriptがない時（popoverにする前）は浮かべず、表の下に置いて一括操作へ届くようにする。
+        件数と解除の×は動かないので出さない。スクリプトが動く環境では、popoverになるまで隠す。
+      */
+      &:not([popover]) {
+        position: static;
+        display: flex;
+        margin-block-start: var(--ply-space-3);
+        margin-inline: 0;
+        padding-inline: var(--ply-space-1);
+        border: var(--ply-stroke-width) solid var(--ply-border);
+        box-shadow: none;
+        & > .heading {
+          display: none;
+        }
+        @media (scripting: enabled) {
+          display: none;
+        }
       }
       /* 件数。操作の列の始まりに、タイルと同じ高さで置く。 */
       & > .heading {

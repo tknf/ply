@@ -13,11 +13,11 @@
 
 `value` に数値を渡すと単一値、[下限, 上限]を渡すと範囲指定になります。`min`・`max` はスライダーの両端に数で出します。`step` などの残りの属性は標準の `range` 入力へ渡します。
 
-単一値は `name` で値を送信し、名前の行の終わりに現在値を `unit` を添えて出します。範囲指定は `<name>-start`・`<name>-end` の二つの名前で送信し、スライダーの下に下限・上限の数の入力を並べます。数の入力は送信しません。
+単一値は `name` で値を送信し、名前の行の終わりに現在値を `unit` を添えて出します。範囲指定は `<name>-start`・`<name>-end` の二つの名前で送信し、スライダーの下に下限・上限の数の入力を `unit` を添えて並べます。数の入力は送信しません。
 
 範囲指定では、下限が上限を越えないように、動かした側をもう一方の値で止めます。数の入力で確定した値も同じように止めてスライダーへ移します。
 
-`RangeController` を `range` として登録します。上流の `SliderController` の状態管理と上下限の制約に、現在値の表示と数の入力の同期を加えたものです。値はcontrollerの `value`（単一値）、`start`・`end`（範囲指定）で読み書きでき、書いた値は表示にも移します。
+`RangeController` を `range` として登録します。上流の `SliderController` の状態管理と上下限の制約に、現在値の表示と数の入力の同期を加えたものです。値はcontrollerの `value`（単一値）、`start`・`end`（範囲指定）で読み書きでき、書いた値は表示にも移します。範囲指定の数の入力は `NumberField` で、`NumberFieldController` を `number-field` として登録すると PageUp・PageDown でも動かせます。
 
 操作で値が確定すると `slider:beforechange` と `slider:change` を出します。標準の `input`・`change` もそのまま受け取れます。数の入力の確定は、その入力の標準の `change` で受け取れます。フォームのリセットでは表示も初期値に戻します。
 
@@ -33,7 +33,7 @@ JavaScriptが無い時は、単一値は現在値の表示の無いスライダ�
 ## アクセシビリティ
 
 - 単一値のスライダーはラベルを読み上げ名にします。範囲指定は `fieldset` の `legend` に `label` を置き、2本のスライダーと数の入力を「予算（円） 下限」のように名前と下限・上限で読み上げます。
-- スライダーは数だけを読み上げ、`unit` や両端の数は読み上げません。単位は `label` にも「表示倍率（%）」のように含めます。
+- スライダーは数だけを読み上げ、`unit` や両端の数は読み上げません。単位は `label` にも「表示倍率（%）」のように含めます。範囲指定の数の入力では、`unit` を入力の説明として読み上げます。
 - 現在値の表示は `aria-live="off"` で、動かすたびに重ねて読み上げません。値はスライダー自体が伝えます。
 
 ## イベント
@@ -55,11 +55,11 @@ JavaScriptが無い時は、単一値は現在値の表示の無いスライダ�
 | `min`（必須）   | `number`                              |        | 下限。スライダーの始まりの端に数として出す。                                                                       |
 | `max`（必須）   | `number`                              |        | 上限。スライダーの終わりの端に数として出す。                                                                       |
 | `value`         | `number \| readonly [number, number]` |        | 数値なら単一値、[下限, 上限]なら範囲指定になる。省略すると単一値で、位置はブラウザの既定（minとmaxの中間）になる。 |
-| `unit`          | `string`                              | `""`   | 単一値の時、現在値の表示に添える単位。範囲指定では使わない。                                                       |
+| `unit`          | `string`                              | `""`   | 単位。単一値では現在値の表示に、範囲指定では下限・上限の数の入力の後に添える。                                     |
 
 ほかに、`<input>`へ標準のHTML属性を渡せます。
 
-読み込むCSS：`layers.css`、`reset.css`、`tokens.css`、`base.css`、`layout.css`、`components/field.css`、`components/range.css`
+読み込むCSS：`layers.css`、`reset.css`、`tokens.css`、`base.css`、`layout.css`、`components/button.css`、`components/field.css`、`components/input-group.css`、`components/range.css`
 
 ## コード
 
@@ -86,6 +86,7 @@ export default () => (
       max={10000}
       step={500}
       value={[1000, 5000]}
+      unit="円"
     />
     <Disclosure summary="最小・最大・小数・利用不可">
       <div class="ply-stack">
@@ -195,30 +196,48 @@ export default () => (
     <div class="limits" aria-hidden="true"><span>0</span><span>10000</span></div>
     <div class="values" hidden="">
       <label class="ply-field" for="hono-range-budget-start-number"
-        ><span class="label" id="hono-range-budget-start-number-label">下限</span
-        ><input
-          class="ply-input"
-          type="number"
-          id="hono-range-budget-start-number"
-          aria-labelledby="hono-range-budget-label hono-range-budget-start-number-label"
-          min="0"
-          max="10000"
-          step="500"
-          value="1000"
-          data-range-bound="start" /></label
+        ><span class="label" id="hono-range-budget-start-number-label">下限</span>
+        <div class="ply-input-group">
+          <div class="control" data-size="default">
+            <input
+              type="number"
+              aria-labelledby="hono-range-budget-label hono-range-budget-start-number-label"
+              min="0"
+              max="10000"
+              step="500"
+              value="1000"
+              data-range-bound="start"
+              id="hono-range-budget-start-number"
+              data-size="default"
+              aria-describedby="hono-range-budget-start-number-suffix"
+              data-controller="number-field"
+              data-number-field-page-step-value="10"
+              class="ply-input"
+            /><span class="affix" id="hono-range-budget-start-number-suffix">円</span>
+          </div>
+        </div></label
       ><label class="ply-field" for="hono-range-budget-end-number"
-        ><span class="label" id="hono-range-budget-end-number-label">上限</span
-        ><input
-          class="ply-input"
-          type="number"
-          id="hono-range-budget-end-number"
-          aria-labelledby="hono-range-budget-label hono-range-budget-end-number-label"
-          min="0"
-          max="10000"
-          step="500"
-          value="5000"
-          data-range-bound="end"
-      /></label>
+        ><span class="label" id="hono-range-budget-end-number-label">上限</span>
+        <div class="ply-input-group">
+          <div class="control" data-size="default">
+            <input
+              type="number"
+              aria-labelledby="hono-range-budget-label hono-range-budget-end-number-label"
+              min="0"
+              max="10000"
+              step="500"
+              value="5000"
+              data-range-bound="end"
+              id="hono-range-budget-end-number"
+              data-size="default"
+              aria-describedby="hono-range-budget-end-number-suffix"
+              data-controller="number-field"
+              data-number-field-page-step-value="10"
+              class="ply-input"
+            /><span class="affix" id="hono-range-budget-end-number-suffix">円</span>
+          </div>
+        </div></label
+      >
     </div>
   </fieldset>
   <details class="ply-disclosure">
@@ -238,11 +257,11 @@ export default () => (
       <div class="ply-stack">
         <div class="ply-range" data-controller="range" data-mode="single">
           <div class="heading">
-            <label class="label" for="ply-range-:rg:" id="ply-range-:rg:-label"
+            <label class="label" for="ply-range-:ri:" id="ply-range-:ri:-label"
               >音量（最小）</label
             ><output
               class="value"
-              for="ply-range-:rg:"
+              for="ply-range-:ri:"
               data-range-unit="%"
               aria-live="off"
               hidden=""
@@ -251,13 +270,13 @@ export default () => (
           <div class="controls">
             <div class="native">
               <input
-                id="ply-range-:rg:"
+                id="ply-range-:ri:"
                 class="input"
                 type="range"
                 min="0"
                 max="100"
                 value="0"
-                aria-labelledby="ply-range-:rg:-label"
+                aria-labelledby="ply-range-:ri:-label"
                 data-range-target="input"
               />
             </div>
@@ -266,65 +285,8 @@ export default () => (
         </div>
         <div class="ply-range" data-controller="range" data-mode="single">
           <div class="heading">
-            <label class="label" for="ply-range-:rh:" id="ply-range-:rh:-label"
-              >画質（最大）</label
-            ><output
-              class="value"
-              for="ply-range-:rh:"
-              data-range-unit=""
-              aria-live="off"
-              hidden=""
-            ></output>
-          </div>
-          <div class="controls">
-            <div class="native">
-              <input
-                id="ply-range-:rh:"
-                class="input"
-                type="range"
-                min="1"
-                max="5"
-                value="5"
-                aria-labelledby="ply-range-:rh:-label"
-                data-range-target="input"
-              />
-            </div>
-          </div>
-          <div class="limits" aria-hidden="true"><span>1</span><span>5</span></div>
-        </div>
-        <div class="ply-range" data-controller="range" data-mode="single">
-          <div class="heading">
-            <label class="label" for="ply-range-:ri:" id="ply-range-:ri:-label"
-              >拡大率（小数）</label
-            ><output
-              class="value"
-              for="ply-range-:ri:"
-              data-range-unit="倍"
-              aria-live="off"
-              hidden=""
-            ></output>
-          </div>
-          <div class="controls">
-            <div class="native">
-              <input
-                step="0.1"
-                id="ply-range-:ri:"
-                class="input"
-                type="range"
-                min="0.5"
-                max="2"
-                value="1.2"
-                aria-labelledby="ply-range-:ri:-label"
-                data-range-target="input"
-              />
-            </div>
-          </div>
-          <div class="limits" aria-hidden="true"><span>0.5</span><span>2</span></div>
-        </div>
-        <div class="ply-range" data-controller="range" data-mode="single">
-          <div class="heading">
             <label class="label" for="ply-range-:rj:" id="ply-range-:rj:-label"
-              >変更できない範囲</label
+              >画質（最大）</label
             ><output
               class="value"
               for="ply-range-:rj:"
@@ -339,11 +301,68 @@ export default () => (
                 id="ply-range-:rj:"
                 class="input"
                 type="range"
+                min="1"
+                max="5"
+                value="5"
+                aria-labelledby="ply-range-:rj:-label"
+                data-range-target="input"
+              />
+            </div>
+          </div>
+          <div class="limits" aria-hidden="true"><span>1</span><span>5</span></div>
+        </div>
+        <div class="ply-range" data-controller="range" data-mode="single">
+          <div class="heading">
+            <label class="label" for="ply-range-:rk:" id="ply-range-:rk:-label"
+              >拡大率（小数）</label
+            ><output
+              class="value"
+              for="ply-range-:rk:"
+              data-range-unit="倍"
+              aria-live="off"
+              hidden=""
+            ></output>
+          </div>
+          <div class="controls">
+            <div class="native">
+              <input
+                step="0.1"
+                id="ply-range-:rk:"
+                class="input"
+                type="range"
+                min="0.5"
+                max="2"
+                value="1.2"
+                aria-labelledby="ply-range-:rk:-label"
+                data-range-target="input"
+              />
+            </div>
+          </div>
+          <div class="limits" aria-hidden="true"><span>0.5</span><span>2</span></div>
+        </div>
+        <div class="ply-range" data-controller="range" data-mode="single">
+          <div class="heading">
+            <label class="label" for="ply-range-:rl:" id="ply-range-:rl:-label"
+              >変更できない範囲</label
+            ><output
+              class="value"
+              for="ply-range-:rl:"
+              data-range-unit=""
+              aria-live="off"
+              hidden=""
+            ></output>
+          </div>
+          <div class="controls">
+            <div class="native">
+              <input
+                id="ply-range-:rl:"
+                class="input"
+                type="range"
                 min="0"
                 max="10"
                 value="3"
                 disabled=""
-                aria-labelledby="ply-range-:rj:-label"
+                aria-labelledby="ply-range-:rl:-label"
                 data-range-target="input"
               />
             </div>
@@ -356,76 +375,90 @@ export default () => (
           data-mode="interval"
           disabled=""
         >
-          <legend class="label" id="ply-range-:rk:-label">予算（変更不可）</legend>
+          <legend class="label" id="ply-range-:rm:-label">予算（変更不可）</legend>
           <div class="controls">
             <div class="native">
               <label
                 class="label"
-                id="ply-range-:rk:-start-label"
-                for="ply-range-:rk:-start"
+                id="ply-range-:rm:-start-label"
+                for="ply-range-:rm:-start"
                 >下限</label
               ><input
                 step="500"
-                id="ply-range-:rk:-start"
+                id="ply-range-:rm:-start"
                 class="input"
                 type="range"
                 min="0"
                 max="10000"
                 value="2000"
                 disabled=""
-                aria-labelledby="ply-range-:rk:-label ply-range-:rk:-start-label"
+                aria-labelledby="ply-range-:rm:-label ply-range-:rm:-start-label"
                 data-range-target="input"
               />
             </div>
             <div class="native">
               <label
                 class="label"
-                id="ply-range-:rk:-end-label"
-                for="ply-range-:rk:-end"
+                id="ply-range-:rm:-end-label"
+                for="ply-range-:rm:-end"
                 >上限</label
               ><input
                 step="500"
-                id="ply-range-:rk:-end"
+                id="ply-range-:rm:-end"
                 class="input"
                 type="range"
                 min="0"
                 max="10000"
                 value="8000"
                 disabled=""
-                aria-labelledby="ply-range-:rk:-label ply-range-:rk:-end-label"
+                aria-labelledby="ply-range-:rm:-label ply-range-:rm:-end-label"
                 data-range-target="input"
               />
             </div>
           </div>
           <div class="limits" aria-hidden="true"><span>0</span><span>10000</span></div>
           <div class="values" hidden="">
-            <label class="ply-field" for="ply-range-:rk:-start-number"
-              ><span class="label" id="ply-range-:rk:-start-number-label">下限</span
-              ><input
-                class="ply-input"
-                type="number"
-                id="ply-range-:rk:-start-number"
-                aria-labelledby="ply-range-:rk:-label ply-range-:rk:-start-number-label"
-                min="0"
-                max="10000"
-                step="500"
-                value="2000"
-                disabled=""
-                data-range-bound="start" /></label
-            ><label class="ply-field" for="ply-range-:rk:-end-number"
-              ><span class="label" id="ply-range-:rk:-end-number-label">上限</span
-              ><input
-                class="ply-input"
-                type="number"
-                id="ply-range-:rk:-end-number"
-                aria-labelledby="ply-range-:rk:-label ply-range-:rk:-end-number-label"
-                min="0"
-                max="10000"
-                step="500"
-                value="8000"
-                disabled=""
-                data-range-bound="end"
-            /></label>
+            <label class="ply-field" for="ply-range-:rm:-start-number"
+              ><span class="label" id="ply-range-:rm:-start-number-label">下限</span>
+              <div class="ply-input-group">
+                <div class="control" data-size="default">
+                  <input
+                    type="number"
+                    aria-labelledby="ply-range-:rm:-label ply-range-:rm:-start-number-label"
+                    min="0"
+                    max="10000"
+                    step="500"
+                    value="2000"
+                    disabled=""
+                    data-range-bound="start"
+                    id="ply-range-:rm:-start-number"
+                    data-size="default"
+                    data-controller="number-field"
+                    data-number-field-page-step-value="10"
+                    class="ply-input"
+                  />
+                </div></div></label
+            ><label class="ply-field" for="ply-range-:rm:-end-number"
+              ><span class="label" id="ply-range-:rm:-end-number-label">上限</span>
+              <div class="ply-input-group">
+                <div class="control" data-size="default">
+                  <input
+                    type="number"
+                    aria-labelledby="ply-range-:rm:-label ply-range-:rm:-end-number-label"
+                    min="0"
+                    max="10000"
+                    step="500"
+                    value="8000"
+                    disabled=""
+                    data-range-bound="end"
+                    id="ply-range-:rm:-end-number"
+                    data-size="default"
+                    data-controller="number-field"
+                    data-number-field-page-step-value="10"
+                    class="ply-input"
+                  />
+                </div></div
+            ></label>
           </div>
         </fieldset>
       </div>

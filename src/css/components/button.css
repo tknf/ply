@@ -63,12 +63,14 @@
     */
     &[data-variant="primary"],
     &[data-current="true"] {
+      --ply-button-color: var(--ply-link);
       --ply-button-fill: var(--ply-fill-primary);
       background: var(--ply-link);
       background-image: var(--ply-button-fill);
       border-color: var(--ply-link);
     }
     &[data-variant="danger"] {
+      --ply-button-color: var(--ply-danger);
       --ply-button-fill: var(--ply-fill-danger);
       background: var(--ply-danger);
       background-image: var(--ply-button-fill);
@@ -78,11 +80,14 @@
       color: var(--ply-surface);
       box-shadow: none;
 
+      /* 控えめな操作の淡い面の色へ戻さず、塗りの下の色も役割の色のままにする。 */
       &:hover:not(:disabled) {
+        background-color: var(--ply-button-color);
         background-image: linear-gradient(rgb(0 0 0 / 8%), rgb(0 0 0 / 8%)), var(--ply-button-fill);
       }
 
       &:active:not(:disabled) {
+        background-color: var(--ply-button-color);
         background-image:
           linear-gradient(rgb(0 0 0 / 12%), rgb(0 0 0 / 12%)), var(--ply-button-fill);
         box-shadow: var(--ply-shadow-control-primary-pressed);
@@ -138,8 +143,52 @@
       }
     }
 
+    /*
+      処理中は、Progressの終わりが分からない時と同じく、操作そのものは動かさず、役割の色だけを一方向にゆっくり流す。
+      模様は操作の幅の二倍で繰り返し、一巡りでちょうど元の色に戻る。流す色の組は変種ごとに下で決める。
+      塗った操作の明るい側は、白い文字との対比が4.5:1を下回らない割合にとどめる（primary 90%、danger 82%）。
+    */
     &[data-busy="true"] {
+      --ply-button-busy-from: var(--ply-surface);
+      --ply-button-busy-to: color-mix(in srgb, var(--ply-surface) 90%, var(--ply-ink));
+      background-image: linear-gradient(
+        to right,
+        var(--ply-button-busy-from),
+        var(--ply-button-busy-to),
+        var(--ply-button-busy-from)
+      );
+      background-size: 200% 100%;
+      background-repeat: repeat-x;
       cursor: progress;
+      animation: ply-button-busy 2.4s linear infinite;
+      &:where(:dir(rtl)) {
+        animation-direction: reverse;
+      }
+      &:is([data-variant="primary"], [data-current="true"]) {
+        --ply-button-busy-from: var(--ply-link);
+        --ply-button-busy-to: color-mix(in srgb, var(--ply-link) 90%, white);
+      }
+      &[data-variant="danger"] {
+        --ply-button-busy-from: var(--ply-danger);
+        --ply-button-busy-to: color-mix(in srgb, var(--ply-danger) 82%, white);
+      }
+      &[data-variant="link"] {
+        --ply-button-busy-from: transparent;
+        --ply-button-busy-to: color-mix(in srgb, var(--ply-link) 12%, transparent);
+      }
+    }
+  }
+
+  @keyframes ply-button-busy {
+    to {
+      background-position-x: -200%;
+    }
+  }
+
+  /* 動きを減らす時は流さず、流す色の組を敷いたまま止める。 */
+  @media (prefers-reduced-motion: reduce) {
+    .ply-button[data-busy="true"] {
+      animation: none;
     }
   }
 }

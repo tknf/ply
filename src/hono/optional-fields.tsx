@@ -10,7 +10,7 @@ export type OptionalField = {
   label: string;
   /** チップの名前の前に置く印。省略するとplus。 */
   icon?: IconName;
-  /** 押した時に現れる欄。 */
+  /** 押した時に現れる欄。隠れている間は中の入力を使えなくし、送信しない。 */
   field: Child;
   /** 最初から出しておく（値が入っている時など）。 */
   open?: boolean;
@@ -26,7 +26,8 @@ export type OptionalFieldsProps = ElementProps<"div"> & {
 
 /**
  * 予定のリンク・場所・招待・メモ・繰り返しや検索の条件のように、必要な時だけ足す欄。
- * 足せる項目をチップで並べ、押すとその欄が現れてチップは消える。長いフォームを短く見せる。
+ * 足せる項目をチップで並べ、押すとその欄が現れてチップは消える。欄の外す操作で元のチップへ戻す。
+ * 長いフォームを短く見せる。JavaScriptが無い時は全ての欄を出し、チップと外す操作は出さない。
  */
 export const OptionalFields = ({
   label,
@@ -43,14 +44,25 @@ export const OptionalFields = ({
   >
     <div class="fields">
       {items.map((item) => (
-        <div
+        <fieldset
           class="field"
           id={`${item.id}-slot`}
-          hidden={!item.open}
+          data-open={item.open ? "true" : "false"}
           data-optional-fields-target="field"
         >
           {item.field}
-        </div>
+          <Button
+            class="remove"
+            variant="link"
+            data-icon-only="true"
+            aria-label={`${item.label}を外す`}
+            title={`${item.label}を外す`}
+            data-action="optional-fields#remove"
+            hidden
+          >
+            <Icon name="x" />
+          </Button>
+        </fieldset>
       ))}
     </div>
     <div class="chips" role="group" aria-label={label}>
@@ -58,9 +70,9 @@ export const OptionalFields = ({
         <Button
           class="chip"
           size="compact"
-          hidden={item.open}
           aria-controls={`${item.id}-slot`}
-          aria-expanded="false"
+          aria-expanded={item.open ? "true" : "false"}
+          hidden
           data-action="optional-fields#add"
         >
           <Icon name={item.icon ?? "plus"} />

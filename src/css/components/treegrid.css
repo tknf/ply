@@ -39,6 +39,11 @@
     }
   }
 
+  /* 開閉はcontrollerが行にdata-stateを付けてから働くので、それまではつまみを隠し、幅だけ残す。 */
+  .ply-treegrid > table > tbody > tr:not([data-state]) > th .toggle {
+    visibility: hidden;
+  }
+
   .ply-treegrid > table > tbody > tr[data-state="collapsed"] > th .toggle > .ply-icon {
     rotate: -90deg;
   }

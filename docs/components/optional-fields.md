@@ -12,32 +12,34 @@
 
 ## 使い方
 
-`items` の一件ごとに、押すと現れる欄（`field`）とチップを作ります。足した欄は上に積み、チップは下に並べます。チップを押すとその欄が現れ、チップは消えて、欄の最初の入力へフォーカスが移ります。足した欄をまた隠す操作はありません。
+`items` の一件ごとに、押すと現れる欄（`field`）とチップを作ります。足した欄は上に積み、チップは下に並べます。チップを押すとその欄が現れ、チップは消えて、欄の最初の入力へフォーカスが移ります。足した欄の終わりの「（`label`）を外す」を押すと、欄を隠してチップへ戻し、チップへフォーカスを移します。外した欄の入力の値は、もう一度足すと残っています。
 
 値が入っている項目は `open` で最初から欄を出し、チップを出しません。保存した値から `open` を決めるのは利用側です。
 
-隠れている欄の入力もフォームに含まれ、空の値のまま送信されます。空の値を「未入力」として扱うのは送信先で行います。
+欄はそれぞれ `fieldset` で包み、隠れている間は `disabled` にします。隠れた欄の入力は送信せず、`required` でも送信を止めません。送信先は、届かなかった名前を「足していない項目」として扱います。
 
-`OptionalFieldsController` を `optional-fields` として登録します。欄を足すたびに `optional-fields:add` を出します。
+`OptionalFieldsController` を `optional-fields` として登録します。欄を足すと `optional-fields:add`、外すと `optional-fields:remove` を出します。
 
-JavaScriptが無い時は、チップを押しても欄は現れません。`open` の欄だけを使えます。
+JavaScriptが無い時は、全ての欄を最初から出し、チップと外す操作は出しません。全ての欄の入力を送信します。controllerが接続すると、`open` でない欄をチップへ畳みます。
 
 ## アクセシビリティ
 
 - チップの並びは `role="group"` で、`label` を読み上げ名にします。
 - チップは `aria-controls` で現れる欄を指し、`aria-expanded` で欄を出したかを伝えます。押した後はチップが消えるので、欄の最初の入力へフォーカスを移します。
+- 外す操作はアイコンだけのボタンで、「（`label`）を外す」を読み上げ名とツールチップにします。押した後は操作が消えるので、戻ったチップへフォーカスを移します。
 
 ## イベント
 
-| イベント              | 内容                                                                                           |
-| --------------------- | ---------------------------------------------------------------------------------------------- |
-| `optional-fields:add` | チップを押して欄を出した後に出します。detailは `id`（足した項目の `id`）です。取り消せません。 |
+| イベント                 | 内容                                                                                           |
+| ------------------------ | ---------------------------------------------------------------------------------------------- |
+| `optional-fields:add`    | チップを押して欄を出した後に出します。detailは `id`（足した項目の `id`）です。取り消せません。 |
+| `optional-fields:remove` | 外す操作で欄を隠した後に出します。detailは `id`（外した項目の `id`）です。取り消せません。     |
 
 ## API
 
 ### OptionalFields
 
-予定のリンク・場所・招待・メモ・繰り返しや検索の条件のように、必要な時だけ足す欄。足せる項目をチップで並べ、押すとその欄が現れてチップは消える。長いフォームを短く見せる。
+予定のリンク・場所・招待・メモ・繰り返しや検索の条件のように、必要な時だけ足す欄。足せる項目をチップで並べ、押すとその欄が現れてチップは消える。欄の外す操作で元のチップへ戻す。長いフォームを短く見せる。JavaScriptが無い時は全ての欄を出し、チップと外す操作は出さない。
 
 | 名前            | 型                         | 既定値     | 説明                                                                                      |
 | --------------- | -------------------------- | ---------- | ----------------------------------------------------------------------------------------- |
@@ -58,7 +60,7 @@ JavaScriptが無い時は、チップを押しても欄は現れません。`ope
 | `id`（必須）    | `string`   |        | 項目のid。欄の置き場は`<id>-slot`になり、optional-fields:addのdetail.idで返る。画面内で一意にする。 |
 | `label`（必須） | `string`   |        | チップに出す項目名。                                                                                |
 | `icon`          | `IconName` |        | チップの名前の前に置く印。省略するとplus。                                                          |
-| `field`（必須） | `Child`    |        | 押した時に現れる欄。                                                                                |
+| `field`（必須） | `Child`    |        | 押した時に現れる欄。隠れている間は中の入力を使えなくし、送信しない。                                |
 | `open`          | `boolean`  |        | 最初から出しておく（値が入っている時など）。                                                        |
 
 #### `IconName`
@@ -204,43 +206,106 @@ export default () => (
     data-layout="inline"
   >
     <div class="fields">
-      <div
+      <fieldset
         class="field"
         id="event-link-slot"
-        hidden=""
+        data-open="false"
         data-optional-fields-target="field"
       >
         <div class="ply-field">
           <div class="heading"><label for="event-link">リンク</label></div>
           <input id="event-link" name="event-link" class="ply-input" />
         </div>
-      </div>
-      <div
+        <button
+          data-icon-only="true"
+          aria-label="リンクを外す"
+          title="リンクを外す"
+          data-action="optional-fields#remove"
+          hidden=""
+          class="ply-button remove"
+          type="button"
+          data-variant="link"
+          data-size="default"
+        >
+          <svg
+            class="ply-icon"
+            viewBox="0 0 256 256"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="/assets/ply-icons.svg#ply-x"></use>
+          </svg>
+        </button>
+      </fieldset>
+      <fieldset
         class="field"
         id="event-place-slot"
-        hidden=""
+        data-open="false"
         data-optional-fields-target="field"
       >
         <div class="ply-field">
           <div class="heading"><label for="event-place">場所</label></div>
           <input id="event-place" name="event-place" class="ply-input" />
         </div>
-      </div>
-      <div
+        <button
+          data-icon-only="true"
+          aria-label="場所を外す"
+          title="場所を外す"
+          data-action="optional-fields#remove"
+          hidden=""
+          class="ply-button remove"
+          type="button"
+          data-variant="link"
+          data-size="default"
+        >
+          <svg
+            class="ply-icon"
+            viewBox="0 0 256 256"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="/assets/ply-icons.svg#ply-x"></use>
+          </svg>
+        </button>
+      </fieldset>
+      <fieldset
         class="field"
         id="event-people-slot"
-        hidden=""
+        data-open="false"
         data-optional-fields-target="field"
       >
         <div class="ply-field">
           <div class="heading"><label for="event-people">招待する人</label></div>
           <input id="event-people" name="event-people" class="ply-input" />
         </div>
-      </div>
-      <div
+        <button
+          data-icon-only="true"
+          aria-label="招待を外す"
+          title="招待を外す"
+          data-action="optional-fields#remove"
+          hidden=""
+          class="ply-button remove"
+          type="button"
+          data-variant="link"
+          data-size="default"
+        >
+          <svg
+            class="ply-icon"
+            viewBox="0 0 256 256"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="/assets/ply-icons.svg#ply-x"></use>
+          </svg>
+        </button>
+      </fieldset>
+      <fieldset
         class="field"
         id="event-note-slot"
-        hidden=""
+        data-open="false"
         data-optional-fields-target="field"
       >
         <div class="ply-field">
@@ -252,23 +317,66 @@ export default () => (
             class="ply-input"
           ></textarea>
         </div>
-      </div>
-      <div
+        <button
+          data-icon-only="true"
+          aria-label="メモを外す"
+          title="メモを外す"
+          data-action="optional-fields#remove"
+          hidden=""
+          class="ply-button remove"
+          type="button"
+          data-variant="link"
+          data-size="default"
+        >
+          <svg
+            class="ply-icon"
+            viewBox="0 0 256 256"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="/assets/ply-icons.svg#ply-x"></use>
+          </svg>
+        </button>
+      </fieldset>
+      <fieldset
         class="field"
         id="event-repeat-slot"
-        hidden=""
+        data-open="false"
         data-optional-fields-target="field"
       >
         <div class="ply-field">
           <div class="heading"><label for="event-repeat">繰り返し</label></div>
           <input id="event-repeat" name="event-repeat" class="ply-input" />
         </div>
-      </div>
+        <button
+          data-icon-only="true"
+          aria-label="繰り返しを外す"
+          title="繰り返しを外す"
+          data-action="optional-fields#remove"
+          hidden=""
+          class="ply-button remove"
+          type="button"
+          data-variant="link"
+          data-size="default"
+        >
+          <svg
+            class="ply-icon"
+            viewBox="0 0 256 256"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="/assets/ply-icons.svg#ply-x"></use>
+          </svg>
+        </button>
+      </fieldset>
     </div>
     <div class="chips" role="group" aria-label="予定に足す項目">
       <button
         aria-controls="event-link-slot"
         aria-expanded="false"
+        hidden=""
         data-action="optional-fields#add"
         class="ply-button chip"
         type="button"
@@ -287,6 +395,7 @@ export default () => (
       ><button
         aria-controls="event-place-slot"
         aria-expanded="false"
+        hidden=""
         data-action="optional-fields#add"
         class="ply-button chip"
         type="button"
@@ -305,6 +414,7 @@ export default () => (
       ><button
         aria-controls="event-people-slot"
         aria-expanded="false"
+        hidden=""
         data-action="optional-fields#add"
         class="ply-button chip"
         type="button"
@@ -323,6 +433,7 @@ export default () => (
       ><button
         aria-controls="event-note-slot"
         aria-expanded="false"
+        hidden=""
         data-action="optional-fields#add"
         class="ply-button chip"
         type="button"
@@ -341,6 +452,7 @@ export default () => (
       ><button
         aria-controls="event-repeat-slot"
         aria-expanded="false"
+        hidden=""
         data-action="optional-fields#add"
         class="ply-button chip"
         type="button"
@@ -380,55 +492,140 @@ export default () => (
           data-layout="stack"
         >
           <div class="fields">
-            <div
+            <fieldset
               class="field"
               id="q-has-slot"
-              hidden=""
+              data-open="false"
               data-optional-fields-target="field"
             >
               <div class="ply-field">
                 <div class="heading"><label for="q-has">添付の種類</label></div>
                 <input id="q-has" name="q-has" class="ply-input" />
               </div>
-            </div>
-            <div
+              <button
+                data-icon-only="true"
+                aria-label="添付があるを外す"
+                title="添付があるを外す"
+                data-action="optional-fields#remove"
+                hidden=""
+                class="ply-button remove"
+                type="button"
+                data-variant="link"
+                data-size="default"
+              >
+                <svg
+                  class="ply-icon"
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <use href="/assets/ply-icons.svg#ply-x"></use>
+                </svg>
+              </button>
+            </fieldset>
+            <fieldset
               class="field"
               id="q-words-slot"
-              hidden=""
+              data-open="false"
               data-optional-fields-target="field"
             >
               <div class="ply-field">
                 <div class="heading"><label for="q-words">含む語</label></div>
                 <input id="q-words" name="q-words" class="ply-input" />
               </div>
-            </div>
-            <div
+              <button
+                data-icon-only="true"
+                aria-label="含む語を外す"
+                title="含む語を外す"
+                data-action="optional-fields#remove"
+                hidden=""
+                class="ply-button remove"
+                type="button"
+                data-variant="link"
+                data-size="default"
+              >
+                <svg
+                  class="ply-icon"
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <use href="/assets/ply-icons.svg#ply-x"></use>
+                </svg>
+              </button>
+            </fieldset>
+            <fieldset
               class="field"
               id="q-from-slot"
-              hidden=""
+              data-open="false"
               data-optional-fields-target="field"
             >
               <div class="ply-field">
                 <div class="heading"><label for="q-from">差出人</label></div>
                 <input id="q-from" name="q-from" class="ply-input" />
               </div>
-            </div>
-            <div
+              <button
+                data-icon-only="true"
+                aria-label="差出人を外す"
+                title="差出人を外す"
+                data-action="optional-fields#remove"
+                hidden=""
+                class="ply-button remove"
+                type="button"
+                data-variant="link"
+                data-size="default"
+              >
+                <svg
+                  class="ply-icon"
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <use href="/assets/ply-icons.svg#ply-x"></use>
+                </svg>
+              </button>
+            </fieldset>
+            <fieldset
               class="field"
               id="q-date-slot"
-              hidden=""
+              data-open="false"
               data-optional-fields-target="field"
             >
               <div class="ply-field">
                 <div class="heading"><label for="q-date">期間</label></div>
                 <input id="q-date" name="q-date" class="ply-input" />
               </div>
-            </div>
+              <button
+                data-icon-only="true"
+                aria-label="期間を外す"
+                title="期間を外す"
+                data-action="optional-fields#remove"
+                hidden=""
+                class="ply-button remove"
+                type="button"
+                data-variant="link"
+                data-size="default"
+              >
+                <svg
+                  class="ply-icon"
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <use href="/assets/ply-icons.svg#ply-x"></use>
+                </svg>
+              </button>
+            </fieldset>
           </div>
           <div class="chips" role="group" aria-label="検索の条件">
             <button
               aria-controls="q-has-slot"
               aria-expanded="false"
+              hidden=""
               data-action="optional-fields#add"
               class="ply-button chip"
               type="button"
@@ -447,6 +644,7 @@ export default () => (
             ><button
               aria-controls="q-words-slot"
               aria-expanded="false"
+              hidden=""
               data-action="optional-fields#add"
               class="ply-button chip"
               type="button"
@@ -465,6 +663,7 @@ export default () => (
             ><button
               aria-controls="q-from-slot"
               aria-expanded="false"
+              hidden=""
               data-action="optional-fields#add"
               class="ply-button chip"
               type="button"
@@ -483,6 +682,7 @@ export default () => (
             ><button
               aria-controls="q-date-slot"
               aria-expanded="false"
+              hidden=""
               data-action="optional-fields#add"
               class="ply-button chip"
               type="button"
@@ -525,16 +725,42 @@ export default () => (
           data-layout="inline"
         >
           <div class="fields">
-            <div class="field" id="open-place-slot" data-optional-fields-target="field">
+            <fieldset
+              class="field"
+              id="open-place-slot"
+              data-open="true"
+              data-optional-fields-target="field"
+            >
               <div class="ply-field">
                 <div class="heading"><label for="open-place">場所</label></div>
                 <input id="open-place" name="open-place" class="ply-input" />
               </div>
-            </div>
-            <div
+              <button
+                data-icon-only="true"
+                aria-label="場所を外す"
+                title="場所を外す"
+                data-action="optional-fields#remove"
+                hidden=""
+                class="ply-button remove"
+                type="button"
+                data-variant="link"
+                data-size="default"
+              >
+                <svg
+                  class="ply-icon"
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <use href="/assets/ply-icons.svg#ply-x"></use>
+                </svg>
+              </button>
+            </fieldset>
+            <fieldset
               class="field"
               id="open-note-slot"
-              hidden=""
+              data-open="false"
               data-optional-fields-target="field"
             >
               <div class="ply-field">
@@ -546,13 +772,34 @@ export default () => (
                   class="ply-input"
                 ></textarea>
               </div>
-            </div>
+              <button
+                data-icon-only="true"
+                aria-label="メモを外す"
+                title="メモを外す"
+                data-action="optional-fields#remove"
+                hidden=""
+                class="ply-button remove"
+                type="button"
+                data-variant="link"
+                data-size="default"
+              >
+                <svg
+                  class="ply-icon"
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <use href="/assets/ply-icons.svg#ply-x"></use>
+                </svg>
+              </button>
+            </fieldset>
           </div>
           <div class="chips" role="group" aria-label="予定に足す項目">
             <button
-              hidden=""
               aria-controls="open-place-slot"
-              aria-expanded="false"
+              aria-expanded="true"
+              hidden=""
               data-action="optional-fields#add"
               class="ply-button chip"
               type="button"
@@ -571,6 +818,7 @@ export default () => (
             ><button
               aria-controls="open-note-slot"
               aria-expanded="false"
+              hidden=""
               data-action="optional-fields#add"
               class="ply-button chip"
               type="button"
@@ -612,22 +860,44 @@ export default () => (
             data-layout="inline"
           >
             <div class="fields">
-              <div
+              <fieldset
                 class="field"
                 id="rtl-place-slot"
-                hidden=""
+                data-open="false"
                 data-optional-fields-target="field"
               >
                 <div class="ply-field">
                   <div class="heading"><label for="rtl-place">المكان</label></div>
                   <input id="rtl-place" name="rtl-place" class="ply-input" />
                 </div>
-              </div>
+                <button
+                  data-icon-only="true"
+                  aria-label="المكانを外す"
+                  title="المكانを外す"
+                  data-action="optional-fields#remove"
+                  hidden=""
+                  class="ply-button remove"
+                  type="button"
+                  data-variant="link"
+                  data-size="default"
+                >
+                  <svg
+                    class="ply-icon"
+                    viewBox="0 0 256 256"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <use href="/assets/ply-icons.svg#ply-x"></use>
+                  </svg>
+                </button>
+              </fieldset>
             </div>
             <div class="chips" role="group" aria-label="إضافة">
               <button
                 aria-controls="rtl-place-slot"
                 aria-expanded="false"
+                hidden=""
                 data-action="optional-fields#add"
                 class="ply-button chip"
                 type="button"

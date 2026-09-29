@@ -27,6 +27,8 @@ export class TableController extends Controller<HTMLElement> {
   private forms = new Set<HTMLFormElement>();
   private resetTask: number | undefined;
   connect = () => {
+    // JavaScriptがない時は表の下に置いている選択の棚を、接続したら浮かぶ板（popover）にする。
+    this.bar()?.setAttribute("popover", "manual");
     this.element.addEventListener("click", this.click);
     this.element.addEventListener("change", this.nativeChange);
     this.element.addEventListener("table-sort:beforesort", this.beforeSort);
@@ -46,8 +48,12 @@ export class TableController extends Controller<HTMLElement> {
     this.forms.clear();
     this.observer?.disconnect();
     window.clearTimeout(this.resetTask);
+    const bar = this.bar();
+    if (bar?.matches(":popover-open")) bar.hidePopover();
+    bar?.removeAttribute("popover");
   };
   private table = () => this.element.querySelector<HTMLTableElement>(":scope > table");
+  private bar = () => this.element.querySelector<HTMLElement>(":scope > .selection-bar");
   private own = (element: Element) => element.closest(".ply-table") === this.element;
   private rows = () =>
     Array.from(this.element.querySelectorAll<HTMLTableRowElement>(":scope > table > tbody > tr"));
@@ -87,8 +93,8 @@ export class TableController extends Controller<HTMLElement> {
       const row = input.closest("tr");
       if (row) row.dataset.selected = String(input.checked);
     }
-    const bar = this.element.querySelector<HTMLElement>(":scope > .selection-bar");
-    if (bar) {
+    const bar = this.bar();
+    if (bar?.hasAttribute("popover")) {
       // 帯は浮かぶ板（popover）。選んでいる間だけ出し、表は動かさない。
       const open = bar.matches(":popover-open");
       if (selected.length > 0 && !open) bar.showPopover();

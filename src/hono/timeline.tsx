@@ -55,7 +55,7 @@ export const Timeline = ({
     {items.map((item) => (
       <>
         {item.day && (
-          <li class="day" role="none">
+          <li class="day">
             <Divider label={item.day} />
           </li>
         )}

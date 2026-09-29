@@ -27,7 +27,7 @@
 ## アクセシビリティ
 
 - リンクは `a`、操作は `button` なので、標準のキー操作で押せます。`current` のリンクは `aria-current="page"` を持ちます。
-- `disabled` のリンクは `role="link"`・`aria-disabled="true"` の `span` になり、フォーカスできません。
+- `disabled` のリンクは `role="link"`・`aria-disabled="true"` の `span` になり、フォーカスできません。リンクだけの属性（`target`・`rel` など）と `tabindex` は外し、`aria-description` などほかの属性は保ちます。
 - `shortcut` の表記は読み上げから外します（`aria-hidden`）。`badge` の文字は名前の前に続けて読み上げます。
 - 強制カラーモードでは、タイルに枠を引きます。
 
@@ -37,17 +37,17 @@
 
 塗りつぶしの印を上・名前を下に置いた、格子に並べる入口や操作のタイル。 CommandMenuの入口やTableの一括操作に使う。hrefを渡すと移動のリンク、渡さなければボタンになる。
 
-| 名前               | 型         | 既定値 | 説明                                                                                                  |
-| ------------------ | ---------- | ------ | ----------------------------------------------------------------------------------------------------- |
-| `label`（必須）    | `string`   |        | 名前。印の下に置き、長い時は文節の切れ目で折り返す。                                                  |
-| `icon`（必須）     | `IconName` |        | 塗りつぶしで上に置く印。                                                                              |
-| `accent`           | `Accent`   |        | 印の色。既定は青。                                                                                    |
-| `disabled`         | `boolean`  |        | 使えない状態にする。リンクは`href`を外して移動しない印（`aria-disabled`）にし、ボタンは押せなくする。 |
-| `class`            | `string`   |        | ルートに足すクラス。`ply-action-tile`は常に付く。                                                     |
-| `shortcut`         | `string`   |        | 表示用のキーの印。Keycapの小さい形で、印の終わりの側の上に添える。登録は利用側で行う。                |
-| `badge`            | `string`   |        | 状態の札（「下書き」など）。Badgeの小さい形で、印の上に重ねる。                                       |
-| `href`（形による） | `string`   |        | 移動先。渡すとリンクになり、渡さなければ`type="button"`のボタンになる。                               |
-| `current`          | `boolean`  |        | 今いる場所の入口として`aria-current="page"`を付ける。                                                 |
+| 名前               | 型         | 既定値 | 説明                                                                                                                                                                                                            |
+| ------------------ | ---------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`（必須）    | `string`   |        | 名前。印の下に置き、長い時は文節の切れ目で折り返す。                                                                                                                                                            |
+| `icon`（必須）     | `IconName` |        | 塗りつぶしで上に置く印。                                                                                                                                                                                        |
+| `accent`           | `Accent`   |        | 印の色。既定は青。                                                                                                                                                                                              |
+| `disabled`         | `boolean`  |        | 使えない状態にする。リンクは`href`を外して移動しない印（`aria-disabled`）にし、ボタンは押せなくする。移動しない印はTabで止まらず、リンクだけの属性（`target`・`rel`など）と`tabindex`を外し、ほかの属性は保つ。 |
+| `class`            | `string`   |        | ルートに足すクラス。`ply-action-tile`は常に付く。                                                                                                                                                               |
+| `shortcut`         | `string`   |        | 表示用のキーの印。Keycapの小さい形で、印の終わりの側の上に添える。登録は利用側で行う。                                                                                                                          |
+| `badge`            | `string`   |        | 状態の札（「下書き」など）。Badgeの小さい形で、印の上に重ねる。                                                                                                                                                 |
+| `href`（形による） | `string`   |        | 移動先。渡すとリンクになり、渡さなければ`type="button"`のボタンになる。                                                                                                                                         |
+| `current`          | `boolean`  |        | 今いる場所の入口として`aria-current="page"`を付ける。                                                                                                                                                           |
 
 読み込むCSS：`layers.css`、`reset.css`、`tokens.css`、`base.css`、`layout.css`、`components/badge.css`、`components/action-tile.css`、`components/icon.css`、`components/keycap.css`
 

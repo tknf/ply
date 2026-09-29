@@ -18,12 +18,12 @@ export default {
     "選択は `selectable` で有効にします。`TableSelection` はチェックボックスを出力し、`rowId` を渡すと行の選択、省略すると表の全ての行の選択になります。全選択は一部だけ選ばれている時に中間の状態を示し、使えない（`disabled`）行は全選択と範囲選択から外します。フォームで送る行の `TableSelection` には `name`・`value`（必要なら `form`）を渡します。フォームのリセットでは選択の表示も戻します。",
     "行を選ぶと、`ActionDock` と同じ棚が画面の下の中央に浮かんで現れます。始まりに「N件選択」、続けて `selectionActions` の一括操作を横一列に並べ（`ActionTile` は面を持たない平らなタイル、`Button` もそのまま同じ列に置きます）、入らない時は操作の列だけを横にスクロールします。棚の角の×（「選択を解除」）は全ての選択を外し、フォーカスを全選択のチェックボックスへ戻します。棚は画面の上に浮かぶだけで、表は動きません。閉じる間も件数と並びは変わりません。",
     "`state` は `ready`・`loading`・`empty`・`error` です。`ready` 以外では `thead` を保ったまま本文の行を隠し、状態の文（または `stateContent`）を出します。この間は並べ替えのボタンを押せず、選択も付けません。",
-    "`sort` か `selectable` を使う時は、`TableController` を `table`、`TableSortController` を `table-sort`、`TableSelectController` を `table-select` として三つとも登録します。JavaScriptなしでは、並べ替えのボタンは押せないまま表示し、チェックボックスは通常のフォームの値として送れますが、選択の棚と一括操作は出ません。行のデータ・並べ替えの保存・一括操作の実行は利用側が持ちます。",
+    "`sort` か `selectable` を使う時は、`TableController` を `table`、`TableSortController` を `table-sort`、`TableSelectController` を `table-select` として三つとも登録します。JavaScriptなしでは、並べ替えのボタンは押せないまま表示し、チェックボックスは通常のフォームの値として送れます。選択の棚は浮かべずに表の下へ置き、件数と×を除いた `selectionActions` を常に出すので、行のチェックと同じformの送信ボタンを渡すと選んだ行を送れます。行のデータ・並べ替えの保存・一括操作の実行は利用側が持ちます。",
   ],
   keyboard: [
     [
       "Tab",
-      "表の囲みへ移り、見出しのボタン・リンク・チェックボックスを順に移動します。囲みにフォーカスがある時は矢印キーで表をスクロールできます。",
+      "表の囲みへ移り、見出しのボタン・リンク・チェックボックスを順に移動します。行を選んでいる時は、表の後に選択の棚の操作へ進みます。囲みにフォーカスがある時は矢印キーで表をスクロールできます。",
     ],
     [
       "Enter / Space（見出し）",
@@ -39,7 +39,7 @@ export default {
     '表の囲みは `role="region"` で、`caption` を名前に持ち、Tabで止まってキーボードでスクロールできます。',
     '並べ替えている列の `th` には `aria-sort`（`ascending`・`descending`・`none`）を付けます。`local` で並べ替えると、「記事名を昇順に並べました。」のような文を読み上げ用の `role="status"` で知らせます。',
     "`TableSelection` の `label` はチェックボックスの `aria-label` になります。どの行か分かる名前（「〇〇を選択」）を付けてください。",
-    '選択の棚は `role="group"`（「選択した行の操作」）で、件数は `aria-live="polite"` で知らせます。棚は DOM では表より前にあるので、Tabの順では表の前に来ます。',
+    '選択の棚は `role="group"`（「選択した行の操作」）で、件数は `aria-live="polite"` で知らせます。棚はDOMでは表の後にあるので、行を選んだ後はTabで表の後の一括操作へ進めます。',
     '状態の文は `role="status"` で、`loading` では表に `aria-busy="true"` を付けます。',
   ],
   events: [

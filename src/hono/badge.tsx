@@ -11,6 +11,7 @@ export type BadgeProps = PropsWithChildren<
     size?: "default" | "small";
   }
 >;
+/** 短い状態を文言と色の役割で示す。役割の無いspanなので、意味はaria-labelではなく文言か隣の文で伝える。 */
 export const Badge = ({
   children,
   tone = "neutral",

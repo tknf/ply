@@ -20,6 +20,7 @@ export default () => (
       max={10000}
       step={500}
       value={[1000, 5000]}
+      unit="円"
     />
     <Disclosure summary="最小・最大・小数・利用不可">
       <div class="ply-stack">

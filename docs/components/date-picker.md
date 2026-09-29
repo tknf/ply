@@ -1738,19 +1738,19 @@ export default () => (
     <div class="body">
       <div class="ply-stack">
         <fieldset
-          id="ply-date-picker-:r1h:"
+          id="ply-date-picker-:r1j:"
           class="ply-date-picker"
           data-controller="date-picker"
           data-enhancement="pending"
           data-date-picker-choice-value="single"
           data-date-picker-mode-value="single"
         >
-          <legend id="ply-date-picker-:r1h:-label" class="label">未入力の日付</legend>
+          <legend id="ply-date-picker-:r1j:-label" class="label">未入力の日付</legend>
           <div class="control" data-date-picker-target="control">
             <input
-              id="ply-date-picker-:r1h:-input"
+              id="ply-date-picker-:r1j:-input"
               value=""
-              aria-labelledby="ply-date-picker-:r1h:-label"
+              aria-labelledby="ply-date-picker-:r1j:-label"
               placeholder="日付を選択"
               autocomplete="off"
               spellcheck="false"
@@ -1760,7 +1760,7 @@ export default () => (
             /><button
               class="toggle"
               type="button"
-              popovertarget="ply-date-picker-:r1h:-calendar"
+              popovertarget="ply-date-picker-:r1j:-calendar"
               aria-label="未入力の日付のカレンダーを開く"
               aria-haspopup="dialog"
               data-date-picker-target="trigger"
@@ -1779,10 +1779,10 @@ export default () => (
           <div class="fallback" data-date-picker-target="fallback">
             <div class="ply-field">
               <div class="heading">
-                <label for="ply-date-picker-:r1h:-start">未入力の日付</label>
+                <label for="ply-date-picker-:r1j:-start">未入力の日付</label>
               </div>
               <input
-                id="ply-date-picker-:r1h:-start"
+                id="ply-date-picker-:r1j:-start"
                 type="date"
                 name="empty_date"
                 value=""
@@ -1793,10 +1793,10 @@ export default () => (
             <div hidden="">
               <div class="ply-field">
                 <div class="heading">
-                  <label for="ply-date-picker-:r1h:-end">終了日</label>
+                  <label for="ply-date-picker-:r1j:-end">終了日</label>
                 </div>
                 <input
-                  id="ply-date-picker-:r1h:-end"
+                  id="ply-date-picker-:r1j:-end"
                   type="date"
                   value=""
                   disabled=""
@@ -1810,7 +1810,7 @@ export default () => (
           <div class="messages">
             <p
               class="error"
-              id="ply-date-picker-:r1h:-error"
+              id="ply-date-picker-:r1j:-error"
               data-date-picker-target="error"
               hidden=""
             >
@@ -1826,7 +1826,7 @@ export default () => (
             </p>
           </div>
           <div
-            id="ply-date-picker-:r1h:-calendar"
+            id="ply-date-picker-:r1j:-calendar"
             class="panel"
             popover="auto"
             role="dialog"
@@ -1855,7 +1855,7 @@ export default () => (
               />
             </div>
             <p
-              id="ply-date-picker-:r1h:-editor-error"
+              id="ply-date-picker-:r1j:-editor-error"
               class="editor-error"
               data-date-picker-target="editorError"
               role="status"
@@ -1863,7 +1863,7 @@ export default () => (
             ></p>
             <div class="month">
               <strong
-                id="ply-date-picker-:r1h:-month"
+                id="ply-date-picker-:r1j:-month"
                 data-date-picker-target="month"
                 aria-live="polite"
               ></strong
@@ -1914,7 +1914,7 @@ export default () => (
             <table
               class="grid"
               role="grid"
-              aria-labelledby="ply-date-picker-:r1h:-month"
+              aria-labelledby="ply-date-picker-:r1j:-month"
             >
               <thead>
                 <tr>
@@ -1941,19 +1941,19 @@ export default () => (
           </div>
         </fieldset>
         <fieldset
-          id="ply-date-picker-:r1i:"
+          id="ply-date-picker-:r1k:"
           class="ply-date-picker"
           data-controller="date-picker"
           data-enhancement="pending"
           data-date-picker-choice-value="range"
           data-date-picker-mode-value="range"
         >
-          <legend id="ply-date-picker-:r1i:-label" class="label">未入力の期間</legend>
+          <legend id="ply-date-picker-:r1k:-label" class="label">未入力の期間</legend>
           <div class="control" data-date-picker-target="control">
             <input
-              id="ply-date-picker-:r1i:-input"
+              id="ply-date-picker-:r1k:-input"
               value=""
-              aria-labelledby="ply-date-picker-:r1i:-label"
+              aria-labelledby="ply-date-picker-:r1k:-label"
               placeholder="期間を選択"
               autocomplete="off"
               spellcheck="false"
@@ -1963,7 +1963,7 @@ export default () => (
             /><button
               class="toggle"
               type="button"
-              popovertarget="ply-date-picker-:r1i:-calendar"
+              popovertarget="ply-date-picker-:r1k:-calendar"
               aria-label="未入力の期間のカレンダーを開く"
               aria-haspopup="dialog"
               data-date-picker-target="trigger"
@@ -1982,10 +1982,10 @@ export default () => (
           <div class="fallback" data-date-picker-target="fallback">
             <div class="ply-field">
               <div class="heading">
-                <label for="ply-date-picker-:r1i:-start">開始日</label>
+                <label for="ply-date-picker-:r1k:-start">開始日</label>
               </div>
               <input
-                id="ply-date-picker-:r1i:-start"
+                id="ply-date-picker-:r1k:-start"
                 type="date"
                 name="empty_start"
                 value=""
@@ -1996,10 +1996,10 @@ export default () => (
             <div>
               <div class="ply-field">
                 <div class="heading">
-                  <label for="ply-date-picker-:r1i:-end">終了日</label>
+                  <label for="ply-date-picker-:r1k:-end">終了日</label>
                 </div>
                 <input
-                  id="ply-date-picker-:r1i:-end"
+                  id="ply-date-picker-:r1k:-end"
                   type="date"
                   name="empty_end"
                   value=""
@@ -2013,7 +2013,7 @@ export default () => (
           <div class="messages">
             <p
               class="error"
-              id="ply-date-picker-:r1i:-error"
+              id="ply-date-picker-:r1k:-error"
               data-date-picker-target="error"
               hidden=""
             >
@@ -2029,7 +2029,7 @@ export default () => (
             </p>
           </div>
           <div
-            id="ply-date-picker-:r1i:-calendar"
+            id="ply-date-picker-:r1k:-calendar"
             class="panel"
             popover="auto"
             role="dialog"
@@ -2057,7 +2057,7 @@ export default () => (
               />
             </div>
             <p
-              id="ply-date-picker-:r1i:-editor-error"
+              id="ply-date-picker-:r1k:-editor-error"
               class="editor-error"
               data-date-picker-target="editorError"
               role="status"
@@ -2065,7 +2065,7 @@ export default () => (
             ></p>
             <div class="month">
               <strong
-                id="ply-date-picker-:r1i:-month"
+                id="ply-date-picker-:r1k:-month"
                 data-date-picker-target="month"
                 aria-live="polite"
               ></strong
@@ -2116,7 +2116,7 @@ export default () => (
             <table
               class="grid"
               role="grid"
-              aria-labelledby="ply-date-picker-:r1i:-month"
+              aria-labelledby="ply-date-picker-:r1k:-month"
             >
               <thead>
                 <tr>
@@ -2566,19 +2566,19 @@ export default () => (
         </fieldset>
         <fieldset
           disabled=""
-          id="ply-date-picker-:r1m:"
+          id="ply-date-picker-:r1o:"
           class="ply-date-picker"
           data-controller="date-picker"
           data-enhancement="pending"
           data-date-picker-choice-value="single"
           data-date-picker-mode-value="single"
         >
-          <legend id="ply-date-picker-:r1m:-label" class="label">利用不可の日付</legend>
+          <legend id="ply-date-picker-:r1o:-label" class="label">利用不可の日付</legend>
           <div class="control" data-date-picker-target="control">
             <input
-              id="ply-date-picker-:r1m:-input"
+              id="ply-date-picker-:r1o:-input"
               value="2026/09/12"
-              aria-labelledby="ply-date-picker-:r1m:-label"
+              aria-labelledby="ply-date-picker-:r1o:-label"
               placeholder="日付を選択"
               autocomplete="off"
               spellcheck="false"
@@ -2588,7 +2588,7 @@ export default () => (
             /><button
               class="toggle"
               type="button"
-              popovertarget="ply-date-picker-:r1m:-calendar"
+              popovertarget="ply-date-picker-:r1o:-calendar"
               aria-label="利用不可の日付のカレンダーを開く"
               aria-haspopup="dialog"
               disabled=""
@@ -2608,10 +2608,10 @@ export default () => (
           <div class="fallback" data-date-picker-target="fallback">
             <div class="ply-field">
               <div class="heading">
-                <label for="ply-date-picker-:r1m:-start">利用不可の日付</label>
+                <label for="ply-date-picker-:r1o:-start">利用不可の日付</label>
               </div>
               <input
-                id="ply-date-picker-:r1m:-start"
+                id="ply-date-picker-:r1o:-start"
                 type="date"
                 name="disabled_date"
                 value="2026-09-12"
@@ -2622,10 +2622,10 @@ export default () => (
             <div hidden="">
               <div class="ply-field">
                 <div class="heading">
-                  <label for="ply-date-picker-:r1m:-end">終了日</label>
+                  <label for="ply-date-picker-:r1o:-end">終了日</label>
                 </div>
                 <input
-                  id="ply-date-picker-:r1m:-end"
+                  id="ply-date-picker-:r1o:-end"
                   type="date"
                   value=""
                   disabled=""
@@ -2639,7 +2639,7 @@ export default () => (
           <div class="messages">
             <p
               class="error"
-              id="ply-date-picker-:r1m:-error"
+              id="ply-date-picker-:r1o:-error"
               data-date-picker-target="error"
               hidden=""
             >
@@ -2655,7 +2655,7 @@ export default () => (
             </p>
           </div>
           <div
-            id="ply-date-picker-:r1m:-calendar"
+            id="ply-date-picker-:r1o:-calendar"
             class="panel"
             popover="auto"
             role="dialog"
@@ -2684,7 +2684,7 @@ export default () => (
               />
             </div>
             <p
-              id="ply-date-picker-:r1m:-editor-error"
+              id="ply-date-picker-:r1o:-editor-error"
               class="editor-error"
               data-date-picker-target="editorError"
               role="status"
@@ -2692,7 +2692,7 @@ export default () => (
             ></p>
             <div class="month">
               <strong
-                id="ply-date-picker-:r1m:-month"
+                id="ply-date-picker-:r1o:-month"
                 data-date-picker-target="month"
                 aria-live="polite"
               ></strong
@@ -2743,7 +2743,7 @@ export default () => (
             <table
               class="grid"
               role="grid"
-              aria-labelledby="ply-date-picker-:r1m:-month"
+              aria-labelledby="ply-date-picker-:r1o:-month"
             >
               <thead>
                 <tr>
@@ -2770,21 +2770,21 @@ export default () => (
           </div>
         </fieldset>
         <fieldset
-          id="ply-date-picker-:r1n:"
+          id="ply-date-picker-:r1p:"
           class="ply-date-picker"
           data-controller="date-picker"
           data-enhancement="pending"
           data-date-picker-choice-value="single"
           data-date-picker-mode-value="single"
         >
-          <legend id="ply-date-picker-:r1n:-label" class="label">
+          <legend id="ply-date-picker-:r1p:-label" class="label">
             読み取り専用の日付
           </legend>
           <div class="control" data-date-picker-target="control">
             <input
-              id="ply-date-picker-:r1n:-input"
+              id="ply-date-picker-:r1p:-input"
               value="2026/09/12"
-              aria-labelledby="ply-date-picker-:r1n:-label"
+              aria-labelledby="ply-date-picker-:r1p:-label"
               readonly=""
               placeholder="日付を選択"
               autocomplete="off"
@@ -2795,7 +2795,7 @@ export default () => (
             /><button
               class="toggle"
               type="button"
-              popovertarget="ply-date-picker-:r1n:-calendar"
+              popovertarget="ply-date-picker-:r1p:-calendar"
               aria-label="読み取り専用の日付のカレンダーを開く"
               aria-haspopup="dialog"
               disabled=""
@@ -2815,10 +2815,10 @@ export default () => (
           <div class="fallback" data-date-picker-target="fallback">
             <div class="ply-field">
               <div class="heading">
-                <label for="ply-date-picker-:r1n:-start">読み取り専用の日付</label>
+                <label for="ply-date-picker-:r1p:-start">読み取り専用の日付</label>
               </div>
               <input
-                id="ply-date-picker-:r1n:-start"
+                id="ply-date-picker-:r1p:-start"
                 type="date"
                 name="readonly_date"
                 value="2026-09-12"
@@ -2830,10 +2830,10 @@ export default () => (
             <div hidden="">
               <div class="ply-field">
                 <div class="heading">
-                  <label for="ply-date-picker-:r1n:-end">終了日</label>
+                  <label for="ply-date-picker-:r1p:-end">終了日</label>
                 </div>
                 <input
-                  id="ply-date-picker-:r1n:-end"
+                  id="ply-date-picker-:r1p:-end"
                   type="date"
                   value=""
                   readonly=""
@@ -2848,7 +2848,7 @@ export default () => (
           <div class="messages">
             <p
               class="error"
-              id="ply-date-picker-:r1n:-error"
+              id="ply-date-picker-:r1p:-error"
               data-date-picker-target="error"
               hidden=""
             >
@@ -2864,7 +2864,7 @@ export default () => (
             </p>
           </div>
           <div
-            id="ply-date-picker-:r1n:-calendar"
+            id="ply-date-picker-:r1p:-calendar"
             class="panel"
             popover="auto"
             role="dialog"
@@ -2893,7 +2893,7 @@ export default () => (
               />
             </div>
             <p
-              id="ply-date-picker-:r1n:-editor-error"
+              id="ply-date-picker-:r1p:-editor-error"
               class="editor-error"
               data-date-picker-target="editorError"
               role="status"
@@ -2901,7 +2901,7 @@ export default () => (
             ></p>
             <div class="month">
               <strong
-                id="ply-date-picker-:r1n:-month"
+                id="ply-date-picker-:r1p:-month"
                 data-date-picker-target="month"
                 aria-live="polite"
               ></strong
@@ -2952,7 +2952,7 @@ export default () => (
             <table
               class="grid"
               role="grid"
-              aria-labelledby="ply-date-picker-:r1n:-month"
+              aria-labelledby="ply-date-picker-:r1p:-month"
             >
               <thead>
                 <tr>

@@ -17,7 +17,9 @@
 
 選び直しは置き換えで、前に選んだファイルに足しません。`multiple` の無い欄に複数のファイルをドロップすると受け付けず、「一度に選択できるのは1ファイルです。」と知らせます。
 
-`accept` は選択ダイアログの絞り込みで、ドロップしたファイルは絞りません。形式・容量の確かめと、アップロード・保存は送信先で行います。この部品は送信先や保存先を持ちません。
+`accept` は選択ダイアログと同じく、ドロップにも当てはめます。`accept` に当てはまらないファイルを含むドロップは受け付けず、「選択できない形式のファイルが含まれています。」と知らせます。拡張子（`.pdf`）・種類（`image/*`）・MIME（`application/pdf`）の書き方を、大文字と小文字を区別せずに比べます。
+
+`accept` は選ぶ時の手がかりで、送られるファイルの保証ではありません（選択ダイアログでは全てのファイルを選べることがあります）。形式・容量の確かめと、アップロード・保存は送信先で行います。この部品は送信先や保存先を持ちません。
 
 変更の知らせ：選択・ドロップ・解除のどれでも、入力に標準の `input`・`change` を発火します。ドロップは取り消せる `file-drop:beforedrop` と、その後の `file-drop:drop` でも知らせます。フォームのリセットでは一覧も空に戻します。
 
@@ -31,10 +33,10 @@ JavaScriptが無い時は、標準のファイル選択をそのまま表示し�
 
 ## イベント
 
-| イベント               | 内容                                                                                                                    |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `file-drop:beforedrop` | ドロップしたファイルを入力に入れる前に出します。取り消せます。detailは `{ files }` で、ドロップした `File` の配列です。 |
-| `file-drop:drop`       | ドロップしたファイルを入力に入れた後に出します。detailは `file-drop:beforedrop` と同じです。                            |
+| イベント               | 内容                                                                                                                                                                                               |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `file-drop:beforedrop` | ドロップしたファイルを入力に入れる前に出します。取り消せます。detailは `{ files }` で、ドロップした `File` の配列です。`accept` に当てはまらないファイルを含むドロップは、この部品が取り消します。 |
+| `file-drop:drop`       | ドロップしたファイルを入力に入れた後に出します。detailは `file-drop:beforedrop` と同じです。                                                                                                       |
 
 ## API
 
@@ -366,14 +368,14 @@ export default () => (
         </div>
         <div class="ply-field">
           <div class="heading">
-            <label for="ply-file-input-:r1v:">添付資料（エラー）</label>
+            <label for="ply-file-input-:r21:">添付資料（エラー）</label>
           </div>
           <div class="ply-file-input" data-controller="file-input">
             <input
               name="reviewed_attachment"
               accept=".pdf"
-              id="ply-file-input-:r1v:"
-              aria-describedby="ply-file-input-:r1v:-error"
+              id="ply-file-input-:r21:"
+              aria-describedby="ply-file-input-:r21:-error"
               aria-invalid="true"
               data-invalid="true"
               type="file"
@@ -394,7 +396,7 @@ export default () => (
             </p>
             <label
               class="ply-button choose"
-              for="ply-file-input-:r1v:"
+              for="ply-file-input-:r21:"
               data-variant="link"
               data-size="default"
               aria-hidden="true"
@@ -439,7 +441,7 @@ export default () => (
             <p class="status" role="status" data-file-input-target="status"></p>
           </div>
           <div class="messages">
-            <p class="error" id="ply-file-input-:r1v:-error">
+            <p class="error" id="ply-file-input-:r21:-error">
               <svg
                 class="ply-icon"
                 viewBox="0 0 256 256"
@@ -454,13 +456,13 @@ export default () => (
         </div>
         <div class="ply-field">
           <div class="heading">
-            <label for="ply-file-input-:r20:">添付資料（利用不可）</label>
+            <label for="ply-file-input-:r22:">添付資料（利用不可）</label>
           </div>
           <div class="ply-file-input" data-controller="file-input">
             <input
               name="unavailable_attachment"
               disabled=""
-              id="ply-file-input-:r20:"
+              id="ply-file-input-:r22:"
               type="file"
               data-file-input-target="input"
               class="ply-input"
@@ -479,7 +481,7 @@ export default () => (
             </p>
             <label
               class="ply-button choose"
-              for="ply-file-input-:r20:"
+              for="ply-file-input-:r22:"
               data-variant="link"
               data-size="default"
               aria-hidden="true"

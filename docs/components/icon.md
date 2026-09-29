@@ -9,6 +9,7 @@
 - 操作名や項目名の前に置き、文言を補う時に使います。印だけで意味を伝えません。
 - 縦に並ぶ一覧のように、塗った印で項目を見分ける場所では `fill` の塗りつぶしの版を使います。
 - アイコンだけのボタンは、`Button` に `aria-label` を付けて作ります。
+- `Button`・`ActionLink` の中では、`Icon` を文言の前にそのまま置きます。印と文言の間隔と縦の配置は `Button` が持つので、クラスは要りません。
 
 ## 使い方
 
@@ -83,15 +84,15 @@ export default () => (
   <div class="ply-stack">
     <div class="ply-cluster">
       <Button>
-        <Icon name="pencil" class="icon" />
+        <Icon name="pencil" />
         編集する
       </Button>
       <ActionLink href="/apps/search">
-        <Icon name="search" class="icon" />
+        <Icon name="search" />
         記事を探す
       </ActionLink>
       <Button aria-label="削除する" data-icon-only="true" variant="danger">
-        <Icon name="trash" class="icon" />
+        <Icon name="trash" />
       </Button>
     </div>
     <div class="ply-cluster">
@@ -104,11 +105,11 @@ export default () => (
     </div>
     <div class="ply-cluster">
       <Button disabled>
-        <Icon name="check" class="icon" />
+        <Icon name="check" />
         確認済み
       </Button>
       <Button size="large">
-        <Icon name="pencil" class="icon" />
+        <Icon name="pencil" />
         記事を書く
       </Button>
     </div>
@@ -160,7 +161,7 @@ export default () => (
       data-size="default"
     >
       <svg
-        class="ply-icon icon"
+        class="ply-icon"
         viewBox="0 0 256 256"
         fill="currentColor"
         aria-hidden="true"
@@ -174,7 +175,7 @@ export default () => (
       data-variant="secondary"
       data-size="default"
       ><svg
-        class="ply-icon icon"
+        class="ply-icon"
         viewBox="0 0 256 256"
         fill="currentColor"
         aria-hidden="true"
@@ -191,7 +192,7 @@ export default () => (
       data-size="default"
     >
       <svg
-        class="ply-icon icon"
+        class="ply-icon"
         viewBox="0 0 256 256"
         fill="currentColor"
         aria-hidden="true"
@@ -235,7 +236,7 @@ export default () => (
       disabled=""
     >
       <svg
-        class="ply-icon icon"
+        class="ply-icon"
         viewBox="0 0 256 256"
         fill="currentColor"
         aria-hidden="true"
@@ -250,7 +251,7 @@ export default () => (
       data-size="large"
     >
       <svg
-        class="ply-icon icon"
+        class="ply-icon"
         viewBox="0 0 256 256"
         fill="currentColor"
         aria-hidden="true"

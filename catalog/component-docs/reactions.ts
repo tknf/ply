@@ -13,7 +13,7 @@ export default {
     "`items` に反応ごとの `content`（絵文字や短い言葉）と `by`（付けた人の名前の並び）を渡します。札は `by` の人数を数として添え、指を載せると付けた人の名前を出します。自分も付けている反応は `mine` にすると、淡い青の面・青い縁・青い数にします。",
     "`add` を渡すと札が押せるボタンになります。自分の札を押すと外し、他の人の札を押すと自分も付けます。数が0になった札は消えます。付け外しで `by` に足し引きする自分の名前は `add.me` で、`mine` の反応の `by` にも同じ名前を入れておきます。",
     "`add` がある時は、札の終わりに「リアクションを追加」の操作を置きます。開く板には16文字までの言葉の欄と `EmojiPicker` があり、開くと言葉の欄へ移ります。選んだ絵文字や書いた言葉は、同じ札があればそこへ自分を加え、なければ終わりに新しい札を作ります。",
-    "`ReactionsController` を `reactions`、`EmojiPickerController` を `emoji-picker` として登録し、追加の板に使う `PopoverController`・`TooltipController` も登録します。付け外しは `reactions:toggle` で知らせるので、保存は利用側で行います。札はcontrollerがその場で書き換え、保存に失敗した時に戻す処理は含みません。",
+    "`ReactionsController` を `reactions`、`EmojiPickerController` を `emoji-picker` として登録し、追加の板に使う `PopoverController`・`TooltipController` も登録します。付け外しは `reactions:toggle` で知らせるので、保存は利用側で行います。札はcontrollerがその場で書き換えます。保存に失敗した時は、`reactions` のcontrollerの `setReaction(content, selected, name)` に `reactions:toggle` のdetailを `selected` だけ逆にして渡すと、イベントを出さずに札を元に戻します（消えた札は作り直し、足した札は消します）。保存が済むまで書き換えたくない時は `reactions:beforetoggle` を取り消し、保存できてから `setReaction` で付け外しします。",
     "`add` がない時は読むだけの札です。JavaScriptがない時は札を押しても変わりません。",
   ],
   keyboard: [
@@ -32,8 +32,12 @@ export default {
   ],
   events: [
     [
+      "reactions:beforetoggle",
+      "利用者の操作で自分の反応を付ける・外す前に知らせます。取り消せます（取り消すと札を変えません）。detailは `reactions:toggle` と同じです。",
+    ],
+    [
       "reactions:toggle",
-      "自分の反応を付けた・外した時に知らせます。detailは `content`（反応の内容）と `selected`（付けた時は `true`）です。",
+      "自分の反応を付けた・外した後に知らせます。detailは `content`（反応の内容）・`name`（読み上げの名前）・`selected`（付けた時は `true`）です。`setReaction` では知らせません。",
     ],
   ],
 } satisfies ComponentDoc;

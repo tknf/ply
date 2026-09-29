@@ -71,20 +71,20 @@
 
 選択結果はdropdown-menu:select。チェック項目はcheckedも通知する。
 
-| 名前            | 型                                           | 既定値    | 説明                                                                                                                                                      |
-| --------------- | -------------------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `disabled`      | `boolean`                                    |           | 開く操作を押せなくする。                                                                                                                                  |
-| `size`          | `"default" \| "compact" \| "large" \| "tag"` |           | 大きさ。compactは同じ高さで左右の余白を狭め、largeはフォーム末尾などの大きな操作に使う。 tagはTagの中の解除操作用で、タッチ環境でも小さな札の高さを保つ。 |
-| `variant`       | `ButtonVariant`                              |           | 見た目の役割。primaryは画面の主操作、secondaryは通常の操作、 dangerは取り返しのつかない操作、linkは文字だけの軽い操作。                                   |
-| `busy`          | `boolean`                                    |           | 処理中にする。内容をbusyLabelに置き換え、押せなくし、aria-busyを付ける。                                                                                  |
-| `id`（必須）    | `string`                                     |           | メニューのid。画面内で一意にする。開く操作は`<id>-trigger`、項目は`<id>-<番号>-item`になる。                                                              |
-| `label`（必須） | `string`                                     |           | 開く操作の文言。iconOnlyの時は`aria-label`として読み上げる。                                                                                              |
-| `items`（必須） | `readonly MenuItem[]`                        |           | メニューの項目。空ならメニューに「利用できる操作はありません」と出す。                                                                                    |
-| `action`        | `string`                                     |           | ルートの`data-action`に渡すStimulusのaction。 `dropdown-menu:select->editor#apply`のように、選択のイベントを利用側のcontrollerへつなぐ。                  |
-| `align`         | `"start" \| "end"`                           | `"start"` | メニューを開く操作のどちらの端に揃えるか。endは行の終わりの側に置いた操作に使う。                                                                         |
-| `dir`           | `"ltr" \| "rtl"`                             |           | 文字の向き。rtlでは左右の矢印キーとサブメニューの開く向きが反転する。                                                                                     |
-| `icon`          | `IconName`                                   |           | 開く操作の文言の前に置く印。                                                                                                                              |
-| `iconOnly`      | `boolean`                                    | `false`   | 開く操作を印だけの正方形にする。iconが無ければ▾だけを出す。                                                                                               |
+| 名前            | 型                                           | 既定値    | 説明                                                                                                                                                                      |
+| --------------- | -------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `disabled`      | `boolean`                                    |           | 開く操作を押せなくする。                                                                                                                                                  |
+| `size`          | `"default" \| "compact" \| "large" \| "tag"` |           | 大きさ。compactは同じ高さで左右の余白を狭め、largeはフォーム末尾などの大きな操作に使う。 tagはTagの中の解除操作用で、タッチ環境でも小さな札の高さを保つ。                 |
+| `variant`       | `ButtonVariant`                              |           | 見た目の役割。primaryは画面の主操作、secondaryは通常の操作、 dangerは取り返しのつかない操作、linkは文字だけの軽い操作。                                                   |
+| `busy`          | `boolean`                                    |           | 処理中にする。役割の色をゆっくり流して示し、押せなくし、aria-busyを付ける。内容はbusyLabelに置き換える。印だけの操作（data-icon-only="true"）は形を保つため印のまま残す。 |
+| `id`（必須）    | `string`                                     |           | メニューのid。画面内で一意にする。開く操作は`<id>-trigger`、項目は`<id>-<番号>-item`になる。                                                                              |
+| `label`（必須） | `string`                                     |           | 開く操作の文言。iconOnlyの時は`aria-label`として読み上げる。                                                                                                              |
+| `items`（必須） | `readonly MenuItem[]`                        |           | メニューの項目。空ならメニューに「利用できる操作はありません」と出す。                                                                                                    |
+| `action`        | `string`                                     |           | ルートの`data-action`に渡すStimulusのaction。 `dropdown-menu:select->editor#apply`のように、選択のイベントを利用側のcontrollerへつなぐ。                                  |
+| `align`         | `"start" \| "end"`                           | `"start"` | メニューを開く操作のどちらの端に揃えるか。endは行の終わりの側に置いた操作に使う。                                                                                         |
+| `dir`           | `"ltr" \| "rtl"`                             |           | 文字の向き。rtlでは左右の矢印キーとサブメニューの開く向きが反転する。                                                                                                     |
+| `icon`          | `IconName`                                   |           | 開く操作の文言の前に置く印。                                                                                                                                              |
+| `iconOnly`      | `boolean`                                    | `false`   | 開く操作を印だけの正方形にする。iconが無ければ▾だけを出す。                                                                                                               |
 
 登録するcontroller：`dropdown-menu`（`DropdownMenuController`）
 

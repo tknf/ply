@@ -13,7 +13,7 @@
 
 ## 使い方
 
-Toastはページに置いておき、閉じた状態（`popover="manual"`）で描きます。開くのは、`popovertarget` にToastの `id` を指したボタンか、スクリプトからの `showPopover()` です。開いてもフォーカスは移しません。`ToastController` を `toast` として登録すると、閉じるボタンと `duration` が働きます。
+Toastはページに置いておき、閉じた状態（`popover="manual"`）で描きます。開くのは、`popovertarget` にToastの `id` を指したボタンか、スクリプトからの `showPopover()` です。開いてもフォーカスは移しません。閉じるボタンも、Toastを指した `popovertarget` のボタンです。`ToastController` を `toast` として登録すると、`duration` と開閉のイベントが働きます。
 
 `tone` で知らせの種類を選び、面をその色で塗ります。印は `success` でチェック、`danger` で丸の中のバツ、他はiです。`actions` を渡すと、知らせの後に操作を置きます。
 
@@ -23,9 +23,9 @@ Toastはページに置いておき、閉じた状態（`popover="manual"`）で
 
 複数のToastは `ToastStack` で囲み、`ToastStackController` を `toast-stack` として登録します。開いた順に、新しいものを手前にして束ねます。二枚以上の時、束を押すと上へ広がり、外を押すかEscapeで畳みます。キーボードでフォーカスが束の中へ入った時も広がります。Toastの中のボタンやリンクを押しても、束は開閉しません。`placement` で置き場所を選びます。
 
-閉じるボタンで閉じた時だけ、`toast:beforehide` と `toast:hide` を知らせます。`popovertarget`・`hidePopover()`・`duration` で閉じた時は知らせません。
+Toastを指した `popovertarget` のボタン（閉じるボタンを含む）を押して開閉した時は、`Dialog` と同じく、取り消せる `toast:beforeshow`・`toast:beforehide` と、`toast:show`・`toast:hide` を知らせます。スクリプトからの `showPopover()`・`hidePopover()` と `duration` で開閉した時は知らせません。開き方に関わらず開閉を受け取る時は、標準の `toggle` を使います。
 
-JavaScriptが無い時も、`popovertarget` のボタンでToastを開閉できます。閉じるボタンと `duration`、束ねる動きは働きません。
+JavaScriptが無い時も、`popovertarget` のボタンと閉じるボタンでToastを開閉できます。`duration`、開閉のイベント、束ねる動きは働きません。
 
 ## キーボード
 
@@ -44,26 +44,28 @@ JavaScriptが無い時も、`popovertarget` のボタンでToastを開閉でき�
 
 ## イベント
 
-| イベント           | 内容                                                                                                                                                   |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `toast:beforehide` | 取り消せます。閉じるボタンで閉じる前に知らせ、`preventDefault()` で閉じません。`detail` は `{ reason }` で、`reason` は `pointer` か `keyboard` です。 |
-| `toast:hide`       | 閉じるボタンで閉じた時に知らせます。`detail` は `toast:beforehide` と同じです。                                                                        |
+| イベント           | 内容                                                                                                                                                             |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `toast:beforeshow` | 取り消せます。`popovertarget` のボタンで開く前に知らせ、`preventDefault()` で開きません。`detail` は `{ reason }` で、`reason` は `pointer` か `keyboard` です。 |
+| `toast:show`       | `popovertarget` のボタンで開いた後に知らせます。`detail` は `toast:beforeshow` と同じです。                                                                      |
+| `toast:beforehide` | 取り消せます。閉じるボタンか `popovertarget` のボタンで閉じる前に知らせ、`preventDefault()` で閉じません。`detail` は `toast:beforeshow` と同じです。            |
+| `toast:hide`       | 閉じるボタンか `popovertarget` のボタンで閉じた後に知らせます。`detail` は `toast:beforeshow` と同じです。                                                       |
 
 ## API
 
 ### Toast
 
-通知の可視性・消去時間・ライブ領域はstimulus-uiのToastControllerが管理する。
+通知の可視性・消去時間・ライブ領域はToastControllerが管理する。閉じるボタンは標準のpopovertargetで閉じるので、JavaScriptが無い時も働く。
 
-| 名前         | 型                         | 既定値     | 説明                                                                                                                      |
-| ------------ | -------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `id`（必須） | `string`                   |            | popoverのid。開く操作のpopovertargetや、showPopover()で開く時に指す。画面の中で一意にする。                               |
-| `actions`    | `Child`                    |            | 知らせの下に置く操作（「記事を確認する」「もう一度保存する」など）。                                                      |
-| `closeLabel` | `string`                   | `"閉じる"` | 閉じるボタンの読み上げ名。                                                                                                |
-| `duration`   | `number`                   | `0`        | 開いてから自動で閉じるまでのミリ秒。0は閉じるボタンを押すまで残す。フォーカスが中にある間は数えず、外へ出てから数え直す。 |
-| `live`       | `"polite" \| "assertive"`  | `"polite"` | 読み上げの急ぎ方。politeはrole="status"、assertiveはrole="alert"にする。失敗の知らせはassertiveにする。                   |
-| `tone`       | `Exclude<Tone, "neutral">` | `"info"`   | 知らせの種類。面をその役割の色で塗る。                                                                                    |
-| `children`   | `Child`                    |            | 知らせの文。印の隣に書きます。                                                                                            |
+| 名前         | 型                         | 既定値     | 説明                                                                                                                                             |
+| ------------ | -------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `id`（必須） | `string`                   |            | popoverのid。開く操作のpopovertargetや、showPopover()で開く時に指す。画面の中で一意にする。                                                      |
+| `actions`    | `Child`                    |            | 知らせの下に置く操作（「記事を確認する」「もう一度保存する」など）。                                                                             |
+| `closeLabel` | `string`                   | `"閉じる"` | 閉じるボタンの読み上げ名。                                                                                                                       |
+| `duration`   | `number`                   | `0`        | 開いてから自動で閉じるまでのミリ秒。0は閉じるボタンを押すまで残す。フォーカスが中にある間は数えず、外へ出てから数え直す。ToastControllerが要る。 |
+| `live`       | `"polite" \| "assertive"`  | `"polite"` | 読み上げの急ぎ方。politeはrole="status"、assertiveはrole="alert"にする。失敗の知らせはassertiveにする。                                          |
+| `tone`       | `Exclude<Tone, "neutral">` | `"info"`   | 知らせの種類。面をその役割の色で塗る。                                                                                                           |
+| `children`   | `Child`                    |            | 知らせの文。印の隣に書きます。                                                                                                                   |
 
 登録するcontroller：`toast`（`ToastController`）
 
@@ -242,7 +244,8 @@ export default () => (
           </div>
           <span class="close"
             ><button
-              data-toast-target="dismiss"
+              popovertarget="hono-toast"
+              popovertargetaction="hide"
               data-icon-only="true"
               aria-label="閉じる"
               class="ply-button"
@@ -300,7 +303,8 @@ export default () => (
           </div>
           <span class="close"
             ><button
-              data-toast-target="dismiss"
+              popovertarget="hono-toast-timed"
+              popovertargetaction="hide"
               data-icon-only="true"
               aria-label="閉じる"
               class="ply-button"
@@ -349,7 +353,8 @@ export default () => (
           </div>
           <span class="close"
             ><button
-              data-toast-target="dismiss"
+              popovertarget="hono-toast-short"
+              popovertargetaction="hide"
               data-icon-only="true"
               aria-label="閉じる"
               class="ply-button"
@@ -398,7 +403,8 @@ export default () => (
           </div>
           <span class="close"
             ><button
-              data-toast-target="dismiss"
+              popovertarget="hono-toast-warning"
+              popovertargetaction="hide"
               data-icon-only="true"
               aria-label="閉じる"
               class="ply-button"
@@ -447,7 +453,8 @@ export default () => (
           </div>
           <span class="close"
             ><button
-              data-toast-target="dismiss"
+              popovertarget="hono-toast-danger"
+              popovertargetaction="hide"
               data-icon-only="true"
               aria-label="閉じる"
               class="ply-button"
@@ -546,7 +553,8 @@ export default () => (
                 </div>
                 <span class="close"
                   ><button
-                    data-toast-target="dismiss"
+                    popovertarget="hono-toast-center"
+                    popovertargetaction="hide"
                     data-icon-only="true"
                     aria-label="閉じる"
                     class="ply-button"
@@ -601,7 +609,8 @@ export default () => (
                 </div>
                 <span class="close"
                   ><button
-                    data-toast-target="dismiss"
+                    popovertarget="hono-toast-start"
+                    popovertargetaction="hide"
                     data-icon-only="true"
                     aria-label="閉じる"
                     class="ply-button"
@@ -682,7 +691,8 @@ export default () => (
                   </div>
                   <span class="close"
                     ><button
-                      data-toast-target="dismiss"
+                      popovertarget="hono-toast-rtl"
+                      popovertargetaction="hide"
                       data-icon-only="true"
                       aria-label="إغلاق"
                       class="ply-button"

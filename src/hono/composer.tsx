@@ -1,6 +1,7 @@
 import type { Child } from "hono/jsx";
 import { Button } from "./button";
 import { Field, Textarea } from "./field";
+import { Icon } from "./icon";
 import { classes, type ElementProps } from "./types";
 
 export type ComposerProps = Omit<ElementProps<"form">, "children"> & {
@@ -25,7 +26,11 @@ export type ComposerProps = Omit<ElementProps<"form">, "children"> & {
   submitLabel: string;
   /** 送信中にする。送信ボタンを「送信中…」にして押せなくし、formにaria-busyを付ける。 */
   busy?: boolean;
-  /** 本文の欄の下に出す誤りの文。本文の欄をaria-invalidにする。editorを渡した時は出さない。 */
+  /**
+   * 本文の欄の下に出す誤りの文。本文の欄をaria-invalidにする。
+   * editorを渡した時も編集部品の下に出し、`<id>-body-error`のIDで編集部品を包むまとまりの説明にする。
+   * 書く場所そのもののaria-invalidとaria-describedbyは編集部品の側で付ける。
+   */
   error?: string;
   /** 本文の下に置く添付（FileInputや選んだファイルの一覧など）。 */
   attachments?: Child;
@@ -79,9 +84,23 @@ export const Composer = ({
           </span>
           {headingExtras(to, status)}
         </div>
-        <div class="editor" role="group" aria-labelledby={`${id}-body-label`}>
+        <div
+          class="editor"
+          role="group"
+          aria-labelledby={`${id}-body-label`}
+          aria-describedby={error ? `${id}-body-error` : undefined}
+          data-invalid={error ? "true" : undefined}
+        >
           {editor}
         </div>
+        {error && (
+          <div class="messages">
+            <p class="error" id={`${id}-body-error`}>
+              <Icon name="x-circle" />
+              <span>{error}</span>
+            </p>
+          </div>
+        )}
       </div>
     ) : (
       <Field id={`${id}-body`} label={label} error={error} status={headingExtras(to, status)}>

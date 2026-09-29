@@ -32,7 +32,7 @@
 - 一覧は `ol` で、`label` を読み上げ名にします。時刻は `time` 要素で `datetime` を持ちます。
 - `state` を渡すと、題名の前に「完了：」「進行中：」「予定：」を読み上げ用に添えます。`variant` に関わらず添えます。
 - 点の印は読み上げから外します。`avatar` の円は、`Avatar` の名前で読み上げます。
-- 日の区切りは `role="none"` の行に置き、出来事の数に含めません。
+- 日の区切りも一覧の行の一つで、その日の出来事の前に日の名前を読み上げます。
 
 ## API
 
@@ -193,7 +193,7 @@ export default () => (
       data-variant="activity"
       data-avatars="true"
     >
-      <li class="day" role="none">
+      <li class="day">
         <div class="ply-divider"><span>今日</span></div>
       </li>
       <li data-actor="true">
@@ -231,7 +231,7 @@ export default () => (
           <p>利用時間とキャンセル条件を追記しました。</p>
         </div>
       </li>
-      <li class="day" role="none">
+      <li class="day">
         <div class="ply-divider"><span>9月14日（月）</span></div>
       </li>
       <li data-actor="true">

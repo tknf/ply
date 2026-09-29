@@ -19,7 +19,7 @@
 
 送信する値は持ちません。枠を動かすと `image-cropper:change` で新しい範囲を知らせるので、利用側がこれを受けて隠し欄に入れるか、保存の処理へ渡します。detailの `sourceRect` は元画像の幅と高さを1とした範囲（左上が原点、書く向きによらない）で、そのまま切り抜きに使えます。切り抜いた画像の生成・保存は利用側で行います。
 
-JavaScriptが無い時は、画像と動かない枠、スライダーを表示するだけで、切り抜く範囲は変えられません。
+`ImageCropperController` が接続するまで、持ち手と調整の欄は出さず、初めの範囲で切り抜いた画像だけを見せます。JavaScriptが無い時は、この見本のままで範囲は変えられません。
 
 ## キーボード
 
@@ -308,12 +308,12 @@ export default () => (
     <div class="body">
       <div class="ply-stack">
         <div
-          id="ply-image-cropper-:r23:"
+          id="ply-image-cropper-:r25:"
           class="ply-image-cropper"
           data-empty="true"
-          aria-labelledby="ply-image-cropper-:r23:-heading"
+          aria-labelledby="ply-image-cropper-:r25:-heading"
         >
-          <h3 class="title" id="ply-image-cropper-:r23:-heading">画像なし</h3>
+          <h3 class="title" id="ply-image-cropper-:r25:-heading">画像なし</h3>
           <div class="empty">
             <figure class="ply-image-frame" data-shape="square" data-fit="contain">
               <div class="image">
@@ -324,10 +324,10 @@ export default () => (
           </div>
         </div>
         <div
-          id="ply-image-cropper-:r24:"
+          id="ply-image-cropper-:r26:"
           class="ply-image-cropper"
           role="group"
-          aria-labelledby="ply-image-cropper-:r24:-heading"
+          aria-labelledby="ply-image-cropper-:r26:-heading"
           data-controller="image-cropper"
           data-image-cropper-value-value='{"x":25,"y":25,"width":50,"height":50,"zoom":1,"offsetX":0,"offsetY":0}'
           data-image-cropper-max-zoom-value="5"
@@ -343,12 +343,12 @@ export default () => (
             --image-cropper-offset-y: 0;
           "
         >
-          <h3 class="title" id="ply-image-cropper-:r24:-heading">編集不可の表紙</h3>
+          <h3 class="title" id="ply-image-cropper-:r26:-heading">編集不可の表紙</h3>
           <div class="layout">
             <div class="stage">
               <div
                 class="viewport"
-                id="ply-image-cropper-:r24:-viewport"
+                id="ply-image-cropper-:r26:-viewport"
                 data-image-cropper-target="viewport"
               >
                 <img
@@ -360,8 +360,8 @@ export default () => (
                   data-image-cropper-target="image"
                 /><button
                   aria-label="選択範囲を移動"
-                  aria-controls="ply-image-cropper-:r24:-x ply-image-cropper-:r24:-y"
-                  aria-describedby="ply-image-cropper-:r24:-instructions"
+                  aria-controls="ply-image-cropper-:r26:-x ply-image-cropper-:r26:-y"
+                  aria-describedby="ply-image-cropper-:r26:-instructions"
                   data-image-cropper-target="selection"
                   class="ply-button selection"
                   type="button"
@@ -371,8 +371,8 @@ export default () => (
                 ></button
                 ><button
                   aria-label="選択範囲の大きさを変更"
-                  aria-controls="ply-image-cropper-:r24:-width ply-image-cropper-:r24:-height"
-                  aria-describedby="ply-image-cropper-:r24:-instructions"
+                  aria-controls="ply-image-cropper-:r26:-width ply-image-cropper-:r26:-height"
+                  aria-describedby="ply-image-cropper-:r26:-instructions"
                   data-image-cropper-target="resize"
                   class="ply-button resize"
                   type="button"
@@ -385,13 +385,13 @@ export default () => (
             <div class="settings">
               <div class="ply-range">
                 <div class="heading">
-                  <label class="label" for="ply-image-cropper-:r24:-zoom">拡大率</label>
+                  <label class="label" for="ply-image-cropper-:r26:-zoom">拡大率</label>
                 </div>
                 <div class="controls">
                   <div class="native">
                     <input
-                      id="ply-image-cropper-:r24:-zoom"
-                      aria-controls="ply-image-cropper-:r24:-viewport"
+                      id="ply-image-cropper-:r26:-zoom"
+                      aria-controls="ply-image-cropper-:r26:-viewport"
                       class="input"
                       type="range"
                       min="1"
@@ -423,15 +423,15 @@ export default () => (
                   <div class="ranges">
                     <div class="ply-range">
                       <div class="heading">
-                        <label class="label" for="ply-image-cropper-:r24:-x"
+                        <label class="label" for="ply-image-cropper-:r26:-x"
                           >横の位置</label
                         >
                       </div>
                       <div class="controls">
                         <div class="native">
                           <input
-                            id="ply-image-cropper-:r24:-x"
-                            aria-controls="ply-image-cropper-:r24:-viewport"
+                            id="ply-image-cropper-:r26:-x"
+                            aria-controls="ply-image-cropper-:r26:-viewport"
                             class="input"
                             type="range"
                             min="0"
@@ -446,15 +446,15 @@ export default () => (
                     </div>
                     <div class="ply-range">
                       <div class="heading">
-                        <label class="label" for="ply-image-cropper-:r24:-y"
+                        <label class="label" for="ply-image-cropper-:r26:-y"
                           >縦の位置</label
                         >
                       </div>
                       <div class="controls">
                         <div class="native">
                           <input
-                            id="ply-image-cropper-:r24:-y"
-                            aria-controls="ply-image-cropper-:r24:-viewport"
+                            id="ply-image-cropper-:r26:-y"
+                            aria-controls="ply-image-cropper-:r26:-viewport"
                             class="input"
                             type="range"
                             min="0"
@@ -469,15 +469,15 @@ export default () => (
                     </div>
                     <div class="ply-range">
                       <div class="heading">
-                        <label class="label" for="ply-image-cropper-:r24:-width"
+                        <label class="label" for="ply-image-cropper-:r26:-width"
                           >選択幅</label
                         >
                       </div>
                       <div class="controls">
                         <div class="native">
                           <input
-                            id="ply-image-cropper-:r24:-width"
-                            aria-controls="ply-image-cropper-:r24:-viewport"
+                            id="ply-image-cropper-:r26:-width"
+                            aria-controls="ply-image-cropper-:r26:-viewport"
                             class="input"
                             type="range"
                             min="1"
@@ -492,15 +492,15 @@ export default () => (
                     </div>
                     <div class="ply-range">
                       <div class="heading">
-                        <label class="label" for="ply-image-cropper-:r24:-height"
+                        <label class="label" for="ply-image-cropper-:r26:-height"
                           >選択高さ</label
                         >
                       </div>
                       <div class="controls">
                         <div class="native">
                           <input
-                            id="ply-image-cropper-:r24:-height"
-                            aria-controls="ply-image-cropper-:r24:-viewport"
+                            id="ply-image-cropper-:r26:-height"
+                            aria-controls="ply-image-cropper-:r26:-viewport"
                             class="input"
                             type="range"
                             min="1"
@@ -518,7 +518,7 @@ export default () => (
               </details>
               <p
                 class="instructions"
-                id="ply-image-cropper-:r24:-instructions"
+                id="ply-image-cropper-:r26:-instructions"
                 data-image-cropper-target="instructions"
               >
                 枠をドラッグして移動、下端の持ち手で大きさを変更します。矢印キーでも調整できます。

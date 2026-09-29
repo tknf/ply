@@ -16,7 +16,7 @@ export type TreegridItem = {
   label: string;
   /** 葉の行だけに設定する移動先。 */
   href?: string;
-  /** 行のリンクを利用できない状態。行とセルのキーボード移動は維持する。 */
+  /** 行を利用できない状態。リンクにせず、押してもShift+Spaceでも選べない。行とセルのキーボード移動は維持する。 */
   disabled?: boolean;
   /** 2列目以降のセル。columnsの2番目からの順に対応させ、足りないセルには「—」を出す。 */
   cells?: readonly Child[];
@@ -31,7 +31,10 @@ export type TreegridProps = {
   columns: readonly TreegridColumn[];
   /** 最上位の行。0件の時はstateがreadyでもemptyとして扱う。 */
   items: readonly TreegridItem[];
-  /** 最初に開いておく行のvalue。開閉はその後controllerが持ち、保存したい時はtreegrid:toggleで受け取る。 */
+  /**
+   * 最初に開いておく行のvalue。開閉はその後controllerが持ち、保存したい時はtreegrid:toggleで受け取る。
+   * JavaScriptがない時は開閉できないので、全ての行を開いて見せ、開閉のつまみを隠す。
+   */
   expanded?: readonly string[];
   /** 行の選択。singleは一行、multipleは複数行を選べ、noneは選択を持たない。 */
   selection?: "none" | "single" | "multiple";
@@ -57,7 +60,6 @@ const uniqueItems = (items: readonly TreegridItem[], seen: Set<string>): Treegri
 const renderRows = (
   items: readonly TreegridItem[],
   columns: readonly TreegridColumn[],
-  expanded: ReadonlySet<string>,
   selected: ReadonlySet<string>,
   selection: TreegridProps["selection"],
   level = 1,
@@ -66,18 +68,18 @@ const renderRows = (
     const children = item.children ?? [];
     const expandable = children.length > 0;
     const label = item.label.trim() || item.value;
+    // 開閉の状態（aria-expanded・data-state・子の行のhidden）はcontrollerが接続した時に付ける。
+    // JavaScriptがない時は全ての行を見せ、押しても開閉しないつまみはCSSで隠す。
     const row = (
       <tr
         data-treegrid-target="row"
         data-treegrid-value={item.value}
         data-treegrid-level={level}
-        data-state={expandable ? (expanded.has(item.value) ? "expanded" : "collapsed") : undefined}
         data-selected={selection !== "none" && selected.has(item.value) ? "true" : undefined}
         data-disabled={item.disabled ? "true" : undefined}
         aria-level={level}
         aria-posinset={index + 1}
         aria-setsize={items.length}
-        aria-expanded={expandable ? (expanded.has(item.value) ? "true" : "false") : undefined}
         aria-selected={
           selection === "multiple"
             ? selected.has(item.value)
@@ -120,10 +122,10 @@ const renderRows = (
         ))}
       </tr>
     );
-    return [row, ...renderRows(children, columns, expanded, selected, selection, level + 1)];
+    return [row, ...renderRows(children, columns, selected, selection, level + 1)];
   });
 
-/** Tableの表面・階層表示を共有し、開閉と二次元移動は上流TreegridControllerに委ねる。 */
+/** Tableの表面・階層表示を共有し、開閉と二次元移動はTreegridController（上流を継承）に委ねる。 */
 export const Treegrid = ({
   caption,
   columns,
@@ -168,15 +170,7 @@ export const Treegrid = ({
           </tr>
         </thead>
         {interactive && (
-          <tbody>
-            {renderRows(
-              renderedItems,
-              renderedColumns,
-              new Set(expanded),
-              new Set(selected),
-              selection,
-            )}
-          </tbody>
+          <tbody>{renderRows(renderedItems, renderedColumns, new Set(selected), selection)}</tbody>
         )}
       </table>
       {!interactive && (

@@ -686,6 +686,11 @@
             white-space: nowrap;
             pointer-events: none;
           }
+          /* 週の終わりの列で始まる月は、札を終わりの側に寄せて、文字を大きくしても表の外へはみ出さない。 */
+          &[data-last-column="true"] > .month-label,
+          &[data-last-column="true"] > .month-link > .month-label {
+            inset-inline: auto 0;
+          }
           & > .date-link {
             position: absolute;
             inset: 0.125rem;

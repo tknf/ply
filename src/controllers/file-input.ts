@@ -1,7 +1,28 @@
 import { FileDropController } from "@tknf/stimulus-ui";
 import { formatFileSize } from "../internal/file-size";
 
-/** 上流のドロップ処理に、選択内容の表示・解除・標準入力への通知を加える。 */
+/**
+ * ファイルが入力のacceptに当てはまるか。選択ダイアログと同じく、拡張子（.pdf）・種類（image/*）・
+ * MIME（application/pdf）のどれかに大文字と小文字を区別せずに当たれば受け付ける。acceptが空なら全て受け付ける。
+ */
+const acceptsFile = (accept: string, file: File) => {
+  const tokens = accept
+    .split(",")
+    .map((token) => token.trim().toLowerCase())
+    .filter(Boolean);
+  if (tokens.length === 0) return true;
+  const name = file.name.toLowerCase();
+  const type = file.type.toLowerCase();
+  return tokens.some((token) =>
+    token.startsWith(".")
+      ? name.endsWith(token)
+      : token.endsWith("/*")
+        ? type.startsWith(token.slice(0, -1))
+        : type === token,
+  );
+};
+
+/** 上流のドロップ処理に、acceptでの絞り込み・選択内容の表示・解除・標準入力への通知を加える。 */
 export class FileInputController extends FileDropController {
   static targets = [...FileDropController.targets, "files", "hint", "clear", "status", "template"];
   declare readonly filesTarget: HTMLElement;
@@ -16,6 +37,8 @@ export class FileInputController extends FileDropController {
   declare readonly hasTemplateTarget: boolean;
   private fileForm: HTMLFormElement | null = null;
   private resetTask: number | undefined;
+  /** 今のドロップにacceptに当てはまらないファイルが含まれ、beforedropで取り消す。 */
+  private rejectedDrop = false;
 
   constructor(...args: ConstructorParameters<typeof FileDropController>) {
     super(...args);
@@ -109,7 +132,10 @@ export class FileInputController extends FileDropController {
     if (event.target === this.element) this.notifyInput();
   };
   private beforeFilesDropped = (event: Event) => {
-    if (event.target === this.element && this.fileInput()?.matches(":disabled"))
+    if (
+      event.target === this.element &&
+      (this.rejectedDrop || this.fileInput()?.matches(":disabled"))
+    )
       event.preventDefault();
   };
   private guardDrop = (event: DragEvent) => {
@@ -117,9 +143,15 @@ export class FileInputController extends FileDropController {
     const input = this.fileInput();
     const disabled = !input || input.matches(":disabled");
     if (event.type === "drop") {
-      if (!disabled && !input.multiple && (event.dataTransfer?.files.length ?? 0) > 1)
+      this.rejectedDrop = false;
+      const files = Array.from(event.dataTransfer?.files ?? []);
+      if (!disabled && !input.multiple && files.length > 1)
         this.report("一度に選択できるのは1ファイルです。", true);
-      // 上流にドロップ状態をリセットさせ、利用不可ならbeforedropで取り消す。
+      else if (!disabled && files.some((file) => !acceptsFile(input.accept, file))) {
+        this.rejectedDrop = true;
+        this.report("選択できない形式のファイルが含まれています。", true);
+      }
+      // 上流にドロップ状態をリセットさせ、利用不可・形式違いはbeforedropで取り消す。
       return;
     }
     if (!disabled) return;

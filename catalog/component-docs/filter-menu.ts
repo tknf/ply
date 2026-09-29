@@ -27,7 +27,8 @@ export default {
     ["Escape", "紙を閉じます。"],
   ],
   accessibility: [
-    '開く操作は `aria-haspopup="dialog"`・`aria-controls` を持ち、紙は `title` を名前にした `role="dialog"` です。`iconOnly` の時は `label` を開く操作の `aria-label` にします。',
+    '開く操作は `aria-haspopup="dialog"`・`aria-controls` を持ち、紙は `title` を名前にした `role="dialog"` です。`iconOnly` の時は `label` を開く操作の `aria-label` にし、`icon` が無ければ▾の印を出します。',
+    "開く操作の `aria-expanded` は、controllerが紙の開閉に合わせて切り替えます。JavaScriptなしでは初期HTMLに書かず、標準のPopover APIの開閉状態をブラウザが伝えます。",
     '絞り込みの欄は `role="combobox"` で、`placeholder` を `aria-label` にし、選ぶ位置の候補を `aria-activedescendant` で伝えます。',
     '候補は `role="listbox"` の `option` で、選んだ状態を `aria-selected`、選べない候補を `aria-disabled` で伝えます。`multiple` の時は `aria-multiselectable="true"` を付けます。',
     "日本語の変換中の矢印とEnterは、候補の移動や選択に使いません。",

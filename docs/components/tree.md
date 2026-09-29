@@ -13,7 +13,7 @@
 
 `label`と`items`を渡し、`TreeController`を`tree`、`TreePresentationController`を`tree-presentation`として登録します。子を持つ項目には開閉のボタンが付きます。初めに選ぶ項目は`value`、初めに開く親は`expanded`で渡します。
 
-項目を押すか、注目している項目でEnterを押すと、その項目を選び、`tree:change`で`detail.value`を知らせます。選んだ項目に応じて何を表示するかは利用側が担います。`href`を持つ項目は名前がリンクになり、名前を押すと選択と同時にリンク先へ移ります。
+項目を押すか、注目している項目でEnterを押すと、その項目を選び、`tree:change`で`detail.value`を知らせます。選んだ項目に応じて何を表示するかは利用側が担います。`href`を持つ項目は名前がリンクになり、名前を押すか、注目してEnterを押すと、選択と同時にリンク先へ移ります（リンクの`click`が起きるので、利用側はリンクの操作として受け取れます）。
 
 無効な項目は選べず、開閉のボタンも押せません。空白だけの`value`と、全階層を通じて二つ目以降に現れた`value`の項目は、子ごと出しません。残る項目がない時は「項目はありません。」の状態文を出します。
 
@@ -21,18 +21,19 @@ JavaScriptなしでは、開閉のボタンを隠してすべての階層を開�
 
 ## キーボード
 
-| キー       | 動作                                                                     |
-| ---------- | ------------------------------------------------------------------------ |
-| ↓ / ↑      | 次・前の見えている項目に注目します。無効な項目は飛ばします。             |
-| Home / End | 先頭・末尾の見えている項目に注目します。                                 |
-| →          | 閉じた親を開きます。開いた親では最初の子に注目します。                   |
-| ←          | 開いた親を閉じます。それ以外では親の項目に注目します。                   |
-| Enter      | 注目している項目を選びます。                                             |
-| 文字       | 名前がその文字で始まる、次の項目に注目します。続けて打つと語で探します。 |
+| キー       | 動作                                                                                      |
+| ---------- | ----------------------------------------------------------------------------------------- |
+| ↓ / ↑      | 次・前の見えている項目に注目します。無効な項目は飛ばします。                              |
+| Home / End | 先頭・末尾の見えている項目に注目します。                                                  |
+| →          | 閉じた親を開きます。開いた親では最初の子に注目します。右から左に書く時は←がこの役割です。 |
+| ←          | 開いた親を閉じます。それ以外では親の項目に注目します。右から左に書く時は→がこの役割です。 |
+| Enter      | 注目している項目を選びます。`href`を持つ項目はリンク先へ移ります。                        |
+| 文字       | 名前がその文字で始まる、次の項目に注目します。続けて打つと語で探します。                  |
 
 ## アクセシビリティ
 
 - 一覧は`role="tree"`で`label`を読み上げ名に持ち、Tabでフォーカスできます。項目は`treeitem`、子の並びは`group`です。
+- Tabで止まるのは一覧だけです。中のリンクと開閉のボタンは、controllerが`tabindex="-1"`にしてTabの巡回から外します。JavaScriptなしでは、リンクはTabで止まります。
 - フォーカスは一覧に置いたまま、注目している項目を`aria-activedescendant`で伝えます。選んだ項目は`aria-selected="true"`、親の開閉は`aria-expanded`で伝えます。
 - 開閉のボタンは「（名前）を開閉」という読み上げ名を持ちます。無効な項目は`aria-disabled="true"`です。
 - 項目がない時は、一覧の代わりに`role="status"`の状態文を出します。
@@ -70,7 +71,7 @@ JavaScriptなしでは、開閉のボタンを隠してすべての階層を開�
 | --------------- | --------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------- |
 | `value`（必須） | `string`              |        | 項目を識別する値。tree:changeのdetail.valueで知らせる。空白だけの値と、全階層を通じて二つ目以降に現れた値の項目は、子ごと出さない。 |
 | `label`（必須） | `string`              |        | 項目の名前。空白だけの時はvalueを名前にする。                                                                                       |
-| `href`          | `string`              |        | 名前をリンクにする時のURL。無効な項目ではリンクにしない。                                                                           |
+| `href`          | `string`              |        | 名前をリンクにする時のURL。名前を押すか、注目してEnterを押すと、選ぶと同時にリンク先へ移る。無効な項目ではリンクにしない。          |
 | `disabled`      | `boolean`             |        | 選べない項目。開閉のボタンも押せず、矢印キーの移動の対象から外す。                                                                  |
 | `children`      | `readonly TreeItem[]` |        | 子の項目。一件以上あると、開閉のボタンを付けた親になる。                                                                            |
 
@@ -120,6 +121,37 @@ export default () => (
         ]}
       />
     </Disclosure>
+    <Disclosure summary="リンクの項目・右から左に読む場合">
+      <Tree
+        id="linked-tree"
+        label="リンクの資料"
+        items={[
+          {
+            value: "linked-guide",
+            label: "利用案内",
+            href: "#linked-guide",
+            children: [
+              { value: "linked-start", label: "はじめに", href: "#linked-start" },
+            ],
+          },
+          { value: "linked-rules", label: "運用規約", href: "#linked-rules" },
+        ]}
+      />
+      <div dir="rtl" lang="ar">
+        <Tree
+          id="rtl-tree"
+          label="المستندات"
+          items={[
+            {
+              value: "rtl-guide",
+              label: "الدليل",
+              children: [{ value: "rtl-start", label: "البداية" }],
+            },
+            { value: "rtl-rules", label: "القواعد" },
+          ]}
+        />
+      </div>
+    </Disclosure>
   </div>
 );
 ```
@@ -142,6 +174,7 @@ export default () => (
     <li
       id="document-tree-item-0"
       role="treeitem"
+      aria-labelledby="document-tree-item-0-label"
       data-tree-target="item"
       data-tree-value="guide"
     >
@@ -164,29 +197,31 @@ export default () => (
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use>
           </svg></button
-        ><span class="label">利用案内</span>
+        ><span id="document-tree-item-0-label" class="label">利用案内</span>
       </div>
       <ul role="group">
         <li
           id="document-tree-item-0-0"
           role="treeitem"
+          aria-labelledby="document-tree-item-0-0-label"
           data-tree-target="item"
           data-tree-value="start"
         >
           <div class="row">
             <span class="spacer" aria-hidden="true"></span
-            ><span class="label">はじめに</span>
+            ><span id="document-tree-item-0-0-label" class="label">はじめに</span>
           </div>
         </li>
         <li
           id="document-tree-item-0-1"
           role="treeitem"
+          aria-labelledby="document-tree-item-0-1-label"
           data-tree-target="item"
           data-tree-value="account"
         >
           <div class="row">
             <span class="spacer" aria-hidden="true"></span
-            ><span class="label">アカウント</span>
+            ><span id="document-tree-item-0-1-label" class="label">アカウント</span>
           </div>
         </li>
       </ul>
@@ -194,12 +229,13 @@ export default () => (
     <li
       id="document-tree-item-1"
       role="treeitem"
+      aria-labelledby="document-tree-item-1-label"
       data-tree-target="item"
       data-tree-value="rules"
     >
       <div class="row">
         <span class="spacer" aria-hidden="true"></span
-        ><span class="label">運用規約</span>
+        ><span id="document-tree-item-1-label" class="label">運用規約</span>
       </div>
     </li>
   </ul>
@@ -239,6 +275,7 @@ export default () => (
         <li
           id="ply-tree-:r8:-item-0"
           role="treeitem"
+          aria-labelledby="ply-tree-:r8:-item-0-label"
           data-tree-target="item"
           data-tree-value="guide"
         >
@@ -261,18 +298,19 @@ export default () => (
               >
                 <use href="/assets/ply-icons.svg#ply-caret"></use>
               </svg></button
-            ><span class="label">案内</span>
+            ><span id="ply-tree-:r8:-item-0-label" class="label">案内</span>
           </div>
           <ul role="group">
             <li
               id="ply-tree-:r8:-item-0-0"
               role="treeitem"
+              aria-labelledby="ply-tree-:r8:-item-0-0-label"
               data-tree-target="item"
               data-tree-value="start"
             >
               <div class="row">
                 <span class="spacer" aria-hidden="true"></span
-                ><span class="label">はじめに</span>
+                ><span id="ply-tree-:r8:-item-0-0-label" class="label">はじめに</span>
               </div>
             </li>
           </ul>
@@ -280,6 +318,7 @@ export default () => (
         <li
           id="ply-tree-:r8:-item-1"
           role="treeitem"
+          aria-labelledby="ply-tree-:r8:-item-1-label"
           data-tree-target="item"
           data-tree-value="rules"
         >
@@ -302,23 +341,176 @@ export default () => (
               >
                 <use href="/assets/ply-icons.svg#ply-caret"></use>
               </svg></button
-            ><span class="label">規約</span>
+            ><span id="ply-tree-:r8:-item-1-label" class="label">規約</span>
           </div>
           <ul role="group">
             <li
               id="ply-tree-:r8:-item-1-0"
               role="treeitem"
+              aria-labelledby="ply-tree-:r8:-item-1-0-label"
               data-tree-target="item"
               data-tree-value="policy"
             >
               <div class="row">
                 <span class="spacer" aria-hidden="true"></span
-                ><span class="label">運用方針</span>
+                ><span id="ply-tree-:r8:-item-1-0-label" class="label">運用方針</span>
               </div>
             </li>
           </ul>
         </li>
       </ul>
+    </div>
+  </details>
+  <details class="ply-disclosure">
+    <summary>
+      <span class="marker" aria-hidden="true"
+        ><svg
+          class="ply-icon"
+          viewBox="0 0 256 256"
+          fill="currentColor"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
+      ><span class="label"
+        ><span class="title">リンクの項目・右から左に読む場合</span></span
+      >
+    </summary>
+    <div class="body">
+      <ul
+        id="linked-tree"
+        class="ply-tree"
+        role="tree"
+        aria-label="リンクの資料"
+        tabindex="0"
+        data-controller="tree tree-presentation"
+        data-tree-value-value=""
+        data-tree-expanded-value="[]"
+      >
+        <li
+          id="linked-tree-item-0"
+          role="treeitem"
+          aria-labelledby="linked-tree-item-0-label"
+          data-tree-target="item"
+          data-tree-value="linked-guide"
+        >
+          <div class="row">
+            <button
+              data-icon-only="true"
+              data-tree-target="toggle"
+              aria-label="利用案内を開閉"
+              class="ply-button toggle"
+              type="button"
+              data-variant="link"
+              data-size="default"
+            >
+              <svg
+                class="ply-icon"
+                viewBox="0 0 256 256"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <use href="/assets/ply-icons.svg#ply-caret"></use>
+              </svg></button
+            ><a id="linked-tree-item-0-label" href="#linked-guide">利用案内</a>
+          </div>
+          <ul role="group">
+            <li
+              id="linked-tree-item-0-0"
+              role="treeitem"
+              aria-labelledby="linked-tree-item-0-0-label"
+              data-tree-target="item"
+              data-tree-value="linked-start"
+            >
+              <div class="row">
+                <span class="spacer" aria-hidden="true"></span
+                ><a id="linked-tree-item-0-0-label" href="#linked-start">はじめに</a>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <li
+          id="linked-tree-item-1"
+          role="treeitem"
+          aria-labelledby="linked-tree-item-1-label"
+          data-tree-target="item"
+          data-tree-value="linked-rules"
+        >
+          <div class="row">
+            <span class="spacer" aria-hidden="true"></span
+            ><a id="linked-tree-item-1-label" href="#linked-rules">運用規約</a>
+          </div>
+        </li>
+      </ul>
+      <div dir="rtl" lang="ar">
+        <ul
+          id="rtl-tree"
+          class="ply-tree"
+          role="tree"
+          aria-label="المستندات"
+          tabindex="0"
+          data-controller="tree tree-presentation"
+          data-tree-value-value=""
+          data-tree-expanded-value="[]"
+        >
+          <li
+            id="rtl-tree-item-0"
+            role="treeitem"
+            aria-labelledby="rtl-tree-item-0-label"
+            data-tree-target="item"
+            data-tree-value="rtl-guide"
+          >
+            <div class="row">
+              <button
+                data-icon-only="true"
+                data-tree-target="toggle"
+                aria-label="الدليلを開閉"
+                class="ply-button toggle"
+                type="button"
+                data-variant="link"
+                data-size="default"
+              >
+                <svg
+                  class="ply-icon"
+                  viewBox="0 0 256 256"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <use href="/assets/ply-icons.svg#ply-caret"></use>
+                </svg></button
+              ><span id="rtl-tree-item-0-label" class="label">الدليل</span>
+            </div>
+            <ul role="group">
+              <li
+                id="rtl-tree-item-0-0"
+                role="treeitem"
+                aria-labelledby="rtl-tree-item-0-0-label"
+                data-tree-target="item"
+                data-tree-value="rtl-start"
+              >
+                <div class="row">
+                  <span class="spacer" aria-hidden="true"></span
+                  ><span id="rtl-tree-item-0-0-label" class="label">البداية</span>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <li
+            id="rtl-tree-item-1"
+            role="treeitem"
+            aria-labelledby="rtl-tree-item-1-label"
+            data-tree-target="item"
+            data-tree-value="rtl-rules"
+          >
+            <div class="row">
+              <span class="spacer" aria-hidden="true"></span
+              ><span id="rtl-tree-item-1-label" class="label">القواعد</span>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </details>
 </div>

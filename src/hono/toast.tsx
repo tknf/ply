@@ -12,7 +12,7 @@ export type ToastProps = PropsWithChildren<{
   closeLabel?: string;
   /**
    * 開いてから自動で閉じるまでのミリ秒。0は閉じるボタンを押すまで残す。
-   * フォーカスが中にある間は数えず、外へ出てから数え直す。
+   * フォーカスが中にある間は数えず、外へ出てから数え直す。ToastControllerが要る。
    */
   duration?: number;
   /** 読み上げの急ぎ方。politeはrole="status"、assertiveはrole="alert"にする。失敗の知らせはassertiveにする。 */
@@ -20,7 +20,10 @@ export type ToastProps = PropsWithChildren<{
   /** 知らせの種類。面をその役割の色で塗る。 */
   tone?: Exclude<Tone, "neutral">;
 }>;
-/** 通知の可視性・消去時間・ライブ領域はstimulus-uiのToastControllerが管理する。 */
+/**
+ * 通知の可視性・消去時間・ライブ領域はToastControllerが管理する。
+ * 閉じるボタンは標準のpopovertargetで閉じるので、JavaScriptが無い時も働く。
+ */
 export const Toast = ({
   id,
   children,
@@ -52,7 +55,7 @@ export const Toast = ({
           <span>{children}</span>
         </div>
       }
-      close={<OverlayClose label={closeLabel} data-toast-target="dismiss" />}
+      close={<OverlayClose label={closeLabel} popovertarget={id} popovertargetaction="hide" />}
       actions={actions}
     />
   </aside>

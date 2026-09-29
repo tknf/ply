@@ -15,7 +15,7 @@ export default {
     "`href` を渡すと分類へ移るリンクになり、指を載せると役割の色を淡く敷きます。",
     "`removeButton` を渡すと札の終わりに外す×を置きます。外した後の処理は利用側が持ちます。`href` と `removeButton` は同時に使えません。",
     "複数の札は `TagGroup` で囲みます。札の間を0.5remあけて折り返し、長い文言も省略しません。",
-    "`Tag` は `class` などのHTML属性を受け取りません。JavaScriptは使いません。",
+    "`Tag` は `class`・`id` などのHTML属性を札のルート（`href` がある時は `a`、それ以外は `span`）に渡します。JavaScriptは使いません。",
   ],
   accessibility: [
     '`TagGroup` は `role="group"` で、`label` を名前にします。',

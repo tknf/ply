@@ -7,6 +7,11 @@
     min-inline-size: 0;
     margin: 0;
     color: var(--ply-text);
+    /* 紙にはコードだけを書き、コードの面が余白とスクロールを持つので、紙の余白を持たない。 */
+    & > .ply-layer-card > .body {
+      padding-block: 0;
+      padding-inline: 0;
+    }
     & > .ply-layer-card > .body > pre {
       /* 長い行は中でスクロールする。行の長さで外側の幅を押し広げないよう、横の大きさを内容から切り離す。 */
       contain: inline-size;

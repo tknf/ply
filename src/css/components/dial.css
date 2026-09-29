@@ -60,6 +60,10 @@
       &:has(> .stop:nth-of-type(8) > input:checked) {
         --ply-dial-at: 7;
       }
+      /* 目盛りは8個までの設計なので、9個目以降を選んだ時は違う値を指さないよう針を隠し、値の太字だけで示す。 */
+      &:has(> .stop:nth-of-type(n + 9) > input:checked) > .knob > .pointer {
+        display: none;
+      }
       /* 目盛りの値。弧の上の位置へ置き、文字はまっすぐ立てたままにする。 */
       & > .stop {
         --ply-dial-i: 0;

@@ -19,18 +19,19 @@
 
 ## アクセシビリティ
 
-- キーは `kbd` として並べます。「⌘」のような記号だけの表記は読み上げで伝わりにくいため、文中に読める名前を添えるか、`aria-label` を付けます。
+- キーは `kbd` として並べます。「⌘」のような記号だけの表記は読み上げで伝わりにくいため、文中に読める名前を添えるか、`label` を渡します。`label` を渡すと、キーの表記を読み上げから外し、見えない文として `label` を置きます。外側の `span` は名前を持てない要素なので、`aria-label` を渡した時も `label` と同じ扱いにします。
 - 操作の横に添えた表記が操作の名前と重なる時は、`aria-hidden="true"` で読み上げから外します。
 
 ## API
 
 ### Keycap
 
-| 名前           | 型                     | 既定値      | 説明                                                                                              |
-| -------------- | ---------------------- | ----------- | ------------------------------------------------------------------------------------------------- |
-| `keys`（必須） | `readonly string[]`    |             | 同時に押すキーの表記。一つずつ`kbd`にして並べる。記号だけの時は読み上げ用に`aria-label`を添える。 |
-| `size`         | `"default" \| "small"` | `"default"` | smallはタイルの角やメニューの行の終わりに添える小さな印。                                         |
-| `inverse`      | `boolean`              | `false`     | 青のメニューや塗った面の上に置く時。地を塗らず、文字と同じ色の淡い縁にする。                      |
+| 名前           | 型                     | 既定値      | 説明                                                                                                                                                                                           |
+| -------------- | ---------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `keys`（必須） | `readonly string[]`    |             | 同時に押すキーの表記。一つずつ`kbd`にして並べる。記号だけで読み上げにくい時は`label`を添える。                                                                                                 |
+| `label`        | `string`               |             | 読み上げ用の名前（「CommandとS」など）。渡すと、キーの表記を読み上げから外し、見えない文としてこの名前を置く。外側の`span`は名前を持てない要素なので、`aria-label`を渡した時も同じ扱いにする。 |
+| `size`         | `"default" \| "small"` | `"default"` | smallはタイルの角やメニューの行の終わりに添える小さな印。                                                                                                                                      |
+| `inverse`      | `boolean`              | `false`     | 青のメニューや塗った面の上に置く時。地を塗らず、文字と同じ色の淡い縁にする。                                                                                                                   |
 
 ほかに、`<span>`へ標準のHTML属性を渡せます。
 
@@ -43,7 +44,7 @@ import { Keycap } from "ply/hono";
 export default () => (
   <div class="ply-stack" data-space="small">
     <p>
-      <Keycap keys={["⌘", "S"]} aria-label="CommandとS" /> で保存。Windowsでは{" "}
+      <Keycap keys={["⌘", "S"]} label="CommandとS" /> で保存。Windowsでは{" "}
       <Keycap keys={["Ctrl", "S"]} /> を使います。
     </p>
     <p>
@@ -63,7 +64,10 @@ export default () => (
 ```html
 <div class="ply-stack" data-space="small">
   <p>
-    <span aria-label="CommandとS" class="ply-keycap"><kbd>⌘</kbd><kbd>S</kbd></span>
+    <span class="ply-keycap"
+      ><kbd aria-hidden="true">⌘</kbd><kbd aria-hidden="true">S</kbd
+      ><span class="ply-visually-hidden">CommandとS</span></span
+    >
     で保存。Windowsでは
     <span class="ply-keycap"><kbd>Ctrl</kbd><kbd>S</kbd></span> を使います。
   </p>

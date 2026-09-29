@@ -15,7 +15,7 @@ export type ToggleGroupProps = {
   items: readonly ToggleGroupItem[];
   /** 最初にオンにする値。multipleでない時は先頭の一つだけを使う。 */
   selected?: readonly string[];
-  /** trueで複数をオンにできる。falseは一つだけで、オンのボタンを押すと全てオフになる。 */
+  /** trueで複数をオンにできる。falseは一つだけで、別のボタンを押すと切り替わり、オンのボタンを押してもオンのままにする。 */
   multiple?: boolean;
   /** 並べる向き。矢印キーもhorizontalは左右、verticalは上下で移る。 */
   orientation?: "horizontal" | "vertical";

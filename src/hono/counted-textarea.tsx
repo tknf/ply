@@ -31,7 +31,8 @@ export const CountedTextarea = ({
       {children}
     </Textarea>
     <div class="messages">
-      <p class="count" id={`${id}-count`} data-character-count-target="counter">
+      {/* 数えるのはcontrollerなので、接続するまで文字数の欄は隠す。 */}
+      <p class="count" id={`${id}-count`} data-character-count-target="counter" hidden>
         {" "}
         {unit}
       </p>

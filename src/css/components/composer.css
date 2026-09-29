@@ -20,7 +20,7 @@
         0 0 0 var(--ply-frame-width) var(--ply-link),
         var(--ply-shadow-paper);
     }
-    &:has(> .ply-field > .ply-input[data-invalid="true"]) {
+    &:has(> .ply-field > :is(.ply-input, .editor)[data-invalid="true"]) {
       box-shadow:
         0 0 0 var(--ply-stroke-width) var(--ply-danger),
         var(--ply-shadow-paper);

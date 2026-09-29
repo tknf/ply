@@ -58,7 +58,10 @@ export type TextEditorProps = Omit<ElementProps<"textarea">, "children"> & {
  * 返信や日記、コメントに使う、書式の道具を並べた書く面。
  * 見た目と道具の並びだけを持ち、特定のエディターには依存しない。書式を付ける動きは利用側のエディターに任せ、
  * 道具のボタンのdata-text-editor-tool（"bold"など）を読んでエディターの操作を呼び、今の書式の道具には
- * data-active="true"を付ける。textareaのままの時は、道具は見た目だけで働かない。
+ * data-active="true"を付ける。textareaのままの時も、道具を働かせるのは利用側（記号を差し込むなど）。
+ * 道具を働かせない時はtoolsを空にする。道具も操作も無い時は、道具の並びを描かない。
+ * 道具の並びはToolbarControllerで一つのTab停止点にし、矢印キーで道具の間を移る。
+ * 道具はJavaScriptで動くものなので、controllerが付くまではTabで止めない。
  */
 export const TextEditor = ({
   id,
@@ -92,40 +95,46 @@ export const TextEditor = ({
     if (item === "|") groups.push([]);
     else groups.at(-1)?.push(item);
   }
+  const hasActions = actions != null && actions !== false;
+  const hasTools = groups.some((group) => group.length > 0);
   return (
     <div class={classes("ply-text-editor", className)} data-placement={placement}>
-      <div
-        class="toolbar"
-        id={`${id}-toolbar`}
-        role="toolbar"
-        aria-label={`${label}の書式`}
-        aria-controls={id}
-      >
-        {groups
-          .filter((group) => group.length > 0)
-          .map((group) => (
-            <span class="group">
-              {group.map((tool) => {
-                const { label: name, icon } = tools[tool];
-                return (
-                  <Button
-                    variant="link"
-                    data-icon-only="true"
-                    size="compact"
-                    aria-label={name}
-                    title={name}
-                    tabindex={-1}
-                    disabled={attributes.disabled}
-                    data-text-editor-tool={tool}
-                  >
-                    <Icon name={icon} />
-                  </Button>
-                );
-              })}
-            </span>
-          ))}
-        {actions != null && actions !== false && <span class="actions">{actions}</span>}
-      </div>
+      {(hasTools || hasActions) && (
+        <div
+          class="toolbar"
+          id={`${id}-toolbar`}
+          role="toolbar"
+          aria-label={`${label}の書式`}
+          aria-controls={id}
+          data-controller="toolbar"
+        >
+          {groups
+            .filter((group) => group.length > 0)
+            .map((group) => (
+              <span class="group">
+                {group.map((tool) => {
+                  const { label: name, icon } = tools[tool];
+                  return (
+                    <Button
+                      variant="link"
+                      data-icon-only="true"
+                      size="compact"
+                      aria-label={name}
+                      title={name}
+                      tabindex={-1}
+                      disabled={attributes.disabled}
+                      data-toolbar-target="control"
+                      data-text-editor-tool={tool}
+                    >
+                      <Icon name={icon} />
+                    </Button>
+                  );
+                })}
+              </span>
+            ))}
+          {hasActions && <span class="actions">{actions}</span>}
+        </div>
+      )}
       <div class="area">
         {editor != null && editor !== false ? (
           editor

@@ -15,23 +15,23 @@
 
 `expanded` に最初に開いておく行、`selection` に選択の方式、`selected` に最初に選んでおく行を、それぞれ `value` で渡します。開閉と選択はその後controllerが持つので、保存したい時はイベントで受け取ります。つまみを押すと行を開閉し、`selection` が `none` 以外の時はセルを押すと行を選びます。選んだ行は淡い青の面で示します。
 
-`href` は子を持たない行だけでリンクになります。`disabled` の行はリンクにせず、題名を淡くします。キーでの移動には残ります。
+`href` は子を持たない行だけでリンクになります。`disabled` の行はリンクにせず、題名を淡くし、押してもShift + Spaceでも選べません。キーでの移動には残ります。
 
 `state` は `ready`・`loading`・`empty`・`error` です。`items` が0件なら `ready` でも `empty` として扱います。`ready` 以外では見出しの行だけを残して状態の文（または `stateContent`）を出し、controllerを付けません。
 
-`TreegridController` を `treegrid` として登録します。JavaScriptなしでは、閉じた行の子も含めて全ての行を表示し、開閉と選択はできません。行のデータ・開閉と選択の保存は利用側が持ちます。
+`TreegridController` を `treegrid` として登録します。JavaScriptなしでは、全ての行を開いた状態で表示し、動かない開閉のつまみは隠します。選択もできません。行のデータ・開閉と選択の保存は利用側が持ちます。
 
 ## キーボード
 
-| キー                     | 動作                                                                                          |
-| ------------------------ | --------------------------------------------------------------------------------------------- |
-| ↑ / ↓                    | 表示中の上下の行の、同じ列のセルへ移動します。                                                |
-| ← / →                    | 前後の列のセルへ移動します。右から左に読む時は向きが入れ替わります。                          |
-| Home / End               | 行の最初・最後のセルへ移動します。                                                            |
-| Ctrl + Home / Ctrl + End | 表の最初・最後のセルへ移動します。                                                            |
-| PageUp / PageDown        | `pageSize` の行数だけ上下へ移動します。                                                       |
-| Enter                    | 子を持つ行の先頭のセルで、行を開閉します。                                                    |
-| Shift + Space            | `selection` が `single`・`multiple` の時に、行を選びます。`multiple` では選択を切り替えます。 |
+| キー                     | 動作                                                                                                                       |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| ↑ / ↓                    | 表示中の上下の行の、同じ列のセルへ移動します。                                                                             |
+| ← / →                    | 前後の列のセルへ移動します。右から左に読む時は向きが入れ替わります。                                                       |
+| Home / End               | 行の最初・最後のセルへ移動します。                                                                                         |
+| Ctrl + Home / Ctrl + End | 表の最初・最後のセルへ移動します。                                                                                         |
+| PageUp / PageDown        | `pageSize` の行数だけ上下へ移動します。                                                                                    |
+| Enter                    | 子を持つ行の先頭のセルで、行を開閉します。                                                                                 |
+| Shift + Space            | `selection` が `single`・`multiple` の時に、行を選びます。`multiple` では選択を切り替えます。`disabled` の行は選べません。 |
 
 ## アクセシビリティ
 
@@ -43,31 +43,31 @@
 
 ## イベント
 
-| イベント                | 内容                                                                                                                                                        |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `treegrid:beforetoggle` | 行を開閉する前に知らせます。取り消せます。detailは `{ value, expanded, reason }` で、`expanded` は開くなら `true`、`reason` は `pointer`・`keyboard` です。 |
-| `treegrid:toggle`       | 行を開閉した後に知らせます。detailは `treegrid:beforetoggle` と同じです。                                                                                   |
-| `treegrid:beforechange` | 選択が変わる前に知らせます。取り消せます。detailは `{ selected, previousSelected, reason }` で、`selected` は選ばれる行の `value` の配列です。              |
-| `treegrid:change`       | 選択が変わった後に知らせます。detailは `treegrid:beforechange` と同じです。                                                                                 |
+| イベント                | 内容                                                                                                                                                                                    |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `treegrid:beforetoggle` | 行を開閉する前に知らせます。取り消せます。detailは `{ value, expanded, reason }` で、`expanded` は開くなら `true`、`reason` は `pointer`・`keyboard` です。                             |
+| `treegrid:toggle`       | 行を開閉した後に知らせます。detailは `treegrid:beforetoggle` と同じです。                                                                                                               |
+| `treegrid:beforechange` | 選択が変わる前に知らせます。取り消せます。detailは `{ selected, previousSelected, reason }` で、`selected` は選ばれる行の `value` の配列です。`disabled` の行を押した時は知らせません。 |
+| `treegrid:change`       | 選択が変わった後に知らせます。detailは `treegrid:beforechange` と同じです。                                                                                                             |
 
 ## API
 
 ### Treegrid
 
-Tableの表面・階層表示を共有し、開閉と二次元移動は上流TreegridControllerに委ねる。
+Tableの表面・階層表示を共有し、開閉と二次元移動はTreegridController（上流を継承）に委ねる。
 
-| 名前              | 型                                           | 既定値      | 説明                                                                                               |
-| ----------------- | -------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------- |
-| `caption`（必須） | `string`                                     |             | 表の名前。captionとaria-labelに入れる。空白だけの時は「階層表」にする。                            |
-| `columns`（必須） | `readonly TreegridColumn[]`                  |             | 列。先頭の列は行の題名（label）の列になる。空の時は「項目」の一列にする。                          |
-| `items`（必須）   | `readonly TreegridItem[]`                    |             | 最上位の行。0件の時はstateがreadyでもemptyとして扱う。                                             |
-| `expanded`        | `readonly string[]`                          | `[]`        | 最初に開いておく行のvalue。開閉はその後controllerが持ち、保存したい時はtreegrid:toggleで受け取る。 |
-| `selection`       | `"none" \| "single" \| "multiple"`           | `"none"`    | 行の選択。singleは一行、multipleは複数行を選べ、noneは選択を持たない。                             |
-| `selected`        | `readonly string[]`                          | `[]`        | 最初に選んでおく行のvalue。singleでは表の並びで最初の一つだけを使う。                              |
-| `pageSize`        | `number`                                     | `10`        | PageUp・PageDownで移動する行数。1以上の整数でない時は10にする。                                    |
-| `density`         | `"compact" \| "comfortable"`                 | `"compact"` | 本文の行の密度。Tableのdensityと同じ。                                                             |
-| `state`           | `"ready" \| "loading" \| "empty" \| "error"` | `"ready"`   | 表の状態。ready以外では見出しの行だけを残し、状態の文を出す。キー操作・開閉・選択も付けない。      |
-| `stateContent`    | `Child`                                      |             | ready以外の時に、既定の状態の文の代わりに出す内容。                                                |
+| 名前              | 型                                           | 既定値      | 説明                                                                                                                                                                                |
+| ----------------- | -------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `caption`（必須） | `string`                                     |             | 表の名前。captionとaria-labelに入れる。空白だけの時は「階層表」にする。                                                                                                             |
+| `columns`（必須） | `readonly TreegridColumn[]`                  |             | 列。先頭の列は行の題名（label）の列になる。空の時は「項目」の一列にする。                                                                                                           |
+| `items`（必須）   | `readonly TreegridItem[]`                    |             | 最上位の行。0件の時はstateがreadyでもemptyとして扱う。                                                                                                                              |
+| `expanded`        | `readonly string[]`                          | `[]`        | 最初に開いておく行のvalue。開閉はその後controllerが持ち、保存したい時はtreegrid:toggleで受け取る。 JavaScriptがない時は開閉できないので、全ての行を開いて見せ、開閉のつまみを隠す。 |
+| `selection`       | `"none" \| "single" \| "multiple"`           | `"none"`    | 行の選択。singleは一行、multipleは複数行を選べ、noneは選択を持たない。                                                                                                              |
+| `selected`        | `readonly string[]`                          | `[]`        | 最初に選んでおく行のvalue。singleでは表の並びで最初の一つだけを使う。                                                                                                               |
+| `pageSize`        | `number`                                     | `10`        | PageUp・PageDownで移動する行数。1以上の整数でない時は10にする。                                                                                                                     |
+| `density`         | `"compact" \| "comfortable"`                 | `"compact"` | 本文の行の密度。Tableのdensityと同じ。                                                                                                                                              |
+| `state`           | `"ready" \| "loading" \| "empty" \| "error"` | `"ready"`   | 表の状態。ready以外では見出しの行だけを残し、状態の文を出す。キー操作・開閉・選択も付けない。                                                                                       |
+| `stateContent`    | `Child`                                      |             | ready以外の時に、既定の状態の文の代わりに出す内容。                                                                                                                                 |
 
 登録するcontroller：`treegrid`（`TreegridController`）
 
@@ -82,14 +82,14 @@ Tableの表面・階層表示を共有し、開閉と二次元移動は上流Tre
 
 #### `TreegridItem`
 
-| 名前            | 型                        | 既定値 | 説明                                                                                     |
-| --------------- | ------------------------- | ------ | ---------------------------------------------------------------------------------------- |
-| `value`（必須） | `string`                  |        | 行を識別する値。全ての階層で一意にする。空の値と重複した値の行は、その子孫ごと描かない。 |
-| `label`（必須） | `string`                  |        | 先頭の列に出す行の題名。空白だけの時はvalueを出す。                                      |
-| `href`          | `string`                  |        | 葉の行だけに設定する移動先。                                                             |
-| `disabled`      | `boolean`                 |        | 行のリンクを利用できない状態。行とセルのキーボード移動は維持する。                       |
-| `cells`         | `readonly Child[]`        |        | 2列目以降のセル。columnsの2番目からの順に対応させ、足りないセルには「—」を出す。         |
-| `children`      | `readonly TreegridItem[]` |        | 子の行。渡すと行に開閉のつまみを付け、一つ深い階層として続けて描く。                     |
+| 名前            | 型                        | 既定値 | 説明                                                                                                      |
+| --------------- | ------------------------- | ------ | --------------------------------------------------------------------------------------------------------- |
+| `value`（必須） | `string`                  |        | 行を識別する値。全ての階層で一意にする。空の値と重複した値の行は、その子孫ごと描かない。                  |
+| `label`（必須） | `string`                  |        | 先頭の列に出す行の題名。空白だけの時はvalueを出す。                                                       |
+| `href`          | `string`                  |        | 葉の行だけに設定する移動先。                                                                              |
+| `disabled`      | `boolean`                 |        | 行を利用できない状態。リンクにせず、押してもShift+Spaceでも選べない。行とセルのキーボード移動は維持する。 |
+| `cells`         | `readonly Child[]`        |        | 2列目以降のセル。columnsの2番目からの順に対応させ、足りないセルには「—」を出す。                          |
+| `children`      | `readonly TreegridItem[]` |        | 子の行。渡すと行に開閉のつまみを付け、一つ深い階層として続けて描く。                                      |
 
 ## コード
 
@@ -105,7 +105,7 @@ export default () => (
         { heading: "担当" },
         { heading: "状態" },
       ]}
-      expanded={["guide", "guide-admin"]}
+      expanded={["guide"]}
       selection="single"
       items={[
         {
@@ -207,7 +207,7 @@ export default () => (
       aria-label="公開資料と進行状況"
       data-density="compact"
       data-controller="treegrid"
-      data-treegrid-expanded-value='["guide","guide-admin"]'
+      data-treegrid-expanded-value='["guide"]'
       data-treegrid-selection-value="single"
       data-treegrid-selected-value="[]"
       data-treegrid-page-size-value="10"
@@ -227,11 +227,9 @@ export default () => (
           data-treegrid-target="row"
           data-treegrid-value="guide"
           data-treegrid-level="1"
-          data-state="expanded"
           aria-level="1"
           aria-posinset="1"
           aria-setsize="2"
-          aria-expanded="true"
           style="--ply-treegrid-depth: 0"
         >
           <th scope="row" data-cell="text" tabindex="0">
@@ -285,11 +283,9 @@ export default () => (
           data-treegrid-target="row"
           data-treegrid-value="guide-admin"
           data-treegrid-level="2"
-          data-state="expanded"
           aria-level="2"
           aria-posinset="2"
           aria-setsize="2"
-          aria-expanded="true"
           style="--ply-treegrid-depth: 1"
         >
           <th scope="row" data-cell="text" tabindex="-1">
@@ -407,11 +403,9 @@ export default () => (
               data-treegrid-target="row"
               data-treegrid-value="assets"
               data-treegrid-level="1"
-              data-state="expanded"
               aria-level="1"
               aria-posinset="1"
               aria-setsize="1"
-              aria-expanded="true"
               aria-selected="false"
               style="--ply-treegrid-depth: 0"
             >

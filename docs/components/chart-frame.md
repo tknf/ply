@@ -45,6 +45,8 @@
 | `legend`             | `readonly ChartLegendItem[]` | `[]`        | 図の下に並べる凡例。空なら置かない。                                     |
 | `source`             | `string`                     |             | 図の最後に「出典：」を付けて書く出典。                                   |
 
+ほかに、`<figure>`へ標準のHTML属性を渡せます。
+
 読み込むCSS：`layers.css`、`reset.css`、`tokens.css`、`base.css`、`layout.css`、`components/overlay.css`、`components/disclosure.css`、`components/icon.css`、`components/table.css`、`components/chart-frame.css`
 
 #### `ChartLegendItem`

@@ -21,7 +21,10 @@ export type ComboboxProps = Omit<ElementProps<"input">, "type" | "role"> & {
   listLabel?: string;
 };
 
-/** 自由に入力でき、候補の一覧からも選べる一行の入力。残りの属性はinputへ渡す。 */
+/**
+ * 自由に入力でき、候補の一覧からも選べる一行の入力。残りの属性はinputへ渡す。
+ * `role="combobox"`と開閉の矢印はcontrollerが接続してから付けて出す。
+ */
 export const Combobox = ({
   id,
   options,
@@ -39,10 +42,6 @@ export const Combobox = ({
       {...attributes}
       id={id}
       type="text"
-      role="combobox"
-      aria-expanded="false"
-      aria-controls={`${id}-options`}
-      aria-autocomplete="none"
       autocomplete="off"
       data-combobox-target="input"
       data-action="click->combobox#show"
@@ -55,6 +54,7 @@ export const Combobox = ({
       aria-controls={`${id}-options`}
       data-action="click->combobox#toggle"
       disabled={attributes.disabled || attributes.readonly}
+      hidden
     >
       <Icon name="caret" />
     </button>
