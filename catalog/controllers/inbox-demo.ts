@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import { visit } from "@hotwired/turbo";
 
 type Folder = "inbox" | "later" | "done";
 type Entry = { folder: Folder; read: boolean; draft: string };
@@ -94,7 +95,8 @@ export class InboxDemoController extends Controller<HTMLElement> {
     entry.folder = folder;
     const textarea = this.element.querySelector('textarea[name="reply"]');
     if (textarea instanceof HTMLTextAreaElement) entry.draft = textarea.value;
-    if (this.persist()) window.location.assign("/apps/inbox");
+    // 読み込み直すと、次の画面の操作に処理が付く前の押下を捨ててしまうので、Turboで移る。
+    if (this.persist()) visit("/apps/inbox");
     else {
       entry.folder = previousFolder;
       const status = this.element.querySelector("[data-inbox-status]");
