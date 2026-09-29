@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-29
+
 ### 追加
 
 - `AppShell`に、作業面の幅を選ぶ`size`（`compact`・`default`・`wide`）を追加した。`compact`は46rem、`default`は68rem、`wide`は112remを上限にする。
@@ -40,6 +42,7 @@
 - 最初の公開。フレームワークに依存しないCSS（`@tknf/ply/css/*`）、同じHTMLを出力するHono JSXのSSRコンポーネント（`@tknf/ply/hono`）、Stimulus controller（`@tknf/ply/controllers`）、アイコンのSVGスプライト（`@tknf/ply/icons.svg`）を提供する。
 - Plyで画面を組むためのAgent Skillを、リポジトリの`skills/ply`に同梱する（npmのパッケージには含まない）。
 
-[Unreleased]: https://github.com/tknf/ply/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/tknf/ply/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/tknf/ply/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/tknf/ply/compare/v0.1.0...v1.0.0
 [0.1.0]: https://github.com/tknf/ply/releases/tag/v0.1.0
