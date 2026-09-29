@@ -183,7 +183,14 @@ export const componentMarkdown = (doc: ComponentDoc, example: { jsx: string; htm
 };
 
 /** docs/components/README.md。分類ごとの全コンポーネントと、controllerの登録名の一覧。 */
-export const componentIndexMarkdown = () => {
+/**
+ * docs/components/README.mdと、Agent Skillの部品一覧の本文。
+ * skillは利用するプロジェクトへ入れて読むので、リンクはリポジトリのURLにする。
+ */
+export const componentIndexMarkdown = ({
+  componentHref = (id: string) => `${id}.md`,
+  controllersHref = "../controllers.md",
+}: { componentHref?: (id: string) => string; controllersHref?: string } = {}) => {
   const apis = componentApi();
   const controllers = new Map<string, { controller: string; components: Set<string> }>();
   for (const doc of componentDocs)
@@ -191,7 +198,7 @@ export const componentIndexMarkdown = () => {
       for (const entry of apis.get(name)?.controllers ?? []) {
         const [identifier, controller] = entry.split(":");
         const found = controllers.get(identifier) ?? { controller, components: new Set() };
-        found.components.add(`[${name}](${doc.id}.md)`);
+        found.components.add(`[${name}](${componentHref(doc.id)})`);
         controllers.set(identifier, found);
       }
   return [
@@ -206,13 +213,13 @@ export const componentIndexMarkdown = () => {
       "",
       ...group.ids.map((id) => {
         const doc = componentDocs.find((candidate) => candidate.id === id);
-        return doc ? `- [${doc.name}](${id}.md)：${doc.description}` : "";
+        return doc ? `- [${doc.name}](${componentHref(id)})：${doc.description}` : "";
       }),
       "",
     ]),
     "## controllerの登録名",
     "",
-    "`ply/controllers`のcontrollerを、次の登録名でStimulusのApplicationへ登録します。登録の仕方は[controller](../controllers.md)を参照してください。",
+    `\`@tknf/ply/controllers\`のcontrollerを、次の登録名でStimulusのApplicationへ登録します。登録の仕方は[controller](${controllersHref})を参照してください。`,
     "",
     "| 登録名 | controller | 使うコンポーネント |",
     "| --- | --- | --- |",
