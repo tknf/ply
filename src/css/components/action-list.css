@@ -1,9 +1,9 @@
 @layer components {
   /*
-    道具への入口の一覧。罫線や進む矢印を使わず、淡い板の上に印と太字の名前を並べる。
-    印はValueListと同じく、道具の色を淡く敷いた丸に塗りつぶしの印を置き、名前と説明の塊の縦の中央にそろえる。
-    一覧（list）は板に行を積み、指を載せた行を角丸の面にする。並べる時（grid）も同じ行の形のまま、
-    淡い面の角丸のタイルにして格子に並べる。行もタイルも普段は平らで、押すと内側へへこむ（ActionTileと同じ手触り）。
+    ツールへのリンクの一覧。罫線や進む矢印を使わず、淡い背景の上にアイコンと太字の名前を並べる。
+    アイコンはValueListと同じく、ツールの色を淡く敷いた丸に塗りつぶしのアイコンを置き、名前と説明のまとまりの縦の中央にそろえる。
+    一覧（list）は背景の上に行を積み、ホバーした行を角丸の面にする。並べる時（grid）も同じ行の形のまま、
+    淡い面の角丸のタイルにしてグリッドに並べる。行もタイルも普段は平らで、押すと内側へへこむ（ActionTileと同じ手触り）。
   */
   .ply-action-list {
     display: grid;
@@ -13,7 +13,7 @@
     padding-block: var(--ply-space-1);
     padding-inline: var(--ply-space-1);
     border-radius: var(--ply-radius-field);
-    /* 板は地の灰より淡くし、中の行の面と押した時のへこみを見分けやすくする。 */
+    /* 背景はページの灰色より淡くし、中の行の面と押した時のへこみを見分けやすくする。 */
     background: color-mix(in srgb, var(--ply-ink) 2.5%, var(--ply-surface));
     list-style: none;
     color: var(--ply-text);
@@ -61,7 +61,7 @@
           font-size: var(--ply-label);
           line-height: var(--ply-label-leading);
         }
-        /* 道具の印。道具の色を淡く敷いた丸に置き、名前と説明の塊の縦の中央にそろえる。 */
+        /* ツールのアイコン。ツールの色を淡く敷いた丸に置き、名前と説明のまとまりの縦の中央にそろえる。 */
         & > .icon {
           grid-column: 1;
           grid-row: 1 / span 2;
@@ -77,11 +77,11 @@
             font-size: 1rem;
           }
         }
-        /* 中身の見本がある行は背が高くなるので、印を題名の一行目にそろえる。 */
+        /* 中身の見本がある行は背が高くなるので、アイコンを題名の一行目にそろえる。 */
         &:has(> .preview) > .icon {
           align-self: start;
         }
-        /* 名前だけの行は、印と名前を一行の中央でそろえる。 */
+        /* 名前だけの行は、アイコンと名前を一行の中央でそろえる。 */
         &:not(:has(> .description, > .preview)) {
           align-items: center;
           & > .icon {
@@ -99,7 +99,7 @@
             margin-block-start: var(--ply-space-1);
           }
         }
-        /* 印のない入口は、題名を行の始まりから書く。 */
+        /* アイコンのないリンクは、題名を行の先頭から書く。 */
         &:not(:has(> .icon)) {
           grid-template-columns: minmax(0, 1fr);
           & > :is(.title, .description, .preview) {
@@ -115,10 +115,10 @@
         &[data-accent="coral"] {
           --ply-action-list-accent: var(--ply-coral-dark);
         }
-        /* 手当てが要る行は、印・名前・説明を危険の色で書く。 */
+        /* 対応が必要な行は、アイコン・名前・説明を危険の色で書く。 */
         &[data-attention="true"] {
           --ply-action-list-accent: var(--ply-danger);
-          /* 地の板の上でも本文と同じ7:1を保つよう、危険の色に墨を少し混ぜる。 */
+          /* 淡い背景の上でも本文と同じ7:1を保つよう、危険の色に濃い色（黒）を少し混ぜる。 */
           & > :is(.title, .description) {
             color: color-mix(in srgb, var(--ply-danger) 88%, var(--ply-ink));
           }
@@ -139,7 +139,7 @@
       &:not(:has(> .icon))::before {
         inset-inline-start: var(--ply-space-3);
       }
-      /* 指を載せた行と、その次の行の区切りは面に溶かす。 */
+      /* ホバーした行と、その次の行の区切りは面に溶かす。 */
       &:hover::before {
         opacity: 0;
       }
@@ -148,7 +148,7 @@
       opacity: 0;
     }
     /*
-      並べる時は、行と同じ形のまま淡い面の角丸のタイルにして格子に並べる。板は持たない。
+      並べる時は、行と同じ形のまま淡い面の角丸のタイルにしてグリッドに並べる。背景は持たない。
     */
     &[data-layout="grid"] {
       grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));

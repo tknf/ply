@@ -45,7 +45,7 @@ test("タッチ画面では画面の下端に接して開く", async ({ browser 
   await page.locator('[data-dialog-target="trigger"][aria-controls="hono-dialog"]').click();
   const dialog = page.locator("#hono-dialog");
   await expect(dialog).toBeVisible();
-  // 下から滑り上げる動きの途中で測らないよう、動きの終わりを待つ。
+  // 下からスライドして現れる動きの途中で測らないよう、動きの終わりを待つ。
   await dialog.evaluate((element) =>
     Promise.all(element.getAnimations().map((animation) => animation.finished)),
   );
@@ -87,7 +87,7 @@ test("狭い画面で長文をスクロールしても閉じる操作が見え�
   ).toBeInViewport();
 });
 
-test("背景のクリックで閉じた時はclosedbyの対応によらずreasonをpointerで知らせる", async ({
+test("背景のクリックで閉じた時はclosedbyの対応によらずreasonをpointerとして渡す", async ({
   page,
 }) => {
   await page.goto("/components/dialog");

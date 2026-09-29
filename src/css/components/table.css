@@ -30,27 +30,27 @@
     }
     /*
       選択した行の操作は表の中の行に置かず、画面の下の中央に浮かべる。表は一行も動かない。
-      板はActionDockと同じ棚（白い紙・紙の角丸・メニューの影・内側4px）にし、始まりに件数、続けて一括操作を横一列に並べる。
-      解除の×（「選択を解除」）はDialogと同じく紙の終わりの側の上の角から少しはみ出させて置く。
+      選択バーはActionDockと同じ操作バー（白いパネル・パネルの角丸・メニューの影・内側4px）にし、先頭に件数、続けて一括操作を横一列に並べる。
+      解除の×（「選択を解除」）はDialogと同じくパネルの末尾側の上の角から少しはみ出させて置く。
     */
     & > .selection-bar {
       position: fixed;
       inset-block: auto max(var(--ply-space-4), env(safe-area-inset-bottom));
       inset-inline: 0;
-      /* 下から差し出して置き、閉じる時は同じ向きへ下げながら消す（出入りはoverlay.cssの共通の定義）。 */
+      /* 下から出して置き、閉じる時は同じ向きへ下げながら消す（出入りはoverlay.cssの共通の定義）。 */
       transform-origin: bottom center;
       --ply-motion-slide: var(--ply-duration-pop);
       --ply-motion-scale-in: 1;
       --ply-motion-scale-out: 1;
-      /* 板は中身の幅に合わせ、入らない時は操作の列を横にスクロールする。 */
+      /* 選択バーは中身の幅に合わせ、入らない時は操作の列を横にスクロールする。 */
       inline-size: max-content;
       max-inline-size: calc(100% - 2 * var(--ply-space-4));
-      /* 角の×をはみ出させるため、紙は切り取らない。 */
+      /* 角の×をはみ出させるため、パネルは切り取らない。 */
       overflow: visible;
       margin: 0;
       margin-inline: auto;
       padding-block: var(--ply-space-1);
-      /* 終わりの側は、角の×が重なる分を空けて、最後の操作を×の下に入れない。 */
+      /* 末尾側は、角の×が重なる分を空けて、最後の操作を×の下に入れない。 */
       padding-inline: var(--ply-space-1)
         calc(var(--ply-overlay-close-size) - var(--ply-overlay-close-offset));
       border: 0;
@@ -207,7 +207,7 @@
           opacity: 0.6;
           box-shadow: none;
         }
-        /* 並べ替え中の列以外は、見出しに触れた時だけ印を出して見出しを静かに保つ。 */
+        /* 並べ替え中の列以外は、見出しにホバーした時だけアイコンを出して見出しを静かに保つ。 */
         & > .indicator {
           inline-size: 1rem;
           color: var(--ply-muted);
@@ -237,7 +237,7 @@
       & > tbody > tr[data-selected="true"] {
         background: var(--ply-info-soft);
       }
-      /* 行の題名のリンクは墨のMediumの文字にし、指を載せた時だけ青くする。 */
+      /* 行の題名のリンクは濃い色のMediumの文字にし、ホバー時だけ青くする。 */
       & > tbody > tr > :is(th, td) > a {
         color: var(--ply-text);
         font-weight: 500;
@@ -255,7 +255,7 @@
       }
     }
   }
-  /* 選択の板は、開き始めを少し下に置いて差し出す。 */
+  /* 選択バーは、開き始めを少し下に置いて出す。 */
   @starting-style {
     .ply-table > .selection-bar:popover-open {
       translate: 0 1.5rem;
@@ -266,7 +266,7 @@
       outline: var(--ply-stroke-width) solid CanvasText;
     }
   }
-  /* 触れて確かめられない端末では、並べ替えられる列だと分かるよう印を常に出す。 */
+  /* ホバーできない端末では、並べ替えられる列だと分かるようアイコンを常に出す。 */
   @media (hover: none) {
     .ply-table > table > thead > tr > th > .sort > .indicator {
       opacity: 1;

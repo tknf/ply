@@ -23,14 +23,14 @@ const trigger = (result: string) => {
   return { tag: match[0].slice(0, match[0].indexOf(">") + 1), content: match[1] ?? "" };
 };
 
-test("印だけの開く操作にiconが無ければ▾の印を出す", async () => {
+test("アイコンだけの開く操作にiconが無ければ▾のマークを出す", async () => {
   const result = trigger(await render(<FilterMenu {...props({ iconOnly: true })} />));
   expect(result.tag).toContain('aria-label="ラベル"');
   expect(result.content).toContain("#ply-caret");
   expect(result.content).not.toContain("ラベル");
 });
 
-test("印だけの開く操作にiconがあれば▾を足さない", async () => {
+test("アイコンだけの開く操作にiconがあれば▾を追加しない", async () => {
   const result = trigger(
     await render(<FilterMenu {...props({ iconOnly: true, icon: "check" })} />),
   );

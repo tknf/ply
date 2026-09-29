@@ -12,7 +12,7 @@
     min-block-size: var(--ply-button-size);
     max-inline-size: 100%;
     padding-block: 0;
-    /* 押す物はピル。主・控えめ・危険は形ではなく塗りの色で分ける。丸い端に文字が寄らないよう左右を広げる。 */
+    /* ボタンはピル。主・控えめ・危険は形ではなく塗りの色で分ける。丸い端に文字が寄らないよう左右を広げる。 */
     padding-inline: 1.25em;
     border: var(--ply-stroke-width) solid var(--ply-border);
     border-radius: var(--ply-radius-pill);
@@ -27,7 +27,7 @@
     text-decoration: none;
     overflow-wrap: anywhere;
     cursor: pointer;
-    /* 押す物は浮かせない。普段は平らにし、指を載せると面を少し濃くし、押すと内側へへこむ（ActionTileと同じ手触り）。 */
+    /* ボタンは浮かせない。通常時は平らにし、ホバーすると面を少し濃くし、押すと内側へへこむ（ActionTileと同じ手触り）。 */
     box-shadow: none;
     transition:
       background-color var(--ply-duration) ease,
@@ -58,7 +58,7 @@
       line-height: var(--ply-control-leading);
     }
     /*
-      主操作と危険は役割の色の135度で塗る。浮かせず、指を載せると塗りの上に薄い墨を重ねて少し濃くし、
+      主操作と危険は役割の色の135度で塗る。浮かせず、ホバーすると塗りの上に薄い黒を重ねて少し濃くし、
       押すと内側へへこむ。
     */
     &[data-variant="primary"],
@@ -96,7 +96,7 @@
 
     /*
       文字だけの操作は下線を引かず、青い文字にする。
-      指を載せると淡い青のピルの面が現れ、押すと少し濃くなる。
+      ホバーすると淡い青のピルの面が現れ、押すと少し濃くなる。
     */
     &[data-variant="link"] {
       background: transparent;
@@ -145,7 +145,7 @@
 
     /*
       処理中は、Progressの終わりが分からない時と同じく、操作そのものは動かさず、役割の色だけを一方向にゆっくり流す。
-      模様は操作の幅の二倍で繰り返し、一巡りでちょうど元の色に戻る。流す色の組は変種ごとに下で決める。
+      模様は操作の幅の二倍で繰り返し、一巡りでちょうど元の色に戻る。流す色の組はバリエーションごとに下で決める。
       塗った操作の明るい側は、白い文字との対比が4.5:1を下回らない割合にとどめる（primary 90%、danger 82%）。
     */
     &[data-busy="true"] {
@@ -185,7 +185,7 @@
     }
   }
 
-  /* 動きを減らす時は流さず、流す色の組を敷いたまま止める。 */
+  /* 動きを減らす設定の時は流さず、流す色の組を敷いたまま止める。 */
   @media (prefers-reduced-motion: reduce) {
     .ply-button[data-busy="true"] {
       animation: none;

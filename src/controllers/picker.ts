@@ -69,7 +69,7 @@ export class PickerController extends Controller<HTMLElement> {
         ? selected.filter((candidate) => candidate !== value)
         : [...selected, value]
       : [value];
-    // 一つを選ぶ時に選び済みの候補を選び直しても、標準のselectと同じく変更を知らせない。
+    // 一つを選ぶ時に選択済みの候補を選び直しても、標準のselectと同じく変更イベントを発火しない。
     if (
       next.length === selected.length &&
       next.every((candidate, index) => candidate === selected[index])

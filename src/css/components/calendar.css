@@ -62,7 +62,7 @@
       }
       /*
         月は外枠を持たず、日の間の淡い線だけで区切る静かな表。
-        日付は日の終わりの側の上に置き、今日は日付だけをマーカーで塗って、セル全体を塗らない。
+        日付は日のセルの末尾側の上に置き、今日は日付だけをマーカーで塗って、セル全体を塗らない。
       */
       & > table {
         inline-size: 100%;
@@ -126,7 +126,7 @@
         & > tbody > tr:last-child > :is(td, th) {
           border-block-end: 0;
         }
-        /* 使えない日は斜線。今日を含む週は、墨の太い角丸の枠で一週間をまとめて囲む。 */
+        /* 使えない日は斜線。今日を含む週は、濃い色の太い角丸の枠で一週間をまとめて囲む。 */
         & > tbody > tr > td[data-disabled="true"] {
           background-image: var(--ply-hatch);
         }
@@ -226,8 +226,8 @@
       }
     }
     /*
-      予定は分類の色で淡く塗った小さな札にし、淡い時刻と太字の題名を一行に並べる。
-      色は面だけに使い、文字は墨にする。既定は青。過去の予定は面と文字を淡くする。
+      予定は分類の色で淡く塗って小さく置き、淡い時刻と太字の題名を一行に並べる。
+      色は面だけに使い、文字は濃い色にする。既定は青。過去の予定は面と文字を淡くする。
     */
     & > .viewport > table > tbody > tr > td > .events > li > .event,
     & > .viewport > .week > .column > .all-day > ul > li > .event,
@@ -254,7 +254,7 @@
       line-height: 1rem;
       text-decoration: none;
       transition: background-color var(--ply-duration) ease;
-      /* 詳細を持つ予定の札はbutton。リンクの札と同じ見た目にそろえ、文字の指定はこのファイルが持つ。 */
+      /* 詳細を持つ予定はbutton。リンクの予定と同じ見た目にそろえ、文字の指定はこのファイルが持つ。 */
       &:is(button) {
         appearance: none;
         inline-size: 100%;
@@ -438,7 +438,7 @@
           position: sticky;
           inset-block-start: 0;
           z-index: 3;
-          /* 曜日と日付は、日の終わりの側に「木 24」と並べる。 */
+          /* 曜日と日付は、日の末尾側に「木 24」と並べる。 */
           display: flex;
           justify-content: end;
           align-items: center;
@@ -626,8 +626,8 @@
         display: grid;
         grid-template-columns: repeat(7, minmax(0, 1fr));
         /*
-          月・週の表示と同じく、格子は外枠に角丸を付けず、升の線だけで区切る
-          （角丸で切り抜くと、角の升の縁の線と、升いっぱいの指を載せた時の枠が角で欠けてずれる）。
+          月・週の表示と同じく、グリッドは外枠に角丸を付けず、セルの線だけで区切る
+          （角丸で切り抜くと、角のセルの縁の線と、セルいっぱいのホバー時の枠が角で欠けてずれる）。
         */
         border-block-start: var(--ply-stroke-width) solid var(--ply-border);
         border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
@@ -653,8 +653,8 @@
             background: var(--ply-info-soft);
           }
           /*
-            指を載せた時の面と枠は角丸にし、升の線から上下左右とも同じ2pxだけ内側に離して浮かべる
-            （升いっぱいに角丸を置くと、辺は升の線に接するのに角だけ離れて、ずれて見える）。
+            ホバー時の面と枠は角丸にし、セルの線から上下左右とも同じ2pxだけ内側に離して浮かべる
+            （セルいっぱいに角丸を置くと、辺はセルの線に接するのに角だけ離れて、ずれて見える）。
           */
           & > .month-link {
             position: absolute;
@@ -686,7 +686,7 @@
             white-space: nowrap;
             pointer-events: none;
           }
-          /* 週の終わりの列で始まる月は、札を終わりの側に寄せて、文字を大きくしても表の外へはみ出さない。 */
+          /* 週の最後の列で始まる月は、ラベルを末尾側に寄せて、文字を大きくしても表の外へはみ出さない。 */
           &[data-last-column="true"] > .month-label,
           &[data-last-column="true"] > .month-link > .month-label {
             inset-inline: auto 0;
@@ -697,7 +697,7 @@
             z-index: 1;
             display: flex;
             justify-content: end;
-            /* 日付を上に置き、今日の印が升の高さまで伸びないようにする。 */
+            /* 日付を上に置き、今日のマーカーがセルの高さまで伸びないようにする。 */
             align-items: start;
             /* 内側へ離した2pxの分だけ余白を減らし、リンクのない日と数字の位置をそろえる。 */
             padding-block: calc(var(--ply-space-1) - 0.125rem);
@@ -808,7 +808,7 @@
         }
         & > h3 {
           margin: 0;
-          /* 日付の幅は中身に合わせ、今日の印を行の幅まで伸ばさない。 */
+          /* 日付の幅は中身に合わせ、今日のマーカーを行の幅まで伸ばさない。 */
           & > time {
             display: flex;
             inline-size: fit-content;
@@ -899,7 +899,7 @@
       outline-offset: 0.0625rem;
     }
     /*
-      月の始まりは小さな旗。日の始まりの側の縁に淡い竿を立て、上に月の名前の札を掲げる。
+      月の始まりは小さな旗。日の先頭側の縁に淡い縦線を立て、上に月の名前のラベルを付ける。
     */
     & > .month-start {
       position: absolute;
@@ -920,8 +920,8 @@
     }
   }
   /*
-    今日の印。蛍光ペンの黄を、傾けずに素直なピルで日付の後ろに敷く。
-    月の日付、週の見出し（曜日と日付）、一覧の日付、年の日付で同じ印にする。
+    今日のマーカー。蛍光ペンの黄を、傾けずにそのままのピル形で日付の後ろに敷く。
+    月の日付、週の見出し（曜日と日付）、一覧の日付、年の日付で同じマーカーにする。
   */
   :where(
     .ply-calendar > .viewport > table > tbody > tr > td > :is(a, time).day[data-current="true"],
@@ -943,7 +943,7 @@
       pointer-events: none;
     }
   }
-  /* 月の日付は数字の箱そのものが丸なので、印を箱の外へ張り出さず、隣の日の線に触れないようにする。 */
+  /* 月の日付は数字の要素そのものが丸なので、マーカーを要素の外へ張り出さず、隣の日の線に触れないようにする。 */
   :where(
     .ply-calendar > .viewport > table > tbody > tr > td > :is(a, time).day[data-current="true"]
   )::before {
@@ -1029,7 +1029,7 @@
     }
   }
   @media (forced-colors: active) {
-    /* 強制カラーでは地の色が消えるため、今日の印をシステムの強調色で塗る。 */
+    /* 強制カラーでは背景色が消えるため、今日のマーカーをシステムの強調色で塗る。 */
     :where(
       .ply-calendar > .viewport > table > tbody > tr > td > :is(a, time).day[data-current="true"],
       .ply-calendar > .viewport > .week > .column > .heading > .date[data-current="true"],

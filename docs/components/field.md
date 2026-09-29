@@ -10,7 +10,7 @@
 - 一行の文字は `Input`、改行を含む長い文は `Textarea`、上限のある文は `CountedTextarea`、パスワードは `PasswordField` を使います。
 - 決まった少数の選択肢から一つを選ぶ時は、全て見せてよければ `Choice` の `type="radio"`、場所を取りたくなければ `Select` を使います。
 - 選択肢が多く探して選ぶ時は `Picker`、自由入力に候補を添える時は `Suggestion` を使います。打った文字で絞り込まず、候補の一覧を開いて選ぶだけでよい時は `Combobox` を使います。
-- 一つのオン・オフは `Choice`（同意などの確認）か `Switch`（設定のオン・オフ）、複数を選ぶ時は `CheckboxGroup` を使います。全て選択が要らない短い束は `Choice` を `fieldset.ply-choice-group` に並べます。
+- 一つのオン・オフは `Choice`（同意などの確認）か `Switch`（設定のオン・オフ）、複数を選ぶ時は `CheckboxGroup` を使います。全て選択が要らない短いグループは `Choice` を `fieldset.ply-choice-group` に並べます。
 - 数は `NumberField`、日付は `DateField`、時刻は `TimeField` を使います。単位や接頭辞を添える時は `InputGroup`、カレンダーから日付や期間を選ぶ時は `DatePicker`、開始と終了の日時は `DateTimeRange` を使います。
 - 連続する数値をおおよそで決める時は `Range`、3〜8個の決まった値から選ぶ時は `Dial` を使います。
 
@@ -20,34 +20,34 @@
 
 `help` は入力の下の淡い補足、`error` は直す所を書くエラー文です。`error` を渡すと入力を赤い縁にし、`aria-invalid` を付けます。現在値を淡い補足へ置かず、入力の値として見せます。`status` はラベルの行の終わりに保存の状態などを並べます。
 
-`Input`・`Textarea`・`Select` は標準の要素に `ply-input` を付けたもので、属性をそのまま渡します。`readonly` は面を淡くして値を読めるままにし、`disabled` は斜線の面にします。`Choice` は `label` で包んだチェックボックスかラジオボタンで、`kind="option"` は説明を伴う選択肢を淡い面に載せます。`Choice` の束は `fieldset.ply-choice-group` の `div.list` に並べ、`legend` で名前を付けます。
+`Input`・`Textarea`・`Select` は標準の要素に `ply-input` を付けたもので、属性をそのまま渡します。`readonly` は面を淡くして値を読めるままにし、`disabled` は斜線の面にします。`Choice` は `label` で包んだチェックボックスかラジオボタンで、`kind="option"` は説明を伴う選択肢を淡い面に載せます。`Choice` のグループは `fieldset.ply-choice-group` の `div.list` に並べ、`legend` で名前を付けます。
 
-`PasswordField` は右端の目の印で、入力を伏せ字と文字の表示で切り替えます。フォームを送信した時とリセットした時は伏せ字に戻します。`PasswordFieldController` を `password-field` として登録します。
+`PasswordField` は右端の目のアイコンで、入力を伏せ字と文字の表示で切り替えます。フォームを送信した時とリセットした時は伏せ字に戻します。`PasswordFieldController` を `password-field` として登録します。
 
 `CountedTextarea` は入力の下に「12 / 40 文字」の形で文字数を出します。文字数はcontrollerが接続してから出します。`limit` を超えても入力は止めず、`overflowMessage` を出して入力を無効な状態にし、フォームの送信を止めます。数えるのはUTF-16の単位の長さです。`CharacterCountController` を `character-count` として登録します。
 
 `Combobox` は自由に入力できる欄に、候補の一覧を添えます。欄か右の矢印を押すと一覧が開き、候補を選ぶと値が欄に入って一覧を閉じます。打った文字では絞り込みません。`readonly`・`disabled` の間は一覧を開きません。`ComboboxController` を `combobox` として登録します。候補を選ぶと `combobox:change` を出し、欄でも打って変えた時と同じく標準の `input`・`change` を発火します。開閉の矢印と `role="combobox"` はcontrollerが接続してから付けます。
 
-`CheckboxGroup` は先頭に全て選択の印を置き、全て選ぶとオン、一部だけの時は中間の印にします。全て選択は `disabled` の選択肢を切り替えません。選んだ値は `name` で一つずつ送信し、全て選択の印は送信しません。`value` が空白だけの選択肢と、重なった値の二つ目以降は出しません。`CheckboxGroupController` を `checkbox-group` として登録します。
+`CheckboxGroup` は先頭に全て選択のチェックボックスを置き、全て選ぶとオン、一部だけの時は中間の状態にします。全て選択は `disabled` の選択肢を切り替えません。選んだ値は `name` で一つずつ送信し、全て選択のチェックボックスは送信しません。`value` が空白だけの選択肢と、重なった値の二つ目以降は出しません。`CheckboxGroupController` を `checkbox-group` として登録します。
 
 `NumberField`・`DateField`・`TimeField` は標準の `number`・`date`・`time` の入力で、`min`・`max`・`step` をそのまま使います。値が `min`・`max` と等しいとルートの `data-state` を `min`・`max` にし、それ以外は `between` にします。`NumberField` は PageUp・PageDown で `pageStep` 倍のstepだけ動かします。この変更も、矢印キーや打って変えた時と同じく標準の `input`・`change` を発火し、`number-field:change` を出します。それぞれ `NumberFieldController` を `number-field`、`DateFieldController` を `date-field`、`TimeFieldController` を `time-field` として登録します。
 
 入力のCSSは `components/field.css` にあります。`Field` の外で入力だけを使う場合も読み込みます。
 
-controllerを登録しない時、またはJavaScriptが無い時は、標準の入力として動きます。`PasswordField` は切り替えの印を出さず、`CountedTextarea` は文字数を出さず上限でも送信を止めません。`Combobox` は開閉の矢印の無い一行の入力、`CheckboxGroup` の全て選択は押しても他を切り替えません。入力の検証は送信先でも行います。
+controllerを登録しない時、またはJavaScriptが無い時は、標準の入力として動きます。`PasswordField` は切り替えのボタンを出さず、`CountedTextarea` は文字数を出さず上限でも送信を止めません。`Combobox` は開閉の矢印の無い一行の入力、`CheckboxGroup` の全て選択は押しても他を切り替えません。入力の検証は送信先でも行います。
 
 ## キーボード
 
-| キー                                              | 動作                                                                             |
-| ------------------------------------------------- | -------------------------------------------------------------------------------- |
-| Space（`Choice`・`CheckboxGroup`）                | 標準の操作でオン・オフを切り替えます。ラジオボタンの束は矢印キーで選び直します。 |
-| Enter / Space（`PasswordField` の切り替えの操作） | 伏せ字と文字の表示を切り替えます。                                               |
-| ↓ / ↑（`Combobox`）                               | 一覧を開き、次・前の候補へ移ります。                                             |
-| Home / End（`Combobox` の一覧が開いている時）     | 最初・最後の候補へ移ります。                                                     |
-| Enter（`Combobox` の一覧が開いている時）          | 移った候補を選びます。                                                           |
-| Escape（`Combobox` の一覧が開いている時）         | 一覧を閉じます。                                                                 |
-| PageUp / PageDown（`NumberField`）                | `pageStep` 倍のstepだけ増減します。`min`・`max` を超えません。                   |
-| ↑ / ↓（`NumberField`・`DateField`・`TimeField`）  | 標準の操作で値を増減します。                                                     |
+| キー                                              | 動作                                                                                   |
+| ------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Space（`Choice`・`CheckboxGroup`）                | 標準の操作でオン・オフを切り替えます。ラジオボタンのグループは矢印キーで選び直します。 |
+| Enter / Space（`PasswordField` の切り替えの操作） | 伏せ字と文字の表示を切り替えます。                                                     |
+| ↓ / ↑（`Combobox`）                               | 一覧を開き、次・前の候補へ移ります。                                                   |
+| Home / End（`Combobox` の一覧が開いている時）     | 最初・最後の候補へ移ります。                                                           |
+| Enter（`Combobox` の一覧が開いている時）          | 移った候補を選びます。                                                                 |
+| Escape（`Combobox` の一覧が開いている時）         | 一覧を閉じます。                                                                       |
+| PageUp / PageDown（`NumberField`）                | `pageStep` 倍のstepだけ増減します。`min`・`max` を超えません。                         |
+| ↑ / ↓（`NumberField`・`DateField`・`TimeField`）  | 標準の操作で値を増減します。                                                           |
 
 ## アクセシビリティ
 
@@ -56,7 +56,7 @@ controllerを登録しない時、またはJavaScriptが無い時は、標準の
 - `PasswordField` の切り替えの操作は `aria-controls` で入力を指し、状態に合わせて `showLabel`・`hideLabel` を読み上げ名にします。マウスで切り替えた後は入力へフォーカスと選択範囲を戻します。
 - `CountedTextarea` は文字数を入力の説明として関連付け、超えた時はエラー文も関連付けます。
 - `Combobox` の欄はcontrollerが接続すると `role="combobox"` になり、`aria-expanded` と `aria-activedescendant` で開閉と移った候補を伝えます。JavaScriptが無い時は標準の一行の入力として読み上げます。`toggleLabel`・`listLabel` には何の候補かを含めます。
-- `CheckboxGroup` は `fieldset` と `legend` で束の名前を伝えます。一部だけ選んだ時の全て選択は中間の状態として読み上げます。
+- `CheckboxGroup` は `fieldset` と `legend` でグループの名前を伝えます。一部だけ選んだ時の全て選択は中間の状態として読み上げます。
 
 ## イベント
 
@@ -78,17 +78,17 @@ controllerを登録しない時、またはJavaScriptが無い時は、標準の
 
 ### Field
 
-ラベル・入力・補足・エラーを並べ、読み上げの関連付けを作る。入力そのものはchildrenで描く。
+ラベル・入力・補足・エラーを並べ、読み上げの関連付けを作る。入力そのものはchildrenで描画する。
 
-| 名前               | 型                                         | 既定値 | 説明                                                                        |
-| ------------------ | ------------------------------------------ | ------ | --------------------------------------------------------------------------- |
-| `id`（必須）       | `string`                                   |        | 入力のid。ラベルのforと補足・エラーのidの元になる。画面内で一意にする。     |
-| `label`（必須）    | `string`                                   |        | 入力の上に出すラベル。読み上げの名前になる。                                |
-| `help`             | `string`                                   |        | 入力の下に出す淡い補足。入力の説明として読み上げる。現在値は置かない。      |
-| `error`            | `string`                                   |        | 直す所を書くエラー文。渡すと入力をaria-invalidにし、説明として読み上げる。  |
-| `describedBy`      | `string`                                   |        | 補足・エラーより前に説明として関連付ける、ほかの要素のid。                  |
-| `status`           | `Child`                                    |        | ラベルの行の終わりに並べる状態（保存の状態やBadgeなど）。                   |
-| `children`（必須） | `(attributes: ControlAttributes) => Child` |        | 入力を描く関数。受け取った属性（ControlAttributes）を入力の要素へ展開する。 |
+| 名前               | 型                                         | 既定値 | 説明                                                                            |
+| ------------------ | ------------------------------------------ | ------ | ------------------------------------------------------------------------------- |
+| `id`（必須）       | `string`                                   |        | 入力のid。ラベルのforと補足・エラーのidの元になる。画面内で一意にする。         |
+| `label`（必須）    | `string`                                   |        | 入力の上に出すラベル。読み上げの名前になる。                                    |
+| `help`             | `string`                                   |        | 入力の下に出す淡い補足。入力の説明として読み上げる。現在値は置かない。          |
+| `error`            | `string`                                   |        | 直す所を書くエラー文。渡すと入力をaria-invalidにし、説明として読み上げる。      |
+| `describedBy`      | `string`                                   |        | 補足・エラーより前に説明として関連付ける、ほかの要素のid。                      |
+| `status`           | `Child`                                    |        | ラベルの行の末尾に並べる状態（保存の状態やBadgeなど）。                         |
+| `children`（必須） | `(attributes: ControlAttributes) => Child` |        | 入力を描画する関数。受け取った属性（ControlAttributes）を入力の要素へ展開する。 |
 
 読み込むCSS：`layers.css`、`reset.css`、`tokens.css`、`base.css`、`layout.css`、`components/field.css`、`components/icon.css`
 
@@ -101,7 +101,7 @@ Fieldが入力へ渡す属性。入力の要素へそのまま展開する。
 | `id`（必須）       | `string` |        | Fieldのid。ラベルのforが指す。                                            |
 | `aria-describedby` | `string` |        | describedBy・補足・エラーのidを空白で並べたもの。どれも無ければ付かない。 |
 | `aria-invalid`     | `"true"` |        | errorがある時だけ"true"。                                                 |
-| `data-invalid`     | `"true"` |        | errorがある時だけ"true"。赤い縁の表示に使う。                             |
+| `data-invalid`     | `"true"` |        | errorがある時だけ"true"。赤い枠線の表示に使う。                           |
 
 ### Input
 
@@ -131,12 +131,12 @@ Fieldが入力へ渡す属性。入力の要素へそのまま展開する。
 
 チェックボックスかラジオボタンと、その名前。残りの属性はinputへ渡す。
 
-| 名前            | 型                       | 既定値       | 説明                                                                              |
-| --------------- | ------------------------ | ------------ | --------------------------------------------------------------------------------- |
-| `type`          | `HTMLInputTypeAttribute` | `"checkbox"` | checkboxは個別のオン・オフ、radioは同じnameの中から一つを選ぶ。                   |
-| `label`（必須） | `string`                 |              | 選択肢の名前。印の横に出し、labelで包んで押せる範囲にする。                       |
-| `description`   | `Child`                  |              | 名前の下に添える淡い説明。渡すと名前を太字にする。                                |
-| `kind`          | `"plain" \| "option"`    | `"plain"`    | plainは印と名前だけ、optionは説明を伴う選択肢を淡い面に載せ、選ぶと淡い青にする。 |
+| 名前            | 型                       | 既定値       | 説明                                                                                    |
+| --------------- | ------------------------ | ------------ | --------------------------------------------------------------------------------------- |
+| `type`          | `HTMLInputTypeAttribute` | `"checkbox"` | checkboxは個別のオン・オフ、radioは同じnameの中から一つを選ぶ。                         |
+| `label`（必須） | `string`                 |              | 選択肢の名前。マークの横に出し、labelで包んで押せる範囲にする。                         |
+| `description`   | `Child`                  |              | 名前の下に添える淡い説明。渡すと名前を太字にする。                                      |
+| `kind`          | `"plain" \| "option"`    | `"plain"`    | plainはマークと名前だけ、optionは説明を伴う選択肢を淡い背景に載せ、選ぶと淡い青にする。 |
 
 ほかに、`<input>`へ標準のHTML属性を渡せます。
 
@@ -183,7 +183,7 @@ Fieldが入力へ渡す属性。入力の要素へそのまま展開する。
 | ----------------- | --------------------------- | -------------- | -------------------------------------------------------------- |
 | `id`（必須）      | `string`                    |                | 入力のid。候補の一覧（`<id>-options`）と各候補のidの元になる。 |
 | `options`（必須） | `readonly ComboboxOption[]` |                | 一覧に出す候補。入力した文字では絞り込まない。                 |
-| `toggleLabel`     | `string`                    | `"候補を開閉"` | 一覧を開閉する矢印の操作の読み上げ名。何の候補かを含める。     |
+| `toggleLabel`     | `string`                    | `"候補を開閉"` | 一覧を開閉する矢印ボタンの読み上げ名。何の候補かを含める。     |
 | `listLabel`       | `string`                    | `"候補"`       | 候補の一覧の読み上げ名。                                       |
 
 ほかのpropsは`Input`へそのまま渡します。
@@ -202,7 +202,7 @@ Fieldが入力へ渡す属性。入力の要素へそのまま展開する。
 
 ### CheckboxGroup
 
-複数を選べるチェックボックスの束と、全て選択の印。
+複数を選べるチェックボックスのグループと、全て選択のチェックボックス。
 
 | 名前              | 型                               | 既定値         | 説明                                                                       |
 | ----------------- | -------------------------------- | -------------- | -------------------------------------------------------------------------- |
@@ -210,7 +210,7 @@ Fieldが入力へ渡す属性。入力の要素へそのまま展開する。
 | `legend`（必須）  | `string`                         |                | まとまりの名前。fieldsetのlegendになる。                                   |
 | `options`（必須） | `readonly CheckboxGroupOption[]` |                | 選択肢。一つも無い時は「選択肢はありません。」と出し、全て選択も出さない。 |
 | `selected`        | `readonly string[]`              | `[]`           | 最初に選んでおく値。                                                       |
-| `allLabel`        | `string`                         | `"すべて選択"` | 先頭に置く全て選択の名前。この印は送信しない。                             |
+| `allLabel`        | `string`                         | `"すべて選択"` | 先頭に置く全て選択の名前。このチェックボックスは送信しない。               |
 
 ほかに、`<fieldset>`へ標準のHTML属性を渡せます。
 
@@ -243,7 +243,7 @@ Fieldが入力へ渡す属性。入力の要素へそのまま展開する。
 
 ### DateField
 
-日付の入力。標準のdate入力で、値はYYYY-MM-DD。変更を取り消せるイベントを足す。
+日付の入力。標準のdate入力で、値はYYYY-MM-DD。変更を取り消せるイベントを追加する。
 
 登録するcontroller：`date-field`（`DateFieldController`）
 
@@ -251,7 +251,7 @@ Fieldが入力へ渡す属性。入力の要素へそのまま展開する。
 
 ### TimeField
 
-時刻の入力。標準のtime入力で、値はHH:MM（stepによっては秒も）。変更を取り消せるイベントを足す。
+時刻の入力。標準のtime入力で、値はHH:MM（stepによっては秒も）。変更を取り消せるイベントを追加する。
 
 登録するcontroller：`time-field`（`TimeFieldController`）
 

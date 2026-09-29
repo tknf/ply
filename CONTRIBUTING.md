@@ -15,35 +15,35 @@ vp run dev
 
 ## ソースの構成
 
-| パス              | 内容                                                                 | 公開入口          |
-| ----------------- | -------------------------------------------------------------------- | ----------------- |
-| `src/css`         | フレームワークに依存しないCSS                                        | `ply/css/*`       |
-| `src/hono`        | HonoのSSRコンポーネントと型                                          | `ply/hono`        |
-| `src/controllers` | Stimulus controllerの公開入口                                        | `ply/controllers` |
-| `src/internal`    | アイコンの一覧や計算など、内部で共有する処理                         | —                 |
-| `catalog`         | カタログのHonoアプリと利用例のアプリ                                 | 配布に含めない    |
-| `public`          | カタログが配信するアイコンのスプライトと見本の画像                   | 配布に含めない    |
-| `scripts`         | ビルド・検査・アイコン生成のスクリプト                               | —                 |
-| `test`            | 単体テスト（`test/*.test.ts`）と表示・操作のテスト（`test/browser`） | —                 |
+| パス              | 内容                                                                 | エントリーポイント |
+| ----------------- | -------------------------------------------------------------------- | ------------------ |
+| `src/css`         | フレームワークに依存しないCSS                                        | `ply/css/*`        |
+| `src/hono`        | HonoのSSRコンポーネントと型                                          | `ply/hono`         |
+| `src/controllers` | Stimulus controllerのエントリーポイント                              | `ply/controllers`  |
+| `src/internal`    | アイコンの一覧や計算など、内部で共有する処理                         | —                  |
+| `catalog`         | カタログのHonoアプリと利用例のアプリ                                 | 配布に含めない     |
+| `public`          | カタログが配信するアイコンのスプライトと見本の画像                   | 配布に含めない     |
+| `scripts`         | ビルド・検査・アイコン生成のスクリプト                               | —                  |
+| `test`            | 単体テスト（`test/*.test.ts`）と表示・操作のテスト（`test/browser`） | —                  |
 
 - `index.ts`は再exportだけを持ちます。
 - Honoのコンポーネントはブラウザ用のコードをimportしません。
 - controllerは自動で起動・登録しません。`@tknf/stimulus-ui`の機能を利用・継承し、Ply固有の配置と操作は追加のcontrollerが持ちます。
-- カタログは部品だけで組みます。部品の説明は`catalog/component-docs/<id>.ts`、見本は`catalog/hono-examples/<id>.tsx`、分類は`catalog/component-groups.ts`です。見本のファイルがそのままカタログのHonoのコードとして掲載されます。
+- カタログはコンポーネントだけで組みます。コンポーネントの説明は`catalog/component-docs/<id>.ts`、見本は`catalog/hono-examples/<id>.tsx`、分類は`catalog/component-groups.ts`です。見本のファイルがそのままカタログのHonoのコードとして掲載されます。
 - 利用例のアプリの保存処理はカタログの中のデモ（`catalog/controllers`）で、配布物に含めません。
 
-## コンポーネントを足す
+## コンポーネントを追加する
 
 1. `src/css/components/<名前>.css`を書き、`src/hono/stylesheets.ts`に加えます。
 2. `src/hono/<名前>.tsx`を書き、`src/hono/index.ts`から再exportします。
 3. 動作が要る場合は`src/controllers`に書き、`src/controllers/index.ts`から再exportします。
 4. `catalog/component-docs/<id>.ts`に説明、`catalog/hono-examples/<id>.tsx`に見本、`catalog/component-groups.ts`に分類を加えます。propsには全てJSDocを書きます（[リファレンス](#リファレンス)）。
-5. 既存の部品（Button・Keycap・Badgeなど）を組み合わせ、ボタンや入力欄を作り直しません。まとまった塊は別の部品に切り出します。
-6. [デザインの原則](docs/principles.md)に沿っているか、状態・長い文字・狭い場所・使えない時・右から左に読む場合を見本に並べて確かめます。
+5. 既存のコンポーネント（Button・Keycap・Badgeなど）を組み合わせ、ボタンや入力欄を作り直しません。まとまった部分は別のコンポーネントに切り出します。
+6. [デザインの原則](docs/principles.md)に沿っているか、状態・長い文字列・狭い幅・無効時・右から左に読む言語を見本に並べて確かめます。
 
 ## リファレンス
 
-各部品のページ（カタログの`/components/<id>`と`docs/components/<id>.md`）は、二つの一次情報から作ります。
+各コンポーネントのページ（カタログの`/components/<id>`と`docs/components/<id>.md`）は、二つの一次情報から作ります。
 
 | 内容                                                                 | 一次情報                                                  |
 | -------------------------------------------------------------------- | --------------------------------------------------------- |
@@ -64,23 +64,23 @@ vp run build          # 配布物とカタログの生成
 vp run check:package  # 配布物の型で見本をコンパイル
 ```
 
-- `check:css`（`check`に含む）は、論理プロパティ、ネスト、レイヤー、禁止記法、未定義のトークン、部品のクラス名、操作コンポーネントの文字指定を検査します。
+- `check:css`（`check`に含む）は、論理プロパティ、ネスト、レイヤー、禁止記法、未定義のトークン、コンポーネントのクラス名、操作コンポーネントの文字指定を検査します。
 - `check:package`はカタログの見本を`ply/hono`の配布型でもコンパイルし、ソースと公開型の食い違いを検出します。
 - 表示と操作のテストはPlaywrightで、Chromium・Firefox・WebKitを使います。合否の基準はChromiumです。FirefoxとWebKitは補助の確認で、そこだけの失敗は報告したうえで、直すかどうかを別に決めます。
-- ブラウザテストは部品単位にします。カタログのサイトや利用例のアプリ（`/apps/*`）の流れ、画面の移動は配布物ではないのでテストしません。部品の責任は、その部品のページで確かめます。
+- ブラウザテストはコンポーネント単位にします。カタログのサイトや利用例のアプリ（`/apps/*`）の流れ、画面の移動は配布物ではないのでテストしません。各コンポーネントの責任範囲は、そのコンポーネントのページで確かめます。
 
 ```sh
 vp run browsers:install
-vp exec playwright test test/browser/<部品>.spec.ts --project=chromium  # 変えた部品だけ
+vp exec playwright test test/browser/<コンポーネント>.spec.ts --project=chromium  # 変えたコンポーネントだけ
 vp exec playwright test --last-failed                                    # 失敗したテストだけ
 vp run test:visual                                                       # 3ブラウザ（@sweepを除く）
 vp run test:visual:full                                                  # 3ブラウザの全件
 ```
 
-- 普段は変えた部品のspecを1ブラウザで流し、3ブラウザの`test:visual`と全件の`test:visual:full`は区切りで流します。
-- `@sweep`は、全部品を回すテストと幅を細かく刻むテストに付けるタグです。時間がかかるので`test:visual`では外します。
+- 普段は変えたコンポーネントのspecを1ブラウザで流し、3ブラウザの`test:visual`と全件の`test:visual:full`は区切りで流します。
+- `@sweep`は、全コンポーネントを回すテストと幅を細かく刻むテストに付けるタグです。時間がかかるので`test:visual`では外します。
 - `vp run test:visual -- <引数>`では引数が渡らないので、対象を絞る時は`vp exec playwright test`を使います。
-- 並列は2までです。WebKitは長く走らせるとページの移動が止まることがあるため（[microsoft/playwright#42385](https://github.com/microsoft/playwright/issues/42385)）、失敗したテストを一度だけやり直し、やり直して通ったテストはflakyとして報告します。traceはやり直した時だけ記録します。
+- 並列は2までです。WebKitは長時間実行するとページ遷移が止まることがあるため（[microsoft/playwright#42385](https://github.com/microsoft/playwright/issues/42385)）、失敗したテストを一度だけやり直し、やり直して通ったテストはflakyとして報告します。traceはやり直した時だけ記録します。
 
 どの実行も専用の5178番のサーバーを起動・終了し、スクリーンショット・trace・結果を`test-results`に出力します。
 
@@ -99,7 +99,7 @@ vp run preview
 
 `dist/hono`・`dist/controllers`・`dist/css`・`dist/icons.svg`がライブラリ、`dist/catalog`が静的なカタログです。配布するCSSとカタログは同じファイルを使います。
 
-アイコンを足す場合は`src/internal/icon-manifest.json`に加え、`vp run icons:build`でスプライト・CSS用のSVG・`IconName`型を生成し直します。
+アイコンを追加する場合は`src/internal/icon-manifest.json`に加え、`vp run icons:build`でスプライト・CSS用のSVG・`IconName`型を生成し直します。
 
 ## 操作コンポーネントの文字位置
 
@@ -107,7 +107,7 @@ Button・Input・DatePickerなどの操作コンポーネントでは、文字�
 
 ### 原因
 
-CSSの行の箱が枠の中央にあっても、字形の見た目の中心が一致するとは限りません。行の上下の位置は、フォントのascent・descentと行間の情報で決まります（[CSSの行高の計算](https://www.w3.org/TR/CSS2/visudet.html#line-height)）。macOSのWebKitには、Hiraginoのdescentを増やしてlineGapを減らす補正があり（[WebKitの実装](https://github.com/WebKit/WebKit/blob/main/Source/WebCore/platform/graphics/coretext/FontCoreText.cpp#L155)）、これが字形と行の箱の中心をずらします。高さや行高を変えるだけでは直りません。
+CSSの行ボックスが枠の中央にあっても、字形の見た目の中心が一致するとは限りません。行の上下の位置は、フォントのascent・descentと行間の情報で決まります（[CSSの行高の計算](https://www.w3.org/TR/CSS2/visudet.html#line-height)）。macOSのWebKitには、Hiraginoのdescentを増やしてlineGapを減らす補正があり（[WebKitの実装](https://github.com/WebKit/WebKit/blob/main/Source/WebCore/platform/graphics/coretext/FontCoreText.cpp#L155)）、これが字形と行ボックスの中心をずらします。高さや行高を変えるだけでは直りません。
 
 ### 対策
 
@@ -136,9 +136,9 @@ CSSの行の箱が枠の中央にあっても、字形の見た目の中心が�
 ### 守ること
 
 - Buttonの文字・縦配置は`src/css/components/button.css`が持ちます。コンポーネント固有のCSSからfont shorthand・太さ・行高・上下余白・文字の移動で上書きしません。
-- 新しいコンポーネントでボタンや入力欄を作り直さず、共通のコンポーネントと操作用フォントを使います。ネイティブのbuttonを足す場合は、文字の指定をどこが持つかを明示します。
+- 新しいコンポーネントでボタンや入力欄を作り直さず、共通のコンポーネントと操作用フォントを使います。ネイティブのbuttonを追加する場合は、文字の指定をどこが持つかを明示します。
 - `font: inherit`はfont-familyも上書きします。親が本文用フォントの場合に基準を失わないか確かめます。
-- `text-box`、非対称なpadding、負の余白、文字の`translate`による個別の補正を足しません。枠・余白・行高をどこが持つかを確かめ、二重に足しません。
+- `text-box`、非対称なpadding、負の余白、文字の`translate`による個別の補正を追加しません。枠・余白・行高をどこが持つかを確かめ、二重に指定しません。
 - DropdownMenuの項目は上揃えです。上下の余白は「一行時の高さ − 行高 − 上下の枠線」の半分ずつにし、一行なら中央に見え、複数行なら同じ上端から下へ伸びるようにします。`align-items: center`で内容全体を中央へ寄せません。
 - 検査に失敗したら実装を直します。検査を通すために基準や例外を増やしません。基準を変える必要がある場合は、影響するコンポーネント、変更の理由、既知の崩れ方を検出し続ける回帰テストをそろえます。
 - 再発した時は、共通フォントの適用・上書き・フォールバックを先に調べ、次に高さ・行高・上下余白・枠線の組み合わせを確かめます。

@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("EditablePropertyは値そのものを押しても鉛筆と同じイベントを出し、取り消せば書き始めない", async ({
+test("EditablePropertyは値そのものを押しても鉛筆と同じイベントを出し、取り消せば編集を始めない", async ({
   page,
 }) => {
   await page.goto("/components/editable-property");
@@ -21,12 +21,12 @@ test("EditablePropertyは値そのものを押しても鉛筆と同じイベン�
       });
   });
   const value = property.locator(".value");
-  // 取り消すと書き始めず、editable:editも出さない。
+  // 取り消すと編集を始めず、editable:editも出さない。
   await property.evaluate((element) => element.setAttribute("data-block", ""));
   await value.click();
   await expect(property).toHaveAttribute("data-state", "viewing");
   await expect(property).toHaveAttribute("data-log", "editable:beforeedit:pointer");
-  // 取り消さなければ書き始め、鉛筆と同じ順にイベントを出して値の全体を選ぶ。
+  // 取り消さなければ編集を始め、鉛筆と同じ順にイベントを出して値の全体を選ぶ。
   await property.evaluate((element) => element.removeAttribute("data-block"));
   await value.click();
   await expect(property).toHaveAttribute("data-state", "editing");
@@ -45,7 +45,7 @@ test("EditablePropertyは値そのものを押しても鉛筆と同じイベン�
   ).toBe(true);
 });
 
-test("EditablePropertyは確定した時だけ書き終えた印を描き、未登録の色を値に合わせる", async ({
+test("EditablePropertyは確定した時だけ完了のマークを描き、未登録の色を値に合わせる", async ({
   page,
 }) => {
   await page.goto("/components/editable-property");
@@ -112,12 +112,12 @@ test("EditablePropertyの複数行はEnterで改行し、Control / Meta+Enterで
   expect(Math.round(lines)).toBe(4);
 });
 
-test("EditablePropertyは表示と編集で一行目の高さと書き始めを変えず、書き始めると値を選ぶ", async ({
+test("EditablePropertyは表示と編集で一行目の高さと文字の開始位置を変えず、編集を始めると値を選ぶ", async ({
   page,
 }) => {
   await page.goto("/components/editable-property");
   const property = page.locator('[data-example="hono"] .ply-editable-property').first();
-  // 表示の値と編集中の欄の、一行目の中心の高さと文字の書き始めを測る。
+  // 表示の値と編集中の欄の、一行目の中心の高さと文字の開始位置を測る。
   const measure = () =>
     property.evaluate((element) => {
       const editing = element.getAttribute("data-state") === "editing";
@@ -139,7 +139,7 @@ test("EditablePropertyは表示と編集で一行目の高さと書き始めを�
       };
     });
   const viewing = await measure();
-  // 鉛筆だけでなく、値そのものを押しても書き始める。
+  // 鉛筆だけでなく、値そのものを押しても編集を始める。
   await property.locator(".value").click();
   await expect(property).toHaveAttribute("data-state", "editing");
   const editing = await measure();

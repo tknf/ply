@@ -18,7 +18,7 @@ const field = (id: string, label: string, textarea = false) => (
 export default () => (
   <div class="ply-stack">
     <OptionalFields
-      label="予定に足す項目"
+      label="予定に追加する項目"
       items={[
         { id: "event-link", label: "リンク", icon: "link", field: field("event-link", "リンク") },
         { id: "event-place", label: "場所", icon: "file", field: field("event-place", "場所") },
@@ -62,7 +62,7 @@ export default () => (
       </Disclosure>
       <Disclosure summary="値が入っている項目は最初から出す">
         <OptionalFields
-          label="予定に足す項目"
+          label="予定に追加する項目"
           items={[
             { id: "open-place", label: "場所", open: true, field: field("open-place", "場所") },
             { id: "open-note", label: "メモ", field: field("open-note", "メモ", true) },

@@ -2,25 +2,25 @@
 
 # ActionTile
 
-塗りつぶしの印と名前を縦に積み、格子に並べる入口や操作
+塗りつぶしのアイコンと名前を縦に積み、格子に並べるショートカットや操作
 
 ## 使いどころ
 
-- よく使う場所への入口や、選んだ物への一括操作を、印と名前で格子に並べる時に使います。`CommandMenu` の上段の入口と、`Table` の `selectionActions` の一括操作もこのタイルです。
-- 画面の下に浮かぶ操作の棚にする時は、タイルを並べる `ActionDock` を使います。
+- よく使う画面へのショートカットや、選んだ項目への一括操作を、アイコンと名前で格子に並べる時に使います。`CommandMenu` の上段のショートカットと、`Table` の `selectionActions` の一括操作もこのタイルです。
+- 画面の下に浮かぶ操作バーにする時は、タイルを並べる `ActionDock` を使います。
 - 文の流れの中やフォームの末尾に置く一つの操作は `Button` を使います。
 
 ## 使い方
 
-`label` と `icon` は必須です。印は塗りつぶしで上、名前は下に置きます。`href` を渡すと移動のリンク（`current` で今いる場所）、渡さなければ `type="button"` のボタンになり、`onclick` や `data-*` で操作を結び付けます。残りの標準の属性は `a` または `button` に渡ります。
+`label` と `icon` は必須です。アイコンは塗りつぶしで上、名前は下に置きます。`href` を渡すと移動のリンク（`current` で今いる場所）、渡さなければ `type="button"` のボタンになり、`onclick` や `data-*` で操作を結び付けます。残りの標準の属性は `a` または `button` に渡ります。
 
-`accent` は `blue`（既定）・`green`・`amber`・`coral` で、印の色と、指を載せた時の淡い地の色が変わります。
+`accent` は `blue`（既定）・`green`・`amber`・`coral` で、アイコンの色と、ホバー時の淡い背景色が変わります。
 
-普段は影のない平らな淡い面で、指を載せると印の色を淡く敷き、押すと内側へへこみます。`disabled` はリンクなら移動しない印（`href` の無い `span`）、ボタンなら押せない状態にし、どちらも半透明にします。
+普段は影のない平らな淡い面で、ホバーするとアイコンの色を淡く敷き、押すと内側へへこみます。`disabled` はリンクなら移動しない要素（`href` の無い `span`）、ボタンなら押せない状態にし、どちらも半透明にします。
 
-`shortcut` は `Keycap` の小さい形で、印の終わりの側の上に添えます。キーの登録は利用側が行います。`badge` は `Badge` の小さい形で、印の上に重ねます。札がある時は、キーの印をタイルの終わりの角へ寄せます。
+`shortcut` は `Keycap` の小さい形で、アイコンの末尾側の上に添えます。キーの登録は利用側が行います。`badge` は `Badge` の小さい形で、アイコンの上に重ねます。バッジがある時は、ショートカットキーの表示をタイルの末尾側の角へ寄せます。
 
-タイルは升いっぱいに広がるので、並べ方と列数は置く側の格子が決めます。名前は語の途中で切らず、文節の切れ目で折り返します。
+タイルはセルいっぱいに広がるので、並べ方と列数は置く側の格子が決めます。名前は語の途中で切らず、文節の切れ目で折り返します。
 
 文字の指定（書体・大きさ・太さ・行高）は `action-tile.css` が持ちます。共通の `Button` とは別の専用の操作として、文字位置の検査に登録しています。
 
@@ -35,19 +35,19 @@
 
 ### ActionTile
 
-塗りつぶしの印を上・名前を下に置いた、格子に並べる入口や操作のタイル。 CommandMenuの入口やTableの一括操作に使う。hrefを渡すと移動のリンク、渡さなければボタンになる。
+塗りつぶしのアイコンを上・名前を下に置いた、格子に並べるリンクや操作のタイル。 CommandMenuのリンクやTableの一括操作に使う。hrefを渡すと移動のリンク、渡さなければボタンになる。
 
-| 名前               | 型         | 既定値 | 説明                                                                                                                                                                                                            |
-| ------------------ | ---------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `label`（必須）    | `string`   |        | 名前。印の下に置き、長い時は文節の切れ目で折り返す。                                                                                                                                                            |
-| `icon`（必須）     | `IconName` |        | 塗りつぶしで上に置く印。                                                                                                                                                                                        |
-| `accent`           | `Accent`   |        | 印の色。既定は青。                                                                                                                                                                                              |
-| `disabled`         | `boolean`  |        | 使えない状態にする。リンクは`href`を外して移動しない印（`aria-disabled`）にし、ボタンは押せなくする。移動しない印はTabで止まらず、リンクだけの属性（`target`・`rel`など）と`tabindex`を外し、ほかの属性は保つ。 |
-| `class`            | `string`   |        | ルートに足すクラス。`ply-action-tile`は常に付く。                                                                                                                                                               |
-| `shortcut`         | `string`   |        | 表示用のキーの印。Keycapの小さい形で、印の終わりの側の上に添える。登録は利用側で行う。                                                                                                                          |
-| `badge`            | `string`   |        | 状態の札（「下書き」など）。Badgeの小さい形で、印の上に重ねる。                                                                                                                                                 |
-| `href`（形による） | `string`   |        | 移動先。渡すとリンクになり、渡さなければ`type="button"`のボタンになる。                                                                                                                                         |
-| `current`          | `boolean`  |        | 今いる場所の入口として`aria-current="page"`を付ける。                                                                                                                                                           |
+| 名前               | 型         | 既定値 | 説明                                                                                                                                                                                                                  |
+| ------------------ | ---------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`（必須）    | `string`   |        | 名前。アイコンの下に置き、長い時は文節の切れ目で折り返す。                                                                                                                                                            |
+| `icon`（必須）     | `IconName` |        | 塗りつぶしで上に置くアイコン。                                                                                                                                                                                        |
+| `accent`           | `Accent`   |        | アイコンの色。既定は青。                                                                                                                                                                                              |
+| `disabled`         | `boolean`  |        | 使えない状態にする。リンクは`href`を外して移動しない状態（`aria-disabled`）にし、ボタンは押せなくする。移動しないリンクはTabで止まらず、リンクだけの属性（`target`・`rel`など）と`tabindex`を外し、ほかの属性は保つ。 |
+| `class`            | `string`   |        | ルートに追加するクラス。`ply-action-tile`は常に付く。                                                                                                                                                                 |
+| `shortcut`         | `string`   |        | 表示用のショートカットキー。Keycapの小さい形で、アイコンの末尾側の上に添える。登録は利用側で行う。                                                                                                                    |
+| `badge`            | `string`   |        | 状態バッジ（「下書き」など）。Badgeの小さい形で、アイコンの上に重ねる。                                                                                                                                               |
+| `href`（形による） | `string`   |        | 移動先。渡すとリンクになり、渡さなければ`type="button"`のボタンになる。                                                                                                                                               |
+| `current`          | `boolean`  |        | 今いる場所へのリンクとして`aria-current="page"`を付ける。                                                                                                                                                             |
 
 読み込むCSS：`layers.css`、`reset.css`、`tokens.css`、`base.css`、`layout.css`、`components/badge.css`、`components/action-tile.css`、`components/icon.css`、`components/keycap.css`
 
@@ -63,7 +63,7 @@
 
 ```tsx
 import { ActionTile, Disclosure, DisclosureGroup } from "ply/hono";
-// 升は5〜7.5remで、入る数だけ並べる（文字を大きくした狭い画面では一列になる）。
+// セルは5〜7.5remで、入る数だけ並べる（文字を大きくした狭い画面では一列になる）。
 const grid =
   "display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 5rem), 7.5rem)); gap: 0.75rem";
 export default () => (
@@ -79,7 +79,7 @@ export default () => (
       />
       <ActionTile href="/components/toast" label="通知" icon="mail" accent="coral" />
     </div>
-    <DisclosureGroup label="操作・キーと札・使えない状態・長い名前・右から左">
+    <DisclosureGroup label="操作・キーとバッジ・使えない状態・長い名前・右から左">
       <Disclosure summary="ボタンとして押す操作">
         <div style={grid}>
           <ActionTile label="公開する" icon="check" />
@@ -87,7 +87,7 @@ export default () => (
           <ActionTile label="削除する" icon="trash" accent="coral" />
         </div>
       </Disclosure>
-      <Disclosure summary="キーの印と状態の札を添える">
+      <Disclosure summary="ショートカットキーの表示と状態バッジを添える">
         <div style={grid}>
           <ActionTile label="今すぐ返信" icon="reply" shortcut="R" badge="下書き" />
           <ActionTile label="あとで返信" icon="clock" shortcut="L" />
@@ -95,7 +95,7 @@ export default () => (
           <ActionTile href="/apps/search" label="検索" icon="search" shortcut="⌘K" />
         </div>
       </Disclosure>
-      <Disclosure summary="使えない入口と操作">
+      <Disclosure summary="使えないリンクと操作">
         <div style={grid}>
           <ActionTile href="/apps/search" label="報告" icon="chart" disabled />
           <ActionTile label="書き出す" icon="file" disabled />
@@ -180,7 +180,7 @@ export default () => (
   <div
     class="ply-disclosure-group"
     role="group"
-    aria-label="操作・キーと札・使えない状態・長い名前・右から左"
+    aria-label="操作・キーとバッジ・使えない状態・長い名前・右から左"
   >
     <details class="ply-disclosure">
       <summary>
@@ -252,7 +252,7 @@ export default () => (
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
         ><span class="label"
-          ><span class="title">キーの印と状態の札を添える</span></span
+          ><span class="title">ショートカットキーの表示と状態バッジを添える</span></span
         >
       </summary>
       <div class="body">
@@ -337,7 +337,7 @@ export default () => (
             focusable="false"
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
-        ><span class="label"><span class="title">使えない入口と操作</span></span>
+        ><span class="label"><span class="title">使えないリンクと操作</span></span>
       </summary>
       <div class="body">
         <div

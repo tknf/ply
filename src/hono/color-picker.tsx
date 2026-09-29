@@ -8,30 +8,30 @@ import { classes } from "./types";
 export type ColorPickerValue = {
   /** 色を解釈する色空間。画面からは変えられず、`${name}[colorSpace]`でそのまま送る。 */
   colorSpace: "srgb" | "display-p3";
-  /** 色相。0〜360の度。範囲外は端に丸める。 */
+  /** 色相。0〜360度。範囲外の値は範囲内に収める。 */
   hue: number;
-  /** HSVの彩度。0〜100のパーセント。範囲外は端に丸める。 */
+  /** HSVの彩度。0〜100パーセント。範囲外の値は範囲内に収める。 */
   saturation: number;
-  /** HSVの明度。0〜100のパーセント。範囲外は端に丸める。 */
+  /** HSVの明度。0〜100パーセント。範囲外の値は範囲内に収める。 */
   brightness: number;
-  /** 不透明度。0〜1。範囲外は端に丸める。 */
+  /** 不透明度。0〜1。範囲外の値は範囲内に収める。 */
   alpha: number;
 };
 
 export type ColorPickerProps = {
-  /** ルートのfieldsetのID。中の欄のIDの頭にも使う。渡さなければ自動で作る。 */
+  /** ルートのfieldsetのID。中の欄のIDの接頭辞にも使う。渡さなければ自動で生成する。 */
   id?: string;
-  /** ルートのfieldsetに足すクラス。 */
+  /** ルートのfieldsetに追加するクラス。 */
   class?: string;
   /** 欄全体の名前。legendに出し、色の面の読み上げ名にも使う。 */
   label: string;
-  /** 送る名前の頭。`${name}[hue]`・`[saturation]`・`[brightness]`・`[alpha]`・`[colorSpace]`で送る。 */
+  /** 送信する名前の接頭辞。`${name}[hue]`・`[saturation]`・`[brightness]`・`[alpha]`・`[colorSpace]`で送信する。 */
   name: string;
-  /** 初めの色。 */
+  /** 初期の色。 */
   value?: ColorPickerValue;
   /** 欄の下に出す補足。fieldsetのaria-describedbyに関連付ける。 */
   help?: string;
-  /** 欄の下に出す誤りの文。fieldsetをaria-invalidにする。確かめは利用側で行う。 */
+  /** 欄の下に出すエラー文。fieldsetをaria-invalidにする。検証は利用側で行う。 */
   error?: string;
   /** 色の面とスライダーをすべて使えなくする。値は送信しない。 */
   disabled?: boolean;
@@ -41,7 +41,7 @@ export type ColorPickerProps = {
   step?: number;
   /**
    * 使わない。互換のために型だけを残し、渡しても何も変わらない。
-   * 上流のcolor-pickerでは色相の輪を矢印キーで動かす幅だが、この部品は輪を持たず、
+   * 上流のcolor-pickerでは色相環を矢印キーで動かす幅だが、このコンポーネントは色相環を持たず、
    * 色相のスライダーは他のスライダーと同じくブラウザの標準の動きで値を変える。
    * @deprecated 効果が無い。渡さない。
    */

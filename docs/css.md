@@ -20,7 +20,7 @@
 - 内部の部分はルートからの直下の関係で役割名を付けます（`.ply-card > .title`、`.ply-field > .messages > .help`）。`ply-コンポーネント名-部分名`のように名前を繰り返しません。
 - 役割名（`.body`・`.icon`など）だけをグローバルに書いたCSSはありません。利用側でも、役割名は必ずルートと組み合わせて指定してください。
 - 部分に別のコンポーネントを使う場合は、そのコンポーネントのルートクラスを持ちます（内部のIconは`.ply-icon`、Buttonは`.ply-button`）。入れ子になるDropdownMenuの一覧も`.ply-menu`を独立したルートとして持ちます。
-- 変種と状態はクラスではなく属性で表します（`data-variant="primary"`、`data-size="large"`、`data-invalid`、`aria-current`、`aria-expanded`など）。
+- バリエーションと状態はクラスではなく属性で表します（`data-variant="primary"`、`data-size="large"`、`data-invalid`、`aria-current`、`aria-expanded`など）。
 - controllerとの接続にはクラスではなく`data-*-target`を使います。
 
 ## 主な構造

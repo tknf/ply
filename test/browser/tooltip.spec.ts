@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("操作から補足へ指を移しても補足は閉じない", async ({ page }) => {
+test("操作から補足へポインターを移しても補足は閉じない", async ({ page }) => {
   await page.goto("/components/tooltip");
   const trigger = page.getByRole("button", { name: "共有範囲", exact: true });
   const tooltip = page.locator("#tooltip-button");

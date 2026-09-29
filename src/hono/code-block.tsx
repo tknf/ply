@@ -27,7 +27,7 @@ export type CodeBlockProps = ElementProps<"figure"> & {
    * ClipboardController・CodeBlockController・ToastControllerの登録が要る。
    */
   copy?: boolean;
-  /** 行の頭に番号を振る。番号はコピーする内容に含めない。 */
+  /** 行の先頭に番号を振る。番号はコピーする内容に含めない。 */
   lineNumbers?: boolean;
   /** 淡い黄色の地で目印にする行（1から数える）。 */
   highlight?: readonly number[];
@@ -71,7 +71,7 @@ export const CodeBlock = ({
           : attributes["data-controller"]
       }
     >
-      {/* 名前とコピーはLayerCardの層の見出しの行に置き、コードは層の上の紙に書く。 */}
+      {/* 名前とコピーはLayerCardの層の見出しの行に置き、コードは層の上のカードに書く。 */}
       <LayerCard
         title={label}
         actions={

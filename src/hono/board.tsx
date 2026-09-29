@@ -7,13 +7,13 @@ import { classes, type ElementProps, type Tone } from "./types";
 export type BoardEntry = {
   /** 項目のid。board:beforemoveとboard:moveのdetail.idで返る。Boardの中で一意にする。 */
   id: string;
-  /** 項目の名前。持ち手の読み上げ名（「〜を移動」）と、運ぶ間の読み上げに使う。 */
+  /** 項目の名前。ハンドルの読み上げ名（「〜を移動」）と、ドラッグ中の読み上げに使う。 */
   label: string;
-  /** 紙に載せる中身。見出し・本文・TagGroup・Progressなど任意の要素を置ける。 */
+  /** カードに載せる中身。見出し・本文・TagGroup・Progressなど任意の要素を置ける。 */
   content: Child;
-  /** 動かせない項目。持ち手を無効にする。 */
+  /** 動かせない項目。ハンドルを無効にする。 */
   disabled?: boolean;
-  /** 項目の番号など。札にして、紙の上の始まりの角に列の色で置く。 */
+  /** 項目の番号など。バッジにして、カードの上の先頭側の角に列の色で置く。 */
   code?: string;
 };
 type Column = {
@@ -21,9 +21,9 @@ type Column = {
   id?: string;
   /** 列の名前。見出しに書き、項目の一覧の読み上げ名にもする。 */
   title: string;
-  /** 列の役割の色。見出しの文字と、項目の紙の斜めの染まり・角の札に出す。neutralは染めない。 */
+  /** 列の役割の色。見出しの文字と、項目のカードの斜めの色付け・角のバッジに出す。neutralは色を付けない。 */
   tone?: Tone;
-  /** 今の列（今日の担当など）。toneに関わらず青で染める。 */
+  /** 今の列（今日の担当など）。toneに関わらず青にする。 */
   current?: boolean;
   /**
    * 項目が無い時に置く文。省略すると、movableなら「ここへ移動できます」（受け付けない列は「この列には移動できません」）、
@@ -36,7 +36,7 @@ type Column = {
   collapsed?: boolean;
   /**
    * 列を押して開閉できるようにする。たたんだピルに「開く」、開いた列の見出しに「たたむ」を置き、
-   * 押すとBoardControllerが表示を切り替えて、取り消せるboard:toggleで知らせる。開閉の保存は利用側が持つ。
+   * 押すとBoardControllerが表示を切り替えて、取り消せるboard:toggleイベントを発火する。開閉の保存は利用側が持つ。
    * 開閉のボタンは、BoardControllerが接続するまで隠す。
    */
   collapsible?: boolean;
@@ -58,11 +58,11 @@ type Column = {
 export type BoardProps = ElementProps<"div"> & {
   /** Board全体（role="region"）の読み上げ名。 */
   label: string;
-  /** 列。渡した順に書き始めの側から並べる。 */
+  /** 列。渡した順に先頭側から並べる。 */
   columns: readonly Column[];
   /**
-   * 項目に持ち手を置き、列の間の移動と並べ替えを有効にする。BoardControllerをboardとして登録する。
-   * 持ち手はcontrollerが接続するまで無効のまま。
+   * 項目にハンドルを置き、列の間の移動と並べ替えを有効にする。BoardControllerをboardとして登録する。
+   * ハンドルはcontrollerが接続するまで無効のまま。
    */
   movable?: boolean;
 };

@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("検索中も主要な入口を保ち、候補の選択とフォーカスを同期する", async ({ page }) => {
+test("検索中も主要なリンクを保ち、候補の選択とフォーカスを同期する", async ({ page }) => {
   await page.goto("/components/command-menu");
   const root = page.locator('[data-example="hono"] .ply-command-menu');
   const trigger = root.getByRole("button", { name: "Plyの道具箱", exact: true });
@@ -45,7 +45,7 @@ test("検索中も主要な入口を保ち、候補の選択とフォーカス�
   await expect(page.locator("html")).toHaveAttribute("data-followed", /\/components\/table$/);
 });
 
-test("操作の値を通知し、Esc・外側クリック・Tabで自然に閉じる", async ({ page }) => {
+test("操作の値を通知し、Esc・外側クリック・Tabで閉じる", async ({ page }) => {
   await page.goto("/components/command-menu");
   const root = page.locator('[data-example="hono"] .ply-command-menu');
   await root.evaluate((element) =>
@@ -85,7 +85,7 @@ test("CtrlまたはCmdとKで開閉し、パネルは480pxで背景を暗転し�
   await page.keyboard.press("Control+k");
   const panel = page.getByRole("dialog");
   await expect(panel).toBeVisible();
-  // 膨らんで現れる動きの途中で測らないよう、動きの終わりを待つ。
+  // 拡大しながら現れる動きの途中で測らないよう、動きの終わりを待つ。
   await panel.evaluate((element) =>
     Promise.all(element.getAnimations().map((animation) => animation.finished)),
   );

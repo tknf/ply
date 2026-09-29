@@ -1,7 +1,7 @@
 @layer components {
   /*
-    人の見出し。大きな人の円・太字の大きな名前・淡い補足を中央に積み、
-    上の二つの角に所属の札と操作を置く。この人への設定は、名前の下の灰色の帯にまとめて並べる。
+    人物の見出し。大きなアバター・太字の大きな名前・淡い補足を中央に積み、
+    上の二つの角に所属のバッジと操作を置く。この人への設定は、名前の下の灰色のバーにまとめて並べる。
   */
   .ply-profile-header {
     container: ply-profile-header / inline-size;
@@ -51,7 +51,7 @@
       color: var(--ply-muted);
       font-size: var(--ply-label);
     }
-    /* 設定の帯。灰色の面のピルに、印と名前の操作を面を持たない形で並べる。 */
+    /* 設定のバー。灰色の面のピルに、アイコンと名前の操作を面を持たない形で並べる。 */
     & > .preferences {
       grid-area: preferences;
       display: flex;

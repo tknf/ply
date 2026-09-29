@@ -5,7 +5,7 @@ import { Icon } from "./icon";
 export type TreegridColumn = {
   /** 列の見出しの文字。 */
   heading: string;
-  /** 列の文字の扱い。Tableのdata-cellと同じで、textは長文を折り返し、shortは折り返さず、numericは終わりの側へそろえて等幅の数字にする。 */
+  /** 列の文字の扱い。Tableのdata-cellと同じで、textは長文を折り返し、shortは折り返さず、numericは末尾側へそろえて等幅の数字にする。 */
   cell?: "text" | "short" | "numeric";
 };
 
@@ -20,7 +20,7 @@ export type TreegridItem = {
   disabled?: boolean;
   /** 2列目以降のセル。columnsの2番目からの順に対応させ、足りないセルには「—」を出す。 */
   cells?: readonly Child[];
-  /** 子の行。渡すと行に開閉のつまみを付け、一つ深い階層として続けて描く。 */
+  /** 子の行。渡すと行に開閉ボタンを付け、一つ深い階層として続けて描く。 */
   children?: readonly TreegridItem[];
 };
 
@@ -33,7 +33,7 @@ export type TreegridProps = {
   items: readonly TreegridItem[];
   /**
    * 最初に開いておく行のvalue。開閉はその後controllerが持ち、保存したい時はtreegrid:toggleで受け取る。
-   * JavaScriptがない時は開閉できないので、全ての行を開いて見せ、開閉のつまみを隠す。
+   * JavaScriptがない時は開閉できないので、全ての行を開いて見せ、開閉ボタンを隠す。
    */
   expanded?: readonly string[];
   /** 行の選択。singleは一行、multipleは複数行を選べ、noneは選択を持たない。 */
@@ -69,7 +69,7 @@ const renderRows = (
     const expandable = children.length > 0;
     const label = item.label.trim() || item.value;
     // 開閉の状態（aria-expanded・data-state・子の行のhidden）はcontrollerが接続した時に付ける。
-    // JavaScriptがない時は全ての行を見せ、押しても開閉しないつまみはCSSで隠す。
+    // JavaScriptがない時は全ての行を見せ、押しても働かない開閉ボタンはCSSで隠す。
     const row = (
       <tr
         data-treegrid-target="row"
@@ -125,7 +125,7 @@ const renderRows = (
     return [row, ...renderRows(children, columns, selected, selection, level + 1)];
   });
 
-/** Tableの表面・階層表示を共有し、開閉と二次元移動はTreegridController（上流を継承）に委ねる。 */
+/** Tableの見た目・階層表示を共有し、開閉と二次元移動はTreegridController（上流を継承）に委ねる。 */
 export const Treegrid = ({
   caption,
   columns,

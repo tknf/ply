@@ -1,12 +1,12 @@
 # アイコン
 
-Plyは[Phosphor Icons](https://github.com/phosphor-icons/core)（MIT）のregularを共通で使います。縦並びの一覧のように塗った印で項目を見分ける場所では、同じ絵柄の塗りつぶしの版（`fill`）を使います。
+Plyは[Phosphor Icons](https://github.com/phosphor-icons/core)（MIT）のregularを共通で使います。縦並びの一覧のように塗りつぶしのアイコンで項目を見分ける場所では、同じ絵柄の塗りつぶしの版（`fill`）を使います。
 
 ## 大きさ
 
 - 標準は1em、小型（`data-size="small"`）は6em/7です。14pxの文字なら14px・12pxのSVG枠になります。
-- アイコン名によるサイズ・ウェイトの分岐はありません。大きな入口や空状態の図は、その役割を持つ親要素が大きさを決めます。
-- Checkbox・TaskListの印、Selectの矢印は、同じ素材の単独SVGをCSSのmask・背景として使います。
+- アイコン名によるサイズ・ウェイトの分岐はありません。大きなショートカットや空状態の図は、その役割を持つ親要素が大きさを決めます。
+- Checkbox・TaskListのチェックマーク、Selectの矢印は、同じ素材の単独SVGをCSSのmask・背景として使います。
 
 ## 使い方
 
@@ -48,4 +48,4 @@ CSSだけで使う場合も同じ構造を書きます。
 
 ## 使えるアイコン
 
-使えるアイコンは[icon-manifest.json](../src/internal/icon-manifest.json)で決まっています。キーが`name`に渡す名前、値がPhosphor Iconsの元の名前です。追加する場合はこのファイルに足し、`vp run icons:build`でスプライト、CSS用の単独SVG、`IconName`型を生成し直します。
+使えるアイコンは[icon-manifest.json](../src/internal/icon-manifest.json)で決まっています。キーが`name`に渡す名前、値がPhosphor Iconsの元の名前です。追加する場合はこのファイルに追記し、`vp run icons:build`でスプライト、CSS用の単独SVG、`IconName`型を生成し直します。

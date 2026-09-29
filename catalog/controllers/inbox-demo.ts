@@ -39,7 +39,7 @@ export class InboxDemoController extends Controller<HTMLElement> {
       )) {
         button.hidden = button.dataset.inboxFolder === entry.folder;
         button.disabled = button.hidden;
-        // ActionDockの棚では、操作を包む升ごと隠して間を詰める。
+        // ActionDockの操作バーでは、操作を包むセルごと隠して間を詰める。
         const slot = button.closest("li");
         if (slot) slot.hidden = button.hidden;
       }

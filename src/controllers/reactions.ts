@@ -9,10 +9,10 @@ const readBy = (value: string | undefined): string[] => {
 type ToggleDetail = { content: string; name: string; selected: boolean };
 
 /**
- * 反応の付け外し。札を押すと自分の反応を付けるか外し、数と付けた人を書き換える。
- * EmojiPickerで選んだ絵文字や書いた言葉は、同じ札があればそこへ自分を足し、なければ新しい札を作る。
- * どちらも書き換える前にreactions:beforetoggle（取り消せる）、書き換えた後にreactions:toggleで知らせる。
- * 数が0になった札は消す。保存は利用側が持ち、失敗した時はsetReactionで札を戻す。
+ * リアクションの付け外し。リアクションを押すと自分のリアクションを付けるか外し、数と付けた人を更新する。
+ * EmojiPickerで選んだ絵文字や書いた言葉は、同じリアクションがあればそこへ自分を追加し、なければ新しいリアクションを作る。
+ * どちらも更新する前にreactions:beforetoggle（取り消し可能）、更新した後にreactions:toggleを発火する。
+ * 数が0になったリアクションは消す。保存は利用側が持ち、失敗した時はsetReactionでリアクションを戻す。
  */
 export class ReactionsController extends Controller<HTMLElement> {
   static targets = ["list", "text"];
@@ -35,8 +35,8 @@ export class ReactionsController extends Controller<HTMLElement> {
   };
 
   /**
-   * 札に自分を足すか引く。札が無ければ作り、数が0になれば消す。消した札にフォーカスがあった時か、
-   * 利用者の操作の時（focusNext）は、次の札か追加の操作へフォーカスを移す。
+   * リアクションに自分を追加するか除く。リアクションが無ければ作り、数が0になれば消す。消したリアクションにフォーカスがあった時か、
+   * 利用者の操作の時（focusNext）は、次のリアクションか追加ボタンへフォーカスを移す。
    */
   private apply = (
     content: string,
@@ -61,7 +61,7 @@ export class ReactionsController extends Controller<HTMLElement> {
     return chip;
   };
 
-  /** 利用者の操作を知らせる。beforetoggleが取り消されたらfalseを返し、何も変えない。 */
+  /** 利用者の操作のイベントを発火する。beforetoggleが取り消されたらfalseを返し、何も変えない。 */
   private request = (detail: ToggleDetail) =>
     !this.dispatch("beforetoggle", { detail, cancelable: true }).defaultPrevented;
 
@@ -71,8 +71,8 @@ export class ReactionsController extends Controller<HTMLElement> {
   private chips = () => [...this.listTarget.querySelectorAll<HTMLButtonElement>("button.reaction")];
 
   /**
-   * 自分の反応を、イベントを出さずに付ける（selected: true）か外す。保存に失敗した時に、
-   * reactions:toggleのdetail（content・name・selectedの逆）で札を元に戻すために使う。
+   * 自分のリアクションを、イベントを発火せずに付ける（selected: true）か外す。保存に失敗した時に、
+   * reactions:toggleのdetail（content・name・selectedの逆）でリアクションを元に戻すために使う。
    */
   setReaction = (content: string, selected: boolean, name = content) => {
     if (content !== "") this.apply(content, name, selected, false);
@@ -101,7 +101,7 @@ export class ReactionsController extends Controller<HTMLElement> {
     this.react(content, name, event.target);
   };
 
-  /** 短い言葉の反応。空なら何もしない。日本語入力の確定のEnterでは追加しない。 */
+  /** 入力したリアクション。空なら何もしない。日本語入力の確定のEnterでは追加しない。 */
   addText = (event: Event) => {
     if (!this.hasTextTarget) return;
     if (event instanceof KeyboardEvent) {
@@ -128,7 +128,7 @@ export class ReactionsController extends Controller<HTMLElement> {
     chip?.focus();
   };
 
-  /** 新しい札。サーバーが出す札と同じ形をここで組み、一覧の終わりに追加する。 */
+  /** 新しいリアクション。サーバーが出力するリアクションと同じ構造をここで組み、一覧の末尾に追加する。 */
   private create = (content: string, name: string) => {
     const item = document.createElement("li");
     const chip = document.createElement("button");

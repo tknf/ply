@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 
-/** チェックの変化に合わせて、見出しの終えた数と進み具合を数え直す。 */
+/** チェックの変化に合わせて、見出しの完了数と進捗を数え直す。 */
 export class TaskListController extends Controller<HTMLElement> {
   static targets = ["done"];
   declare readonly doneTarget: HTMLElement;

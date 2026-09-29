@@ -8,11 +8,11 @@ type CommandLabel = {
   /** 項目の名前。一覧の項目では検索の対象になる。 */
   label: string;
   /**
-   * 名前に添える補足。一覧の移動の項目では名前の後に表示し、操作の項目と入口のタイルでは
+   * 名前に添える補足。一覧の移動の項目では名前の後に表示し、操作の項目とショートカットのタイルでは
    * 画面に出さずaria-descriptionで読み上げる。一覧の項目では検索の対象になる。
    */
   description?: string;
-  /** 名前の前の印。移動の項目と入口で省略すると矢印の印になる。操作の項目で省略すると印を出さない。 */
+  /** 名前の前のアイコン。移動の項目とショートカットで省略すると矢印のアイコンになる。操作の項目で省略するとアイコンを出さない。 */
   icon?: IconName;
   /** 画面には出さない検索語。別名や関連語を渡すと、その言葉でも絞り込める。 */
   keywords?: readonly string[];
@@ -21,25 +21,25 @@ type CommandLabel = {
    * 理由は名前や補足で伝える。
    */
   disabled?: boolean;
-  /** 印の色。入口のタイルと、一覧の移動の項目の印に使う。 */
+  /** アイコンの色。ショートカットのタイルと、一覧の移動の項目のアイコンに使う。 */
   accent?: "blue" | "green" | "amber" | "coral";
 };
 export type CommandLink = CommandLabel & {
   /** 移動先のURL。選ぶと通常のリンクとして移動し、パネルを閉じる。 */
   href: string;
-  /** 今いる場所。aria-current="page"を付け、一覧では終わりの側にチェックの印を出す。 */
+  /** 今いる場所。aria-current="page"を付け、一覧では末尾側にチェックマークを出す。 */
   current?: boolean;
 };
 export type CommandItem =
   | CommandLink
   | (CommandLabel & {
-      /** 操作の値。選ぶとcommand-menu:selectのdetail.valueで知らせる。実行は利用側が担う。 */
+      /** 操作の値。選ぶとcommand-menu:selectイベントを発火し、detail.valueで渡す。実行は利用側が担う。 */
       value: string;
     });
 export type CommandGroup = {
-  /** 群の見出し（「最近の場所」など）。 */
+  /** グループの見出し（「最近の場所」など）。 */
   label: string;
-  /** 群の項目。hrefを持つ項目は移動、valueを持つ項目は操作になる。空の群は表示しない。 */
+  /** グループの項目。hrefを持つ項目は移動、valueを持つ項目は操作になる。空のグループは表示しない。 */
   items: readonly CommandItem[];
 };
 export type CommandMenuProps = {
@@ -47,13 +47,13 @@ export type CommandMenuProps = {
   id: string;
   /** 開くボタンとパネルの見出しに出す名前（チーム名・アプリ名など）。パネルの読み上げ名にも使う。 */
   label: string;
-  /** 検索欄の上に格子で並べる主要な入口。空にすると入口の段を出さない。 */
+  /** 検索欄の上にグリッドで並べる主要なショートカット。空にするとショートカットの段を出さない。 */
   shortcuts: readonly CommandLink[];
-  /** 検索欄の下に並べる候補の群（最近の場所・人・ページ・操作など）。検索でこの中を絞り込む。 */
+  /** 検索欄の下に並べる候補のグループ（最近の場所・人・ページ・操作など）。検索でこの中を絞り込む。 */
   groups: readonly CommandGroup[];
-  /** 入口の段の列数。パネルが狭い時は2列にする。 */
+  /** ショートカットの段の列数。パネルが狭い時は2列にする。 */
   columns?: 3 | 4;
-  /** 開くボタンの名前の前の印。 */
+  /** 開くボタンの名前の前のアイコン。 */
   icon?: IconName;
   /**
    * 開閉のキー。shift+jはShift+J、mod+kはCtrlまたはCmdとKで開閉し、パネルの下にキーの案内を出す。
@@ -91,7 +91,7 @@ const Destination = ({ item }: { item: CommandLink }) => {
   );
 };
 
-/** 主要な入口と、仕事・人・ページへの移動を一つの場所へまとめる。 */
+/** 主要なショートカットと、仕事・人・ページへの移動を一つの場所へまとめる。 */
 export const CommandMenu = ({
   id,
   label,
@@ -147,7 +147,7 @@ export const CommandMenu = ({
         <nav class="shortcuts" aria-label="よく使う場所" data-columns={columns}>
           {shortcuts.map((item) => (
             <div class="shortcut">
-              {/* 入口はActionTile。Tableの一括操作と同じタイルを使う。 */}
+              {/* ショートカットはActionTile。Tableの一括操作と同じタイルを使う。 */}
               <ActionTile
                 label={item.label}
                 icon={item.icon ?? "arrow"}

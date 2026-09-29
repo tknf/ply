@@ -31,7 +31,7 @@ export type ComponentApi = {
   description: string;
   file: string;
   props: PropDoc[];
-  /** 残りのpropsを渡す要素。HTML要素なら小文字、Plyの部品なら部品名。渡さない時はundefined。 */
+  /** 残りのpropsを渡す要素。HTML要素なら小文字、Plyのコンポーネントならコンポーネント名。渡さない時はundefined。 */
   element?: string;
   types: TypeDoc[];
   controllers: string[];
@@ -146,8 +146,8 @@ const bindingDetails = (binding: ts.ObjectBindingPattern | undefined) => {
 };
 
 /**
- * 残りのpropsを`{...rest}`で受け取るJSXの要素名。HTML要素なら小文字、公開する部品なら部品名。
- * 公開しない内部の部品へ渡す場合は、その部品が受け取った先をたどる。
+ * 残りのpropsを`{...rest}`で受け取るJSXの要素名。HTML要素なら小文字、公開するコンポーネントならコンポーネント名。
+ * 公開しない内部のコンポーネントへ渡す場合は、そのコンポーネントが受け取った先をたどる。
  */
 const spreadTarget = (
   fn: ts.SignatureDeclaration & { body?: ts.Node },
@@ -171,7 +171,7 @@ const spreadTarget = (
   if (!/^[A-Z]/.test(tag) || isPublic(tag) || depth > 3) return tag;
   let symbol = checker.getSymbolAtLocation(found.tagName);
   if (symbol && symbol.flags & ts.SymbolFlags.Alias) symbol = checker.getAliasedSymbol(symbol);
-  // `const Control = number ? NumberField : Input`のように部品を選ぶ場合は、選べる部品を並べる。
+  // `const Control = number ? NumberField : Input`のようにコンポーネントを選ぶ場合は、選べるコンポーネントを並べる。
   const declaration = symbol?.declarations?.[0];
   if (
     declaration &&

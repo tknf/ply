@@ -4,14 +4,14 @@ import { Icon } from "./icon";
 
 export type TreeItem = {
   /**
-   * 項目を識別する値。tree:changeのdetail.valueで知らせる。
+   * 項目を識別する値。tree:changeのdetail.valueで渡す。
    * 空白だけの値と、全階層を通じて二つ目以降に現れた値の項目は、子ごと出さない。
    */
   value: string;
   /** 項目の名前。空白だけの時はvalueを名前にする。 */
   label: string;
   /**
-   * 名前をリンクにする時のURL。名前を押すか、注目してEnterを押すと、選ぶと同時にリンク先へ移る。
+   * 名前をリンクにする時のURL。名前を押すか、フォーカスしてEnterを押すと、選ぶと同時にリンク先へ移る。
    * 無効な項目ではリンクにしない。
    */
   href?: string;

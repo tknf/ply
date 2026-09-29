@@ -32,7 +32,7 @@ export default () => (
       />
     </div>
     <DisclosureGroup label="候補と置き場所の違い">
-      <Disclosure summary="候補にアイコンとキーを添える・終わりの側に開く">
+      <Disclosure summary="候補にアイコンとキーを添える・末尾側に開く">
         <div class="ply-cluster" style="justify-content: end">
           <FilterMenu
             id="move-menu"

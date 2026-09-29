@@ -7,13 +7,13 @@ export type BackLinkProps = Omit<ElementProps<"a">, "children"> & {
   href: string;
   /** 戻る先の名前（「受信トレイ」「設定」など）。 */
   label: string;
-  /** 表示用のキーの印（「Esc」など）。登録は利用側で行う。 */
+  /** 表示用のショートカットキー（「Esc」など）。登録は利用側で行う。 */
   shortcut?: string;
   /** filledは淡い青のピル（既定）、plainは面を持たない太字の文字。 */
   tone?: "filled" | "plain";
 };
 
-/** 一つ上の場所へ戻るだけのピル。パンくずより軽く、画面の始まりの角に置く。 */
+/** 一つ上の場所へ戻るだけのピル。パンくずより軽く、画面の先頭側の角に置く。 */
 export const BackLink = ({
   href,
   label,

@@ -23,7 +23,7 @@
       block-size: auto;
       background: none;
     }
-    /* 操作がある時は、狭い場所で操作を次の行の終わりの側へ回す。 */
+    /* 操作がある時は、狭い場所で操作を次の行の末尾側へ回す。 */
     &:has(> .actions) {
       flex-wrap: wrap;
       row-gap: var(--ply-space-1);
@@ -34,7 +34,7 @@
       block-size: var(--ply-divider-size);
       background: var(--ply-divider-paint) 0 50% / 100% 100% no-repeat;
     }
-    /* 線の終わりの操作。名前・線・操作の順に並べ、操作は線から少し離す。 */
+    /* 線の末尾の操作。名前・線・操作の順に並べ、操作は線から少し離す。 */
     & > .actions {
       display: flex;
       flex: none;

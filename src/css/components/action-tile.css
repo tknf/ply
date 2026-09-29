@@ -1,13 +1,13 @@
 @layer components {
   /*
-    格子に並べる入口や操作のタイル。塗りつぶしの印を上・名前を下に置く。
-    ActionDockの操作と同じく、普段は影を持たない平らな淡い面にし、指を載せると印の色を淡く敷き、
+    グリッドに並べるリンクや操作のタイル。塗りつぶしのアイコンを上・名前を下に置く。
+    ActionDockの操作と同じく、普段は影を持たない平らな淡い面にし、ホバーするとアイコンの色を淡く敷き、
     押すと面が内側へへこむ（浮かせてから沈めるのではなく、平らな所から沈める）。
     文字の指定（書体・大きさ・太さ・行高）はこのファイルが持つ（共通Buttonとは別の専用の操作）。
   */
   .ply-action-tile {
     --ply-action-tile-accent: var(--ply-link);
-    /* 普段の面。ActionDockの棚のように紙の上に置く時は、置く側が透明にする。 */
+    /* 通常時の面。ActionDockの操作バーのようにパネルの上に置く時は、置く側が透明にする。 */
     --ply-action-tile-rest: color-mix(in srgb, var(--ply-ink) 3%, var(--ply-surface));
     appearance: none;
     position: relative;
@@ -17,7 +17,7 @@
     justify-content: center;
     gap: 0.25rem;
     min-inline-size: 0;
-    /* ActionDockの操作と同じ密度。印の上を下より少し広く取り、印と名前を一つの塊に見せる。 */
+    /* ActionDockの操作と同じ密度。アイコンの上を下より少し広く取り、アイコンと名前を一つのまとまりに見せる。 */
     min-block-size: 3.75rem;
     margin: 0;
     padding-block: var(--ply-space-2) var(--ply-space-1);
@@ -71,16 +71,16 @@
         block-size: 1.375rem;
       }
       /*
-        状態の札（Badgeの小さい形）は印の上に重ね、地の色の輪で印から切り離す。
-        札は印より幅が広いので、左右に印の外まで広げた枠の中で自分の幅を保ち、
-        自動の外側余白で中央へ置く（読む向きに関わらず印の真ん中に重なる）。
+        状態バッジ（Badgeの小さい形）はアイコンの上に重ね、背景色の輪郭でアイコンから切り離す。
+        バッジはアイコンより幅が広いので、左右にアイコンの外まで広げた枠の中で自分の幅を保ち、
+        自動の外側余白で中央へ置く（読む向きに関わらずアイコンの真ん中に重なる）。
       */
       & > .ply-badge {
         position: absolute;
         inset-block-start: 50%;
         inset-inline: -3rem;
         inline-size: max-content;
-        /* Badgeの幅の上限（置き場所の幅）は印の幅になってしまうので外す。 */
+        /* Badgeの幅の上限（置き場所の幅）はアイコンの幅になってしまうので外す。 */
         max-inline-size: none;
         margin-inline: auto;
         translate: 0 -50%;
@@ -88,13 +88,13 @@
         white-space: nowrap;
       }
     }
-    /* キーの印（Keycapの小さい形）は、印の終わりの側の上に添える。見た目はKeycapが持つ。 */
+    /* ショートカットキーの表示（Keycapの小さい形）は、アイコンの末尾側の上に添える。見た目はKeycapが持つ。 */
     & > .shortcut {
       position: absolute;
       inset-block-start: var(--ply-space-1);
       inset-inline-start: calc(50% + 1rem);
     }
-    /* 札は印より幅が広く略記の位置へ届くので、札のある時は略記をタイルの終わりの角へ寄せる。 */
+    /* バッジはアイコンより幅が広く略記の位置へ届くので、バッジのある時は略記をタイルの末尾側の角へ寄せる。 */
     &:has(> .icon > .ply-badge) > .shortcut {
       inset-inline: auto var(--ply-space-1);
     }

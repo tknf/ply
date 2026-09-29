@@ -21,7 +21,7 @@ export default () => (
       <Tag label="確認中" accent="amber" />
     </TagGroup>
     <DisclosureGroup label="色と置き場所の違い">
-      <Disclosure summary="色ごとの札" open>
+      <Disclosure summary="色ごとのタグ" open>
         <TagGroup label="色ごとの分類">
           <Tag label="分類なし" />
           <Tag label="読書会" accent="blue" />
@@ -30,7 +30,7 @@ export default () => (
           <Tag label="要対応" accent="coral" />
         </TagGroup>
       </Disclosure>
-      <Disclosure summary="分類へ移る札" open>
+      <Disclosure summary="分類へ移動するタグ" open>
         <TagGroup label="分類から探す">
           <Tag label="仕事場の記事" href="/apps/search?q=仕事場" />
           <Tag label="読書会" accent="blue" href="/apps/search?q=読書会" />
@@ -39,7 +39,7 @@ export default () => (
           <Tag label="締め切り" accent="coral" href="/apps/search?q=締め切り" />
         </TagGroup>
       </Disclosure>
-      <Disclosure summary="外せる札">
+      <Disclosure summary="解除できるタグ">
         <TagGroup label="選んだ分類">
           <Tag label="暮らし" removeButton={removeButton("暮らし")} />
           <Tag label="読書会" accent="blue" removeButton={removeButton("読書会")} />

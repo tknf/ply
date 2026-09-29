@@ -46,7 +46,7 @@ export default () => (
       </Message>
     </div>
     <DisclosureGroup label="会話の形と文書の形">
-      <Disclosure summary="返信を束ねる">
+      <Disclosure summary="返信をまとめる">
         <Message
           author="田中 遥"
           time="9月14日 16:02"
@@ -76,7 +76,7 @@ export default () => (
           <p>読書会の開始時間を18時に変えてもよいですか。</p>
         </Message>
       </Disclosure>
-      <Disclosure summary="人の円なし・複数段落・添付">
+      <Disclosure summary="アバターなし・複数段落・添付">
         <div>
           <Message author="予約の受付" time="9月13日 9:00" datetime="2026-09-13T09:00:00+09:00">
             <p>中会議室の予約を受け付けました。</p>
@@ -93,7 +93,7 @@ export default () => (
           </Message>
         </div>
       </Disclosure>
-      <Disclosure summary="メールのスレッドを紙の束にする">
+      <Disclosure summary="メールのスレッドをカードを重ねて表示する">
         <div class="ply-stack">
           <div class="ply-cluster">
             <AvatarGroup label="森 美咲、佐藤 健" size="small">

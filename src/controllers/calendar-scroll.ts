@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 /**
- * 時間割を開いた時に現在時刻（または稼働時間の始まり）を表示する。
+ * 時間割を開いた時に現在時刻（または稼働時間の開始時刻）を表示する。
  * CSSのscroll-initial-targetに対応するブラウザでは描画時に決まるため、何もしない。
  */
 export class CalendarScrollController extends Controller<HTMLElement> {

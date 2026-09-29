@@ -75,7 +75,7 @@ test("共有Iconへ局所の役割名を付けても装飾としての属性を�
   expect(icon).toContain('focusable="false"');
 });
 
-test("LayerCardは見出しを層に置き中身を紙に入れ操作がない時は空の置き場を出さない", async () => {
+test("LayerCardは見出しを層に置き中身をカードに入れ操作がない時は空の領域を出さない", async () => {
   const markup = String(await html`${<LayerCard title="今週の予約">予約はありません</LayerCard>}`);
   expect(markup).toContain('<header class="heading"><h3 class="title">今週の予約</h3></header>');
   expect(markup).toContain('<div class="body">予約はありません</div>');
@@ -109,7 +109,7 @@ test("ActionTileはhrefでリンク、無ければボタンになり、使えな
   expect(button).toContain("disabled");
 });
 
-test("ToastStackは既定で書き終わりの側の下に置き、束のcontrollerを付けてToastを並べる", async () => {
+test("ToastStackは既定で末尾側の下に置き、スタックのcontrollerを付けてToastを並べる", async () => {
   const markup = String(
     await html`${(
       <ToastStack>
@@ -131,7 +131,7 @@ const makeReaction = (content: string, by: string[], mine = false) => ({
   mine,
 });
 
-test("Reactionsは付けた人数を数にし、自分の札を押せる状態で示し、誰もいない札は出さない", async () => {
+test("Reactionsは付けた人数を数にし、自分のリアクションを押せる状態で示し、誰もいないリアクションは出さない", async () => {
   const markup = String(
     await html`${(
       <Reactions
@@ -139,7 +139,7 @@ test("Reactionsは付けた人数を数にし、自分の札を押せる状態�
         items={[
           makeReaction("👍", ["田中 遥", "自分"], true),
           makeReaction("🎉", ["佐藤 健"]),
-          makeReaction("誰もいない反応", []),
+          makeReaction("誰もいないリアクション", []),
         ]}
         add={{ id: "r" }}
       />
@@ -148,12 +148,12 @@ test("Reactionsは付けた人数を数にし、自分の札を押せる状態�
   expect(markup).toContain('aria-pressed="true"');
   expect(markup).toContain('aria-label="いいね：田中 遥、自分"');
   expect(markup).toContain('<span class="count" aria-hidden="true">2</span>');
-  expect(markup).not.toContain("誰もいない反応");
+  expect(markup).not.toContain("誰もいないリアクション");
   expect(markup).toContain('aria-label="リアクションを追加"');
   expect(markup).toContain('data-controller="emoji-picker"');
 });
 
-test("Reactionsはaddが無ければ押せない札にし、読み上げに付けた人を残す", async () => {
+test("Reactionsはaddが無ければ押せないリアクションにし、読み上げに付けた人を残す", async () => {
   const markup = String(
     await html`${<Reactions label="反応" items={[makeReaction("👍", ["田中 遥"])]} />}`,
   );

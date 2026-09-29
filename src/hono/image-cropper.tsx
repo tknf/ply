@@ -11,8 +11,8 @@ type ImageCropperCommonProps = ElementProps<"div"> & {
   /** 画像の代替テキスト。画像が無い時は代わりの枠に使う。 */
   alt: string;
   /**
-   * 初めの切り抜き範囲と拡大率。位置と大きさは表示面に対するパーセント。
-   * 範囲外は端に丸め、有限でない数があるとRangeErrorを投げる。
+   * 初期の切り抜き範囲と拡大率。位置と大きさは表示領域に対するパーセント。
+   * 範囲外の値は範囲内に収め、有限でない数があるとRangeErrorを投げる。
    */
   value?: ImageCropperValue;
   /** 枠の移動・大きさの変更・スライダーをすべて止める。 */
@@ -26,7 +26,7 @@ export type ImageCropperProps = ImageCropperCommonProps &
     | {
         /** 切り抜く画像のURL。渡さなければ画像なしの表示にし、controllerを付けない。 */
         src: string;
-        /** 元画像の実寸。表示面も同じ縦横比にして選択座標を画像へ正しく対応させる。 */
+        /** 元画像の実寸。表示領域も同じ縦横比にして選択座標を画像へ正しく対応させる。 */
         imageWidth: number;
         /** 元画像の実寸の高さ（px）。imageWidthと同じく正の整数で、違えばRangeErrorを投げる。 */
         imageHeight: number;
@@ -277,7 +277,7 @@ export const ImageCropper = ({
             </div>
           </Disclosure>
           <p class="instructions" id={instructionsId} data-image-cropper-target="instructions">
-            枠をドラッグして移動、下端の持ち手で大きさを変更します。矢印キーでも調整できます。
+            枠をドラッグして移動、下端のハンドルで大きさを変更します。矢印キーでも調整できます。
           </p>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("SplitViewは持ち手のドラッグと矢印キーで主領域の幅を変える", async ({ page }) => {
+test("SplitViewはハンドルのドラッグと矢印キーで主領域の幅を変える", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/components/split-view");
   const view = page.locator('[data-example="hono"] .ply-split-view').first();
@@ -10,7 +10,7 @@ test("SplitViewは持ち手のドラッグと矢印キーで主領域の幅を�
   const width = async () => (await primary.boundingBox())?.width ?? 0;
   const before = await width();
   const box = await handle.boundingBox();
-  if (!box) throw new Error("持ち手がありません");
+  if (!box) throw new Error("ハンドルがありません");
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
   await page.mouse.down();
   await page.mouse.move(box.x - 150, box.y + box.height / 2, { steps: 8 });

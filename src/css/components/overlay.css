@@ -1,7 +1,7 @@
 @layer components {
   /*
-    閉じる操作は青いアイコンだけのButtonにし、紙の終わりの側の上の角から少しはみ出させて置く。
-    Wingの持ち手と同じく、紙の外から手を掛けられる印にする。見出しの行は操作の幅を取らない。
+    閉じる操作は青いアイコンだけのButtonにし、パネルの末尾側の上の角から少しはみ出させて置く。
+    Wingのハンドルと同じく、パネルの外から操作できる目印にする。見出しの行は操作の幅を取らない。
   */
   :is(.ply-overlay, .ply-table > .selection-bar) {
     --ply-overlay-close-size: 1.75rem;
@@ -78,7 +78,7 @@
       padding-inline: var(--ply-overlay-inset-inline);
     }
   }
-  /* 閉じる操作の位置。Dialog・Popover・Toast・Tableの選択の板で同じ角に置く。 */
+  /* 閉じる操作の位置。Dialog・Popover・Toast・Tableの選択バーで同じ角に置く。 */
   :is(.ply-overlay > .heading > .heading-row, .ply-table > .selection-bar > .heading) > .close {
     position: absolute;
     inset-block-start: calc(-1 * var(--ply-overlay-close-offset));
@@ -90,9 +90,9 @@
     }
   }
   /*
-    浮かぶ物の出入り。Dialog・Popover・HoverCard・Tooltip・Toast・DropdownMenu・CommandMenu・DatePicker・Tableの選択の板の全てで、
+    浮かぶ要素の出入り。Dialog・Popover・HoverCard・Tooltip・Toast・DropdownMenu・CommandMenu・DatePicker・Tableの選択バーの全てで、
     ここだけに書く。支点から小さく現れて一瞬膨らんでから収まり、閉じる時は同じ支点へ縮みながら速く消える。
-    各コンポーネントは支点（transform-origin）だけを決める。画面の端から差し出す物（Toast・下に付くDialog）は、
+    各コンポーネントは支点（transform-origin）だけを決める。画面の端から出てくる要素（Toast・下に付くDialog）は、
     --ply-motion-slideで滑らせる時間を、--ply-motion-scale-in・-outで膨らみを1にし、閉じた形と開き始めのtranslateを決める。
     位置を決めるスクリプトは変形前の寸法（layoutRect）で測るため、大きさを変えても配置は狂わない。
   */
@@ -128,7 +128,7 @@
       scale: var(--ply-motion-scale-in);
     }
   }
-  /* アンカーに付く紙（Popover・HoverCard）は、開いた操作の側の上の角を支点にする。 */
+  /* アンカーに付くパネル（Popover・HoverCard）は、開いた操作の側の上の角を支点にする。 */
   .ply-overlay[popover] {
     transform-origin: top left;
     &:dir(rtl),
@@ -152,7 +152,7 @@
     inline-size: min(var(--ply-overlay-width), calc(100vw - 1rem));
     max-inline-size: calc(100vw - 1rem);
     max-block-size: calc(100dvh - 1rem);
-    /* 角の操作をはみ出させるため、紙は切り取らず本文だけをスクロールする。 */
+    /* 角の操作をはみ出させるため、パネルは切り取らず本文だけをスクロールする。 */
     overflow: visible;
     margin: 0;
     padding: 0;

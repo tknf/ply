@@ -8,7 +8,7 @@ export class RangeController extends SliderController {
 
   constructor(...args: ConstructorParameters<typeof SliderController>) {
     super(...args);
-    // 上流のライフサイクルはインスタンス関数なので、保持してから表示処理を足す。
+    // 上流のライフサイクルはインスタンス関数なので、保持してから表示処理を追加する。
     const connectSlider = this.connect;
     const disconnectSlider = this.disconnect;
     this.connect = () => {

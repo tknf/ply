@@ -23,7 +23,7 @@ export class CharacterCountController extends BaseCharacterCountController {
       this.validationForm = field.form;
       field.addEventListener("input", this.validateOverflow);
       this.validationForm?.addEventListener("reset", this.afterReset);
-      // 上流が数え始めた後に、文字数の欄を出す。
+      // 上流が数え始めた後に、文字数の表示を出す。
       queueMicrotask(() => {
         this.validateOverflow();
         this.setCounterHidden(!this.validationField);

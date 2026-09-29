@@ -2,15 +2,15 @@ import type { PropsWithChildren } from "hono/jsx";
 import { classes, type ElementProps, type Accent } from "./types";
 
 export type AvatarProps = ElementProps<"span"> & {
-  /** 人やチームの名前。円の読み上げの名前（role="img"のaria-label）にする。 */
+  /** 人やチームの名前。アバターの読み上げの名前（role="img"のaria-label）にする。 */
   name: string;
-  /** 画像がない時と読み込めない時に円に書く略称。一、二文字にする。 */
+  /** 画像がない時と読み込めない時にアバターに書く略称。一、二文字にする。 */
   initials: string;
   /** 顔写真などのURL。AvatarControllerが読み込めたと確かめてから表示し、それまでは略称を見せる。 */
   src?: string;
-  /** 円の大きさ。inlineは20px、smallは28px、defaultは36px、largeは48px。 */
+  /** アバターの大きさ。inlineは20px、smallは28px、defaultは36px、largeは48px。 */
   size?: "inline" | "small" | "default" | "large";
-  /** 略称の円の塗り。人を見分ける補助で、名前の代わりにはしない。 */
+  /** 略称のアバターの塗り。人を見分ける補助で、名前の代わりにはしない。 */
   tone?: Accent;
 };
 export const Avatar = ({
@@ -48,7 +48,7 @@ export type AvatarGroupProps = PropsWithChildren<
     size?: "small" | "default" | "large";
   }
 >;
-/** 人の円を少しずつ重ねて並べる。childrenにはAvatarだけを置く。 */
+/** アバターを少しずつ重ねて並べる。childrenにはAvatarだけを置く。 */
 export const AvatarGroup = ({
   label,
   more,

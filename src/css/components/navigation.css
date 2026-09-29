@@ -1,13 +1,13 @@
 @layer components {
   /*
-    縦並びのナビゲーション。淡い面の一枚の板に行を並べ、
-    行の間は名前の書き始めから細い線で区切る。今いる行は面を塗らず、太字と終わりの側の青いチェックで示す。
+    縦並びのナビゲーション。淡い面の一枚のパネルに行を並べ、
+    行の間は名前の書き始めから細い線で区切る。今いる行は面を塗らず、太字と末尾側の青いチェックで示す。
     名前はMedium、アイコンは塗りつぶしの版（Iconのfill）を文字と同じ濃さで置く。
   */
   .ply-navigation {
     display: grid;
     align-content: start;
-    /* 並べた先の高さに引き伸ばさず、中身の高さの板にする。 */
+    /* 並べた先の高さに引き伸ばさず、中身の高さのパネルにする。 */
     align-self: start;
     padding-block: var(--ply-space-1);
     padding-inline: var(--ply-space-1);
@@ -45,7 +45,7 @@
         flex: 1;
         min-inline-size: 0;
       }
-      /* 件数はSectionと同じ、淡い面の色の小さなピル。板の色と分けるため白地にする。 */
+      /* 件数はSectionと同じ、淡い面の色の小さなピル。パネルの色と分けるため白地にする。 */
       & > small {
         display: inline-grid;
         flex: none;
@@ -64,7 +64,7 @@
       &:hover {
         background: color-mix(in srgb, var(--ply-ink) 6%, var(--ply-background));
       }
-      /* 今いる行は太字と、終わりの側の青いチェック。 */
+      /* 今いる行は太字と、末尾側の青いチェック。 */
       &[data-current="true"] {
         font-weight: 600;
         &::after {
@@ -77,7 +77,7 @@
         }
       }
     }
-    /* 行の間の線は、名前の書き始めから終わりまで。指を載せた行の上下では消す。 */
+    /* 行の間の線は、名前の書き始めから終わりまで。ホバーした行の上下では消す。 */
     & > a + a::before {
       content: "";
       position: absolute;

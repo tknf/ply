@@ -13,7 +13,7 @@
   .ply-popover > .panel::backdrop {
     background: transparent;
   }
-  /* 開く操作の名前のTooltipは、板が開いている間は隠し、板と重ねない。 */
+  /* 開く操作の名前のTooltipは、パネルが開いている間は隠し、パネルと重ねない。 */
   .ply-popover:has(> .panel:popover-open) > .ply-tooltip > .content {
     visibility: hidden;
   }

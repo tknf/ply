@@ -5,36 +5,36 @@ import { Keycap } from "./keycap";
 import { classes, type Accent } from "./types";
 
 type TileContent = {
-  /** 名前。印の下に置き、長い時は文節の切れ目で折り返す。 */
+  /** 名前。アイコンの下に置き、長い時は文節の切れ目で折り返す。 */
   label: string;
-  /** 塗りつぶしで上に置く印。 */
+  /** 塗りつぶしで上に置くアイコン。 */
   icon: IconName;
-  /** 印の色。既定は青。 */
+  /** アイコンの色。既定は青。 */
   accent?: Accent;
   /**
-   * 使えない状態にする。リンクは`href`を外して移動しない印（`aria-disabled`）にし、ボタンは押せなくする。
-   * 移動しない印はTabで止まらず、リンクだけの属性（`target`・`rel`など）と`tabindex`を外し、ほかの属性は保つ。
+   * 使えない状態にする。リンクは`href`を外して移動しない状態（`aria-disabled`）にし、ボタンは押せなくする。
+   * 移動しないリンクはTabで止まらず、リンクだけの属性（`target`・`rel`など）と`tabindex`を外し、ほかの属性は保つ。
    */
   disabled?: boolean;
-  /** ルートに足すクラス。`ply-action-tile`は常に付く。 */
+  /** ルートに追加するクラス。`ply-action-tile`は常に付く。 */
   class?: string;
-  /** 表示用のキーの印。Keycapの小さい形で、印の終わりの側の上に添える。登録は利用側で行う。 */
+  /** 表示用のショートカットキー。Keycapの小さい形で、アイコンの末尾側の上に添える。登録は利用側で行う。 */
   shortcut?: string;
-  /** 状態の札（「下書き」など）。Badgeの小さい形で、印の上に重ねる。 */
+  /** 状態バッジ（「下書き」など）。Badgeの小さい形で、アイコンの上に重ねる。 */
   badge?: string;
 };
 export type ActionTileProps =
   | (TileContent & {
       /** 移動先。渡すとリンクになり、渡さなければ`type="button"`のボタンになる。 */
       href: string;
-      /** 今いる場所の入口として`aria-current="page"`を付ける。 */
+      /** 今いる場所へのリンクとして`aria-current="page"`を付ける。 */
       current?: boolean;
     } & Omit<JSX.IntrinsicElements["a"], "class" | "children">)
   | (TileContent & { href?: never } & Omit<JSX.IntrinsicElements["button"], "class" | "children">);
 
 /**
- * 塗りつぶしの印を上・名前を下に置いた、格子に並べる入口や操作のタイル。
- * CommandMenuの入口やTableの一括操作に使う。hrefを渡すと移動のリンク、渡さなければボタンになる。
+ * 塗りつぶしのアイコンを上・名前を下に置いた、格子に並べるリンクや操作のタイル。
+ * CommandMenuのリンクやTableの一括操作に使う。hrefを渡すと移動のリンク、渡さなければボタンになる。
  */
 export const ActionTile = (props: ActionTileProps) => {
   const { label, icon, accent, disabled, class: className, shortcut, badge } = props;
@@ -65,7 +65,7 @@ export const ActionTile = (props: ActionTileProps) => {
       badge: _b,
       ...attributes
     } = props;
-    // 移動しない印には、リンクだけの属性とTabの停止点を移さない。aria-descriptionやdata属性は残す。
+    // 移動しないリンクには、リンクだけの属性とTabの停止点を移さない。aria-descriptionやdata属性は残す。
     const {
       target: _target,
       rel: _rel,

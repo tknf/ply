@@ -4,13 +4,13 @@ import { Icon } from "./icon";
 
 export type EmptyStateProps = PropsWithChildren<
   ElementProps<"section"> & {
-    /** 札に太字で書く題名。何が無いのか、何が終わったのかを書く。 */
+    /** 枠内に太字で書く題名。何が無いのか、何が終わったのかを書く。 */
     title: string;
     /** 場面。emptyは0件（灰）、startは初めて使う時（青）、completeは作業を終えた時（緑）。 */
     kind?: "empty" | "start" | "complete";
-    /** 札の下に置く次の操作（ActionLinkやButton）。 */
+    /** 枠の下に置く次の操作（ActionLinkやButton）。 */
     actions?: Child;
-    /** 題名の上に置く印。渡した時だけ置く。completeは渡さなくてもペンで描くチェックを置く。 */
+    /** 題名の上に置くアイコン。渡した時だけ置く。completeは渡さなくてもペンで描くチェックを置く。 */
     icon?: Child;
   }
 >;
@@ -24,7 +24,7 @@ export const EmptyState = ({
   class: className,
   ...attributes
 }: EmptyStateProps) => {
-  // 終わった時だけ、ペンで描くチェックを既定の印にする。他の場面は渡された時だけ印を置く。
+  // 終わった時だけ、ペンで描くチェックを既定のアイコンにする。他の場面は渡された時だけアイコンを置く。
   const symbol =
     icon != null && icon !== false ? icon : kind === "complete" ? <Icon name="check" /> : null;
   return (

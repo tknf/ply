@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("FileItemは広い幅でも印の札と縮小を同じ40pxの正方形の列に収める", async ({ page }) => {
+test("FileItemは広い幅でもアイコンとサムネイルを同じ40pxの正方形の列に収める", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/components/file-item");
   const items = page.locator('[data-example="hono"] .ply-file-item');
@@ -9,7 +9,7 @@ test("FileItemは広い幅でも印の札と縮小を同じ40pxの正方形の�
     elements.map((element) => {
       const mark = element.querySelector(":scope > .preview, :scope > .icon"),
         body = element.querySelector(":scope > .body");
-      if (!mark || !body) throw new Error("印か本文がありません");
+      if (!mark || !body) throw new Error("アイコンか本文がありません");
       const m = mark.getBoundingClientRect(),
         b = body.getBoundingClientRect(),
         rootFontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize);

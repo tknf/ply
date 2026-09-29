@@ -116,7 +116,7 @@ test.describe("タッチ操作", () => {
 
 test("複数チェックの全選択・一部選択・解除とresetが同期する", async ({ page }) => {
   await page.goto("/components/field");
-  // 見本には全選択を持つ束が二つあるので、「複数選択・全選択」の束に絞る。
+  // 見本には全選択を持つグループが二つあるので、「複数選択・全選択」のグループに絞る。
   const group = page.getByRole("group", { name: "複数選択・全選択", exact: true });
   const all = group.getByRole("checkbox", { name: "すべて選択", exact: true });
   const articles = group.getByRole("checkbox", { name: "新しい記事", exact: true });
@@ -165,7 +165,7 @@ test("Fieldの補足・エラー・ラベルが入力に関連付く", async ({ 
   await expect(input).toHaveAttribute("data-invalid", "true");
   await expect(input).toHaveAccessibleDescription("一覧に表示します。 名前を入力してください。");
   await expect(input).toHaveAttribute("required", "");
-  // 部品のページの表にも「名前」があるので、見本の中のラベルに絞る。
+  // コンポーネントのページの表にも「名前」があるので、見本の中のラベルに絞る。
   await page.locator('[data-example="hono"]').getByText("名前", { exact: true }).click();
   await expect(input).toBeFocused();
   await input.fill("確認用の名前");

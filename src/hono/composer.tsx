@@ -5,15 +5,15 @@ import { Icon } from "./icon";
 import { classes, type ElementProps } from "./types";
 
 export type ComposerProps = Omit<ElementProps<"form">, "children"> & {
-  /** formのID。本文の欄のIDの頭にも使う。 */
+  /** formのID。本文の欄のIDの接頭辞にも使う。 */
   id: string;
-  /** 本文の欄の名前。題名の行の始まりに出す。 */
+  /** 本文の欄の名前。題名の行の先頭に出す。 */
   label: string;
   /** 本文を送るフィールドの名前。editorを渡した時は使わない。 */
   name: string;
-  /** 本文の初めの文。editorを渡した時は使わない。 */
+  /** 本文の初期値。editorを渡した時は使わない。 */
   value?: string;
-  /** 本文の欄の薄い文字。editorを渡した時は使わない。 */
+  /** 本文の欄のプレースホルダー。editorを渡した時は使わない。 */
   placeholder?: string;
   /**
    * 本文の欄の行数。field-sizingに対応しないブラウザでの高さになる。
@@ -27,22 +27,22 @@ export type ComposerProps = Omit<ElementProps<"form">, "children"> & {
   /** 送信中にする。送信ボタンを「送信中…」にして押せなくし、formにaria-busyを付ける。 */
   busy?: boolean;
   /**
-   * 本文の欄の下に出す誤りの文。本文の欄をaria-invalidにする。
-   * editorを渡した時も編集部品の下に出し、`<id>-body-error`のIDで編集部品を包むまとまりの説明にする。
-   * 書く場所そのもののaria-invalidとaria-describedbyは編集部品の側で付ける。
+   * 本文の欄の下に出すエラー文。本文の欄をaria-invalidにする。
+   * editorを渡した時もエディターの下に出し、`<id>-body-error`のIDでエディターを包む要素の説明にする。
+   * 入力エリアそのもののaria-invalidとaria-describedbyはエディターの側で付ける。
    */
   error?: string;
   /** 本文の下に置く添付（FileInputや選んだファイルの一覧など）。 */
   attachments?: Child;
-  /** 下の行の始まりの側に並べる操作（添付・書式・下書きの保存など）。送信ボタンは終わりの側に置く。 */
+  /** 下の行の先頭側に並べる操作（添付・書式・下書きの保存など）。送信ボタンは末尾側に置く。 */
   actions?: Child;
   /** 見出しで、名前の隣へ置く宛先（人やチャンネル）。 */
   to?: Child;
   /** 見出しの右端に置く状態（下書きの保存など）。 */
   status?: Child;
   /**
-   * 本文の欄の代わりに置く編集部品（リッチテキストの編集部品やcontenteditableなど）。
-   * 渡すと本文の文字と紙全体の輪はこの部品にかかり、送信する値の受け渡しは部品の側で行う。
+   * 本文の欄の代わりに置くエディター（リッチテキストエディターやcontenteditableなど）。
+   * 渡すと本文の文字と入力エリア全体のフォーカスリングはこのエディターに適用し、送信する値の受け渡しもエディターの側で行う。
    */
   editor?: Child;
 };

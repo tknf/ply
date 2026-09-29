@@ -9,9 +9,9 @@ export type KeycapProps = ElementProps<"span"> & {
    * 外側の`span`は名前を持てない要素なので、`aria-label`を渡した時も同じ扱いにする。
    */
   label?: string;
-  /** smallはタイルの角やメニューの行の終わりに添える小さな印。 */
+  /** smallはタイルの角やメニューの行の末尾に添える小さな表示。 */
   size?: "default" | "small";
-  /** 青のメニューや塗った面の上に置く時。地を塗らず、文字と同じ色の淡い縁にする。 */
+  /** 青のメニューや塗った背景の上に置く時。背景を塗らず、文字と同じ色の淡い縁にする。 */
   inverse?: boolean;
 };
 export const Keycap = ({

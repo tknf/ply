@@ -13,19 +13,19 @@ type Point = {
 export type DateTimeRangeProps = ElementProps<"fieldset"> & {
   /** 枠全体の名前。legendに出す。 */
   legend: string;
-  /** 送る名前の頭。`${name}[start_date]`・`[start_time]`・`[end_date]`・`[end_time]`・`[all_day]`で送る。 */
+  /** 送信する名前の接頭辞。`${name}[start_date]`・`[start_time]`・`[end_date]`・`[end_time]`・`[all_day]`で送信する。 */
   name: string;
-  /** 開始の初めの日付と時刻。 */
+  /** 開始の初期の日付と時刻。 */
   start?: Point;
-  /** 終了の初めの日付と時刻。 */
+  /** 終了の初期の日付と時刻。 */
   end?: Point;
-  /** 終日のSwitchを入れておく。入っている間は時刻の欄を隠す。 */
+  /** 終日のSwitchをオンにしておく。オンの間は時刻の欄を隠す。 */
   allDay?: boolean;
-  /** 渡すと、終わりの側に地球の印とタイムゾーンを添える。 */
+  /** 渡すと、末尾側に地球のアイコンとタイムゾーンを添える。 */
   timezone?: string;
-  /** 開始の側の小さな名前。日付と時刻の欄の読み上げ名（「開始の日付」など）の頭にも使う。 */
+  /** 開始側の小さなラベル。日付と時刻の欄の読み上げ名（「開始の日付」など）の接頭辞にも使う。 */
   startLabel?: string;
-  /** 終了の側の小さな名前。日付と時刻の欄の読み上げ名の頭にも使う。 */
+  /** 終了側の小さなラベル。日付と時刻の欄の読み上げ名の接頭辞にも使う。 */
   endLabel?: string;
   /** 終日のSwitchの名前。 */
   allDayLabel?: string;

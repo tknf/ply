@@ -1,10 +1,10 @@
 @layer components {
   /*
-    反応。同じ絵文字や言葉を一枚の小さな札にまとめ、付けた人数を淡い太字で添える。
-    札は枠の細い平らなピルで、自分も付けている札は淡い青の面と青い縁・青い数にする。
-    押せる札は指を載せると淡い面、押すと内側へへこむ（ActionTileと同じ手触り）。
-    追加の操作は札の終わりに置くPopoverで、開く操作は枠も影もない青い印（Buttonのlink）にTooltipで名前を出す。
-    中は短い言葉で反応する欄（開いた時に移る）とEmojiPicker。文字の指定はこのファイルが持つ（専用の操作）。
+    リアクション。同じ絵文字や言葉を一つの小さなリアクションにまとめ、付けた人数を淡い太字で添える。
+    リアクションは枠の細い平らなピルで、自分も付けているリアクションは淡い青の面と青い縁・青い数にする。
+    押せるリアクションはホバーすると淡い面、押すと内側へへこむ（ActionTileと同じ手触り）。
+    追加の操作はリアクションの終わりに置くPopoverで、開く操作は枠も影もない青いアイコン（Buttonのlink）にTooltipで名前を出す。
+    中は短い言葉でリアクションする欄（開いた時に移る）とEmojiPicker。文字の指定はこのファイルが持つ（専用の操作）。
   */
   .ply-reactions {
     display: flex;
@@ -36,7 +36,7 @@
         padding-block: calc((1.75rem - 2 * var(--ply-stroke-width) - 1lh) / 2);
         padding-inline: 0.5rem 0.625rem;
         border: var(--ply-stroke-width) solid var(--ply-border);
-        /* 一行では高さの半分で止まってピルになり、折り返すと紙と同じ角になる。 */
+        /* 一行では高さの半分で止まってピルになり、折り返すとカードと同じ角丸になる。 */
         border-radius: var(--ply-radius-surface);
         background: var(--ply-surface);
         color: var(--ply-text);
@@ -49,7 +49,7 @@
           background-color var(--ply-duration) ease,
           border-color var(--ply-duration) ease,
           box-shadow var(--ply-duration) ease;
-        /* 言葉の反応は太字で読ませる（絵文字は太さで変わらない）。 */
+        /* 言葉のリアクションは太字で読ませる（絵文字は太さで変わらない）。 */
         & > .content {
           min-inline-size: 0;
           font-weight: 700;
@@ -89,12 +89,12 @@
       }
     }
   }
-  /* 追加の板。上に短い言葉で反応する欄、下に絵文字の板を置く。 */
+  /* 追加のパネル。上に短い言葉でリアクションする欄、下に絵文字パネルを置く。 */
   .ply-reactions > .ply-popover > .panel > .body > .add {
     display: grid;
     gap: var(--ply-space-3);
     min-inline-size: 0;
-    /* 絵文字の板は、下の言葉の欄と幅をそろえて板いっぱいに置く（8列は保てる幅）。 */
+    /* 絵文字パネルは、下の言葉の欄と幅をそろえてパネルいっぱいに置く（8列は保てる幅）。 */
     & > .ply-emoji-picker {
       inline-size: 100%;
     }

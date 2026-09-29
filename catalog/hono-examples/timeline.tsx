@@ -48,7 +48,7 @@ export default () => (
       />
     </section>
     <section class="ply-stack" data-space="small">
-      <h3>仕組みの出来事と何もなかった期間</h3>
+      <h3>システムの出来事と何もなかった期間</h3>
       <Timeline
         label="カードの履歴"
         items={[

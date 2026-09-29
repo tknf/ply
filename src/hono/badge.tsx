@@ -7,7 +7,7 @@ export type BadgeProps = PropsWithChildren<
     tone?: Tone;
     /** 下書きなど、まだ確定していない状態。役割の色を持たせず、中立の見た目で示す。 */
     draft?: boolean;
-    /** smallはタイルの印の上などに重ねる小さな札。 */
+    /** smallはタイルのアイコンの上などに重ねる小さなバッジ。 */
     size?: "default" | "small";
   }
 >;

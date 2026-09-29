@@ -12,13 +12,13 @@ export type GridColumn = {
 export type GridCell = {
   /** セルの中身。 */
   content: Child;
-  /** 使えない枠。斜線で示し、aria-disabledを付ける。キーでの移動先には残る。 */
+  /** 使えないセル。斜線で示し、aria-disabledを付ける。キーでの移動先には残る。 */
   disabled?: boolean;
 };
 export type GridRow = {
   /** 行を識別する値。行のdata-row-idに入れる。 */
   id: string;
-  /** 行の見出し（th scope="row"）の文字。横にスクロールしても始まりの側に留める。 */
+  /** 行の見出し（th scope="row"）の文字。横にスクロールしても先頭側に留める。 */
   label: string;
   /** 行のセル。columnsと同じ数、同じ順に渡す。 */
   cells: readonly GridCell[];

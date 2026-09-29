@@ -1,13 +1,13 @@
 @layer components {
   /*
-    見出しを紙の中に書かず、淡い地の層に置く。中身は層の上に載せた白い紙にする。
+    見出しをカードの中に書かず、淡い地の層に置く。中身は層の上に載せた白いカードにする。
     層はPageHeader・Table・Calendarと同じ淡い青の面で、Progressの溝と同じ影で内側へ沈めた受け皿にする。
-    紙はその中に置き、紙の影で浮かせる。この部品だけの色や影は作らない。
-    紙の角丸は層の角丸から層の余白を引いた同心の値（12px）にする。
+    カードはその中に置き、カードの影で浮かせる。このコンポーネントだけの色や影は作らない。
+    カードの角丸は層の角丸から層の余白を引いた同心の値（12px）にする。
   */
   .ply-layer-card {
     --ply-layer-card-gap: var(--ply-space-1);
-    /* 紙の内側はCardと同じ余白にする。同じ種類の紙で余白を変えない。 */
+    /* カードの内側はCardと同じ余白にする。同じ種類のカードで余白を変えない。 */
     --ply-layer-card-inline: var(--ply-space-6);
     /* 見出しの一行の高さ。操作のピルと同じ高さにし、題名の中央をピルの中央にそろえる。 */
     --ply-layer-card-row: var(--ply-control-size);
@@ -25,9 +25,9 @@
     line-height: var(--ply-label-leading);
     overflow-wrap: anywhere;
     /*
-      見出しの行は上下に層の余白を持ち、操作のピルと層の上端・紙の間を層の左右の余白と同じにする。
+      見出しの行は上下に層の余白を持ち、操作のピルと層の上端・カードの間を層の左右の余白と同じにする。
       題名が折り返しても操作は一行目の終わりに残し、題名の幅が8remを割る時（狭い層や大きな文字）だけ操作を次の行へ送る。
-      題名は紙の中の文字と同じ書き始めに置く。
+      題名はカードの中の文字と同じ書き始めに置く。
     */
     & > .heading {
       display: flex;
@@ -45,14 +45,14 @@
         gap: var(--ply-space-2);
         margin-inline-start: auto;
       }
-      /* 狭い層では紙の内側と題名の書き始めを一緒に詰める。 */
+      /* 狭い層ではカードの内側と題名の書き始めを一緒に詰める。 */
       @container ply-layer-card (inline-size < 24rem) {
         --ply-layer-card-inline: var(--ply-space-4);
       }
     }
     /*
-      題名は墨の太字にする。灰色の小さなラベルにはしない。
-      上下の余白は題名が持ち、一行で操作の高さにそろい、折り返しても層の上端と紙から離れる。
+      題名は濃い色の太字にする。灰色の小さなラベルにはしない。
+      上下の余白は題名が持ち、一行で操作の高さにそろい、折り返しても層の上端とカードから離れる。
     */
     & > .heading > .title {
       flex: 1 1 8rem;
@@ -72,12 +72,12 @@
       border-radius: calc(var(--ply-radius-surface) - var(--ply-layer-card-gap));
       background: var(--ply-surface) var(--ply-fill-paper);
       box-shadow: var(--ply-shadow-paper);
-      /* 段落の間はCardと同じく、紙の余白よりはっきり狭くする。 */
+      /* 段落の間はCardと同じく、カードの余白よりはっきり狭くする。 */
       & > * + * {
         margin-block-start: var(--ply-space-2);
       }
-      /* 紙の端が一覧の始まりと終わりを示すので、紙の端に接する一覧の罫線は重ねない。 */
-      /* タイルに並べたActionListは紙の端に接しないので、行の一覧だけを対象にする。 */
+      /* カードの端が一覧の始まりと終わりを示すので、カードの端に接する一覧の罫線は重ねない。 */
+      /* タイルに並べたActionListはカードの端に接しないので、行の一覧だけを対象にする。 */
       & > :is(.ply-data-list, .ply-action-list:not([data-layout="grid"])) {
         &:first-child > li:first-child {
           border-block-start-color: transparent;
@@ -86,14 +86,14 @@
           border-block-end-color: transparent;
         }
       }
-      /* 行の一覧を載せた紙は、行の面が余白の代わりになるので、上下の余白を狭める（0にはしない）。 */
+      /* 行の一覧を載せたカードは、行の面が余白の代わりになるので、上下の余白を狭める（0にはしない）。 */
       &:has(> :is(.ply-data-list, .ply-action-list:not([data-layout="grid"])):first-child) {
         padding-block-start: var(--ply-space-2);
       }
       &:has(> :is(.ply-data-list, .ply-action-list:not([data-layout="grid"])):last-child) {
         padding-block-end: var(--ply-space-2);
       }
-      /* 一覧だけを載せた紙は、行の内側の余白を引いて、行の題名を層の見出しと同じ書き始めにそろえる。 */
+      /* 一覧だけを載せたカードは、行の内側の余白を引いて、行の題名を層の見出しと同じ書き始めにそろえる。 */
       &:has(> .ply-data-list:only-child) {
         padding-inline: calc(var(--ply-layer-card-inline) - var(--ply-space-4));
       }

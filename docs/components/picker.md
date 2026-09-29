@@ -56,20 +56,20 @@ JavaScriptが無い時は、検索欄を出さず、標準の `select` をその
 
 選択値は標準selectが送信し、検索欄は選択のためだけに使う。
 
-| 名前              | 型                            | 既定値         | 説明                                                                                       |
-| ----------------- | ----------------------------- | -------------- | ------------------------------------------------------------------------------------------ |
-| `id`              | `string`                      |                | idの元。省略すると生成する。標準selectは`<id>-native`、検索欄は`<id>-search`になる。       |
-| `label`（必須）   | `string`                      |                | 欄の名前。                                                                                 |
-| `name`（必須）    | `string`                      |                | 標準selectのname。選んだ値をこの名前で送信する。                                           |
-| `options`（必須） | `readonly PickerOption[]`     |                | 選べる候補。取得後に入れ替える時はPickerController.replaceOptions()を使う。                |
-| `value`           | `string \| readonly string[]` |                | 最初に選んでおく値。multipleの時は配列で渡す。                                             |
-| `multiple`        | `boolean`                     | `false`        | trueで複数を選べる。選ぶたびに加え、同じ候補をもう一度選ぶか、Tagの解除で外す。            |
-| `required`        | `boolean`                     |                | 標準selectのrequired。未選択で送信すると検索欄へ移り、「候補を選択してください。」と出す。 |
-| `disabled`        | `boolean`                     |                | 標準selectと検索欄を使えなくする。                                                         |
-| `help`            | `string`                      |                | 欄の下に出す淡い補足。説明として読み上げる。                                               |
-| `error`           | `string`                      |                | 直す所を書くエラー文。欄をaria-invalidにし、説明として読み上げる。                         |
-| `placeholder`     | `string`                      | `"候補を検索"` | 検索欄のplaceholder。                                                                      |
-| `form`            | `string`                      |                | 標準selectのform属性。フォームの外に置く時に、送信するformのidを渡す。                     |
+| 名前              | 型                            | 既定値         | 説明                                                                                                   |
+| ----------------- | ----------------------------- | -------------- | ------------------------------------------------------------------------------------------------------ |
+| `id`              | `string`                      |                | idの元。省略すると生成する。標準selectは`<id>-native`、検索欄は`<id>-search`になる。                   |
+| `label`（必須）   | `string`                      |                | 欄の名前。                                                                                             |
+| `name`（必須）    | `string`                      |                | 標準selectのname。選んだ値をこの名前で送信する。                                                       |
+| `options`（必須） | `readonly PickerOption[]`     |                | 選べる候補。取得後に入れ替える時はPickerController.replaceOptions()を使う。                            |
+| `value`           | `string \| readonly string[]` |                | 最初に選んでおく値。multipleの時は配列で渡す。                                                         |
+| `multiple`        | `boolean`                     | `false`        | trueで複数を選べる。選ぶたびに加え、同じ候補をもう一度選ぶか、Tagの解除で外す。                        |
+| `required`        | `boolean`                     |                | 標準selectのrequired。未選択で送信すると検索欄へフォーカスが移り、「候補を選択してください。」と出す。 |
+| `disabled`        | `boolean`                     |                | 標準selectと検索欄を使えなくする。                                                                     |
+| `help`            | `string`                      |                | 欄の下に出す淡い補足。説明として読み上げる。                                                           |
+| `error`           | `string`                      |                | 直す所を書くエラー文。欄をaria-invalidにし、説明として読み上げる。                                     |
+| `placeholder`     | `string`                      | `"候補を検索"` | 検索欄のplaceholder。                                                                                  |
+| `form`            | `string`                      |                | 標準selectのform属性。フォームの外に置く時に、送信するformのidを渡す。                                 |
 
 登録するcontroller：`combobox`（`ComboboxController`）、`picker`（`PickerController`）
 

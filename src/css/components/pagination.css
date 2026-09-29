@@ -28,7 +28,7 @@
       border-color: var(--ply-border);
       background: var(--ply-surface) var(--ply-fill-control);
       color: var(--ply-text);
-      /* Buttonと同じく浮かせず、指を載せると縁を青くし、押すと内側へへこむ。 */
+      /* Buttonと同じく浮かせず、ホバーすると縁を青くし、押すと内側へへこむ。 */
       box-shadow: none;
       &:hover {
         border-color: var(--ply-link);
@@ -37,7 +37,7 @@
         box-shadow: var(--ply-shadow-control-pressed);
       }
     }
-    /* 押せない前後の送りは、ほかの無効な押す物と同じ斜線のピル。 */
+    /* 押せない前後の送りは、ほかの無効なボタンと同じ斜線のピル。 */
     & > ul > li > [data-disabled="true"] {
       border-color: var(--ply-border);
       background: var(--ply-hatch), var(--ply-surface);

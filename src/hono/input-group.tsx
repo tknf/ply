@@ -11,13 +11,13 @@ export type InputGroupAction = Omit<ButtonProps, "children" | "size"> & {
 export type InputGroupProps = Omit<ElementProps<"input">, "children" | "prefix" | "size"> & {
   /** 入力のid。接頭辞（`<id>-prefix`）と接尾辞（`<id>-suffix`）のidの元になる。 */
   id: string;
-  /** 入力の前に置く接頭辞（「¥」「https://」や印）。入力の説明として読み上げる。 */
+  /** 入力の前に置く接頭辞（「¥」「https://」やアイコン）。入力の説明として読み上げる。 */
   prefix?: Child;
   /** 入力の後に置く単位や接尾辞（「人」「.example.jp」など）。入力の説明として読み上げる。 */
   suffix?: Child;
   /** defaultは通常の高さ、largeは高く大きい文字にする。actionのボタンも同じ大きさにそろえる。 */
   size?: "default" | "large";
-  /** 枠の外の終わりに並べる操作のボタン。入力がdisabledの時はボタンも使えなくする。 */
+  /** 枠の外の末尾に並べる操作のボタン。入力がdisabledの時はボタンも使えなくする。 */
   action?: InputGroupAction;
 };
 

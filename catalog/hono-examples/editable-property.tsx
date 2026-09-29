@@ -12,7 +12,7 @@ export default () => (
       multiline
     />
     <p class="catalog-footnote">
-      値か鉛筆を押して書き始め、⌘＋Enter（WindowsなどではCtrl＋Enter）か「確定」で書き終えます。Escapeか「取消」で元の値に戻します。一行でも複数行でも同じで、Enterだけでは確定しません。
+      値か鉛筆のアイコンを押して編集を始め、⌘＋Enter（WindowsなどではCtrl＋Enter）か「確定」で編集を終えます。Escapeか「取消」で元の値に戻します。一行でも複数行でも同じで、Enterだけでは確定しません。
     </p>
     <DisclosureGroup label="値と置き場所の違い">
       <Disclosure summary="項目を並べる" open>

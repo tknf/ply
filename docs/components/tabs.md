@@ -18,7 +18,7 @@
 
 タブを押すか矢印キーで移ると、すぐにそのパネルへ切り替えます。無効なタブは表示しますが、選べず、矢印キーでも飛ばします。
 
-切り替えは`tabs:beforechange`・`tabs:change`で知らせます。選んだタブをURLなどに残す時は、利用側で行います。
+切り替えると`tabs:beforechange`・`tabs:change`を発火します。選んだタブをURLなどに残す時は、利用側で行います。
 
 JavaScriptなしでは選んだタブのパネルだけを表示し、タブを押しても切り替わりません。
 
@@ -39,8 +39,8 @@ JavaScriptなしでは選んだタブのパネルだけを表示し、タブを�
 
 | イベント            | 内容                                                                                                                                                |
 | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tabs:beforechange` | 利用者がタブを切り替える直前に知らせます。`detail`は`value`・`previousValue`・`reason`（`pointer`または`keyboard`）です。取り消すと切り替えません。 |
-| `tabs:change`       | 切り替えた後に知らせます。`detail`は`tabs:beforechange`と同じです。                                                                                 |
+| `tabs:beforechange` | 利用者がタブを切り替える直前に発火します。`detail`は`value`・`previousValue`・`reason`（`pointer`または`keyboard`）です。取り消すと切り替えません。 |
+| `tabs:change`       | 切り替えた後に発火します。`detail`は`tabs:beforechange`と同じです。                                                                                 |
 
 ## API
 
@@ -51,7 +51,7 @@ JavaScriptなしでは選んだタブのパネルだけを表示し、タブを�
 | `id`（必須）    | `string`             |        | タブとパネルのidの元。ページ内で一意にする。                                                        |
 | `label`（必須） | `string`             |        | tablistの読み上げ名。                                                                               |
 | `items`（必須） | `readonly TabItem[]` |        | 並べるタブとパネル。選べるタブが一つもない時は「利用可能な項目はありません。」を出す。              |
-| `selected`      | `string`             |        | 初めに選んでおくタブのvalue。省略した時、見つからない時、無効なタブの時は、最初の選べるタブにする。 |
+| `selected`      | `string`             |        | 最初に選んでおくタブのvalue。省略した時、見つからない時、無効なタブの時は、最初の選べるタブにする。 |
 
 登録するcontroller：`tabs`（`TabsController`）
 
@@ -65,7 +65,7 @@ JavaScriptなしでは選んだタブのパネルだけを表示し、タブを�
 | `label`（必須）   | `string`  |        | タブの名前。パネルの読み上げ名にもなる。                                            |
 | `content`（必須） | `Child`   |        | タブを選んだ時に出すパネルの中身。                                                  |
 | `disabled`        | `boolean` |        | 選べないタブ。表示はするが押せず、矢印キーの移動でも飛ばす。                        |
-| `icon`            | `Child`   |        | 名前の前の印（Iconなど）。                                                          |
+| `icon`            | `Child`   |        | 名前の前のアイコン（Iconなど）。                                                    |
 | `count`           | `number`  |        | 名前の後に出す件数。0も表示し、省略すると出さない。                                 |
 
 ## コード

@@ -9,7 +9,7 @@ const render = async (content: Child) => {
   return (await app.request("/")).text();
 };
 
-test("色相の輪を持たないので、効かない色相の幅を上流へ渡さない", async () => {
+test("色相環を持たないので、効かない色相の幅を上流へ渡さない", async () => {
   const result = await render(<ColorPicker label="色" name="color" step={5} hueStep={15} />);
   expect(result).toContain('data-color-picker-step-value="5"');
   expect(result).not.toContain("data-color-picker-hue-step-value");

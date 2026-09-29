@@ -1,7 +1,7 @@
 @layer components {
   /*
     主操作と▾をつなげたピル。二つは別々の共通Buttonのまま、向き合う側の角を落として一つのピルに見せ、
-    間に細い区切りを入れる。塗りの操作では区切りを白、控えめな操作では墨を薄く引く。
+    間に細い区切りを入れる。塗りの操作では区切りを白、控えめな操作では黒を薄く引く。
   */
   .ply-split-button {
     display: inline-flex;
@@ -22,7 +22,7 @@
     &[data-variant="secondary"] > .ply-dropdown-menu > .ply-button {
       border-inline-start-color: var(--ply-border);
     }
-    /* 片方に指を載せても、もう片方と重なる影が前に出ないよう、指を載せた方を手前に置く。 */
+    /* 片方にホバーしても、もう片方と重なる影が前に出ないよう、ホバーした方を手前に置く。 */
     & > :is(.main, .ply-dropdown-menu) {
       position: relative;
       &:hover,

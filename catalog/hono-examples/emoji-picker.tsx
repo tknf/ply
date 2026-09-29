@@ -15,7 +15,7 @@ export default () => (
           <EmojiPicker id="emoji-picker-in-popover" autofocus />
         </Popover>
       </Disclosure>
-      <Disclosure summary="種類を絞った板">
+      <Disclosure summary="種類を絞った絵文字パネル">
         <EmojiPicker
           id="emoji-picker-status"
           label="状態を選ぶ"

@@ -13,7 +13,7 @@ import { AppFrame, appPath } from "./frame";
 
 const states = ["公開中", "下書き", "確認待ち"] as const;
 
-/** 検索。言葉と状態で記事と資料を探し、一致した語を強調して並べる。絞り込みはURLに持たせる。 */
+/** 検索。キーワードと状態で記事と資料を探し、一致した語を強調して並べる。絞り込みはURLに持たせる。 */
 export const SearchScreen = ({ query = "", state }: { query?: string; state?: string }) => {
   const q = query.trim();
   const current = states.find((entry) => entry === state);
@@ -67,7 +67,7 @@ export const SearchScreen = ({ query = "", state }: { query?: string; state?: st
       </form>
       {foundArticles.length + foundFiles.length === 0 ? (
         <EmptyState title="見つかりませんでした">
-          <p>言葉を短くするか、状態を「すべて」にして探してみてください。</p>
+          <p>キーワードを短くするか、状態を「すべて」にして探してみてください。</p>
         </EmptyState>
       ) : (
         <>

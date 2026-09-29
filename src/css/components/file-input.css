@@ -1,6 +1,6 @@
 @layer components {
   /*
-    ファイルを受け入れる場所。「ここに置ける」目印の破線の枠に、青から紫で塗った丸い印・ドロップの案内・選ぶ操作を
+    ファイルを受け入れる場所。「ここに置ける」目印の破線の枠に、青から紫で塗った丸いアイコン・ドロップの案内・選ぶ操作を
     一行に並べる。選んだファイルはFileItemの形で枠の中に並べ、解除の操作を添える。
     ドロップを待つ間は枠を実線の青にして淡い青の面を敷く。標準の入力は隠し、フォーカスの輪は選ぶ操作に出す。
   */
@@ -42,7 +42,7 @@
     &:has(> .ply-input:disabled) > .hint {
       visibility: hidden;
     }
-    /* 印。EmptyStateの印と同じ丸を、DropdownMenuと同じ青から紫で塗る。 */
+    /* アイコン。EmptyStateのアイコンと同じ丸を、DropdownMenuと同じ青から紫で塗る。 */
     & > .symbol {
       display: grid;
       grid-column: 1;
@@ -84,8 +84,8 @@
       justify-self: end;
       cursor: pointer;
     }
-    /* 案内が隠れている時（JavaScriptの読み込み前・タッチの画面）は、選ぶ操作を印の隣へ寄せる。 */
-    /* 印の隣に置く時は、文字の操作の左右の余白を打ち消し、文字の書き始めを案内と同じ位置にする。 */
+    /* 案内が隠れている時（JavaScriptの読み込み前・タッチの画面）は、選ぶ操作をアイコンの隣へ寄せる。 */
+    /* アイコンの隣に置く時は、文字の操作の左右の余白を打ち消し、文字の書き始めを案内と同じ位置にする。 */
     & > .hint[hidden] + .choose {
       grid-column: 2 / -1;
       justify-self: start;
@@ -178,7 +178,7 @@
       white-space: nowrap;
     }
   }
-  /* 狭い枠では、案内を印の隣に広く置き、選ぶ操作をその下の行へ回す（案内を出さないタッチの画面を除く）。 */
+  /* 狭い枠では、案内をアイコンの隣に広く置き、選ぶ操作をその下の行へ回す（案内を出さないタッチの画面を除く）。 */
   @media not (pointer: coarse) {
     @container ply-file-input (inline-size < 24rem) {
       .ply-file-input > .hint {
@@ -192,7 +192,7 @@
       }
     }
   }
-  /* タッチの画面ではドロップの案内を出さず、選ぶ操作を印の隣の一行目に置く。 */
+  /* タッチの画面ではドロップの案内を出さず、選ぶ操作をアイコンの隣の一行目に置く。 */
   @media (pointer: coarse) {
     .ply-file-input > .ply-input[type="file"]::file-selector-button,
     .ply-file-input > .ply-button {
@@ -208,7 +208,7 @@
       margin-inline-start: calc(-4em / 7);
     }
   }
-  /* さらに狭い枠（大きな文字の狭い画面）では、印・案内・選ぶ操作を縦に積む。 */
+  /* さらに狭い枠（大きな文字の狭い画面）では、アイコン・案内・選ぶ操作を縦に積む。 */
   @container ply-file-input (inline-size < 16rem) {
     .ply-file-input > :is(.symbol, .hint, .choose),
     .ply-file-input > .hint + .choose,

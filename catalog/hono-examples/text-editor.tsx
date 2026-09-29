@@ -10,8 +10,8 @@ import {
 export default () => (
   <div class="ply-stack">
     <TextEditor id="comment-editor" label="コメント" name="comment" placeholder="コメントを書く…" />
-    <DisclosureGroup label="置き方と道具の違い">
-      <Disclosure summary="道具を下に置き、送る操作を並べる" open>
+    <DisclosureGroup label="置き方と書式ツールの違い">
+      <Disclosure summary="書式ツールを下に置き、送る操作を並べる" open>
         <TextEditor
           id="reply-editor"
           label="返信"
@@ -31,7 +31,7 @@ export default () => (
           }
         />
       </Disclosure>
-      <Disclosure summary="道具を絞る">
+      <Disclosure summary="書式ツールを絞る">
         <TextEditor
           id="note-editor"
           label="メモ"
@@ -40,7 +40,7 @@ export default () => (
           tools={["bold", "italic", "link", "|", "bullets"]}
         />
       </Disclosure>
-      <Disclosure summary="Composerの書く面に入れる">
+      <Disclosure summary="Composerの入力エリアに入れる">
         <Composer
           id="composer-with-editor"
           label="お知らせ"
@@ -56,7 +56,7 @@ export default () => (
           }
         />
       </Disclosure>
-      <Disclosure summary="狭い場所：道具は折り返す">
+      <Disclosure summary="狭い場所：ツールバーは折り返す">
         <div style="max-inline-size: 18rem">
           <TextEditor
             id="narrow-editor"

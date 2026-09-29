@@ -6,7 +6,7 @@ import { classes, type ElementProps, type Tone } from "./types";
 export type ToastProps = PropsWithChildren<{
   /** popoverのid。開く操作のpopovertargetや、showPopover()で開く時に指す。画面の中で一意にする。 */
   id: string;
-  /** 知らせの下に置く操作（「記事を確認する」「もう一度保存する」など）。 */
+  /** 通知の下に置く操作（「記事を確認する」「もう一度保存する」など）。 */
   actions?: Child;
   /** 閉じるボタンの読み上げ名。 */
   closeLabel?: string;
@@ -15,9 +15,9 @@ export type ToastProps = PropsWithChildren<{
    * フォーカスが中にある間は数えず、外へ出てから数え直す。ToastControllerが要る。
    */
   duration?: number;
-  /** 読み上げの急ぎ方。politeはrole="status"、assertiveはrole="alert"にする。失敗の知らせはassertiveにする。 */
+  /** 読み上げの緊急度。politeはrole="status"、assertiveはrole="alert"にする。失敗の通知はassertiveにする。 */
   live?: "polite" | "assertive";
-  /** 知らせの種類。面をその役割の色で塗る。 */
+  /** 通知の種類。パネルをその役割の色で塗る。 */
   tone?: Exclude<Tone, "neutral">;
 }>;
 /**
@@ -63,12 +63,12 @@ export const Toast = ({
 
 export type ToastStackProps = PropsWithChildren<
   ElementProps<"div"> & {
-    /** 束を置く場所。既定は書き終わりの側の下（左から右に読む画面では右下）。 */
+    /** スタックを置く場所。既定は末尾側の下（左から右に読む画面では右下）。 */
     placement?: "start" | "center" | "end";
   }
 >;
 /**
- * 開いているToastを、新しいものを手前にして束ねる。押すと広げ、外を押すかEscで畳む。
+ * 開いているToastを、新しいものを手前にして重ねる。押すと広げ、外を押すかEscで畳む。
  * 重ね方と広げ方はToastStackControllerが扱う。childrenにはToastだけを置く。
  */
 export const ToastStack = ({

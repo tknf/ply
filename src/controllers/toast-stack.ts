@@ -4,7 +4,7 @@ const isToast = (node: EventTarget | null): node is HTMLElement =>
   node instanceof HTMLElement && node.classList.contains("ply-toast");
 
 /**
- * 開いているToastを、新しいものを手前にして束ねる。重ね方と広げ方の見た目はCSSが持ち、
+ * 開いているToastを、新しいものを手前にして重ねる。重ね方と広げ方の見た目はCSSが持ち、
  * ここでは順番（--ply-toast-index）・広げた時の持ち上げ幅（--ply-toast-offset）・手前の高さ（--ply-toast-front-size）を渡す。
  * 押すと広げ、外を押すかEscで畳む。キーボードで中へ入った時も広げる。
  */
@@ -49,7 +49,7 @@ export class ToastStackController extends Controller<HTMLElement> {
   /** 手前（最新）を0番にして、順番・持ち上げ幅・手前の高さを渡す。高さは変形の影響を受けない値で測る。 */
   private layout = () => {
     const open = this.order.slice().reverse();
-    // 間隔はCSSが束のrow-gapに持つ。計算済みの長さで読む。
+    // 間隔はCSSがスタックのrow-gapに持つ。計算済みの長さで読む。
     const gap = parseFloat(getComputedStyle(this.element).rowGap) || 0;
     let offset = 0;
     open.forEach((toast, index) => {
@@ -58,7 +58,7 @@ export class ToastStackController extends Controller<HTMLElement> {
       toast.style.setProperty("--ply-toast-offset", `${offset}px`);
       offset += this.naturalSize(toast) + gap;
     });
-    // 閉じたToastは順番の値を残し、閉じる動きをその場で終えさせる。
+    // 閉じたToastは順番の値を残し、閉じるアニメーションをその場で終えさせる。
     for (const toast of this.toasts()) if (!open.includes(toast)) delete toast.dataset.stack;
     const front = open[0];
     if (front)
@@ -67,8 +67,8 @@ export class ToastStackController extends Controller<HTMLElement> {
   };
 
   /**
-   * 畳んだ奥のToastは手前の高さに縮むので、箱の高さではなく中身の位置から本来の高さを求める。
-   * offsetTopは変形の影響を受けないため、動きの途中でも同じ値になる。
+   * 畳んだ奥のToastは手前の高さに縮むので、要素の高さではなく中身の位置から本来の高さを求める。
+   * offsetTopは変形の影響を受けないため、アニメーションの途中でも同じ値になる。
    */
   private naturalSize = (toast: HTMLElement) => {
     const children = Array.from(toast.children).filter(
@@ -83,7 +83,7 @@ export class ToastStackController extends Controller<HTMLElement> {
     this.element.dataset.expanded = String(value && this.order.length > 1);
   };
 
-  /** 操作（ボタン・リンク）を押した時は束を開閉しない。 */
+  /** 操作（ボタン・リンク）を押した時はスタックを開閉しない。 */
   private click = (event: MouseEvent) => {
     if (!(event.target instanceof Element) || event.target.closest("a, button, input, select"))
       return;

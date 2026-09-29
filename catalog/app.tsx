@@ -20,7 +20,7 @@ import { SettingsScreen } from "./apps/settings";
 
 const inboxMessages = ["categories", "meeting", "review"] as const;
 
-/** 静的に書き出すページ。カタログの入口・部品のページ・利用例のアプリの画面だけを持つ。 */
+/** 静的に書き出すページ。カタログのトップページ・コンポーネントのページ・利用例のアプリの画面だけを持つ。 */
 export const paths = [
   "/",
   ...componentDocs.map(({ id }) => `/components/${id}`),
@@ -41,7 +41,7 @@ app.get("/", (c) =>
   ),
 );
 
-// PageHeaderは画面に一つの見出しなので、部品のページの見出しと重ならないよう別の文書で見せる。
+// PageHeaderは画面に一つの見出しなので、コンポーネントのページの見出しと重ならないよう別の文書で見せる。
 app.get("/components/page-header/preview", (c) =>
   c.html(
     html`<!doctype html>${(
@@ -60,7 +60,7 @@ app.get("/components/page-header/preview", (c) =>
   ),
 );
 
-/** 部品の見本の出力HTMLと、整形したHTML・Honoのコード。 */
+/** コンポーネントの見本の出力HTMLと、整形したHTML・Honoのコード。 */
 export const renderExample = async (id: string, cookies: Record<string, string> = {}) => {
   const example = getHonoExample(id);
   const markup = String(await html`${example.render({ cookies })}`);
@@ -90,7 +90,7 @@ app.get("/components/:id", async (c) => {
   );
 });
 
-// 利用例のアプリの入口。静的な書き出しには含めず、開発のサーバーでだけプロジェクトの画面へ移す。
+// 利用例のアプリのトップページ。静的な書き出しには含めず、開発サーバーでだけプロジェクトの画面へ移動させる。
 app.get("/apps", (c) => c.redirect(appPath("project")));
 app.get(appPath("project"), (c) =>
   c.html(

@@ -1,6 +1,6 @@
 @layer components {
   /*
-    設定の行。名前（太字）と淡い補足を始まりの側に、操作を終わりの側に置き、その間を淡い点線でつなぐ。
+    設定の行。名前（太字）と淡い補足を先頭側に、操作を末尾側に置き、その間を淡い点線でつなぐ。
     線の役目は「この名前にこの操作が付く」ことを目でたどらせることなので、行の間に罫線は引かない。
   */
   .ply-setting-list {
@@ -13,7 +13,7 @@
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
-    /* 狭い場所では、操作を次の行の終わりの側へ回す。 */
+    /* 狭い場所では、操作を次の行の末尾側へ回す。 */
     & > li {
       display: flex;
       flex-wrap: wrap;

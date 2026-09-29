@@ -129,7 +129,7 @@ export const controlTextErrors = (root, path) => {
       )
         report(rule, "Badgeの文字は共通の操作用フォントを使う");
       if (!declarations.some((node) => node.prop === "align-items" && node.value === "start"))
-        report(rule, "Badgeの印は先頭行に揃え、文字のベースラインへ下げない");
+        report(rule, "Badgeのアイコンは先頭行に揃え、文字のベースラインへ下げない");
     });
   }
   root.walkRules((rule) => {
@@ -217,15 +217,15 @@ export const controlMarkupErrors = (source, path) => {
       const role = attribute("role")?.initializer;
       const tab =
         path === "src/hono/tabs.tsx" && role && ts.isStringLiteral(role) && role.text === "tab";
-      // ActionTileは印と名前を縦に積む専用の操作で、文字の指定はaction-tile.cssが持つ。
+      // ActionTileはアイコンと名前を縦に積む専用の操作で、文字の指定はaction-tile.cssが持つ。
       const tile = path === "src/hono/action-tile.tsx" && classes.includes("ply-action-tile");
       // Promptの選択肢は要点と説明の複数行の文を持つ大きなカードで、文字の指定はprompt.cssが持つ。
       const promptChoice = path === "src/hono/prompt.tsx" && classes.includes("choice");
-      // Calendarの詳細を持つ予定の札は、リンクの札と同じ見た目の小さな操作で、文字の指定はcalendar.cssが持つ。
+      // Calendarの詳細を持つ予定のボタンは、リンクの予定と同じ見た目の小さな操作で、文字の指定はcalendar.cssが持つ。
       const calendarEvent = path === "src/hono/calendar.tsx" && classes.includes("event");
-      // EmojiPickerの升は絵文字一字だけを大きく置く専用の操作で、文字の指定はemoji-picker.cssが持つ。
+      // EmojiPickerのセルは絵文字一字だけを大きく置く専用の操作で、文字の指定はemoji-picker.cssが持つ。
       const emoji = path === "src/hono/emoji-picker.tsx" && classes.includes("emoji");
-      // Reactionsの札は絵文字と数を並べた小さな切り替えで、文字の指定はreactions.cssが持つ。
+      // Reactionsの各リアクションは絵文字と数を並べた小さな切り替えで、文字の指定はreactions.cssが持つ。
       const reaction = path === "src/hono/reactions.tsx" && classes.includes("reaction");
       if (
         path !== "src/hono/button.tsx" &&

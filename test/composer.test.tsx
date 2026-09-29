@@ -9,7 +9,7 @@ const render = async (content: Child) => {
   return (await app.request("/")).text();
 };
 
-test("editorを渡してもerrorを編集部品の下に出し、包むまとまりに関連付ける", async () => {
+test("editorを渡してもerrorを編集コンポーネントの下に出し、包むまとまりに関連付ける", async () => {
   const result = await render(
     <Composer
       id="post"
@@ -27,7 +27,7 @@ test("editorを渡してもerrorを編集部品の下に出し、包むまとま
   expect(result).toContain("本文を入力してください。");
 });
 
-test("editorを渡してerrorが無い時は誤りの欄と関連付けを出さない", async () => {
+test("editorを渡してerrorが無い時はエラーの欄と関連付けを出さない", async () => {
   const result = await render(
     <Composer id="post" label="お知らせ" name="body" submitLabel="投稿する" editor={<div />} />,
   );

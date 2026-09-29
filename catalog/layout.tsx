@@ -5,7 +5,7 @@ import { componentGroups } from "./component-groups";
 
 export type ComponentEntry = { id: string; name: string; description: string };
 
-/** カタログの分類の印と色。一覧のタイルとコマンドの入口で同じものを使う。 */
+/** カタログの分類のアイコンと色。一覧のタイルとコマンドメニューの項目で同じものを使う。 */
 export const groupLooks: readonly {
   icon: IconName;
   accent: "blue" | "green" | "amber" | "coral";
@@ -43,8 +43,8 @@ export const Document = ({ title, children }: PropsWithChildren<{ title: string 
 );
 
 /**
- * カタログの枠。Plyのアプリと同じく、上部中央のCommandMenuで部品を探して移り、中央の作業面に置く。
- * 入口は部品の分類、一覧は全部品と利用例のアプリの画面。
+ * カタログの枠。Plyのアプリと同じく、上部中央のCommandMenuでコンポーネントを探して移動し、中央の作業面に置く。
+ * カタログのトップページはコンポーネントの分類、一覧は全コンポーネントと利用例のアプリの画面。
  */
 export const CatalogFrame = ({
   components,
@@ -56,9 +56,9 @@ export const CatalogFrame = ({
     commands={
       <CommandMenu
         id="catalog-commands"
-        label="部品を探す"
+        label="コンポーネントカタログ"
         icon="search"
-        // 全体のキーは一つのCommandMenuにだけ登録する。CommandMenuのページでは見本がmod+kを使うので譲る。
+        // 全体のショートカットキーは一つのCommandMenuにだけ登録する。CommandMenuのページでは見本がmod+kを使うので譲る。
         shortcut={current === "command-menu" ? undefined : "mod+k"}
         columns={3}
         shortcuts={componentGroups.map((group, index) => ({

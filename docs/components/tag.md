@@ -7,25 +7,25 @@
 ## 使いどころ
 
 - 記事の分類や、選んだ絞り込みの条件を短く示す時に使います。
-- 公開中・確認待ちなどの状態は、地を塗った `Badge` で示します。Tagは地を塗らず、縁で分類を示します。
-- 利用者が自由に書いてタグを足す欄は `TagInput` を使います。
+- 公開中・確認待ちなどの状態は、背景を塗った `Badge` で示します。Tagは背景を塗らず、枠線で分類を示します。
+- 利用者が自由に書いてタグを追加する入力欄は `TagInput` を使います。
 
 ## 使い方
 
-`label` を渡します。縁は文字と同じ色、文字はMediumです。`accent` は `blue`・`green`・`amber`・`coral` から選び、渡さなければ淡い灰にします。
+`label` を渡します。枠線は文字と同じ色、文字はMediumです。`accent` は `blue`・`green`・`amber`・`coral` から選び、渡さなければ淡い灰色にします。
 
-`href` を渡すと分類へ移るリンクになり、指を載せると役割の色を淡く敷きます。
+`href` を渡すと分類へ移るリンクになり、ホバーすると背景に役割の色を淡く付けます。
 
-`removeButton` を渡すと札の終わりに外す×を置きます。外した後の処理は利用側が持ちます。`href` と `removeButton` は同時に使えません。
+`removeButton` を渡すとタグの末尾に解除の×ボタンを置きます。解除した後の処理は利用側が行います。`href` と `removeButton` は同時に使えません。
 
-複数の札は `TagGroup` で囲みます。札の間を0.5remあけて折り返し、長い文言も省略しません。
+複数のタグは `TagGroup` で囲みます。タグの間を0.5remあけて折り返し、長い文言も省略しません。
 
-`Tag` は `class`・`id` などのHTML属性を札のルート（`href` がある時は `a`、それ以外は `span`）に渡します。JavaScriptは使いません。
+`Tag` は `class`・`id` などのHTML属性をタグのルート（`href` がある時は `a`、それ以外は `span`）に渡します。JavaScriptは使いません。
 
 ## アクセシビリティ
 
 - `TagGroup` は `role="group"` で、`label` を名前にします。
-- 外す操作はアイコンだけのボタンなので、「暮らしを解除」のように何を外すかを `aria-label` で付けます。
+- 解除の操作はアイコンだけのボタンなので、「暮らしを解除」のように何を解除するかを `aria-label` で付けます。
 - `accent` の色は見分けの補助です。意味は文言で伝えます。
 
 ## API
@@ -34,12 +34,12 @@
 
 HTML属性はルート（リンクの時はa、それ以外はspan）に渡す。
 
-| 名前                       | 型       | 既定値 | 説明                                                                                                                                                                                              |
-| -------------------------- | -------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `label`（必須）            | `string` |        | 札の文言。長い文言は省略せずに折り返す。                                                                                                                                                          |
-| `accent`                   | `Accent` |        | 縁と文字の色。分類を見分けるために使う。渡さなければ淡い灰の札にする。                                                                                                                            |
-| `href`                     | `string` |        | 渡すと札を分類へ移るリンクにする。removeButtonとは同時に使えない。                                                                                                                                |
-| `removeButton`（形による） | `Child`  |        | 札の終わりに置く外す操作。空のButton（variant="link"・size="tag"・class="remove"・ data-icon-only="true"）に「〇〇を解除」のaria-labelを付けて渡すと、×の印を描く。外した後の処理は利用側が持つ。 |
+| 名前                       | 型       | 既定値 | 説明                                                                                                                                                                                                      |
+| -------------------------- | -------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`（必須）            | `string` |        | タグの文言。長い文言は省略せずに折り返す。                                                                                                                                                                |
+| `accent`                   | `Accent` |        | 縁と文字の色。分類を見分けるために使う。渡さなければ淡い灰のタグにする。                                                                                                                                  |
+| `href`                     | `string` |        | 渡すとタグを分類へ移るリンクにする。removeButtonとは同時に使えない。                                                                                                                                      |
+| `removeButton`（形による） | `Child`  |        | タグの末尾に置く解除操作。空のButton（variant="link"・size="tag"・class="remove"・ data-icon-only="true"）に「〇〇を解除」のaria-labelを付けて渡すと、×のアイコンを描く。解除した後の処理は利用側が持つ。 |
 
 ほかに、`<a>`へ標準のHTML属性を渡せます。
 
@@ -86,7 +86,7 @@ export default () => (
       <Tag label="確認中" accent="amber" />
     </TagGroup>
     <DisclosureGroup label="色と置き場所の違い">
-      <Disclosure summary="色ごとの札" open>
+      <Disclosure summary="色ごとのタグ" open>
         <TagGroup label="色ごとの分類">
           <Tag label="分類なし" />
           <Tag label="読書会" accent="blue" />
@@ -95,7 +95,7 @@ export default () => (
           <Tag label="要対応" accent="coral" />
         </TagGroup>
       </Disclosure>
-      <Disclosure summary="分類へ移る札" open>
+      <Disclosure summary="分類へ移動するタグ" open>
         <TagGroup label="分類から探す">
           <Tag label="仕事場の記事" href="/apps/search?q=仕事場" />
           <Tag label="読書会" accent="blue" href="/apps/search?q=読書会" />
@@ -104,7 +104,7 @@ export default () => (
           <Tag label="締め切り" accent="coral" href="/apps/search?q=締め切り" />
         </TagGroup>
       </Disclosure>
-      <Disclosure summary="外せる札">
+      <Disclosure summary="解除できるタグ">
         <TagGroup label="選んだ分類">
           <Tag label="暮らし" removeButton={removeButton("暮らし")} />
           <Tag label="読書会" accent="blue" removeButton={removeButton("読書会")} />
@@ -163,7 +163,7 @@ export default () => (
             focusable="false"
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
-        ><span class="label"><span class="title">色ごとの札</span></span>
+        ><span class="label"><span class="title">色ごとのタグ</span></span>
       </summary>
       <div class="body">
         <div class="ply-tag-group" role="group" aria-label="色ごとの分類">
@@ -186,7 +186,7 @@ export default () => (
             focusable="false"
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
-        ><span class="label"><span class="title">分類へ移る札</span></span>
+        ><span class="label"><span class="title">分類へ移動するタグ</span></span>
       </summary>
       <div class="body">
         <div class="ply-tag-group" role="group" aria-label="分類から探す">
@@ -213,7 +213,7 @@ export default () => (
             focusable="false"
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
-        ><span class="label"><span class="title">外せる札</span></span>
+        ><span class="label"><span class="title">解除できるタグ</span></span>
       </summary>
       <div class="body">
         <div class="ply-tag-group" role="group" aria-label="選んだ分類">

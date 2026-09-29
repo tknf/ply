@@ -83,7 +83,7 @@ test("ドロップは標準の変更通知を送り単一選択とdisabledを守
   await transfer.dispose();
 });
 
-test("acceptに当てはまらないファイルを含むドロップは受け付けずに知らせる", async ({ page }) => {
+test("acceptに当てはまらないファイルを含むドロップは受け付けずに通知する", async ({ page }) => {
   await page.goto("/components/file-input");
   const control = root(page);
   const input = control.locator("input[type=file]");

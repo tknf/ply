@@ -6,24 +6,24 @@
 
 ## 使いどころ
 
-- 操作名や項目名の前に置き、文言を補う時に使います。印だけで意味を伝えません。
-- 縦に並ぶ一覧のように、塗った印で項目を見分ける場所では `fill` の塗りつぶしの版を使います。
+- 操作名や項目名の前に置き、文言を補う時に使います。アイコンだけで意味を伝えません。
+- 縦に並ぶ一覧のように、塗ったアイコンで項目を見分ける場所では `fill` の塗りつぶしの版を使います。
 - アイコンだけのボタンは、`Button` に `aria-label` を付けて作ります。
-- `Button`・`ActionLink` の中では、`Icon` を文言の前にそのまま置きます。印と文言の間隔と縦の配置は `Button` が持つので、クラスは要りません。
+- `Button`・`ActionLink` の中では、`Icon` を文言の前にそのまま置きます。アイコンと文言の間隔と縦の配置は `Button` が持つので、クラスは要りません。
 
 ## 使い方
 
-`name` に印の名前を渡します。Phosphor Icons（MIT）のregularを共通で使い、`fill` で同じ絵柄の塗りつぶしの版にします。
+`name` にアイコンの名前を渡します。Phosphor Icons（MIT）のregularを共通で使い、`fill` で同じ絵柄の塗りつぶしの版にします。
 
-大きさは文字に合わせた1em、`data-size="small"` は6em/7です。14pxの文字なら14px・12pxの枠になります。名前による大きさや太さの分岐はありません。大きな入口や空状態の図は、その役割を持つ親要素が大きさを決めます。色は文字の色を継ぎます。
+大きさは文字に合わせた1em、`data-size="small"` は6em/7です。14pxの文字なら14px・12pxの枠になります。名前による大きさや太さの分岐はありません。大きなショートカットや空状態の図は、その役割を持つ親要素が大きさを決めます。色は文字の色を継ぎます。
 
 `Icon` は外部のSVGスプライトを `<use>` で参照します。pathを出現箇所ごとに埋め込まないので、HTMLが重複せず、スプライトは共通のリソースとしてキャッシュできます。パッケージの `ply/icons.svg`（`dist/icons.svg`）を、アプリと同じオリジンに置きます。既定のURLは `/assets/ply-icons.svg` で、別の場所に置いた時は `sprite` で指定します。キャッシュ期間は利用側のHTTPヘッダーで決めます。
 
 JavaScriptは使いません。CSSだけで使う時も、`class="ply-icon"`・`viewBox="0 0 256 256"`・`aria-hidden="true"`・`focusable="false"` の `svg` に `<use href="/assets/ply-icons.svg#ply-pencil">` を書きます。塗りつぶしの版は `#ply-pencil-fill` です。
 
-Checkbox・TaskListの印とSelectの矢印は、同じ素材から作った単独のSVGをCSSのmaskや背景として使います。
+Checkbox・TaskListのチェックマークとSelectの矢印は、同じ素材から作った単独のSVGをCSSのmaskや背景として使います。
 
-使える名前は `src/internal/icon-manifest.json` で決まります。キーが `name` に渡す名前、値がPhosphor Iconsの元の名前です。足す時はこのファイルに書き、`vp run icons:build` でスプライト・CSS用の単独SVG・`IconName` 型を作り直します。スプライトの中と `dist/PHOSPHOR-LICENSE` に、MITの著作権・許諾文を同梱しています。
+使える名前は `src/internal/icon-manifest.json` で決まります。キーが `name` に渡す名前、値がPhosphor Iconsの元の名前です。追加する時はこのファイルに書き、`vp run icons:build` でスプライト・CSS用の単独SVG・`IconName` 型を作り直します。スプライトの中と `dist/PHOSPHOR-LICENSE` に、MITの著作権・許諾文を同梱しています。
 
 ## アクセシビリティ
 
@@ -38,10 +38,10 @@ Checkbox・TaskListの印とSelectの矢印は、同じ素材から作った単�
 
 | 名前           | 型         | 既定値                    | 説明                                                                                       |
 | -------------- | ---------- | ------------------------- | ------------------------------------------------------------------------------------------ |
-| `name`（必須） | `IconName` |                           | 印の名前。使える名前はdocs/icons.mdの「使えるアイコン」を見る。                            |
-| `fill`         | `boolean`  | `false`                   | 塗りつぶしの版。縦並びの一覧など、太いアイコンで項目を見分ける場所で使う。                 |
+| `name`（必須） | `IconName` |                           | アイコンの名前。使える名前はdocs/icons.mdの「使えるアイコン」を見る。                      |
+| `fill`         | `boolean`  | `false`                   | 塗りつぶし版。縦並びの一覧など、太いアイコンで項目を見分ける場所で使う。                   |
 | `sprite`       | `string`   | `"/assets/ply-icons.svg"` | スプライトのURL。配布のicons.svgを既定と別の場所に置いた時に指定する。同じオリジンに置く。 |
-| `class`        | `string`   |                           | svgに足すクラス。ルートのply-iconは常に付く。                                              |
+| `class`        | `string`   |                           | svgに追加するクラス。ルートのply-iconは常に付く。                                          |
 | `data-size`    | `"small"`  |                           | smallは6em/7の大きさにする。渡さなければ1em（文字と同じ大きさ）。                          |
 
 読み込むCSS：`layers.css`、`reset.css`、`tokens.css`、`base.css`、`layout.css`、`components/icon.css`
@@ -113,8 +113,8 @@ export default () => (
         記事を書く
       </Button>
     </div>
-    <DisclosureGroup label="印の一覧と塗りつぶしの形">
-      <Disclosure summary="すべての印（通常の形と塗りつぶしの形）">
+    <DisclosureGroup label="アイコンの一覧と塗りつぶしの形">
+      <Disclosure summary="すべてのアイコン（通常の形と塗りつぶしの形）">
         <ul class="catalog-icon-grid">
           {names.map((name) => (
             <li>
@@ -127,7 +127,7 @@ export default () => (
           ))}
         </ul>
       </Disclosure>
-      <Disclosure summary="塗りつぶしの印で項目を見分ける">
+      <Disclosure summary="塗りつぶしのアイコンで項目を見分ける">
         <ul class="catalog-icon-rows">
           <li>
             <Icon name="mail" fill />
@@ -261,7 +261,11 @@ export default () => (
       >記事を書く
     </button>
   </div>
-  <div class="ply-disclosure-group" role="group" aria-label="印の一覧と塗りつぶしの形">
+  <div
+    class="ply-disclosure-group"
+    role="group"
+    aria-label="アイコンの一覧と塗りつぶしの形"
+  >
     <details class="ply-disclosure">
       <summary>
         <span class="marker" aria-hidden="true"
@@ -274,7 +278,7 @@ export default () => (
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
         ><span class="label"
-          ><span class="title">すべての印（通常の形と塗りつぶしの形）</span></span
+          ><span class="title">すべてのアイコン（通常の形と塗りつぶしの形）</span></span
         >
       </summary>
       <div class="body">
@@ -754,7 +758,7 @@ export default () => (
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
         ><span class="label"
-          ><span class="title">塗りつぶしの印で項目を見分ける</span></span
+          ><span class="title">塗りつぶしのアイコンで項目を見分ける</span></span
         >
       </summary>
       <div class="body">

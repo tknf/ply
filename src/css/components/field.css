@@ -26,7 +26,7 @@
       font-size: var(--ply-small);
       line-height: var(--ply-small-leading);
     }
-    /* 直す所は、欄のすぐ下に危険の色の文字とアイコンで書く。 */
+    /* 修正が必要な箇所は、欄のすぐ下に危険の色の文字とアイコンで示す。 */
     & > .error {
       display: grid;
       grid-template-columns: 1em minmax(0, 1fr);
@@ -206,7 +206,7 @@
     }
   }
   /*
-    選択肢の束はFieldと同じく、名前のラベルの下に選択肢を並べる。枠で囲まない。
+    選択肢のグループはFieldと同じく、名前のラベルの下に選択肢を並べる。枠で囲まない。
     行の間は文字の高さより広めに空ける。
   */
   .ply-choice-group {
@@ -247,13 +247,13 @@
       appearance: none;
       display: grid;
       place-items: center;
-      /* 印は一行の高さと同じ大きさにし、名前の一行目と上下を揃える。 */
+      /* インジケーターは一行の高さと同じ大きさにし、名前の一行目と上下を揃える。 */
       inline-size: calc(10em / 7);
       block-size: calc(10em / 7);
       margin: 0;
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: var(--ply-radius-mark);
-      /* 印の枠は浮かせず、入力欄と同じく内側へ少し沈めた升にする。 */
+      /* インジケーターの枠は浮かせず、入力欄と同じく内側へ少し沈めた四角にする。 */
       background: var(--ply-surface);
       box-shadow: var(--ply-shadow-input);
       color: var(--ply-surface);
@@ -335,7 +335,7 @@
     }
     /*
       説明を伴う選択肢は、ActionTileと同じく浮かせない平らな淡い面。枠線は引かない。
-      指を載せると面を少し濃くし、選んだ面は淡い青にして内側へへこませる。
+      ホバーすると面を少し濃くし、選んだ面は淡い青にして内側へへこませる。
     */
     &[data-kind="option"] {
       padding-block: var(--ply-space-3);

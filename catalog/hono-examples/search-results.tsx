@@ -28,9 +28,9 @@ export default () => (
   <div class="ply-stack">
     <SearchResults label="「読書会」の検索の結果" query="読書会" results={results} />
     <DisclosureGroup label="並べ方の違い">
-      <Disclosure summary="人の円を添える" open>
+      <Disclosure summary="アバターを添える" open>
         <SearchResults
-          label="人の円を添えた結果"
+          label="アバターを添えた結果"
           query="案内"
           results={[
             {
@@ -49,7 +49,7 @@ export default () => (
           ]}
         />
       </Disclosure>
-      <Disclosure summary="条件を足す列と並べる">
+      <Disclosure summary="条件を追加する列と並べる">
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr)); gap: var(--ply-space-6)">
           <OptionalFields
             label="結果を絞る"

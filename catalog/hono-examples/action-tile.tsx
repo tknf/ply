@@ -1,5 +1,5 @@
 import { ActionTile, Disclosure, DisclosureGroup } from "../../src/hono";
-// 升は5〜7.5remで、入る数だけ並べる（文字を大きくした狭い画面では一列になる）。
+// セルは5〜7.5remで、入る数だけ並べる（文字を大きくした狭い画面では一列になる）。
 const grid =
   "display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 5rem), 7.5rem)); gap: 0.75rem";
 export default () => (
@@ -10,7 +10,7 @@ export default () => (
       <ActionTile href="/apps/schedule?view=year" label="予定" icon="calendar" accent="amber" />
       <ActionTile href="/components/toast" label="通知" icon="mail" accent="coral" />
     </div>
-    <DisclosureGroup label="操作・キーと札・使えない状態・長い名前・右から左">
+    <DisclosureGroup label="操作・キーとバッジ・使えない状態・長い名前・右から左">
       <Disclosure summary="ボタンとして押す操作">
         <div style={grid}>
           <ActionTile label="公開する" icon="check" />
@@ -18,7 +18,7 @@ export default () => (
           <ActionTile label="削除する" icon="trash" accent="coral" />
         </div>
       </Disclosure>
-      <Disclosure summary="キーの印と状態の札を添える">
+      <Disclosure summary="ショートカットキーの表示と状態バッジを添える">
         <div style={grid}>
           <ActionTile label="今すぐ返信" icon="reply" shortcut="R" badge="下書き" />
           <ActionTile label="あとで返信" icon="clock" shortcut="L" />
@@ -26,7 +26,7 @@ export default () => (
           <ActionTile href="/apps/search" label="検索" icon="search" shortcut="⌘K" />
         </div>
       </Disclosure>
-      <Disclosure summary="使えない入口と操作">
+      <Disclosure summary="使えないリンクと操作">
         <div style={grid}>
           <ActionTile href="/apps/search" label="報告" icon="chart" disabled />
           <ActionTile label="書き出す" icon="file" disabled />

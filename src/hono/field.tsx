@@ -10,7 +10,7 @@ export type ControlAttributes = {
   "aria-describedby"?: string;
   /** errorがある時だけ"true"。 */
   "aria-invalid"?: "true";
-  /** errorがある時だけ"true"。赤い縁の表示に使う。 */
+  /** errorがある時だけ"true"。赤い枠線の表示に使う。 */
   "data-invalid"?: "true";
 };
 export type FieldProps = {
@@ -24,12 +24,12 @@ export type FieldProps = {
   error?: string;
   /** 補足・エラーより前に説明として関連付ける、ほかの要素のid。 */
   describedBy?: string;
-  /** ラベルの行の終わりに並べる状態（保存の状態やBadgeなど）。 */
+  /** ラベルの行の末尾に並べる状態（保存の状態やBadgeなど）。 */
   status?: Child;
-  /** 入力を描く関数。受け取った属性（ControlAttributes）を入力の要素へ展開する。 */
+  /** 入力を描画する関数。受け取った属性（ControlAttributes）を入力の要素へ展開する。 */
   children: (attributes: ControlAttributes) => Child;
 };
-/** ラベル・入力・補足・エラーを並べ、読み上げの関連付けを作る。入力そのものはchildrenで描く。 */
+/** ラベル・入力・補足・エラーを並べ、読み上げの関連付けを作る。入力そのものはchildrenで描画する。 */
 export const Field = ({ id, label, help, error, describedBy, status, children }: FieldProps) => {
   const ids =
     [describedBy, help ? `${id}-help` : undefined, error ? `${id}-error` : undefined]
@@ -106,11 +106,11 @@ export const Select = ({ class: className, ...attributes }: ElementProps<"select
 );
 
 export type ChoiceProps = ElementProps<"input"> & {
-  /** 選択肢の名前。印の横に出し、labelで包んで押せる範囲にする。 */
+  /** 選択肢の名前。マークの横に出し、labelで包んで押せる範囲にする。 */
   label: string;
   /** 名前の下に添える淡い説明。渡すと名前を太字にする。 */
   description?: Child;
-  /** plainは印と名前だけ、optionは説明を伴う選択肢を淡い面に載せ、選ぶと淡い青にする。 */
+  /** plainはマークと名前だけ、optionは説明を伴う選択肢を淡い背景に載せ、選ぶと淡い青にする。 */
   kind?: "plain" | "option";
   /** checkboxは個別のオン・オフ、radioは同じnameの中から一つを選ぶ。 */
   type?: "checkbox" | "radio";

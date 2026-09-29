@@ -5,7 +5,7 @@
     align-items: start;
     gap: var(--ply-space-1);
     min-inline-size: 0;
-    /* 縦に並べる時は、ピルの幅をいちばん長い名前にそろえ、名前を始まりに寄せる。 */
+    /* 縦に並べる時は、ピルの幅をいちばん長い名前にそろえ、名前を先頭側に寄せる。 */
     &[data-orientation="vertical"] {
       flex-direction: column;
       align-items: stretch;

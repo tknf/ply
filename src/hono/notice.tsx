@@ -4,7 +4,7 @@ import { Icon } from "./icon";
 
 export type NoticeProps = PropsWithChildren<
   ElementProps<"aside"> & {
-    /** 知らせの役割。印と題名のピルをその色で塗り、印はsuccessでチェック、dangerでバツ、他はiを置く。 */
+    /** 通知の役割。アイコンと題名のピルをその色で塗り、アイコンはsuccessでチェック、dangerでバツ、他はiを置く。 */
     tone?: Exclude<Tone, "neutral">;
     /** 題名。ピルに書き、asideの読み上げ名（aria-label）にもする。 */
     label: string;
@@ -27,7 +27,7 @@ export const Notice = ({
     data-tone={tone}
     aria-label={label}
   >
-    {/* 印と題名を一つのピルにまとめ、紙の上の縁にまたがせる。 */}
+    {/* アイコンと題名を一つのピルにまとめ、カードの上の縁にまたがせる。 */}
     <div class="heading">
       <span class="symbol" aria-hidden="true">
         <Icon name={tone === "success" ? "check" : tone === "danger" ? "x" : "info"} />

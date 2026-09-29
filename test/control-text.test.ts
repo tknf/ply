@@ -19,7 +19,7 @@ test("ButtonGroupは配置を所有するが内部Buttonの文字上書きは引
   );
 });
 
-test("Badgeの印をベースラインへ下げる変更と操作用フォントの削除を拒否する", async () => {
+test("Badgeのアイコンをベースラインへ下げる変更と操作用フォントの削除を拒否する", async () => {
   const css = await badgeCss();
   expect(check(css, "src/css/components/badge.css")).toEqual([]);
   expect(
@@ -215,7 +215,7 @@ test("Promptの選択肢のカードは専用buttonとして許し、別のフ�
   ).not.toEqual([]);
 });
 
-test("EmojiPickerの升とReactionsの札は専用buttonとして許し、別のファイルや別のclassでは検出する", () => {
+test("EmojiPickerのセルとReactionsのリアクションは専用buttonとして許し、別のファイルや別のclassでは検出する", () => {
   const emoji = '<button type="button" class="emoji" aria-label="いいね">👍</button>';
   expect(controlMarkupErrors(emoji, "src/hono/emoji-picker.tsx")).toEqual([]);
   expect(controlMarkupErrors(emoji, "src/hono/reactions.tsx")).not.toEqual([]);
@@ -228,7 +228,7 @@ test("EmojiPickerの升とReactionsの札は専用buttonとして許し、別の
   ).not.toEqual([]);
 });
 
-test("Calendarの予定の札は専用buttonとして許し、別のファイルや別のclassでは検出する", () => {
+test("Calendarの予定のボタンは専用buttonとして許し、別のファイルや別のclassでは検出する", () => {
   const event = '<button type="button" class="event" popovertarget="e1">編集会議</button>';
   expect(controlMarkupErrors(event, "src/hono/calendar.tsx")).toEqual([]);
   expect(controlMarkupErrors(event, "src/hono/grid.tsx")).not.toEqual([]);

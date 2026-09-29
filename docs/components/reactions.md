@@ -2,58 +2,58 @@
 
 # Reactions
 
-同じ絵文字をまとめ、付けた人数を添えた反応の札
+同じ絵文字をまとめ、付けた人数を添えたリアクション
 
 ## 使いどころ
 
-- 投稿やコメントに付いた反応を、絵文字や短い言葉ごとにまとめて示し、自分も付け外しさせる時に使います。
-- 絵文字を選ぶ板だけが要る時は `EmojiPicker` を使います。
+- 投稿やコメントに付いたリアクションを、絵文字や短い言葉ごとにまとめて示し、自分も付け外しさせる時に使います。
+- 絵文字パネルだけが必要な時は `EmojiPicker` を使います。
 
 ## 使い方
 
-`items` に反応ごとの `content`（絵文字や短い言葉）と `by`（付けた人の名前の並び）を渡します。札は `by` の人数を数として添え、指を載せると付けた人の名前を出します。自分も付けている反応は `mine` にすると、淡い青の面・青い縁・青い数にします。
+`items` にリアクションごとの `content`（絵文字や短い言葉）と `by`（付けた人の名前の並び）を渡します。リアクションは `by` の人数を数として添え、ホバーすると付けた人の名前を出します。自分も付けているリアクションは `mine` にすると、淡い青の面・青い縁・青い数にします。
 
-`add` を渡すと札が押せるボタンになります。自分の札を押すと外し、他の人の札を押すと自分も付けます。数が0になった札は消えます。付け外しで `by` に足し引きする自分の名前は `add.me` で、`mine` の反応の `by` にも同じ名前を入れておきます。
+`add` を渡すとリアクションが押せるボタンになります。自分のリアクションを押すと外し、他の人のリアクションを押すと自分も付けます。数が0になったリアクションは消えます。付け外しで `by` に追加・削除する自分の名前は `add.me` で、`mine` のリアクションの `by` にも同じ名前を入れておきます。
 
-`add` がある時は、札の終わりに「リアクションを追加」の操作を置きます。開く板には16文字までの言葉の欄と `EmojiPicker` があり、開くと言葉の欄へ移ります。選んだ絵文字や書いた言葉は、同じ札があればそこへ自分を加え、なければ終わりに新しい札を作ります。
+`add` がある時は、リアクションの並びの末尾に「リアクションを追加」の操作を置きます。開くパネルには16文字までの言葉の欄と `EmojiPicker` があり、開くと言葉の欄へ移ります。選んだ絵文字や書いた言葉は、同じリアクションがあればそこへ自分を加え、なければ末尾に新しいリアクションを作ります。
 
-`ReactionsController` を `reactions`、`EmojiPickerController` を `emoji-picker` として登録し、追加の板に使う `PopoverController`・`TooltipController` も登録します。付け外しは `reactions:toggle` で知らせるので、保存は利用側で行います。札はcontrollerがその場で書き換えます。保存に失敗した時は、`reactions` のcontrollerの `setReaction(content, selected, name)` に `reactions:toggle` のdetailを `selected` だけ逆にして渡すと、イベントを出さずに札を元に戻します（消えた札は作り直し、足した札は消します）。保存が済むまで書き換えたくない時は `reactions:beforetoggle` を取り消し、保存できてから `setReaction` で付け外しします。
+`ReactionsController` を `reactions`、`EmojiPickerController` を `emoji-picker` として登録し、追加のパネルに使う `PopoverController`・`TooltipController` も登録します。付け外しすると `reactions:toggle` を発火するので、保存は利用側で行います。リアクションはcontrollerがその場で書き換えます。保存に失敗した時は、`reactions` のcontrollerの `setReaction(content, selected, name)` に `reactions:toggle` のdetailを `selected` だけ逆にして渡すと、イベントを発火せずにリアクションを元に戻します（消えたリアクションは作り直し、追加したリアクションは消します）。保存が済むまで書き換えたくない時は `reactions:beforetoggle` を取り消し、保存できてから `setReaction` で付け外しします。
 
-`add` がない時は読むだけの札です。JavaScriptがない時は札を押しても変わりません。
+`add` がない時は表示するだけのリアクションです。JavaScriptがない時はリアクションを押しても変わりません。
 
 ## キーボード
 
-| キー          | 動作                                                                                            |
-| ------------- | ----------------------------------------------------------------------------------------------- |
-| Enter / Space | フォーカスのある札で、自分の反応を付け外しします。                                              |
-| Enter         | 言葉の欄で、書いた言葉を反応として追加します。日本語入力の変換を確定するEnterでは追加しません。 |
-| Esc           | 追加の板を閉じます。                                                                            |
+| キー          | 動作                                                                                                    |
+| ------------- | ------------------------------------------------------------------------------------------------------- |
+| Enter / Space | フォーカスのあるリアクションで、自分のリアクションを付け外しします。                                    |
+| Enter         | 言葉の欄で、書いた言葉をリアクションとして追加します。日本語入力の変換を確定するEnterでは追加しません。 |
+| Esc           | 追加のパネルを閉じます。                                                                                |
 
 ## アクセシビリティ
 
-- 札の並びは `ul` で、`label` を名前にします。`label` は画面には出しません。
-- 札は「いいね：田中 遥、佐藤 健」のように、`name`（無ければ `content`）と付けた人を読み上げ、絵文字と数は読み上げから外します。押せる札は `aria-pressed` で自分が付けているかを伝えます。絵文字の反応には `name` を渡します。
-- 追加の操作はアイコンだけのボタンで、`add.label` を名前にし、Tooltipで名前を見せます。板の見出しは読み上げだけに残します。
-- 札を外して消えた時は次の札か追加の操作へ、反応を追加した時はその札へフォーカスを移します。絵文字の板の中の操作は `EmojiPicker` と同じです。
+- リアクションの並びは `ul` で、`label` を名前にします。`label` は画面には出しません。
+- リアクションは「いいね：田中 遥、佐藤 健」のように、`name`（無ければ `content`）と付けた人を読み上げ、絵文字と数は読み上げから外します。押せるリアクションは `aria-pressed` で自分が付けているかを伝えます。絵文字のリアクションには `name` を渡します。
+- 追加の操作はアイコンだけのボタンで、`add.label` を名前にし、Tooltipで名前を見せます。パネルの見出しは読み上げだけに残します。
+- リアクションを外して消えた時は次のリアクションか追加の操作へ、リアクションを追加した時はそのリアクションへフォーカスを移します。絵文字パネルの中の操作は `EmojiPicker` と同じです。
 
 ## イベント
 
-| イベント                 | 内容                                                                                                                                                                        |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `reactions:beforetoggle` | 利用者の操作で自分の反応を付ける・外す前に知らせます。取り消せます（取り消すと札を変えません）。detailは `reactions:toggle` と同じです。                                    |
-| `reactions:toggle`       | 自分の反応を付けた・外した後に知らせます。detailは `content`（反応の内容）・`name`（読み上げの名前）・`selected`（付けた時は `true`）です。`setReaction` では知らせません。 |
+| イベント                 | 内容                                                                                                                                                                                        |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `reactions:beforetoggle` | 利用者の操作で自分のリアクションを付ける・外す前に発火します。取り消せます（取り消すとリアクションを変えません）。detailは `reactions:toggle` と同じです。                                  |
+| `reactions:toggle`       | 自分のリアクションを付けた・外した後に発火します。detailは `content`（リアクションの内容）・`name`（読み上げの名前）・`selected`（付けた時は `true`）です。`setReaction` では発火しません。 |
 
 ## API
 
 ### Reactions
 
-項目に付いた反応。同じ絵文字や言葉は一枚の札にまとめ、付けた人数を添える。別々の人が同じ絵文字を付けると数が増え、自分が付けている札は淡い青にする。自分の札を押すと外し、他の人の札を押すと自分も同じ反応を付ける。新しい反応はEmojiPickerから選ぶか、短い言葉を書いて追加する。
+項目に付いたリアクション。同じ絵文字や言葉は一つのリアクションにまとめ、付けた人数を添える。別々の人が同じ絵文字を付けると数が増え、自分が付けているリアクションは淡い青にする。自分のリアクションを押すと外し、他の人のリアクションを押すと自分も同じリアクションを付ける。新しいリアクションはEmojiPickerから選ぶか、短い言葉を入力して追加する。
 
-| 名前            | 型                                                                                                                       | 既定値 | 説明                                                                                                                                                                                                                                                                                                                        |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------ | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `label`（必須） | `string`                                                                                                                 |        | 反応の一覧の名前。札の並びのaria-labelにする。画面には出さない。                                                                                                                                                                                                                                                            |
-| `items`（必須） | `readonly Reaction[]`                                                                                                    |        | 反応ごとに一件。付けた人（by）が空の反応は描かない。                                                                                                                                                                                                                                                                        |
-| `add`           | `{ id: string; me?: string; label?: string; groups?: readonly EmojiGroup[]; textLabel?: string; submitLabel?: string; }` |        | 渡すと、札を押して自分の反応を付け外しでき、終わりに反応を追加する操作を置く。追加の板はEmojiPickerと、短い言葉で反応する欄（16文字まで）を持つ。付け外しは書き換える前にreactions:beforetoggle（取り消せる）、後にreactions:toggleで知らせる。保存は利用側が持ち、失敗した時はReactionsControllerのsetReactionで札を戻す。 |
+| 名前            | 型                                                                                                                       | 既定値 | 説明                                                                                                                                                                                                                                                                                                                                                                              |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------ | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`（必須） | `string`                                                                                                                 |        | リアクションの一覧の名前。リアクションの並びのaria-labelにする。画面には出さない。                                                                                                                                                                                                                                                                                                |
+| `items`（必須） | `readonly Reaction[]`                                                                                                    |        | リアクションごとに一件。付けた人（by）が空のリアクションは描かない。                                                                                                                                                                                                                                                                                                              |
+| `add`           | `{ id: string; me?: string; label?: string; groups?: readonly EmojiGroup[]; textLabel?: string; submitLabel?: string; }` |        | 渡すと、リアクションを押して自分のリアクションを付け外しでき、末尾にリアクションを追加する操作を置く。追加のパネルはEmojiPickerと、短い言葉でリアクションする欄（16文字まで）を持つ。付け外しは書き換える前にreactions:beforetoggle（取り消せる）、後にreactions:toggleイベントを発火する。保存は利用側が持ち、失敗した時はReactionsControllerのsetReactionでリアクションを戻す。 |
 
 ほかに、`<div>`へ標準のHTML属性を渡せます。
 
@@ -63,38 +63,38 @@
 
 #### `add`の項目
 
-| 名前          | 型                      | 既定値 | 説明                                                                                        |
-| ------------- | ----------------------- | ------ | ------------------------------------------------------------------------------------------- |
-| `id`（必須）  | `string`                |        | 追加の板（Popover）のid。ページ内で一意にする。言葉の欄と絵文字の板のidにも使う。           |
-| `me`          | `string`                |        | 自分の名前。付け外しでbyに足し引きする名前で、itemsのbyと同じ書き方にする。既定は「自分」。 |
-| `label`       | `string`                |        | 追加の操作の名前。Tooltipと板の見出し（読み上げだけ）に使う。既定は「リアクションを追加」。 |
-| `groups`      | `readonly EmojiGroup[]` |        | EmojiPickerに並べる絵文字。渡さなければEmojiPickerの既定の絵文字を使う。                    |
-| `textLabel`   | `string`                |        | 言葉の欄の名前。placeholderは末尾に「…」を付けて使う。既定は「リアクションを入力」。        |
-| `submitLabel` | `string`                |        | 言葉の欄の確定ボタンの文言。既定は「追加」。                                                |
+| 名前          | 型                      | 既定値 | 説明                                                                                            |
+| ------------- | ----------------------- | ------ | ----------------------------------------------------------------------------------------------- |
+| `id`（必須）  | `string`                |        | 追加のパネル（Popover）のid。ページ内で一意にする。言葉の欄と絵文字パネルのidにも使う。         |
+| `me`          | `string`                |        | 自分の名前。付け外しでbyに追加・削除する名前で、itemsのbyと同じ書き方にする。既定は「自分」。   |
+| `label`       | `string`                |        | 追加の操作の名前。Tooltipとパネルの見出し（読み上げだけ）に使う。既定は「リアクションを追加」。 |
+| `groups`      | `readonly EmojiGroup[]` |        | EmojiPickerに並べる絵文字。渡さなければEmojiPickerの既定の絵文字を使う。                        |
+| `textLabel`   | `string`                |        | 言葉の欄の名前。placeholderは末尾に「…」を付けて使う。既定は「リアクションを入力」。            |
+| `submitLabel` | `string`                |        | 言葉の欄の確定ボタンの文言。既定は「追加」。                                                    |
 
 #### `Reaction`
 
-| 名前              | 型                  | 既定値 | 説明                                                                           |
-| ----------------- | ------------------- | ------ | ------------------------------------------------------------------------------ |
-| `content`（必須） | `string`            |        | 絵文字や短い言葉。同じ内容の反応は一枚の札にまとめる。                         |
-| `name`            | `string`            |        | 読み上げの名前（絵文字の名前など）。渡さなければcontentを読む。                |
-| `by`（必須）      | `readonly string[]` |        | 付けた人の名前。数はこの人数で、指を載せた時と読み上げで誰が付けたかを伝える。 |
-| `mine`            | `boolean`           |        | 自分も付けているもの。                                                         |
+| 名前              | 型                  | 既定値 | 説明                                                                       |
+| ----------------- | ------------------- | ------ | -------------------------------------------------------------------------- |
+| `content`（必須） | `string`            |        | 絵文字や短い言葉。同じ内容のリアクションは一つにまとめる。                 |
+| `name`            | `string`            |        | 読み上げの名前（絵文字の名前など）。渡さなければcontentを読む。            |
+| `by`（必須）      | `readonly string[]` |        | 付けた人の名前。数はこの人数で、ホバー時と読み上げで誰が付けたかを伝える。 |
+| `mine`            | `boolean`           |        | 自分も付けているもの。                                                     |
 
 #### `EmojiGroup`
 
-| 名前             | 型                 | 既定値 | 説明                                               |
-| ---------------- | ------------------ | ------ | -------------------------------------------------- |
-| `label`（必須）  | `string`           |        | 種類の見出し。格子のまとまりの読み上げ名にもなる。 |
-| `emojis`（必須） | `readonly Emoji[]` |        | この種類に並べる絵文字。並べた順に格子へ置く。     |
+| 名前             | 型                 | 既定値 | 説明                                                   |
+| ---------------- | ------------------ | ------ | ------------------------------------------------------ |
+| `label`（必須）  | `string`           |        | 種類の見出し。グリッドのまとまりの読み上げ名にもなる。 |
+| `emojis`（必須） | `readonly Emoji[]` |        | この種類に並べる絵文字。並べた順にグリッドへ置く。     |
 
 #### `Emoji`
 
-| 名前            | 型                  | 既定値 | 説明                                                      |
-| --------------- | ------------------- | ------ | --------------------------------------------------------- |
-| `emoji`（必須） | `string`            |        | 格子に出し、選んだ時にemoji-picker:pickで知らせる絵文字。 |
-| `name`（必須）  | `string`            |        | 読み上げと指を載せた時の名前。                            |
-| `keywords`      | `readonly string[]` |        | 探す時に当てる別の言葉。                                  |
+| 名前            | 型                  | 既定値 | 説明                                                                |
+| --------------- | ------------------- | ------ | ------------------------------------------------------------------- |
+| `emoji`（必須） | `string`            |        | グリッドに表示し、選んだ時にemoji-picker:pickイベントで渡す絵文字。 |
+| `name`（必須）  | `string`            |        | 読み上げとホバー時の名前。                                          |
+| `keywords`      | `readonly string[]` |        | 検索に使う別名。                                                    |
 
 ## コード
 
@@ -104,7 +104,7 @@ import { Reactions, Disclosure, DisclosureGroup } from "ply/hono";
 export default () => (
   <div class="ply-stack">
     <Reactions
-      label="このカードへの反応"
+      label="このカードへのリアクション"
       items={[
         {
           content: "👍",
@@ -120,7 +120,7 @@ export default () => (
     <DisclosureGroup label="人数・内容・狭い場所・右から左">
       <Disclosure summary="別々の人が同じ絵文字を付けた時（数が増える）" open>
         <Reactions
-          label="大勢の反応"
+          label="大勢のリアクション"
           items={[
             {
               content: "🎉",
@@ -145,22 +145,26 @@ export default () => (
           add={{ id: "reactions-many" }}
         />
       </Disclosure>
-      <Disclosure summary="短い言葉の反応・まだ反応がない">
+      <Disclosure summary="短い言葉のリアクション・まだリアクションがない">
         <div class="ply-stack" data-space="small">
           <Reactions
-            label="言葉の反応"
+            label="言葉のリアクション"
             items={[
               { content: "助かります", by: ["佐藤 健", "田中 遥"] },
               { content: "了解です", by: ["自分"], mine: true },
             ]}
             add={{ id: "reactions-words" }}
           />
-          <Reactions label="まだない反応" items={[]} add={{ id: "reactions-empty" }} />
+          <Reactions
+            label="まだないリアクション"
+            items={[]}
+            add={{ id: "reactions-empty" }}
+          />
         </div>
       </Disclosure>
-      <Disclosure summary="読むだけ（押せない札）">
+      <Disclosure summary="読むだけ（押せないリアクション）">
         <Reactions
-          label="読むだけの反応"
+          label="読むだけのリアクション"
           items={[
             { content: "👍", name: "いいね", by: ["田中 遥", "自分"], mine: true },
             { content: "🎉", name: "お祝い", by: ["佐藤 健"] },
@@ -170,7 +174,7 @@ export default () => (
       <Disclosure summary="狭い場所：折り返す">
         <div style="max-inline-size: 12rem">
           <Reactions
-            label="狭い場所の反応"
+            label="狭い場所のリアクション"
             items={[
               { content: "とても助かりました、ありがとうございます", by: ["田中 遥"] },
               { content: "🚀", name: "ロケット", by: ["佐藤 健"] },
@@ -208,7 +212,7 @@ export default () => (
     data-reactions-me-value="自分"
     data-action="emoji-picker:pick-&gt;reactions#pick"
   >
-    <ul aria-label="このカードへの反応" data-reactions-target="list">
+    <ul aria-label="このカードへのリアクション" data-reactions-target="list">
       <li>
         <button
           type="button"
@@ -960,7 +964,7 @@ export default () => (
           data-reactions-me-value="自分"
           data-action="emoji-picker:pick-&gt;reactions#pick"
         >
-          <ul aria-label="大勢の反応" data-reactions-target="list">
+          <ul aria-label="大勢のリアクション" data-reactions-target="list">
             <li>
               <button
                 type="button"
@@ -1695,7 +1699,9 @@ export default () => (
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
         ><span class="label"
-          ><span class="title">短い言葉の反応・まだ反応がない</span></span
+          ><span class="title"
+            >短い言葉のリアクション・まだリアクションがない</span
+          ></span
         >
       </summary>
       <div class="body">
@@ -1706,7 +1712,7 @@ export default () => (
             data-reactions-me-value="自分"
             data-action="emoji-picker:pick-&gt;reactions#pick"
           >
-            <ul aria-label="言葉の反応" data-reactions-target="list">
+            <ul aria-label="言葉のリアクション" data-reactions-target="list">
               <li>
                 <button
                   type="button"
@@ -2431,7 +2437,7 @@ export default () => (
             data-reactions-me-value="自分"
             data-action="emoji-picker:pick-&gt;reactions#pick"
           >
-            <ul aria-label="まだない反応" data-reactions-target="list"></ul>
+            <ul aria-label="まだないリアクション" data-reactions-target="list"></ul>
             <div class="ply-popover" data-controller="popover" data-align="start">
               <span
                 class="ply-tooltip"
@@ -3131,11 +3137,13 @@ export default () => (
             focusable="false"
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
-        ><span class="label"><span class="title">読むだけ（押せない札）</span></span>
+        ><span class="label"
+          ><span class="title">読むだけ（押せないリアクション）</span></span
+        >
       </summary>
       <div class="body">
         <div class="ply-reactions">
-          <ul aria-label="読むだけの反応" data-reactions-target="list">
+          <ul aria-label="読むだけのリアクション" data-reactions-target="list">
             <li>
               <span class="reaction" data-mine="true" title="田中 遥、自分"
                 ><span class="content" aria-hidden="true">👍</span
@@ -3175,7 +3183,7 @@ export default () => (
             data-reactions-me-value="自分"
             data-action="emoji-picker:pick-&gt;reactions#pick"
           >
-            <ul aria-label="狭い場所の反応" data-reactions-target="list">
+            <ul aria-label="狭い場所のリアクション" data-reactions-target="list">
               <li>
                 <button
                   type="button"

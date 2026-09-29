@@ -67,7 +67,7 @@ test("基本色を変えてもhover・押下が既定の色へ戻らず、塗り
     expect(green).toBeGreaterThan(red);
     expect(green).toBeGreaterThan(blue);
   }
-  // 塗りの色は指を載せても押しても変えず、影だけで応える。
+  // 塗りの色はホバーしても押しても変えず、影だけで応える。
   expect(hover).toEqual(normal);
   expect(active).toEqual(normal);
 });

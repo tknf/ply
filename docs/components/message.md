@@ -8,40 +8,40 @@
 
 - コメント・チャット・メールのスレッドのように、誰がいつ何を書いたかを一件ずつ見せる時に使います。
 - 受信した連絡を件名とプレビューで並べて選ばせる時は `MessageList`、出来事を時刻の順に並べる時は `Timeline` を使います。
-- 書く欄は `Composer` を組み合わせます。
+- 入力欄は `Composer` を組み合わせます。
 
 ## 使い方
 
 `author`・`time`・`datetime` を渡し、本文を `children` に書きます。見出しの行は名前、時刻（`time` 要素）の順です。`avatar` は名前の行の横の2remの列に置き、`conversation` では本文・操作・返信をその列の後ろから書きます。
 
-既定の `layout="conversation"` は、本文を人の側の上の角だけを立てた淡い吹き出しにし、吹き出しを文の長さに合わせて縮めます。幅は48remまでです。`layout="document"` は一通を一枚の紙にし、日付を見出しの行の終わりに寄せ、本文を1rem・行高1.75で紙の幅いっぱいに読ませます。`document` の `Message` を続けて置くと、紙を少し重ねて一束に積みます。
+既定の `layout="conversation"` は、本文をアバター側の上の角だけを立てた淡い吹き出しにし、吹き出しを文の長さに合わせて縮めます。幅は48remまでです。`layout="document"` は一通を一枚のカードにし、日付を見出しの行の終わりに寄せ、本文を1rem・行高1.75でカードの幅いっぱいに読ませます。`document` の `Message` を続けて置くと、カードを少し重ねて積みます。
 
-`actions` は本文の下に、`replies` はさらにその下に置きます。`replies` には返信の `Message` を並べ、親と返信の両方に `avatar` がある時は人の円から下ろした糸でつなぎます。
+`actions` は本文の下に、`replies` はさらにその下に置きます。`replies` には返信の `Message` を並べ、親と返信の両方に `avatar` がある時はアバターから下ろした線でつなぎます。
 
-幅が20rem未満の `Message` では、人の円を名前の行の横だけに置き、本文と操作を円の下から全幅で書きます。本文の長い URL は吹き出しの幅で折り返します。
+幅が20rem未満の `Message` では、アバターを名前の行の横だけに置き、本文と操作をアバターの下から全幅で表示します。本文の長い URL は吹き出しの幅で折り返します。
 
 送信・既読・返信・リアクションのデータと保存は利用側が持ちます。controllerを持たないので、JavaScriptなしでも同じように表示されます。
 
 ## アクセシビリティ
 
 - ルートは `article` で、名前は `strong`、時刻は `datetime` 付きの `time` 要素です。
-- `avatar` は読み上げから外します（名前は `author` で読むため）。円に名前以外の意味を持たせないでください。
+- `avatar` は読み上げから外します（名前は `author` で読むため）。アバターに名前以外の意味を持たせないでください。
 - `actions` のボタンには、どの投稿への操作か分かる名前を付けてください。同じ文言のボタンが並ぶ時は `aria-label` で投稿者などを補います。
 
 ## API
 
 ### Message
 
-| 名前               | 型                             | 既定値           | 説明                                                                                                                                                                |
-| ------------------ | ------------------------------ | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `author`（必須）   | `string`                       |                  | 投稿者の名前。見出しの行に太字で置く。                                                                                                                              |
-| `layout`           | `"conversation" \| "document"` | `"conversation"` | 見せ方。conversationは本文を淡い吹き出しにし、documentは一通を一枚の紙にして日付を見出しの行の終わりに寄せる。 documentを続けて置くと、紙を少し重ねて一束に見せる。 |
-| `avatar`           | `Child`                        |                  | 投稿者の円（Avatarなど）。名前の行の横に置き、読み上げからは外す（名前はauthorで読む）。                                                                            |
-| `time`（必須）     | `string`                       |                  | 見出しの行に出す時刻の文字。書式は利用側で決める。                                                                                                                  |
-| `datetime`（必須） | `string`                       |                  | timeに対応する機械可読の日時。time要素のdatetime属性に入れる。                                                                                                      |
-| `actions`          | `Child`                        |                  | 本文の下に並べる操作（返信・リンクのコピーなど）。footerとして描く。                                                                                                |
-| `replies`          | `Child`                        |                  | 返信のMessage。本文の下に積み、avatarがある時は人の円から下ろした糸でつなぐ。                                                                                       |
-| `children`         | `Child`                        |                  | 本文。段落・FileItemなど任意のHTMLを渡せる。conversationでは吹き出しに、documentでは紙の全幅に入れる。                                                              |
+| 名前               | 型                             | 既定値           | 説明                                                                                                                                                                              |
+| ------------------ | ------------------------------ | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `author`（必須）   | `string`                       |                  | 投稿者の名前。見出しの行に太字で置く。                                                                                                                                            |
+| `layout`           | `"conversation" \| "document"` | `"conversation"` | 見せ方。conversationは本文を淡い吹き出しにし、documentは一通を一枚のカードにして日付を見出しの行の末尾に寄せる。 documentを続けて置くと、カードを少し重ねてひとまとまりに見せる。 |
+| `avatar`           | `Child`                        |                  | 投稿者のアバター（Avatarなど）。名前の行の横に置き、読み上げからは外す（名前はauthorで読む）。                                                                                    |
+| `time`（必須）     | `string`                       |                  | 見出しの行に出す時刻の文字。書式は利用側で決める。                                                                                                                                |
+| `datetime`（必須） | `string`                       |                  | timeに対応する機械可読の日時。time要素のdatetime属性に入れる。                                                                                                                    |
+| `actions`          | `Child`                        |                  | 本文の下に並べる操作（返信・リンクのコピーなど）。footerとして描く。                                                                                                              |
+| `replies`          | `Child`                        |                  | 返信のMessage。本文の下に積み、avatarがある時はアバターから下ろした線でつなぐ。                                                                                                   |
+| `children`         | `Child`                        |                  | 本文。段落・FileItemなど任意のHTMLを渡せる。conversationでは吹き出しに、documentではカードの全幅に入れる。                                                                        |
 
 ほかに、`<article>`へ標準のHTML属性を渡せます。
 
@@ -98,7 +98,7 @@ export default () => (
       </Message>
     </div>
     <DisclosureGroup label="会話の形と文書の形">
-      <Disclosure summary="返信を束ねる">
+      <Disclosure summary="返信をまとめる">
         <Message
           author="田中 遥"
           time="9月14日 16:02"
@@ -128,7 +128,7 @@ export default () => (
           <p>読書会の開始時間を18時に変えてもよいですか。</p>
         </Message>
       </Disclosure>
-      <Disclosure summary="人の円なし・複数段落・添付">
+      <Disclosure summary="アバターなし・複数段落・添付">
         <div>
           <Message
             author="予約の受付"
@@ -153,7 +153,7 @@ export default () => (
           </Message>
         </div>
       </Disclosure>
-      <Disclosure summary="メールのスレッドを紙の束にする">
+      <Disclosure summary="メールのスレッドをカードを重ねて表示する">
         <div class="ply-stack">
           <div class="ply-cluster">
             <AvatarGroup label="森 美咲、佐藤 健" size="small">
@@ -347,7 +347,7 @@ export default () => (
             focusable="false"
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
-        ><span class="label"><span class="title">返信を束ねる</span></span>
+        ><span class="label"><span class="title">返信をまとめる</span></span>
       </summary>
       <div class="body">
         <article class="ply-message" data-layout="conversation">
@@ -419,7 +419,7 @@ export default () => (
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
         ><span class="label"
-          ><span class="title">人の円なし・複数段落・添付</span></span
+          ><span class="title">アバターなし・複数段落・添付</span></span
         >
       </summary>
       <div class="body">
@@ -482,7 +482,7 @@ export default () => (
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
         ><span class="label"
-          ><span class="title">メールのスレッドを紙の束にする</span></span
+          ><span class="title">メールのスレッドをカードを重ねて表示する</span></span
         >
       </summary>
       <div class="body">

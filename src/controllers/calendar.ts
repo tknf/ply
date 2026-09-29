@@ -11,14 +11,14 @@ const shiftWeek = (date: string, weeks: number) => {
 };
 
 /**
- * 上流の選択とroving tabindexに、↑↓で同じ曜日の前後の週へ移る動きを重ねる。
+ * 上流の選択とroving tabindexに、↑↓で同じ曜日の前後の週へ移動する操作を加える。
  * 上流は並んだ日付のボタンの7つ前・後へ移るので、月の前後の空き（null）があると上下の日とずれる。
  * ここでは日付で7日前・後のボタンを探し、無いか使えない時は動かない。
  */
 export class CalendarController extends CalendarSelectionController {
   constructor(...args: ConstructorParameters<typeof CalendarSelectionController>) {
     super(...args);
-    // 上流のライフサイクルはインスタンス関数なので、保持してから上下の移動を足す。
+    // 上流のライフサイクルはインスタンス関数なので、保持してから上下の移動を追加する。
     const connectCalendar = this.connect;
     const disconnectCalendar = this.disconnect;
     this.connect = () => {

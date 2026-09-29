@@ -8,22 +8,22 @@
 
 - 担当者や参加者など、人やチームを名前と一緒に示す時に使います。
 - 複数の人をまとめて示す時は `AvatarGroup` で重ねて並べます。
-- 一人を大きな円と名前で見出しにする時は `ProfileHeader` を使います。
+- 一人を大きなアバターと名前で見出しにする時は `ProfileHeader` を使います。
 
 ## 使い方
 
-`name` と `initials` を渡します。円には略称を書き、`tone` で塗りを変えます。色だけで人を見分けさせず、隣に名前を書きます。
+`name` と `initials` を渡します。アバターには略称を書き、`tone` で塗りを変えます。色だけで人を見分けさせず、隣に名前を書きます。
 
 `src` を渡すと画像を重ねます。`AvatarController` を `avatar` として登録すると、画像を読み込めた時だけ表示し、読み込み中と失敗した時は略称を残します。JavaScriptがない時は略称だけを表示します。
 
 `size` は `inline`（20px、文の中）・`small`（28px、一覧の行）・`default`（36px）・`large`（48px）です。
 
-`AvatarGroup` の中に `Avatar` を並べると、円を6pxずつ重ね、後の円を手前にして作業面の色の輪で切り分けます。並べきれない人数は `more` で「+n」の円にします。`size` は中のAvatarと同じ大きさを渡します。
+`AvatarGroup` の中に `Avatar` を並べると、アバターを6pxずつ重ね、後のアバターを手前にして作業面の色の輪で切り分けます。並べきれない人数は `more` で「+n」の表示にします。`size` は中のAvatarと同じ大きさを渡します。
 
 ## アクセシビリティ
 
-- `Avatar` は `role="img"` で、`name` を名前にします。画像の `alt` は空にし、名前は円が持ちます。
-- `AvatarGroup` は `role="group"` で `label` を名前にします。「+n」の円は読み上げないので、`label` に「ほか12名」のように残りの人数を含めます。
+- `Avatar` は `role="img"` で、`name` を名前にします。画像の `alt` は空にし、名前はアバターが持ちます。
+- `AvatarGroup` は `role="group"` で `label` を名前にします。「+n」の表示は読み上げないので、`label` に「ほか12名」のように残りの人数を含めます。
 
 ## API
 
@@ -31,11 +31,11 @@
 
 | 名前               | 型                                            | 既定値      | 説明                                                                                        |
 | ------------------ | --------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------- |
-| `name`（必須）     | `string`                                      |             | 人やチームの名前。円の読み上げの名前（role="img"のaria-label）にする。                      |
-| `initials`（必須） | `string`                                      |             | 画像がない時と読み込めない時に円に書く略称。一、二文字にする。                              |
+| `name`（必須）     | `string`                                      |             | 人やチームの名前。アバターの読み上げの名前（role="img"のaria-label）にする。                |
+| `initials`（必須） | `string`                                      |             | 画像がない時と読み込めない時にアバターに書く略称。一、二文字にする。                        |
 | `src`              | `string`                                      |             | 顔写真などのURL。AvatarControllerが読み込めたと確かめてから表示し、それまでは略称を見せる。 |
-| `size`             | `"inline" \| "small" \| "default" \| "large"` | `"default"` | 円の大きさ。inlineは20px、smallは28px、defaultは36px、largeは48px。                         |
-| `tone`             | `Accent`                                      | `"blue"`    | 略称の円の塗り。人を見分ける補助で、名前の代わりにはしない。                                |
+| `size`             | `"inline" \| "small" \| "default" \| "large"` | `"default"` | アバターの大きさ。inlineは20px、smallは28px、defaultは36px、largeは48px。                   |
+| `tone`             | `Accent`                                      | `"blue"`    | 略称のアバターの塗り。人を見分ける補助で、名前の代わりにはしない。                          |
 
 ほかに、`<span>`へ標準のHTML属性を渡せます。
 
@@ -49,7 +49,7 @@
 
 ### AvatarGroup
 
-人の円を少しずつ重ねて並べる。childrenにはAvatarだけを置く。
+アバターを少しずつ重ねて並べる。childrenにはAvatarだけを置く。
 
 | 名前            | 型                                | 既定値      | 説明                                                         |
 | --------------- | --------------------------------- | ----------- | ------------------------------------------------------------ |
@@ -133,7 +133,7 @@ export default () => (
               <Avatar name="森 美咲" initials="美" tone="green" size="small" />
               <Avatar name="佐藤 健" initials="健" size="small" />
             </AvatarGroup>
-            <span>小さい円（一覧の行やスレッドの見出し）</span>
+            <span>小さいアバター（一覧の行やスレッドの見出し）</span>
           </div>
           <div class="ply-cluster">
             <AvatarGroup label="Alex Morgan、山本 彩、プロフィール" size="large">
@@ -146,7 +146,7 @@ export default () => (
               />
               <Avatar name="プロフィール" initials="編" tone="green" size="large" />
             </AvatarGroup>
-            <span>大きい円と画像</span>
+            <span>大きいアバターと画像</span>
           </div>
         </div>
       </Disclosure>
@@ -395,7 +395,7 @@ export default () => (
                 aria-label="佐藤 健"
                 ><span class="initials">健</span></span
               ><span class="more" aria-hidden="true">+2</span></span
-            ><span>小さい円（一覧の行やスレッドの見出し）</span>
+            ><span>小さいアバター（一覧の行やスレッドの見出し）</span>
           </div>
           <div class="ply-cluster">
             <span
@@ -431,7 +431,7 @@ export default () => (
                 aria-label="プロフィール"
                 ><span class="initials">編</span></span
               ></span
-            ><span>大きい円と画像</span>
+            ><span>大きいアバターと画像</span>
           </div>
         </div>
       </div>

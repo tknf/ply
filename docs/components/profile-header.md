@@ -2,7 +2,7 @@
 
 # ProfileHeader
 
-大きな人の円と名前、この人への設定の帯
+大きなアバターと名前、この人への設定のバー
 
 ## 使いどころ
 
@@ -11,27 +11,27 @@
 
 ## 使い方
 
-`avatar`に`Avatar`の`size="large"`、`name`に名前を渡します。大きな円・太字の大きな名前・淡い`detail`を中央に積みます。
+`avatar`に`Avatar`の`size="large"`、`name`に名前を渡します。大きなアバター・太字の大きな名前・淡い`detail`を中央に積みます。
 
-`badge`（所属などの小さな札）は始まりの側の上の角、`actions`（編集など）は終わりの側の上の角に置きます。
+`badge`（所属などの小さなバッジ）は先頭側の上の角、`actions`（編集など）は末尾側の上の角に置きます。
 
-`preferences`には、この人への設定の`DropdownMenu`や`Button`を渡します。名前の下の灰色の帯に、面を持たない形で並べ、狭い場所では折り返します。設定の保存は利用側が担います。
+`preferences`には、この人への設定の`DropdownMenu`や`Button`を渡します。名前の下の灰色のバーに、面を持たない形で並べ、狭い場所では折り返します。設定の保存は利用側が担います。
 
-名前の見出しの段は`headingLevel`で決めます。画面の見出しなら`1`、画面の中の一部として置くなら前後の見出しに合わせて`2`・`3`にします。
+名前の見出しのレベルは`headingLevel`で決めます。画面の見出しなら`1`、画面の中の一部として置くなら前後の見出しに合わせて`2`・`3`にします。
 
 ## API
 
 ### ProfileHeader
 
-大きな人の円と名前を中央に据え、その下に、この人への設定を灰色の帯にまとめて並べる。
+大きなアバターと名前を中央に据え、その下に、この人への設定を灰色の領域にまとめて並べる。
 
 | 名前             | 型            | 既定値 | 説明                                                                                 |
 | ---------------- | ------------- | ------ | ------------------------------------------------------------------------------------ |
 | `name`（必須）   | `string`      |        | 人やグループの名前。headingLevelの見出しで出す。                                     |
-| `avatar`（必須） | `Child`       |        | 大きな人の円（Avatarのlarge）。                                                      |
+| `avatar`（必須） | `Child`       |        | 大きなアバター（Avatarのlarge）。                                                    |
 | `detail`         | `Child`       |        | 名前の下の淡い補足（メールアドレスなど）。                                           |
-| `badge`          | `Child`       |        | 始まりの側の上の角に置く小さな札（所属など）。                                       |
-| `actions`        | `Child`       |        | 終わりの側の上の角に置く操作（編集など）。                                           |
+| `badge`          | `Child`       |        | 先頭側の上の角に置く小さなバッジ（所属など）。                                       |
+| `actions`        | `Child`       |        | 末尾側の上の角に置く操作（編集など）。                                               |
 | `preferences`    | `Child`       |        | 名前の下に並べる、この人への設定（通知・振り分けなど）。DropdownMenuやButtonを渡す。 |
 | `headingLevel`   | `1 \| 2 \| 3` | `1`    | 名前の見出しの段（既定はh1）。                                                       |
 
@@ -110,7 +110,7 @@ export default () => (
           avatar={<Avatar name="佐藤 健" initials="健" size="large" tone="green" />}
         />
       </Disclosure>
-      <Disclosure summary="狭い場所：長い名前と設定の帯を折り返す">
+      <Disclosure summary="狭い場所：長い名前と設定のバーを折り返す">
         <div style="max-inline-size: 18rem">
           <ProfileHeader
             headingLevel={3}
@@ -513,7 +513,7 @@ export default () => (
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
         ><span class="label"
-          ><span class="title">狭い場所：長い名前と設定の帯を折り返す</span></span
+          ><span class="title">狭い場所：長い名前と設定のバーを折り返す</span></span
         >
       </summary>
       <div class="body">

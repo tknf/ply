@@ -1,8 +1,8 @@
 import { Controller } from "@hotwired/stimulus";
 
 /**
- * 足せる項目のチップを押すと、その欄を出してチップを隠し、欄の最初の入力へ移る。
- * 欄の外す操作で欄を隠してチップへ戻す。隠れた欄はfieldsetごと使えなくし、送信しない。
+ * 追加できる項目のチップを押すと、その欄を表示してチップを隠し、欄の最初の入力へ移る。
+ * 欄の削除操作で欄を隠してチップへ戻す。隠れた欄はfieldsetごと使えなくし、送信しない。
  */
 export class OptionalFieldsController extends Controller<HTMLElement> {
   static targets = ["field"];
@@ -13,7 +13,7 @@ export class OptionalFieldsController extends Controller<HTMLElement> {
     for (const slot of this.fieldTargets) this.setOpen(slot, slot.dataset.open === "true");
   };
   disconnect = () => {
-    // 足した状態はdata-openに残し、次の接続で戻す。
+    // 追加した状態はdata-openに残し、次の接続で戻す。
     for (const slot of this.fieldTargets) {
       slot.hidden = false;
       if (slot instanceof HTMLFieldSetElement) slot.disabled = false;
@@ -44,7 +44,7 @@ export class OptionalFieldsController extends Controller<HTMLElement> {
     const slot = this.fieldTargets.find((field) => field.contains(button));
     if (!slot) return;
     this.setOpen(slot, false);
-    // 押した操作は隠れるので、同じ項目を足し直せるチップへフォーカスを移す。
+    // 押した操作は隠れるので、同じ項目を追加し直せるチップへフォーカスを移す。
     this.chip(slot)?.focus();
     this.dispatch("remove", { detail: { id: this.itemId(slot) } });
   };

@@ -5,21 +5,21 @@ import { OverlayClose, OverlayContent, overlayAnchorName } from "./overlay-conte
 import { Tooltip } from "./tooltip";
 
 export type PopoverProps = PropsWithChildren<{
-  /** 紙のid。画面内で一意にする。開く操作の`popovertarget`と、CSSのアンカー名の元になる。 */
+  /** パネルのid。画面内で一意にする。開く操作の`popovertarget`と、CSSのアンカー名の元になる。 */
   id: string;
   /** 開く操作の文言。iconOnlyの時は`aria-label`として読み上げる。 */
   label: string;
-  /** 紙の見出し。省略するとlabelを使う。 */
+  /** パネルの見出し。省略するとlabelを使う。 */
   title?: string;
-  /** 見出しの下に置く短い説明。紙の説明（`aria-describedby`）になる。 */
+  /** 見出しの下に置く短い説明。パネルの説明（`aria-describedby`）になる。 */
   description?: string;
-  /** 紙を開く操作のどちらの端に揃えるか。 */
+  /** パネルを開く操作のどちらの端に揃えるか。 */
   align?: "start" | "end";
-  /** 紙の幅。compactは16rem、defaultは20rem、wideは28remを上限にする。 */
+  /** パネルの幅。compactは16rem、defaultは20rem、wideは28remを上限にする。 */
   size?: "compact" | "default" | "wide";
-  /** 開く操作の文言の前に置く印。 */
+  /** 開く操作の文言の前に置くアイコン。 */
   icon?: IconName;
-  /** 開く操作を印だけにする。iconが無ければinfoの印を出す。 */
+  /** 開く操作をアイコンだけにする。iconが無ければinfoのアイコンを出す。 */
   iconOnly?: boolean;
   /** 開く操作を押せなくする。 */
   disabled?: boolean;
@@ -28,17 +28,17 @@ export type PopoverProps = PropsWithChildren<{
   /** 見出しの横の閉じる操作の名前。 */
   closeLabel?: string;
   /**
-   * 開いた時に移る先。titleは見出し（既定）。contentは中身のautofocusを付けた欄へ移り、
-   * 開いてすぐ打ち始める物（EmojiPickerの探す欄など）に使う。
+   * 開いた時にフォーカスを移す先。titleは見出し（既定）。contentは中身のautofocusを付けた欄へ移り、
+   * 開いてすぐ入力を始めるもの（EmojiPickerの検索欄など）に使う。
    */
   initialFocus?: "title" | "content";
-  /** 見出しを読み上げだけに残し、画面には出さない。開く操作の名前で中身が分かる小さな板に使う。 */
+  /** 見出しを読み上げだけに残し、画面には出さない。開く操作の名前で中身が分かる小さなパネルに使う。 */
   titleHidden?: boolean;
-  /** 印だけの開く操作に、指を載せた時とフォーカスした時の名前をTooltipで出す。既定は出さない。 */
+  /** アイコンだけの開く操作に、ホバー時とフォーカス時の名前をTooltipで出す。既定は出さない。 */
   tooltip?: boolean;
-  /** 紙の下の操作欄に並べる操作。 */
+  /** パネルの下の操作欄に並べる操作。 */
   actions?: Child;
-  /** 文字の向き。rtlでは始端と末端が入れ替わる。 */
+  /** 文字の向き。rtlでは先頭と末尾が入れ替わる。 */
   dir?: "ltr" | "rtl";
 }>;
 

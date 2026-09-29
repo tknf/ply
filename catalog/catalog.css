@@ -1,5 +1,5 @@
 /*
-  カタログだけが使う指定。カタログの画面そのものは部品だけで組み、ここには見本の中の小さな並べ方だけを置く。
+  カタログだけが使う指定。カタログの画面そのものはコンポーネントだけで組み、ここには見本の中の細かな配置だけを置く。
 */
 @layer layout {
   .catalog-person {
@@ -69,7 +69,7 @@
     color: var(--ply-muted);
     font-size: var(--ply-small);
   }
-  /* 部品のページの説明とAPI。文中のコード、箇条、型の見出し、必須の印。 */
+  /* コンポーネントのページの説明とAPI。文中のコード、箇条書き、型の見出し、必須マーク。 */
   .catalog-reference {
     & :where(code) {
       font-family: ui-monospace, SFMono-Regular, Consolas, monospace;

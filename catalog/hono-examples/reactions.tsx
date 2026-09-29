@@ -3,7 +3,7 @@ import { Reactions, Disclosure, DisclosureGroup } from "../../src/hono";
 export default () => (
   <div class="ply-stack">
     <Reactions
-      label="このカードへの反応"
+      label="このカードへのリアクション"
       items={[
         { content: "👍", name: "いいね", by: ["田中 遥", "佐藤 健", "自分"], mine: true },
         { content: "🚀", name: "ロケット", by: ["田中 遥"] },
@@ -14,7 +14,7 @@ export default () => (
     <DisclosureGroup label="人数・内容・狭い場所・右から左">
       <Disclosure summary="別々の人が同じ絵文字を付けた時（数が増える）" open>
         <Reactions
-          label="大勢の反応"
+          label="大勢のリアクション"
           items={[
             {
               content: "🎉",
@@ -31,22 +31,22 @@ export default () => (
           add={{ id: "reactions-many" }}
         />
       </Disclosure>
-      <Disclosure summary="短い言葉の反応・まだ反応がない">
+      <Disclosure summary="短い言葉のリアクション・まだリアクションがない">
         <div class="ply-stack" data-space="small">
           <Reactions
-            label="言葉の反応"
+            label="言葉のリアクション"
             items={[
               { content: "助かります", by: ["佐藤 健", "田中 遥"] },
               { content: "了解です", by: ["自分"], mine: true },
             ]}
             add={{ id: "reactions-words" }}
           />
-          <Reactions label="まだない反応" items={[]} add={{ id: "reactions-empty" }} />
+          <Reactions label="まだないリアクション" items={[]} add={{ id: "reactions-empty" }} />
         </div>
       </Disclosure>
-      <Disclosure summary="読むだけ（押せない札）">
+      <Disclosure summary="読むだけ（押せないリアクション）">
         <Reactions
-          label="読むだけの反応"
+          label="読むだけのリアクション"
           items={[
             { content: "👍", name: "いいね", by: ["田中 遥", "自分"], mine: true },
             { content: "🎉", name: "お祝い", by: ["佐藤 健"] },
@@ -56,7 +56,7 @@ export default () => (
       <Disclosure summary="狭い場所：折り返す">
         <div style="max-inline-size: 12rem">
           <Reactions
-            label="狭い場所の反応"
+            label="狭い場所のリアクション"
             items={[
               { content: "とても助かりました、ありがとうございます", by: ["田中 遥"] },
               { content: "🚀", name: "ロケット", by: ["佐藤 健"] },

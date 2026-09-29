@@ -155,7 +155,7 @@ const JobContent = ({ job }: { job: Job }) => {
   );
 };
 
-/** プロジェクト。公開までの数字、運べるボード、今週のチェック、会話、記録をタブで行き来する。 */
+/** プロジェクト。公開までの数値、ドラッグで移動できるボード、今週のチェック、会話、記録をタブで切り替える。 */
 export const ProjectScreen = () => (
   <AppFrame current="project">
     <div class="ply-stack" data-controller="project-demo">
@@ -341,7 +341,7 @@ export const ProjectScreen = () => (
                     記事のカテゴリを5つに絞ってみました。最初の画面で見渡せるので、迷わず入口を選べそうです。
                   </p>
                   <Reactions
-                    label="この投稿への反応"
+                    label="この投稿へのリアクション"
                     items={[
                       { content: "👍", name: "いいね", by: ["田中 遥", "佐藤 健"] },
                       { content: "わかりやすい", by: ["佐藤 健"] },

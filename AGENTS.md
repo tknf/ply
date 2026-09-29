@@ -12,8 +12,8 @@
 - Computer use・ブラウザ操作・Playwright実行は禁止。ユーザーが明示的に解除した場合だけ実行する。制約下でもソースで検出できる既知の崩れ方を残して提出しない。
 - ブラウザテストの合否の基準はChromiumとする。FirefoxとWebKitは補助の確認で、そこだけの失敗は提出を止める条件にしない。失敗は隠さず報告し、直すかどうかはユーザーと決める。
 - ブラウザテストは3ブラウザで流すとメモリを使い切る。解除されて流す時は、範囲を絞ってから流す。
-  - 普段は、変えた部品のspecだけをChromiumで流す：`vp exec playwright test test/browser/<部品>.spec.ts --project=chromium`。
+  - 普段は、変えたコンポーネントのspecだけをChromiumで流す：`vp exec playwright test test/browser/<コンポーネント>.spec.ts --project=chromium`。
   - 失敗の確認は、失敗したテストだけを流し直す：`vp exec playwright test --last-failed`。
   - 3ブラウザの`vp run test:visual`（`@sweep`を除く）と全件の`vp run test:visual:full`は区切りで一回だけ流す。流す前に範囲をユーザーに伝え、続けて繰り返さない。
   - `vp run test:visual -- <引数>`は引数が渡らず3ブラウザの全件が流れる。対象を絞る時は必ず`vp exec playwright test`を使う。
-  - 全部品を回すテストと幅を細かく刻むテストには`@sweep`を付け、普段の`test:visual`から外す。
+  - 全コンポーネントを回すテストと幅を細かく刻むテストには`@sweep`を付け、普段の`test:visual`から外す。

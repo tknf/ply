@@ -10,7 +10,7 @@ export type SearchResult = {
   excerpt?: Child;
   /** 置き場所・日付などの補足。 */
   meta?: Child;
-  /** 人の円や種類の印。 */
+  /** アバターや種類のアイコン。 */
   leading?: Child;
 };
 export type SearchResultsProps = ElementProps<"ol"> & {
@@ -73,8 +73,8 @@ const highlight = (text: string, query?: string): Child => {
 };
 
 /**
- * 題名・抜粋・補足を並べ、一致した語を淡い黄の面で強調する。
- * 条件を足す列はOptionalFieldsのstackで、ページの側に置く。
+ * 題名・抜粋・補足を並べ、一致した語を淡い黄の背景で強調する。
+ * 条件を追加する列はOptionalFieldsのstackで、ページの側に置く。
  */
 export const SearchResults = ({
   label,

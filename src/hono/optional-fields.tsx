@@ -8,7 +8,7 @@ export type OptionalField = {
   id: string;
   /** チップに出す項目名。 */
   label: string;
-  /** チップの名前の前に置く印。省略するとplus。 */
+  /** チップの名前の前に置くアイコン。省略するとplus。 */
   icon?: IconName;
   /** 押した時に現れる欄。隠れている間は中の入力を使えなくし、送信しない。 */
   field: Child;
@@ -16,18 +16,18 @@ export type OptionalField = {
   open?: boolean;
 };
 export type OptionalFieldsProps = ElementProps<"div"> & {
-  /** チップの並びの読み上げ名（「予定に足す項目」など）。 */
+  /** チップの並びの読み上げ名（「予定に追加する項目」など）。 */
   label: string;
-  /** 足せる項目。並べた順にチップと欄を置く。 */
+  /** 追加できる項目。並べた順にチップと欄を置く。 */
   items: readonly OptionalField[];
   /** inlineは予定の入力のようにチップを横に並べ（既定）、stackは検索の条件のように縦に並べる。 */
   layout?: "inline" | "stack";
 };
 
 /**
- * 予定のリンク・場所・招待・メモ・繰り返しや検索の条件のように、必要な時だけ足す欄。
- * 足せる項目をチップで並べ、押すとその欄が現れてチップは消える。欄の外す操作で元のチップへ戻す。
- * 長いフォームを短く見せる。JavaScriptが無い時は全ての欄を出し、チップと外す操作は出さない。
+ * 予定のリンク・場所・招待・メモ・繰り返しや検索の条件のように、必要な時だけ追加する欄。
+ * 追加できる項目をチップで並べ、押すとその欄が現れてチップは消える。欄の削除操作で元のチップへ戻す。
+ * 長いフォームを短く見せる。JavaScriptが無い時は全ての欄を出し、チップと削除操作は出さない。
  */
 export const OptionalFields = ({
   label,
@@ -55,8 +55,8 @@ export const OptionalFields = ({
             class="remove"
             variant="link"
             data-icon-only="true"
-            aria-label={`${item.label}を外す`}
-            title={`${item.label}を外す`}
+            aria-label={`${item.label}を削除`}
+            title={`${item.label}を削除`}
             data-action="optional-fields#remove"
             hidden
           >

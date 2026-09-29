@@ -10,11 +10,11 @@ export type TaskListProps = ElementProps<"div"> & {
   heading?: string;
   /** 行の一覧の上に書く、この一覧の名前。 */
   title?: string;
-  /** 最後の行に置く、項目を書き足す欄。送信と追加は利用側のフォームで扱う。 */
+  /** 最後の行に置く、項目を追加する欄。送信と追加は利用側のフォームで扱う。 */
   add?: {
-    /** 書き足した文を送る名前。 */
+    /** 追加した文を送る名前。 */
     name: string;
-    /** 欄の淡い文。欄の読み上げ名にも使う。 */
+    /** 欄のプレースホルダー。欄の読み上げ名にも使う。 */
     placeholder: string;
     /** 一覧の外にあるフォームのid。欄をそのフォームで送る。 */
     form?: string;
@@ -33,7 +33,7 @@ export type TaskListProps = ElementProps<"div"> & {
     detail?: Child;
     /** checkboxの値。省くと標準どおり`on`を送る。 */
     value?: string;
-    /** 行の終わりに置く物（AvatarやBadgeなど）。 */
+    /** 行の末尾に置く要素（AvatarやBadgeなど）。 */
     end?: Child;
   }[];
 };

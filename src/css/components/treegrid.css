@@ -1,7 +1,7 @@
 @layer components {
   .ply-treegrid {
     --ply-treegrid-depth: 0;
-    /* 開閉のつまみは題名の一行の高さにし、つまみのある行とない行を同じ高さにそろえる。 */
+    /* 開閉ボタンは題名の一行の高さにし、開閉ボタンのある行とない行を同じ高さにそろえる。 */
     --ply-treegrid-toggle-size: 1.25rem;
   }
 
@@ -23,13 +23,13 @@
       flex: none;
       inline-size: var(--ply-treegrid-toggle-size);
     }
-    /* 題名はリンクかどうかに関わらず、墨のMediumの文字にそろえる。 */
+    /* 題名はリンクかどうかに関わらず、濃い色のMediumの文字にそろえる。 */
     & > :is(.label, a) {
       min-inline-size: 0;
       font-weight: 500;
       overflow-wrap: anywhere;
     }
-    /* 行の題名のリンクはTableと同じく墨のMediumの文字にし、指を載せた時だけ青くする。 */
+    /* 行の題名のリンクはTableと同じく濃い色のMediumの文字にし、ホバー時だけ青くする。 */
     & > a {
       color: var(--ply-text);
       text-decoration: none;
@@ -39,7 +39,7 @@
     }
   }
 
-  /* 開閉はcontrollerが行にdata-stateを付けてから働くので、それまではつまみを隠し、幅だけ残す。 */
+  /* 開閉はcontrollerが行にdata-stateを付けてから働くので、それまでは開閉ボタンを隠し、幅だけ残す。 */
   .ply-treegrid > table > tbody > tr:not([data-state]) > th .toggle {
     visibility: hidden;
   }
@@ -65,7 +65,7 @@
     outline: 0.125rem solid var(--ply-link);
     outline-offset: -0.125rem;
   }
-  /* タッチ操作ではつまみが44pxになるので、つまみのない行も同じ高さにそろえる。 */
+  /* タッチ操作では開閉ボタンが44pxになるので、開閉ボタンのない行も同じ高さにそろえる。 */
   @media (pointer: coarse) {
     .ply-treegrid {
       --ply-treegrid-toggle-size: 2.75rem;

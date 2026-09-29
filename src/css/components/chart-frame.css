@@ -61,7 +61,7 @@
       align-items: center;
       gap: var(--ply-space-1);
     }
-    /* 凡例の印は棒と同じ塗りの小さな円にする。 */
+    /* 凡例のマークは棒と同じ塗りの小さな円にする。 */
     & > li > .mark {
       inline-size: 0.625rem;
       block-size: 0.625rem;

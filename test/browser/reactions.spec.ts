@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("Reactionsは付け外しの前にreactions:beforetoggleを出し、取り消すと札を変えない", async ({
+test("Reactionsは付け外しの前にreactions:beforetoggleを出し、取り消すとリアクションを変えない", async ({
   page,
 }) => {
   await page.goto("/components/reactions");

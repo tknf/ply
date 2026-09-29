@@ -11,15 +11,15 @@
 
 ## 使い方
 
-`id`・`label`・`name` を渡し、`value` に今の値を渡します。表示の値は下線も枠もない文字にし、値と鉛筆を包む箱に指を載せると淡い面を出します。値が空の時は `emptyLabel` を淡く出します。
+`id`・`label`・`name` を渡し、`value` に今の値を渡します。表示の値は下線も枠もない文字にし、値と鉛筆を囲む領域にホバーすると淡い面を出します。値が空の時は `emptyLabel` を淡く出します。
 
 鉛筆を押しても、値そのものを押しても書き始めます（文字を選んでいる時は書き始めません）。一行の値は全体を選び、そのまま打てば置き換わります。`multiline` の値は末尾から書き足せ、表示でも改行をそのまま出します。書いている間は同じ位置の欄を淡い地の面にし、青い縁と淡い青の輪を出します。表示と編集で文字の大きさ・一行目の高さ・書き始めは変わりません。
 
-確定（小さい主操作）と取消（文字だけの操作）は、一行・複数行とも欄の下に並べます。確定は `Control + Enter`・`⌘ + Enter`、取消は `Escape` でもでき、Enterだけでは確定しません。確定すると新しい値を表示へ移し、書き始めの側からペンで書くように見せて、鉛筆の位置に書き終えた印をしばらく出します。確定・取消の後はフォーカスを鉛筆に戻します。
+確定（小さい主操作）と取消（文字だけの操作）は、一行・複数行とも欄の下に並べます。確定は `Control + Enter`・`⌘ + Enter`、取消は `Escape` でもでき、Enterだけでは確定しません。確定すると新しい値を表示へ移し、先頭側からペンで書くように見せて、鉛筆の位置に完了のマークをしばらく出します。確定・取消の後はフォーカスを鉛筆に戻します。
 
-`required`・`maxLength` は欄の標準の検証として働き、確定の時に検証して、通らなければ書いたまま検証の文を出します。フォームの送信で検証に通らなかった時も、書いている状態に切り替えます。
+`required`・`maxLength` は欄の標準の検証として働き、確定の時に検証して、通らなければ書いたまま検証メッセージを出します。フォームの送信で検証に通らなかった時も、書いている状態に切り替えます。
 
-保存は `editable:commit` で受け取り、保存しない時は `editable:beforecommit` を取り消します。確定した値は欄に残るので、`form` に結び付けてフォームの値として送ることもできます。フォームのリセットでは最初の値に戻して表示に戻ります。保存・保存の失敗の知らせ・値の検証の規則は利用側が持ちます。
+保存は `editable:commit` で受け取り、保存しない時は `editable:beforecommit` を取り消します。確定した値は欄に残るので、`form` に結び付けてフォームの値として送ることもできます。フォームのリセットでは最初の値に戻して表示に戻ります。保存・保存失敗の通知・値の検証ルールは利用側が持ちます。
 
 `EditableController` を `editable`、`EditablePropertyController` を `editable-property` として登録します。JavaScriptなしでは、確定・取消を隠した通常の入力欄として表示し、フォームで値を送れます。
 
@@ -43,12 +43,12 @@
 
 | イベント                | 内容                                                                                                                                                          |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `editable:beforeedit`   | 鉛筆か値そのものを押して書き始める前に知らせます。取り消せます。detailは `{ value, previousValue, reason }` で、`reason` は `pointer`・`keyboard` です。      |
-| `editable:edit`         | 書き始めた後に知らせます。detailは `editable:beforeedit` と同じです。                                                                                         |
-| `editable:beforecommit` | 確定の前に、検証を通った時だけ知らせます。取り消せます（書いている状態のまま残ります）。detailの `value` は新しい値、`previousValue` は書き始める前の値です。 |
-| `editable:commit`       | 確定した後に知らせます。detailは `editable:beforecommit` と同じで、ここで保存します。                                                                         |
-| `editable:beforecancel` | 取消の前に知らせます。取り消せます。detailの `value` は戻す値、`previousValue` は書いていた値です。                                                           |
-| `editable:cancel`       | 取り消して元の値に戻した後に知らせます。detailは `editable:beforecancel` と同じです。                                                                         |
+| `editable:beforeedit`   | 鉛筆か値そのものを押して書き始める前に発火します。取り消せます。detailは `{ value, previousValue, reason }` で、`reason` は `pointer`・`keyboard` です。      |
+| `editable:edit`         | 書き始めた後に発火します。detailは `editable:beforeedit` と同じです。                                                                                         |
+| `editable:beforecommit` | 確定の前に、検証を通った時だけ発火します。取り消せます（書いている状態のまま残ります）。detailの `value` は新しい値、`previousValue` は書き始める前の値です。 |
+| `editable:commit`       | 確定した後に発火します。detailは `editable:beforecommit` と同じで、ここで保存します。                                                                         |
+| `editable:beforecancel` | 取消の前に発火します。取り消せます。detailの `value` は戻す値、`previousValue` は書いていた値です。                                                           |
+| `editable:cancel`       | 取り消して元の値に戻した後に発火します。detailは `editable:beforecancel` と同じです。                                                                         |
 
 ## API
 
@@ -56,18 +56,18 @@
 
 値の位置で文字列を編集する。保存処理は利用側がeditable:commitで受け取る。一行・複数行とも、確定はControl+Enter / Meta+Enter、取消はEscapeにそろえる。
 
-| 名前            | 型        | 既定値     | 説明                                                                                                   |
-| --------------- | --------- | ---------- | ------------------------------------------------------------------------------------------------------ |
-| `id`（必須）    | `string`  |            | 部品の中の要素のidの元。`${id}-label`・`${id}-input`・`${id}-editor`を作るので、画面の中で一意にする。 |
-| `label`（必須） | `string`  |            | 項目名。値の上に出し、欄の名前（aria-labelledby）と鉛筆の読み上げ名「〇〇を編集」にも使う。            |
-| `name`（必須）  | `string`  |            | 欄のname。フォームで送る時の名前になる。                                                               |
-| `value`         | `string`  | `""`       | 最初の値。確定した値は欄に残り、フォームで送れる。                                                     |
-| `emptyLabel`    | `string`  | `"未登録"` | 値が空の時に表示の位置へ出す淡い文字。                                                                 |
-| `required`      | `boolean` |            | 空のままでは確定できなくする。確定の時に欄の標準の検証を行う。                                         |
-| `disabled`      | `boolean` |            | 編集できなくする。鉛筆を押せず、値を押しても書き始めない。欄も無効になるので、フォームでは送られない。 |
-| `form`          | `string`  |            | 欄を結び付けるformのid。部品がformの外にある時に使う。                                                 |
-| `maxLength`     | `number`  |            | 入力できる文字数の上限。欄のmaxlengthに入れる。                                                        |
-| `multiline`     | `boolean` | `false`    | 複数行の値。複数行の欄で書き、改行はそのまま表示する。                                                 |
+| 名前            | 型        | 既定値     | 説明                                                                                                           |
+| --------------- | --------- | ---------- | -------------------------------------------------------------------------------------------------------------- |
+| `id`（必須）    | `string`  |            | コンポーネント内の要素のidの元。`${id}-label`・`${id}-input`・`${id}-editor`を作るので、画面の中で一意にする。 |
+| `label`（必須） | `string`  |            | 項目名。値の上に出し、欄の名前（aria-labelledby）と鉛筆ボタンの読み上げ名「〇〇を編集」にも使う。              |
+| `name`（必須）  | `string`  |            | 欄のname。フォームで送る時の名前になる。                                                                       |
+| `value`         | `string`  | `""`       | 最初の値。確定した値は欄に残り、フォームで送れる。                                                             |
+| `emptyLabel`    | `string`  | `"未登録"` | 値が空の時に表示の位置へ出す淡い文字。                                                                         |
+| `required`      | `boolean` |            | 空のままでは確定できなくする。確定の時に欄の標準の検証を行う。                                                 |
+| `disabled`      | `boolean` |            | 編集できなくする。鉛筆ボタンを押せず、値を押しても編集を始めない。欄も無効になるので、フォームでは送られない。 |
+| `form`          | `string`  |            | 欄を結び付けるformのid。コンポーネントがformの外にある時に使う。                                               |
+| `maxLength`     | `number`  |            | 入力できる文字数の上限。欄のmaxlengthに入れる。                                                                |
+| `multiline`     | `boolean` | `false`    | 複数行の値。複数行の欄で入力し、改行はそのまま表示する。                                                       |
 
 登録するcontroller：`editable`（`EditableController`）、`editable-property`（`EditablePropertyController`）
 
@@ -96,7 +96,7 @@ export default () => (
       multiline
     />
     <p class="catalog-footnote">
-      値か鉛筆を押して書き始め、⌘＋Enter（WindowsなどではCtrl＋Enter）か「確定」で書き終えます。Escapeか「取消」で元の値に戻します。一行でも複数行でも同じで、Enterだけでは確定しません。
+      値か鉛筆のアイコンを押して編集を始め、⌘＋Enter（WindowsなどではCtrl＋Enter）か「確定」で編集を終えます。Escapeか「取消」で元の値に戻します。一行でも複数行でも同じで、Enterだけでは確定しません。
     </p>
     <DisclosureGroup label="値と置き場所の違い">
       <Disclosure summary="項目を並べる" open>
@@ -422,7 +422,7 @@ export default () => (
     </div>
   </div>
   <p class="catalog-footnote">
-    値か鉛筆を押して書き始め、⌘＋Enter（WindowsなどではCtrl＋Enter）か「確定」で書き終えます。Escapeか「取消」で元の値に戻します。一行でも複数行でも同じで、Enterだけでは確定しません。
+    値か鉛筆のアイコンを押して編集を始め、⌘＋Enter（WindowsなどではCtrl＋Enter）か「確定」で編集を終えます。Escapeか「取消」で元の値に戻します。一行でも複数行でも同じで、Enterだけでは確定しません。
   </p>
   <div class="ply-disclosure-group" role="group" aria-label="値と置き場所の違い">
     <details open="" class="ply-disclosure">

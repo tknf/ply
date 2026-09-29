@@ -8,7 +8,7 @@
   /*
     やることの一覧。外側の見出しに開閉・名前と、塗りつぶしの円と「終えた数/全体」を置き、
     その下の行を罫線で区切る。行の始まりにチェックを置き、終えたことはペンで引く線で消す。
-    最後の行は、項目を書き足す欄。
+    最後の行は、項目を追加する欄。
   */
   .ply-task-list {
     --ply-task-progress: 0;
@@ -114,11 +114,11 @@
             line-height: var(--ply-label-leading);
           }
         }
-        /* 行に指を載せると、DataListと同じ淡い青の面を行の幅いっぱいに出す。行のどこを押してもチェックが変わる。 */
+        /* 行にホバーすると、DataListと同じ淡い青の面を行の幅いっぱいに出す。行のどこを押してもチェックが変わる。 */
         &:not(.heading, .add):has(> .ply-choice > input:enabled):hover {
           background: color-mix(in srgb, var(--ply-link) 4%, var(--ply-surface));
         }
-        /* 書き足す欄は、チェックの列に足す印を置き、題名と同じ位置から書く。書いている間は印を青い丸にする。 */
+        /* 追加する欄は、チェックの列に追加のアイコンを置き、題名と同じ位置から書く。入力中はアイコンを青い丸にする。 */
         &.add {
           grid-template-columns: calc(var(--ply-body) * 9 / 7) minmax(0, 1fr);
           column-gap: calc(var(--ply-body) / 2);
@@ -155,7 +155,7 @@
               color: var(--ply-muted);
               opacity: 1;
             }
-            /* 書いている間は、欄を四角で囲まず、青い丸の印と行の淡い青の面で示す。 */
+            /* 入力中は、欄を四角で囲まず、青い丸のアイコンと行の淡い青の面で示す。 */
             &:focus-visible {
               outline: 0;
             }
@@ -173,7 +173,7 @@
         & > .ply-choice {
           padding-block: var(--ply-space-3);
           font-size: var(--ply-body);
-          /* 終えた印は、見出しの進み具合の円と同じ緑で塗る。 */
+          /* 完了のマークは、見出しの進み具合の円と同じ緑で塗る。 */
           & > input:checked {
             border-color: var(--ply-success);
             background: var(--ply-fill-success);

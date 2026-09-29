@@ -1,8 +1,8 @@
 @layer components {
   /*
     受け取った連絡の一覧。作業面の上に行を平らに並べ、罫線は引かずに行間で区切る。
-    指を載せた行だけ、角丸の淡い面で示す。
-    行は「件名」と「差出人 – 書き出し」の二段にし、差出人の円を左に、時刻と未読の点を右に置く。
+    ホバーした行だけ、角丸の淡い面で示す。
+    行は「件名」と「差出人 – 書き出し」の二段にし、差出人のアバターを左に、時刻と未読の点を右に置く。
     まだ開けていない連絡は、件名と差出人を太字にして青い点を添える。
   */
   .ply-message-list {
@@ -50,7 +50,7 @@
           outline: 0.125rem solid var(--ply-link);
           outline-offset: -0.125rem;
         }
-        /* 差出人は共通のAvatarの円。画像のない行は、同じ大きさの淡い円に手紙の印を置く。 */
+        /* 差出人は共通のAvatar。画像のない行は、同じ大きさの淡い円に手紙のアイコンを置く。 */
         & > .avatar {
           grid-area: avatar;
           display: grid;
@@ -60,7 +60,7 @@
           border-radius: 50%;
           background: var(--ply-background);
           color: var(--ply-muted);
-          /* 渡されたAvatarの大きさの指定にかかわらず、行の円の大きさとAvatarの既定の文字にそろえる。 */
+          /* 渡されたAvatarの大きさの指定にかかわらず、行のアバターの大きさとAvatarの既定の文字にそろえる。 */
           & > .ply-avatar {
             inline-size: 100%;
             block-size: 100%;
@@ -78,8 +78,8 @@
             min-inline-size: 0;
             font-weight: 400;
             /*
-              状態の札。件名の前に置き、形・大きさ・色は共通のBadgeに任せる（失敗は赤、他は灰）。
-              札は縮めず、件名の一行目の文字の並びにそろえる。
+              状態バッジ。件名の前に置き、形・大きさ・色は共通のBadgeに任せる（失敗は赤、他は灰）。
+              バッジは縮めず、件名の一行目の文字の並びにそろえる。
             */
             & > .state {
               flex: none;
@@ -180,7 +180,7 @@
         display: none;
       }
     }
-    /* 差出人の円は左に置き、二段の本文をその右へ並べる。 */
+    /* 差出人のアバターは左に置き、二段の本文をその右へ並べる。 */
     &[data-avatars="true"] > li > .row {
       grid-template-columns: 2.5rem minmax(0, 1fr) auto;
       grid-template-areas: "avatar body meta";
@@ -215,7 +215,7 @@
           & > .title {
             grid-area: title;
             align-self: first baseline;
-            /* 状態の札・件名・件数を一行に並べ、件名だけが縮んで二行まで折り返す。 */
+            /* 状態バッジ・件名・件数を一行に並べ、件名だけが縮んで二行まで折り返す。 */
             flex-wrap: nowrap;
             & > .subject {
               flex: 0 1 auto;
@@ -246,7 +246,7 @@
           "avatar summary summary";
       }
     }
-    /* さらに狭い時（文字を大きくした時を含む）は、人の円と日時を件名の上下へ回し、件名に幅を残す。 */
+    /* さらに狭い時（文字を大きくした時を含む）は、アバターと日時を件名の上下へ回し、件名に幅を残す。 */
     @container ply-message-list (inline-size < 16rem) {
       & > li > .row {
         grid-template-columns: minmax(0, 1fr);
@@ -254,7 +254,7 @@
           "title"
           "summary"
           "meta";
-        /* 札・件名・件数が一行に入らない幅では、件数を次の行へ送り、行の外へはみ出さない。 */
+        /* バッジ・件名・件数が一行に入らない幅では、件数を次の行へ送り、行の外へはみ出さない。 */
         & > .body > .title {
           flex-wrap: wrap;
         }

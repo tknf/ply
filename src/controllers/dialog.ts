@@ -4,8 +4,8 @@ type Swipe = { pointerId: number; startY: number; startTime: number; offset: num
 
 /**
  * closedby未対応環境にだけ、native backdropのクリックで閉じる処理を補う。対応環境の背景のクリックも、
- * 同じ`reason: "pointer"`で知らせる。`method="dialog"`のフォームの送信で閉じる時も、閉じる前後のイベントを出す。
- * 画面の下に付くシート（CSSの--ply-dialog-sheet）では、ハンドルと見出しを下へ引いて閉じられるようにする。
+ * 同じ`reason: "pointer"`でイベントを発火する。`method="dialog"`のフォームの送信で閉じる時も、閉じる前後のイベントを発火する。
+ * 画面の下に付くシート（CSSの--ply-dialog-sheet）では、ハンドルと見出しを下へドラッグして閉じられるようにする。
  */
 export class DialogController extends BaseDialogController {
   private backdropStart: HTMLDialogElement | null = null;
@@ -21,7 +21,7 @@ export class DialogController extends BaseDialogController {
       this.element.addEventListener("pointercancel", this.resetBackdrop);
       this.element.addEventListener("keydown", this.resetBackdrop);
       this.element.addEventListener("click", this.closeFromBackdrop);
-      // cancelは泡立たないので、dialogの手前（捕捉）で受ける。
+      // cancelはバブリングしないので、dialogのキャプチャフェーズで受ける。
       this.element.addEventListener("cancel", this.cancelFromBackdrop, true);
       this.element.addEventListener("submit", this.closeFromSubmit);
       this.element.addEventListener("pointerdown", this.startSwipe);
@@ -50,7 +50,7 @@ export class DialogController extends BaseDialogController {
     this.element.querySelector<HTMLDialogElement>('[data-dialog-target="dialog"]');
 
   /**
-   * 閉じる前後のイベントを出して閉じる。閉じる前のイベントが取り消されたら開いたままにする。
+   * 閉じる前後のイベントを発火して閉じる。閉じる前のイベントが取り消されたら開いたままにする。
    * 上流のclose()はブラウザのフォーカスの戻しに任せるが、WebKitはマウスで押したボタンにフォーカスを置かないので
    * 戻り先が無くなる。上流の利用者の閉じ方と同じく、モーダルだった時は開いた操作へフォーカスを戻す。
    */
@@ -109,7 +109,7 @@ export class DialogController extends BaseDialogController {
     this.closeWith("pointer");
   };
   /**
-   * closedby対応環境では、背景を押すとブラウザがcancelを出し、上流はそれをEscapeと同じkeyboardとして扱う。
+   * closedby対応環境では、背景を押すとブラウザがcancelを発火し、上流はそれをEscapeと同じkeyboardとして扱う。
    * 背景から押し始めたcancelだけを受け取り、未対応環境の補完と同じpointerとして閉じる。
    */
   private cancelFromBackdrop = (event: Event) => {
@@ -122,7 +122,7 @@ export class DialogController extends BaseDialogController {
   };
 
   /**
-   * `method="dialog"`の送信はブラウザがdialogを閉じるだけで、上流はイベントを出さない。
+   * `method="dialog"`の送信はブラウザがdialogを閉じるだけで、上流はイベントを発火しない。
    * 送信を受け取って同じ閉じ方にし、送信した操作の`value`をreturnValueとして渡す。
    */
   private closeFromSubmit = (event: SubmitEvent) => {
@@ -156,7 +156,7 @@ export class DialogController extends BaseDialogController {
       : null;
   };
 
-  /** ハンドルのある上端と見出しから引き始めた時だけ扱う。本文のスクロールと操作は妨げない。 */
+  /** ハンドルのある上端と見出しからドラッグし始めた時だけ扱う。本文のスクロールと操作は妨げない。 */
   private startSwipe = (event: PointerEvent) => {
     const dialog = this.sheet();
     const target = event.target;
@@ -196,7 +196,7 @@ export class DialogController extends BaseDialogController {
     this.closeWith("swipe");
   };
 
-  /** 引いた位置の指定を外すと、閉じる時は下へ、戻す時は元の位置へ、CSSの動きで続く。 */
+  /** ドラッグ位置の指定を外すと、閉じる時は下へ、戻す時は元の位置へ、CSSのトランジションで動く。 */
   private cancelSwipe = () => {
     const dialog = this.dialog();
     this.swipe = null;

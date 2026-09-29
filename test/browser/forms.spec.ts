@@ -25,7 +25,7 @@ test("独自のチェックとラジオをラベル・キーボードで操作�
   await expect(check).toBeChecked();
 });
 
-test("説明付きの選択肢は文字200%でも印と重ならない", async ({ page }, testInfo) => {
+test("説明付きの選択肢は文字200%でもマークと重ならない", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 375, height: 1000 });
   await page.goto("/components/field");
   await page.evaluate(() => {
@@ -41,7 +41,7 @@ test("説明付きの選択肢は文字200%でも印と重ならない", async (
   const text = await option.locator("span").first().boundingBox();
   if (!box || !text) throw new Error("選択肢がありません");
   expect(box.x + box.width).toBeLessThan(text.x);
-  // 部品のページはリファレンスで長く、Firefoxのページ全体の撮影の上限を超えるので、見本だけを撮る。
+  // コンポーネントのページはリファレンスで長く、Firefoxのページ全体の撮影の上限を超えるので、見本だけを撮る。
   await page
     .locator('[data-example="hono"]')
     .screenshot({ path: testInfo.outputPath("field-375-text-200.png") });

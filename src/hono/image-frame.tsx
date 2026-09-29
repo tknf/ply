@@ -1,7 +1,7 @@
 import { classes, type ElementProps } from "./types";
 
 export type ImageFrameProps = ElementProps<"figure"> & {
-  /** 画像のURL。渡さなければ淡い面にmissingLabelを置いて、画像がないことを示す。 */
+  /** 画像のURL。渡さなければ淡い背景にmissingLabelを置いて、画像がないことを示す。 */
   src?: string;
   /** 画像の代替テキスト。画像がない時は「alt：missingLabel」を読み上げる。 */
   alt: string;
@@ -13,7 +13,7 @@ export type ImageFrameProps = ElementProps<"figure"> & {
   missingLabel?: string;
   /** 画像の下に中央そろえで書く名前（ファイル名など）。 */
   caption?: string;
-  /** 説明の下に淡い文字で添える大きさや日付。 */
+  /** 説明の下に淡い文字で添えるサイズや日付。 */
   meta?: string;
 };
 export const ImageFrame = ({

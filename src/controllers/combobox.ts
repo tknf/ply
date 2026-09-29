@@ -53,7 +53,7 @@ export class ComboboxController extends BaseComboboxController {
     event.stopImmediatePropagation();
   };
 
-  /** 候補で欄の値を変えた時も、打って変えた時と同じく標準の`input`・`change`を出す。 */
+  /** 候補で欄の値を変えた時も、入力して変えた時と同じく標準の`input`・`change`を発火する。 */
   private notifyInput = (event: Event) => {
     if (event.target !== this.element || this.multipleValue) return;
     const input = this.inputTargets[0];

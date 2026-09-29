@@ -1,8 +1,8 @@
 import { Controller } from "@hotwired/stimulus";
 
 /**
- * 絵文字の板。打った言葉で絵文字を絞り、格子の中を矢印で移り、押すかEnterで選ぶ。
- * 格子へTabで入る所は一か所だけにし（roving tabindex）、選ぶとemoji-picker:pickを出す。
+ * 絵文字パネル。入力した言葉で絵文字を絞り込み、グリッドの中を矢印キーで移動し、クリックかEnterで選ぶ。
+ * グリッドへTabで入る位置は一か所だけにし（roving tabindex）、選ぶとemoji-picker:pickを発火する。
  */
 export class EmojiPickerController extends Controller<HTMLElement> {
   static targets = ["input", "group", "emoji", "empty"];
@@ -20,8 +20,8 @@ export class EmojiPickerController extends Controller<HTMLElement> {
   };
 
   /**
-   * 表示中の絵文字を、見た目の行に分ける。種類ごとに格子が分かれるので、格子が変わる所と上端が変わる所で行を切る。
-   * 実際の位置から数えるので、狭い場所で列が減っても、行の途中で終わる種類があっても上下の移りが合う。
+   * 表示中の絵文字を、見た目の行に分ける。種類ごとにグリッドが分かれるので、グリッドが変わる所と上端が変わる所で行を切る。
+   * 実際の位置から数えるので、狭い場所で列が減っても、行の途中で終わる種類があっても上下の移動が合う。
    */
   private rows = (visible: HTMLButtonElement[]) => {
     const rows: HTMLButtonElement[][] = [];
@@ -68,7 +68,7 @@ export class EmojiPickerController extends Controller<HTMLElement> {
       const next = Math.min(Math.max(index + (step[event.key] ?? 0), 0), visible.length - 1);
       this.focus(visible[next]);
     } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-      // 上下の行の同じ列へ移る。移り先の行が短い時はその行の最後へ移り、端の行では動かない。
+      // 上下の行の同じ列へ移動する。移動先の行が短い時はその行の最後へ移動し、端の行では動かない。
       event.preventDefault();
       const rows = this.rows(visible);
       const rowIndex = rows.findIndex((row) => row.includes(current));

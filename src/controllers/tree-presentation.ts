@@ -3,10 +3,10 @@ import { Controller } from "@hotwired/stimulus";
 const controlsSelector = "li[data-tree-value] > .row > :is(a[href], .toggle)";
 
 /**
- * TreeControllerを補う。開閉状態をCSSで使うdata属性へ写し、キー操作を次のように整える。
- * - 注目はTreeControllerが一覧のaria-activedescendantで伝えるので、中のリンクと開閉のボタンをTabで止めない。
+ * TreeControllerを補う。開閉状態をCSSで使うdata属性へ反映し、キー操作を次のように整える。
+ * - フォーカス位置はTreeControllerが一覧のaria-activedescendantで伝えるので、中のリンクと開閉ボタンをTabで止めない。
  * - 右から左に書く時は、←と→の役割を入れ替える（開く・子へ進むのが←）。
- * - Enterで注目中の項目を選んだ時、リンクの項目はリンク先へ移る（名前を押した時と同じ）。
+ * - Enterでフォーカス中の項目を選んだ時、リンクの項目はリンク先へ移る（名前を押した時と同じ）。
  * `data-controller="tree tree-presentation"`の順で、TreeControllerの後に接続する。
  */
 export class TreePresentationController extends Controller<HTMLElement> {
@@ -20,7 +20,7 @@ export class TreePresentationController extends Controller<HTMLElement> {
       attributes: true,
       attributeFilter: ["aria-expanded"],
     });
-    // 捕捉はTreeControllerのキー処理より前、泡立ちは後に動く。
+    // キャプチャフェーズはTreeControllerのキー処理より前、バブリングフェーズは後に動く。
     this.element.addEventListener("keydown", this.mirrorArrows, true);
     this.element.addEventListener("keydown", this.afterKeydown);
     this.sync();
@@ -45,7 +45,7 @@ export class TreePresentationController extends Controller<HTMLElement> {
       if (expanded === "true" || expanded === "false") item.dataset.expanded = expanded;
       else delete item.dataset.expanded;
     }
-    // JavaScriptなしではリンクがTabで止まる。controllerがある時だけ一覧の一つの停止点にまとめる。
+    // JavaScriptなしではリンクがTabで止まる。controllerがある時だけ一覧の一つのTab停止位置にまとめる。
     for (const control of this.element.querySelectorAll(controlsSelector))
       if (control.getAttribute("tabindex") !== "-1") control.setAttribute("tabindex", "-1");
   };
@@ -73,7 +73,7 @@ export class TreePresentationController extends Controller<HTMLElement> {
       event.ctrlKey ||
       event.metaKey ||
       event.shiftKey ||
-      // TreeControllerが注目中の項目を選んだ時だけ既定の動作を止める。
+      // TreeControllerがフォーカス中の項目を選んだ時だけ既定の動作を止める。
       !event.defaultPrevented
     )
       return;

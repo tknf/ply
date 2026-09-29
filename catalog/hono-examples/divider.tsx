@@ -20,7 +20,7 @@ export default () => (
         </ActionLink>
       }
     />
-    <p>線の終わりには、区切りの先の物をまとめて扱う操作だけを置きます。</p>
+    <p>線の終わりには、区切りの後の項目をまとめて扱う操作だけを置きます。</p>
     <Divider
       label={
         <InlineSelect
@@ -39,7 +39,7 @@ export default () => (
         </ActionLink>
       }
     />
-    <p>名前の代わりに文の中の選択を置くと、区切りの先の並べ方を選べます。</p>
+    <p>名前の代わりに文の中の選択を置くと、区切りの後の項目の並べ方を選べます。</p>
     <div dir="rtl" lang="ar" class="ply-stack">
       <Divider label="ملاحظة" />
       <Divider label="مسودة" line="dashed" />

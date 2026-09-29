@@ -6,7 +6,7 @@ import { classes, type ElementProps } from "./types";
 export type ChartLegendItem = {
   /** 系列の名前。 */
   label: string;
-  /** 印の色。図の系列の色と合わせる。 */
+  /** マークの色。図の系列の色と合わせる。 */
   tone: "blue" | "green" | "amber" | "coral";
 };
 

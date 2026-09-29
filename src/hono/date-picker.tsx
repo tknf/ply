@@ -24,7 +24,7 @@ export type DatePickerProps = Omit<ElementProps<"fieldset">, "children" | "name"
    * 参照先の日（offsetDaysを足した日）以前を許可する。参照先が空・不正・未配置なら、この条件を外す。
    */
   maxFrom?: string | DatePickerBoundReference;
-  /** 未入力を誤りにする。rangeでは開始日・終了日の両方を求める。 */
+  /** 未入力をエラーにする。rangeでは開始日・終了日の両方を求める。 */
   required?: boolean;
   /** 値を見せたまま編集を止める。カレンダーは開かず、値は送信する。 */
   readonly?: boolean;

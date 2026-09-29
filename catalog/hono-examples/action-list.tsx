@@ -2,7 +2,7 @@ import { ActionList, Icon, Disclosure, DisclosureGroup } from "../../src/hono";
 export default () => (
   <div class="ply-stack">
     <ActionList
-      aria-label="よく使う道具"
+      aria-label="よく使うツール"
       items={[
         {
           title: "記事を書く",
@@ -27,7 +27,7 @@ export default () => (
       ]}
     />
     <DisclosureGroup label="並べ方と置き場所の違い">
-      <Disclosure summary="手当てが要る行" open>
+      <Disclosure summary="対応が必要な行" open>
         <ActionList
           aria-label="ログインと確認"
           items={[
@@ -40,7 +40,7 @@ export default () => (
               attention: true,
             },
             {
-              title: "二段階の確認",
+              title: "二段階認証",
               href: "/apps/docs",
               description: "まだ設定していません",
               icon: <Icon name="info" fill />,
@@ -52,7 +52,7 @@ export default () => (
       <Disclosure summary="タイルに並べる">
         <ActionList
           layout="grid"
-          aria-label="道具の入口"
+          aria-label="ツールへのショートカット"
           items={[
             {
               title: "記事",
@@ -79,7 +79,7 @@ export default () => (
       <Disclosure summary="中身の見えるタイル">
         <ActionList
           layout="grid"
-          aria-label="内容の見える道具の入口"
+          aria-label="内容の見えるツールへのショートカット"
           items={[
             {
               title: "記事",
@@ -117,7 +117,7 @@ export default () => (
       <Disclosure summary="狭い場所で折り返す">
         <div style="max-inline-size: 16rem">
           <ActionList
-            aria-label="狭い場所の道具"
+            aria-label="狭い場所のツール"
             items={[
               {
                 title: "初めて利用する方への案内を書く",

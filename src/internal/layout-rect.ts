@@ -1,6 +1,6 @@
 /**
  * 拡大縮小の途中でも、変形前の配置の矩形を返す。
- * 浮かぶ物は開いた瞬間に小さい大きさから膨らむため、getBoundingClientRectをそのまま使うと位置の計算が狂う。
+ * パネルは開いた瞬間に小さい状態から拡大するため、getBoundingClientRectをそのまま使うと位置の計算が狂う。
  */
 export const layoutRect = (element: HTMLElement) => {
   const rect = element.getBoundingClientRect();

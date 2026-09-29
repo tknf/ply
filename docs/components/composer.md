@@ -2,12 +2,12 @@
 
 # Composer
 
-本文・添付・送信操作を一つの入力面にまとめる
+本文・添付・送信操作を一つの入力エリアにまとめる
 
 ## 使いどころ
 
-- メッセージ・コメント・返信のように、本文を書いて送る入力面を置く時に使います。
-- 書式の道具を並べる時は、`TextEditor` を `editor` に入れます。本文の欄を他の項目と並べて入力する普通のフォームでは、`Field` と `Textarea` を使います。
+- メッセージ・コメント・返信のように、本文を書いて送る入力エリアを置く時に使います。
+- 書式ツールを並べる時は、`TextEditor` を `editor` に入れます。本文の欄を他の項目と並べて入力する通常のフォームでは、`Field` と `Textarea` を使います。
 
 ## 使い方
 
@@ -15,20 +15,20 @@
 
 `to` に宛先（人やチャンネル）、`status` に下書きの保存などの状態を渡すと、題名の行に並べます。`attachments` には `FileInput` や選んだファイルの一覧を渡し、本文の下に置きます。
 
-本文の欄は本文と同じ文字の大きさと行の高さで書き、`field-sizing` に対応するブラウザでは4行から書いた分だけ伸びます（20行まで）。
+本文の欄は本文と同じ文字サイズと行の高さで表示し、`field-sizing` に対応するブラウザでは4行から入力した分だけ伸びます（20行まで）。
 
 `busy` は送信ボタンを「送信中…」にして押せなくし、二重の送信を防ぎます。`error` は本文の欄の下に出して欄に関連付けます。送信・下書きの保存・送信後に `busy` や `error` を切り替えることは利用側で行います。
 
-`editor` にリッチテキストの編集部品（ProseMirror・Tiptapなど）や `contenteditable` の要素を渡すと、本文の欄と差し替えます。中の書く場所がどの深さにあっても、本文と同じ文字と行の高さ、紙全体のフォーカスの輪をかけ、段落や箇条の間を一定の間隔にそろえます。空の `contenteditable` には `data-placeholder` の文を薄く出します。この時 `name`・`value`・`placeholder`・`rows`・`required` は使わず、送信する値の受け渡しは編集部品の側で行います。`error` は本文の欄と同じく編集部品の下に出し、紙の縁を赤くします。
+`editor` にリッチテキストの編集コンポーネント（ProseMirror・Tiptapなど）や `contenteditable` の要素を渡すと、本文の欄と差し替えます。中の入力エリアがどの深さにあっても、本文と同じ文字と行の高さ、全体のフォーカスリングを適用し、段落や箇条書きの間を一定の間隔にそろえます。空の `contenteditable` には `data-placeholder` の文を薄く出します。この時 `name`・`value`・`placeholder`・`rows`・`required` は使わず、送信する値の受け渡しは編集コンポーネントの側で行います。`error` は本文の欄と同じく編集コンポーネントの下に出し、全体の枠線を赤くします。
 
 controllerは持ちません。JavaScriptが無い時も、標準のフォームとして本文と添付を送信できます。
 
 ## アクセシビリティ
 
-- 本文の欄は `label` を名前にします。`editor` を渡した時は、`label` を名前にしたまとまり（`role="group"`）で編集部品を包みます。書く場所そのものの名前（`aria-label` など）は編集部品の側で付けます。
+- 本文の欄は `label` を名前にします。`editor` を渡した時は、`label` を名前にしたまとまり（`role="group"`）で編集コンポーネントを包みます。入力エリアそのものの名前（`aria-label` など）は編集コンポーネントの側で付けます。
 - `busy` の間は `form` と送信ボタンに `aria-busy` を付けます。
 - `error` を渡すと、本文の欄に `aria-invalid` を付け、誤りの文を `aria-describedby` に加えます。
-- `editor` を渡した時は、誤りの文（IDは `<id>-body-error`）を編集部品を包むまとまりの `aria-describedby` にします。書く場所そのものには、編集部品の側で `aria-invalid="true"` と、このIDを指す `aria-describedby` を付けます。
+- `editor` を渡した時は、誤りの文（IDは `<id>-body-error`）を編集コンポーネントを包むまとまりの `aria-describedby` にします。入力エリアそのものには、編集コンポーネントの側で `aria-invalid="true"` と、このIDを指す `aria-describedby` を付けます。
 
 ## API
 
@@ -36,23 +36,23 @@ controllerは持ちません。JavaScriptが無い時も、標準のフォーム
 
 本文と添付、送信操作の配置。送信先と保存処理は利用側が指定する。
 
-| 名前                  | 型        | 既定値  | 説明                                                                                                                                                                                                                                 |
-| --------------------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `id`（必須）          | `string`  |         | formのID。本文の欄のIDの頭にも使う。                                                                                                                                                                                                 |
-| `label`（必須）       | `string`  |         | 本文の欄の名前。題名の行の始まりに出す。                                                                                                                                                                                             |
-| `name`（必須）        | `string`  |         | 本文を送るフィールドの名前。editorを渡した時は使わない。                                                                                                                                                                             |
-| `value`               | `string`  |         | 本文の初めの文。editorを渡した時は使わない。                                                                                                                                                                                         |
-| `placeholder`         | `string`  |         | 本文の欄の薄い文字。editorを渡した時は使わない。                                                                                                                                                                                     |
-| `rows`                | `number`  | `4`     | 本文の欄の行数。field-sizingに対応しないブラウザでの高さになる。対応するブラウザでは4行から書いた分だけ伸び（20行まで）、この値は使わない。                                                                                          |
-| `required`            | `boolean` |         | 本文が空の時に送信を止める。editorを渡した時は使わない。                                                                                                                                                                             |
-| `submitLabel`（必須） | `string`  |         | 送信ボタンの文言（「送信する」「投稿する」など）。                                                                                                                                                                                   |
-| `busy`                | `boolean` | `false` | 送信中にする。送信ボタンを「送信中…」にして押せなくし、formにaria-busyを付ける。                                                                                                                                                     |
-| `error`               | `string`  |         | 本文の欄の下に出す誤りの文。本文の欄をaria-invalidにする。 editorを渡した時も編集部品の下に出し、`<id>-body-error`のIDで編集部品を包むまとまりの説明にする。書く場所そのもののaria-invalidとaria-describedbyは編集部品の側で付ける。 |
-| `attachments`         | `Child`   |         | 本文の下に置く添付（FileInputや選んだファイルの一覧など）。                                                                                                                                                                          |
-| `actions`             | `Child`   |         | 下の行の始まりの側に並べる操作（添付・書式・下書きの保存など）。送信ボタンは終わりの側に置く。                                                                                                                                       |
-| `to`                  | `Child`   |         | 見出しで、名前の隣へ置く宛先（人やチャンネル）。                                                                                                                                                                                     |
-| `status`              | `Child`   |         | 見出しの右端に置く状態（下書きの保存など）。                                                                                                                                                                                         |
-| `editor`              | `Child`   |         | 本文の欄の代わりに置く編集部品（リッチテキストの編集部品やcontenteditableなど）。渡すと本文の文字と紙全体の輪はこの部品にかかり、送信する値の受け渡しは部品の側で行う。                                                              |
+| 名前                  | 型        | 既定値  | 説明                                                                                                                                                                                                                                     |
+| --------------------- | --------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`（必須）          | `string`  |         | formのID。本文の欄のIDの接頭辞にも使う。                                                                                                                                                                                                 |
+| `label`（必須）       | `string`  |         | 本文の欄の名前。題名の行の先頭に出す。                                                                                                                                                                                                   |
+| `name`（必須）        | `string`  |         | 本文を送るフィールドの名前。editorを渡した時は使わない。                                                                                                                                                                                 |
+| `value`               | `string`  |         | 本文の初期値。editorを渡した時は使わない。                                                                                                                                                                                               |
+| `placeholder`         | `string`  |         | 本文の欄のプレースホルダー。editorを渡した時は使わない。                                                                                                                                                                                 |
+| `rows`                | `number`  | `4`     | 本文の欄の行数。field-sizingに対応しないブラウザでの高さになる。対応するブラウザでは4行から書いた分だけ伸び（20行まで）、この値は使わない。                                                                                              |
+| `required`            | `boolean` |         | 本文が空の時に送信を止める。editorを渡した時は使わない。                                                                                                                                                                                 |
+| `submitLabel`（必須） | `string`  |         | 送信ボタンの文言（「送信する」「投稿する」など）。                                                                                                                                                                                       |
+| `busy`                | `boolean` | `false` | 送信中にする。送信ボタンを「送信中…」にして押せなくし、formにaria-busyを付ける。                                                                                                                                                         |
+| `error`               | `string`  |         | 本文の欄の下に出すエラー文。本文の欄をaria-invalidにする。 editorを渡した時もエディターの下に出し、`<id>-body-error`のIDでエディターを包む要素の説明にする。入力エリアそのもののaria-invalidとaria-describedbyはエディターの側で付ける。 |
+| `attachments`         | `Child`   |         | 本文の下に置く添付（FileInputや選んだファイルの一覧など）。                                                                                                                                                                              |
+| `actions`             | `Child`   |         | 下の行の先頭側に並べる操作（添付・書式・下書きの保存など）。送信ボタンは末尾側に置く。                                                                                                                                                   |
+| `to`                  | `Child`   |         | 見出しで、名前の隣へ置く宛先（人やチャンネル）。                                                                                                                                                                                         |
+| `status`              | `Child`   |         | 見出しの右端に置く状態（下書きの保存など）。                                                                                                                                                                                             |
+| `editor`              | `Child`   |         | 本文の欄の代わりに置くエディター（リッチテキストエディターやcontenteditableなど）。渡すと本文の文字と入力エリア全体のフォーカスリングはこのエディターに適用し、送信する値の受け渡しもエディターの側で行う。                              |
 
 ほかに、`<form>`へ標準のHTML属性を渡せます。
 
@@ -112,13 +112,13 @@ export default () => (
           }
         />
       </Disclosure>
-      <Disclosure summary="リッチテキストの編集部品（ProseMirror・Tiptapの構造）">
+      <Disclosure summary="リッチテキストエディター（ProseMirror・Tiptapの構造）">
         <Composer
           id="composer-editor"
           label="議事録"
           name="minutes"
           submitLabel="保存する"
-          status="編集部品が送信用の値を持ちます"
+          status="エディターが送信用の値を持ちます"
           editor={
             <div class="tiptap">
               <div
@@ -138,7 +138,7 @@ export default () => (
           }
         />
       </Disclosure>
-      <Disclosure summary="何も書いていない編集部品">
+      <Disclosure summary="何も書いていないエディター">
         <Composer
           id="composer-empty-editor"
           label="メモ"
@@ -412,7 +412,7 @@ export default () => (
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
         ><span class="label"
           ><span class="title"
-            >リッチテキストの編集部品（ProseMirror・Tiptapの構造）</span
+            >リッチテキストエディター（ProseMirror・Tiptapの構造）</span
           ></span
         >
       </summary>
@@ -421,7 +421,7 @@ export default () => (
           <div class="ply-field">
             <div class="heading">
               <span class="label" id="composer-editor-body-label">議事録</span
-              ><span class="status">編集部品が送信用の値を持ちます</span>
+              ><span class="status">エディターが送信用の値を持ちます</span>
             </div>
             <div
               class="editor"
@@ -469,7 +469,9 @@ export default () => (
             focusable="false"
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
-        ><span class="label"><span class="title">何も書いていない編集部品</span></span>
+        ><span class="label"
+          ><span class="title">何も書いていないエディター</span></span
+        >
       </summary>
       <div class="body">
         <form id="composer-empty-editor" class="ply-composer" aria-busy="false">

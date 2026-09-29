@@ -20,11 +20,11 @@ export type CheckboxGroupProps = ElementProps<"fieldset"> & {
   options: readonly CheckboxGroupOption[];
   /** 最初に選んでおく値。 */
   selected?: readonly string[];
-  /** 先頭に置く全て選択の名前。この印は送信しない。 */
+  /** 先頭に置く全て選択の名前。このチェックボックスは送信しない。 */
   allLabel?: string;
 };
 
-/** 複数を選べるチェックボックスの束と、全て選択の印。 */
+/** 複数を選べるチェックボックスのグループと、全て選択のチェックボックス。 */
 export const CheckboxGroup = ({
   legend,
   name,

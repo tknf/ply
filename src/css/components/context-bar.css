@@ -5,7 +5,7 @@
     align-items: center;
     gap: var(--ply-space-2) var(--ply-space-4);
     min-inline-size: 0;
-    /* 操作の高さと上下の余白で決め、ボタンの有無で帯の高さを変えない。 */
+    /* 操作の高さと上下の余白で決め、ボタンの有無でバーの高さを変えない。 */
     min-block-size: calc(var(--ply-control-size) + 2 * var(--ply-space-2));
     padding-block: var(--ply-space-2);
     padding-inline: var(--ply-space-4);

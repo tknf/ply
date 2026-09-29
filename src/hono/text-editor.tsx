@@ -17,7 +17,7 @@ export type TextEditorTool =
   | "undo"
   | "redo";
 
-/** 道具の名前と印。どのエディターとも、ボタンのdata-text-editor-toolの名前でつなぐ。 */
+/** ツールの名前とアイコン。どのエディターとも、ボタンのdata-text-editor-toolの名前でつなぐ。 */
 const tools: Record<TextEditorTool, { label: string; icon: IconName }> = {
   bold: { label: "太字", icon: "bold" },
   italic: { label: "斜体", icon: "italic" },
@@ -35,33 +35,33 @@ const tools: Record<TextEditorTool, { label: string; icon: IconName }> = {
 
 export type TextEditorProps = Omit<ElementProps<"textarea">, "children"> & {
   /**
-   * 書く面のID。textareaに付け、道具の並びのaria-controlsが指す。
-   * editorを渡す時は、その書く面の要素に同じIDを付ける。
+   * 入力エリアのID。textareaに付け、ツールバーのaria-controlsが指す。
+   * editorを渡す時は、その入力エリアの要素に同じIDを付ける。
    */
   id: string;
-  /** 書く面の読み上げ名。道具の並びの名前（「〜の書式」）にも使う。editorを渡した時は書く面に付かない。 */
+  /** 入力エリアの読み上げ名。ツールバーの名前（「〜の書式」）にも使う。editorを渡した時は入力エリアに付かない。 */
   label: string;
-  /** 道具の並び。"|"で区切りを入れる。 */
+  /** ツールバーに並べるツール。"|"で区切りを入れる。 */
   tools?: readonly (TextEditorTool | "|")[];
-  /** 道具を書く面の上（コメントなど、既定）と下（返信・日記など）のどちらに置くか。 */
+  /** ツールを入力エリアの上（コメントなど、既定）と下（返信・日記など）のどちらに置くか。 */
   placement?: "top" | "bottom";
   /**
-   * 書く面の代わりに置く編集部品（リッチテキストのエディターが描くcontenteditableの要素）。渡さなければtextareaを置く。
-   * 道具の並びのidは`${id}-toolbar`。エディターとのつなぎ方は、下のTextEditorの説明を参照。
+   * 入力エリアの代わりに置くエディター（リッチテキストエディターが描くcontenteditableの要素）。渡さなければtextareaを置く。
+   * ツールバーのidは`${id}-toolbar`。エディターとのつなぎ方は、下のTextEditorの説明を参照。
    */
   editor?: Child;
-  /** 道具の並びの終わりに置く操作（送信・下書きの保存など）。 */
+  /** ツールバーの末尾に置く操作（送信・下書きの保存など）。 */
   actions?: Child;
 };
 
 /**
- * 返信や日記、コメントに使う、書式の道具を並べた書く面。
- * 見た目と道具の並びだけを持ち、特定のエディターには依存しない。書式を付ける動きは利用側のエディターに任せ、
- * 道具のボタンのdata-text-editor-tool（"bold"など）を読んでエディターの操作を呼び、今の書式の道具には
- * data-active="true"を付ける。textareaのままの時も、道具を働かせるのは利用側（記号を差し込むなど）。
- * 道具を働かせない時はtoolsを空にする。道具も操作も無い時は、道具の並びを描かない。
- * 道具の並びはToolbarControllerで一つのTab停止点にし、矢印キーで道具の間を移る。
- * 道具はJavaScriptで動くものなので、controllerが付くまではTabで止めない。
+ * 返信や日記、コメントに使う、書式ツールを並べた入力エリア。
+ * 見た目とツールバーだけを持ち、特定のエディターには依存しない。書式を付ける動きは利用側のエディターに任せ、
+ * ツールのボタンのdata-text-editor-tool（"bold"など）を読んでエディターの操作を呼び、今の書式のツールには
+ * data-active="true"を付ける。textareaのままの時も、ツールを動かすのは利用側（記号を差し込むなど）。
+ * ツールを使わない時はtoolsを空にする。ツールも操作も無い時は、ツールバーを描かない。
+ * ツールバーはToolbarControllerで一つのTab停止点にし、矢印キーでツールの間を移る。
+ * ツールはJavaScriptで動くものなので、controllerが付くまではTabで止めない。
  */
 export const TextEditor = ({
   id,

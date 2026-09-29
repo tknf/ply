@@ -6,7 +6,7 @@ export default () => (
       label="公開前の確認"
       heading="チェックリスト"
       title="公開前の確認"
-      add={{ name: "new-task", placeholder: "項目を書き足す" }}
+      add={{ name: "new-task", placeholder: "項目を追加する" }}
       items={[
         { name: "proof", label: "本文を校正する", detail: "田中 · 9月12日" },
         { name: "photo", label: "写真を選ぶ", checked: true, detail: "佐藤 · 完了" },
@@ -14,7 +14,7 @@ export default () => (
       ]}
     />
     <DisclosureGroup label="項目の違い">
-      <Disclosure summary="担当と期限：行の終わりに人の円と期限の札" open>
+      <Disclosure summary="担当と期限：行の末尾にアバターと期限のバッジ" open>
         <TaskList
           label="秋の読書会の準備"
           heading="読書会の準備"
@@ -78,7 +78,7 @@ export default () => (
           ]}
         />
       </Disclosure>
-      <Disclosure summary="長い題名と狭い場所：題名は折り返し、終わりの札は次の行へ">
+      <Disclosure summary="長い題名と狭い場所：題名は折り返し、末尾のバッジは次の行へ">
         <div style="max-inline-size: 22rem">
           <TaskList
             label="長い題名"
@@ -101,7 +101,7 @@ export default () => (
           />
         </div>
       </Disclosure>
-      <Disclosure summary="まだ項目がない一覧：書き足す欄だけ">
+      <Disclosure summary="まだ項目がない一覧：追加する欄だけ">
         <TaskList
           label="来月の準備"
           heading="来月の準備"

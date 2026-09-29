@@ -66,7 +66,7 @@ export default () => (
               <Avatar name="森 美咲" initials="美" tone="green" size="small" />
               <Avatar name="佐藤 健" initials="健" size="small" />
             </AvatarGroup>
-            <span>小さい円（一覧の行やスレッドの見出し）</span>
+            <span>小さいアバター（一覧の行やスレッドの見出し）</span>
           </div>
           <div class="ply-cluster">
             <AvatarGroup label="Alex Morgan、山本 彩、プロフィール" size="large">
@@ -74,7 +74,7 @@ export default () => (
               <Avatar name="山本 彩" initials="山" src="/assets/sample-avatar.svg" size="large" />
               <Avatar name="プロフィール" initials="編" tone="green" size="large" />
             </AvatarGroup>
-            <span>大きい円と画像</span>
+            <span>大きいアバターと画像</span>
           </div>
         </div>
       </Disclosure>

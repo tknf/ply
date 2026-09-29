@@ -25,7 +25,7 @@ export type PickerProps = {
   value?: string | readonly string[];
   /** trueで複数を選べる。選ぶたびに加え、同じ候補をもう一度選ぶか、Tagの解除で外す。 */
   multiple?: boolean;
-  /** 標準selectのrequired。未選択で送信すると検索欄へ移り、「候補を選択してください。」と出す。 */
+  /** 標準selectのrequired。未選択で送信すると検索欄へフォーカスが移り、「候補を選択してください。」と出す。 */
   required?: boolean;
   /** 標準selectと検索欄を使えなくする。 */
   disabled?: boolean;

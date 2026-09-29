@@ -37,7 +37,7 @@
         overflow-wrap: anywhere;
       }
     }
-    /* 説明は中央にそろえ、名前を墨のMedium、大きさや日付を淡い文字で添える。 */
+    /* 説明は中央にそろえ、名前を濃い色のMedium、大きさや日付を淡い文字で添える。 */
     & > figcaption {
       display: grid;
       justify-items: center;

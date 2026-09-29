@@ -1,9 +1,9 @@
 @layer components {
   /*
-    結果の知らせは、画面の右下（書き終わりの側の下）から差し出して浮かべる小さな帯。知らせは見落とされてはいけないので、
-    DropdownMenuと同じく白い紙ではなく、知らせの種類の色（知らせ・成功・注意・失敗）で塗って白い文字で出す。
-    文と操作は一行に並べ、入らなければ文を先に折り返して操作を終わりの側へ送る。
-    角の閉じる操作が入る分だけ、終わりの側を空ける。閉じる操作は塗った面に沈まないよう白地に反転する。
+    結果の通知は、画面の右下（末尾側の下）から出して浮かべる小さなパネル。通知は見落とされてはいけないので、
+    DropdownMenuと同じく白いパネルではなく、通知の種類の色（情報・成功・注意・失敗）で塗って白い文字で出す。
+    文と操作は一行に並べ、入らなければ文を先に折り返して操作を末尾側へ送る。
+    角の閉じる操作が入る分だけ、末尾側を空ける。閉じる操作は塗った面に沈まないよう白地に反転する。
   */
   .ply-toast {
     position: fixed;
@@ -13,7 +13,7 @@
     inline-size: fit-content;
     max-inline-size: min(32rem, calc(100% - 2 * var(--ply-space-4)));
     max-block-size: calc(100dvh - 2 * var(--ply-space-4));
-    /* 角の閉じる操作をはみ出させるため、紙は切り取らない。 */
+    /* 角の閉じる操作をはみ出させるため、パネルは切り取らない。 */
     overflow: visible;
     margin: 0;
     margin-inline-start: auto;
@@ -25,7 +25,7 @@
     color: var(--ply-surface);
     /* 日本語は文節の切れ目で折り返し、行末に一、二文字だけを残さない。 */
     word-break: auto-phrase;
-    /* 出入りの動きはoverlay.cssの共通の定義。下から差し出して置き、閉じる時は同じ向きへ下げながら消す。 */
+    /* 出入りの動きはoverlay.cssの共通の定義。下から出して置き、閉じる時は同じ向きへ下げながら消す。 */
     --ply-motion-slide: var(--ply-duration-pop);
     --ply-motion-scale-in: 1;
     --ply-motion-scale-out: 1;
@@ -57,7 +57,7 @@
       translate: 0 1.5rem;
     }
   }
-  /* Overlayの見出し・操作の行の余白は、帯の余白に置き換える。 */
+  /* Overlayの見出し・操作の行の余白は、パネルの余白に置き換える。 */
   .ply-toast.ply-overlay:has(> .heading) > :is(.heading, .actions) {
     padding: 0;
   }
@@ -68,7 +68,7 @@
       & > .message {
         display: flex;
         align-items: start;
-        /* 印と文は一つの塊として読ませるので、段の間より詰める。Noticeのピルと同じ間隔。 */
+        /* アイコンと文は一つの塊として読ませるので、段の間より詰める。Noticeのピルと同じ間隔。 */
         gap: 0.375rem;
         font-weight: 500;
         & > .ply-icon {

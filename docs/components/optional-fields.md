@@ -2,49 +2,49 @@
 
 # OptionalFields
 
-必要な時だけ足す欄と、足せる項目のチップ
+必要な時だけ追加する欄と、追加できる項目のチップ
 
 ## 使いどころ
 
-- 予定のリンク・場所・招待・メモ・繰り返しのように、多くの場合は空のままの欄を隠し、要る時だけ足してフォームを短く見せる時に使います。
-- 検索の条件を一つずつ足す列は、`layout="stack"` でチップを縦に並べます。
+- 予定のリンク・場所・招待・メモ・繰り返しのように、多くの場合は空のままの欄を隠し、必要な時だけ追加してフォームを短く見せる時に使います。
+- 検索の条件を一つずつ追加する列は、`layout="stack"` でチップを縦に並べます。
 - いつも入力する欄は隠さず `Field` で並べます。見出しの下の詳しい内容をまとめて開閉する時は `Disclosure` を使います。
 
 ## 使い方
 
-`items` の一件ごとに、押すと現れる欄（`field`）とチップを作ります。足した欄は上に積み、チップは下に並べます。チップを押すとその欄が現れ、チップは消えて、欄の最初の入力へフォーカスが移ります。足した欄の終わりの「（`label`）を外す」を押すと、欄を隠してチップへ戻し、チップへフォーカスを移します。外した欄の入力の値は、もう一度足すと残っています。
+`items` の一件ごとに、押すと現れる欄（`field`）とチップを作ります。追加した欄は上に積み、チップは下に並べます。チップを押すとその欄が現れ、チップは消えて、欄の最初の入力へフォーカスが移ります。追加した欄の末尾の「（`label`）を削除」を押すと、欄を隠してチップへ戻し、チップへフォーカスを移します。削除した欄の入力の値は、もう一度追加すると残っています。
 
 値が入っている項目は `open` で最初から欄を出し、チップを出しません。保存した値から `open` を決めるのは利用側です。
 
-欄はそれぞれ `fieldset` で包み、隠れている間は `disabled` にします。隠れた欄の入力は送信せず、`required` でも送信を止めません。送信先は、届かなかった名前を「足していない項目」として扱います。
+欄はそれぞれ `fieldset` で包み、隠れている間は `disabled` にします。隠れた欄の入力は送信せず、`required` でも送信を止めません。送信先は、届かなかった名前を「追加していない項目」として扱います。
 
-`OptionalFieldsController` を `optional-fields` として登録します。欄を足すと `optional-fields:add`、外すと `optional-fields:remove` を出します。
+`OptionalFieldsController` を `optional-fields` として登録します。欄を追加すると `optional-fields:add`、削除すると `optional-fields:remove` を出します。
 
-JavaScriptが無い時は、全ての欄を最初から出し、チップと外す操作は出しません。全ての欄の入力を送信します。controllerが接続すると、`open` でない欄をチップへ畳みます。
+JavaScriptが無い時は、全ての欄を最初から出し、チップと削除の操作は出しません。全ての欄の入力を送信します。controllerが接続すると、`open` でない欄をチップへ畳みます。
 
 ## アクセシビリティ
 
 - チップの並びは `role="group"` で、`label` を読み上げ名にします。
 - チップは `aria-controls` で現れる欄を指し、`aria-expanded` で欄を出したかを伝えます。押した後はチップが消えるので、欄の最初の入力へフォーカスを移します。
-- 外す操作はアイコンだけのボタンで、「（`label`）を外す」を読み上げ名とツールチップにします。押した後は操作が消えるので、戻ったチップへフォーカスを移します。
+- 削除の操作はアイコンだけのボタンで、「（`label`）を削除」を読み上げ名とツールチップにします。押した後は操作が消えるので、戻ったチップへフォーカスを移します。
 
 ## イベント
 
-| イベント                 | 内容                                                                                           |
-| ------------------------ | ---------------------------------------------------------------------------------------------- |
-| `optional-fields:add`    | チップを押して欄を出した後に出します。detailは `id`（足した項目の `id`）です。取り消せません。 |
-| `optional-fields:remove` | 外す操作で欄を隠した後に出します。detailは `id`（外した項目の `id`）です。取り消せません。     |
+| イベント                 | 内容                                                                                             |
+| ------------------------ | ------------------------------------------------------------------------------------------------ |
+| `optional-fields:add`    | チップを押して欄を出した後に出します。detailは `id`（追加した項目の `id`）です。取り消せません。 |
+| `optional-fields:remove` | 削除の操作で欄を隠した後に出します。detailは `id`（削除した項目の `id`）です。取り消せません。   |
 
 ## API
 
 ### OptionalFields
 
-予定のリンク・場所・招待・メモ・繰り返しや検索の条件のように、必要な時だけ足す欄。足せる項目をチップで並べ、押すとその欄が現れてチップは消える。欄の外す操作で元のチップへ戻す。長いフォームを短く見せる。JavaScriptが無い時は全ての欄を出し、チップと外す操作は出さない。
+予定のリンク・場所・招待・メモ・繰り返しや検索の条件のように、必要な時だけ追加する欄。追加できる項目をチップで並べ、押すとその欄が現れてチップは消える。欄の削除操作で元のチップへ戻す。長いフォームを短く見せる。JavaScriptが無い時は全ての欄を出し、チップと削除操作は出さない。
 
 | 名前            | 型                         | 既定値     | 説明                                                                                      |
 | --------------- | -------------------------- | ---------- | ----------------------------------------------------------------------------------------- |
-| `label`（必須） | `string`                   |            | チップの並びの読み上げ名（「予定に足す項目」など）。                                      |
-| `items`（必須） | `readonly OptionalField[]` |            | 足せる項目。並べた順にチップと欄を置く。                                                  |
+| `label`（必須） | `string`                   |            | チップの並びの読み上げ名（「予定に追加する項目」など）。                                  |
+| `items`（必須） | `readonly OptionalField[]` |            | 追加できる項目。並べた順にチップと欄を置く。                                              |
 | `layout`        | `"inline" \| "stack"`      | `"inline"` | inlineは予定の入力のようにチップを横に並べ（既定）、stackは検索の条件のように縦に並べる。 |
 
 ほかに、`<div>`へ標準のHTML属性を渡せます。
@@ -59,7 +59,7 @@ JavaScriptが無い時は、全ての欄を最初から出し、チップと外�
 | --------------- | ---------- | ------ | --------------------------------------------------------------------------------------------------- |
 | `id`（必須）    | `string`   |        | 項目のid。欄の置き場は`<id>-slot`になり、optional-fields:addのdetail.idで返る。画面内で一意にする。 |
 | `label`（必須） | `string`   |        | チップに出す項目名。                                                                                |
-| `icon`          | `IconName` |        | チップの名前の前に置く印。省略するとplus。                                                          |
+| `icon`          | `IconName` |        | チップの名前の前に置くアイコン。省略するとplus。                                                    |
 | `field`（必須） | `Child`    |        | 押した時に現れる欄。隠れている間は中の入力を使えなくし、送信しない。                                |
 | `open`          | `boolean`  |        | 最初から出しておく（値が入っている時など）。                                                        |
 
@@ -94,7 +94,7 @@ const field = (id: string, label: string, textarea = false) => (
 export default () => (
   <div class="ply-stack">
     <OptionalFields
-      label="予定に足す項目"
+      label="予定に追加する項目"
       items={[
         {
           id: "event-link",
@@ -163,7 +163,7 @@ export default () => (
       </Disclosure>
       <Disclosure summary="値が入っている項目は最初から出す">
         <OptionalFields
-          label="予定に足す項目"
+          label="予定に追加する項目"
           items={[
             {
               id: "open-place",
@@ -218,8 +218,8 @@ export default () => (
         </div>
         <button
           data-icon-only="true"
-          aria-label="リンクを外す"
-          title="リンクを外す"
+          aria-label="リンクを削除"
+          title="リンクを削除"
           data-action="optional-fields#remove"
           hidden=""
           class="ply-button remove"
@@ -250,8 +250,8 @@ export default () => (
         </div>
         <button
           data-icon-only="true"
-          aria-label="場所を外す"
-          title="場所を外す"
+          aria-label="場所を削除"
+          title="場所を削除"
           data-action="optional-fields#remove"
           hidden=""
           class="ply-button remove"
@@ -282,8 +282,8 @@ export default () => (
         </div>
         <button
           data-icon-only="true"
-          aria-label="招待を外す"
-          title="招待を外す"
+          aria-label="招待を削除"
+          title="招待を削除"
           data-action="optional-fields#remove"
           hidden=""
           class="ply-button remove"
@@ -319,8 +319,8 @@ export default () => (
         </div>
         <button
           data-icon-only="true"
-          aria-label="メモを外す"
-          title="メモを外す"
+          aria-label="メモを削除"
+          title="メモを削除"
           data-action="optional-fields#remove"
           hidden=""
           class="ply-button remove"
@@ -351,8 +351,8 @@ export default () => (
         </div>
         <button
           data-icon-only="true"
-          aria-label="繰り返しを外す"
-          title="繰り返しを外す"
+          aria-label="繰り返しを削除"
+          title="繰り返しを削除"
           data-action="optional-fields#remove"
           hidden=""
           class="ply-button remove"
@@ -372,7 +372,7 @@ export default () => (
         </button>
       </fieldset>
     </div>
-    <div class="chips" role="group" aria-label="予定に足す項目">
+    <div class="chips" role="group" aria-label="予定に追加する項目">
       <button
         aria-controls="event-link-slot"
         aria-expanded="false"
@@ -504,8 +504,8 @@ export default () => (
               </div>
               <button
                 data-icon-only="true"
-                aria-label="添付があるを外す"
-                title="添付があるを外す"
+                aria-label="添付があるを削除"
+                title="添付があるを削除"
                 data-action="optional-fields#remove"
                 hidden=""
                 class="ply-button remove"
@@ -536,8 +536,8 @@ export default () => (
               </div>
               <button
                 data-icon-only="true"
-                aria-label="含む語を外す"
-                title="含む語を外す"
+                aria-label="含む語を削除"
+                title="含む語を削除"
                 data-action="optional-fields#remove"
                 hidden=""
                 class="ply-button remove"
@@ -568,8 +568,8 @@ export default () => (
               </div>
               <button
                 data-icon-only="true"
-                aria-label="差出人を外す"
-                title="差出人を外す"
+                aria-label="差出人を削除"
+                title="差出人を削除"
                 data-action="optional-fields#remove"
                 hidden=""
                 class="ply-button remove"
@@ -600,8 +600,8 @@ export default () => (
               </div>
               <button
                 data-icon-only="true"
-                aria-label="期間を外す"
-                title="期間を外す"
+                aria-label="期間を削除"
+                title="期間を削除"
                 data-action="optional-fields#remove"
                 hidden=""
                 class="ply-button remove"
@@ -737,8 +737,8 @@ export default () => (
               </div>
               <button
                 data-icon-only="true"
-                aria-label="場所を外す"
-                title="場所を外す"
+                aria-label="場所を削除"
+                title="場所を削除"
                 data-action="optional-fields#remove"
                 hidden=""
                 class="ply-button remove"
@@ -774,8 +774,8 @@ export default () => (
               </div>
               <button
                 data-icon-only="true"
-                aria-label="メモを外す"
-                title="メモを外す"
+                aria-label="メモを削除"
+                title="メモを削除"
                 data-action="optional-fields#remove"
                 hidden=""
                 class="ply-button remove"
@@ -795,7 +795,7 @@ export default () => (
               </button>
             </fieldset>
           </div>
-          <div class="chips" role="group" aria-label="予定に足す項目">
+          <div class="chips" role="group" aria-label="予定に追加する項目">
             <button
               aria-controls="open-place-slot"
               aria-expanded="true"
@@ -872,8 +872,8 @@ export default () => (
                 </div>
                 <button
                   data-icon-only="true"
-                  aria-label="المكانを外す"
-                  title="المكانを外す"
+                  aria-label="المكانを削除"
+                  title="المكانを削除"
                   data-action="optional-fields#remove"
                   hidden=""
                   class="ply-button remove"

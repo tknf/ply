@@ -3,16 +3,16 @@ import { classes, type ElementProps } from "./types";
 
 export type LayerCardProps = PropsWithChildren<
   ElementProps<"section"> & {
-    /** 淡い層に置く見出し（h3）の文字。墨の太字にする。 */
+    /** 淡い層に置く見出し（h3）の文字。濃い色の太字にする。 */
     title: string;
-    /** 見出しの行の終わりの側に置く操作（ActionLinkやButton）。題名が折り返しても一行目に残し、題名の幅が8remを割る時だけ次の行へ送る。 */
+    /** 見出しの行の末尾側に置く操作（ActionLinkやButton）。題名が折り返しても一行目に残し、題名の幅が8remを割る時だけ次の行へ送る。 */
     actions?: Child;
   }
 >;
 
 /**
- * 見出しを淡い面の層に置き、中身を一段上の白い紙に載せる。
- * 見出しを紙の中に書かないので、題名が中身と競わない。
+ * 見出しを淡い背景の層に置き、中身を一段上の白いカードに載せる。
+ * 見出しをカードの中に書かないので、題名が中身と競わない。
  */
 export const LayerCard = ({
   title,

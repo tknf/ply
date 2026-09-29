@@ -14,7 +14,7 @@ export default {
     "`id`・`label`・`items`を渡し、`TabsController`を`tabs`として登録します。`id`と各`value`は一意にします。",
     "初めは`selected`のタブを選びます。省略した時や、見つからない・無効なタブの時は、最初の選べるタブを選びます。選べるタブが一つもない時は、タブを出さず「利用可能な項目はありません。」を出します。",
     "タブを押すか矢印キーで移ると、すぐにそのパネルへ切り替えます。無効なタブは表示しますが、選べず、矢印キーでも飛ばします。",
-    "切り替えは`tabs:beforechange`・`tabs:change`で知らせます。選んだタブをURLなどに残す時は、利用側で行います。",
+    "切り替えると`tabs:beforechange`・`tabs:change`を発火します。選んだタブをURLなどに残す時は、利用側で行います。",
     "JavaScriptなしでは選んだタブのパネルだけを表示し、タブを押しても切り替わりません。",
   ],
   keyboard: [
@@ -32,8 +32,8 @@ export default {
   events: [
     [
       "tabs:beforechange",
-      "利用者がタブを切り替える直前に知らせます。`detail`は`value`・`previousValue`・`reason`（`pointer`または`keyboard`）です。取り消すと切り替えません。",
+      "利用者がタブを切り替える直前に発火します。`detail`は`value`・`previousValue`・`reason`（`pointer`または`keyboard`）です。取り消すと切り替えません。",
     ],
-    ["tabs:change", "切り替えた後に知らせます。`detail`は`tabs:beforechange`と同じです。"],
+    ["tabs:change", "切り替えた後に発火します。`detail`は`tabs:beforechange`と同じです。"],
   ],
 } satisfies ComponentDoc;

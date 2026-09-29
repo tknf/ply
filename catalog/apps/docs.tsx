@@ -24,7 +24,7 @@ import { AppFrame, appPath } from "./frame";
 const tone = (state: string) =>
   state === "公開中" ? "success" : state === "確認待ち" ? "warning" : "neutral";
 
-/** 文書。記事を選び、題名と本文を書き、担当や公開日を値の位置で直す。確認待ちの記事には公開の判断を問う。 */
+/** 文書。記事を選び、題名と本文を書き、担当や公開日をその場で編集する。確認待ちの記事には公開するかを確認する。 */
 export const DocsScreen = ({ article: id }: { article?: string }) => {
   const article = articles.find((entry) => entry.id === id);
   if (!article)
@@ -124,9 +124,9 @@ export const DocsScreen = ({ article: id }: { article?: string }) => {
               rows={10}
               value={`${article.excerpt}\n\n`}
             />
-            <Section title="チームの反応">
+            <Section title="チームのリアクション">
               <Reactions
-                label="この記事への反応"
+                label="この記事へのリアクション"
                 items={[
                   { content: "👍", name: "いいね", by: ["佐藤 健", "森 美咲"] },
                   { content: "わかりやすい", by: ["森 美咲"] },

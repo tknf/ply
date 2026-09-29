@@ -41,7 +41,7 @@
         text-decoration: none;
       }
     }
-    /* 今いる場所はインクの太字。並びの終わりなので印は付けない。 */
+    /* 今いる場所はインクの太字。並びの末尾なので区切りのアイコンは付けない。 */
     & > ol > li:last-child {
       color: var(--ply-text);
       font-weight: 600;

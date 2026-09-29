@@ -3,21 +3,21 @@ import { InputGroup } from "./input-group";
 import { classes, type ElementProps } from "./types";
 
 export type Emoji = {
-  /** 格子に出し、選んだ時にemoji-picker:pickで知らせる絵文字。 */
+  /** グリッドに表示し、選んだ時にemoji-picker:pickイベントで渡す絵文字。 */
   emoji: string;
-  /** 読み上げと指を載せた時の名前。 */
+  /** 読み上げとホバー時の名前。 */
   name: string;
-  /** 探す時に当てる別の言葉。 */
+  /** 検索に使う別名。 */
   keywords?: readonly string[];
 };
 export type EmojiGroup = {
-  /** 種類の見出し。格子のまとまりの読み上げ名にもなる。 */
+  /** 種類の見出し。グリッドのまとまりの読み上げ名にもなる。 */
   label: string;
-  /** この種類に並べる絵文字。並べた順に格子へ置く。 */
+  /** この種類に並べる絵文字。並べた順にグリッドへ置く。 */
   emojis: readonly Emoji[];
 };
 
-/** 既定の絵文字。反応によく使うものだけに絞る。全ての絵文字を並べたい時は利用側でgroupsを渡す。 */
+/** 既定の絵文字。リアクションによく使うものだけに絞る。全ての絵文字を並べたい時は利用側でgroupsを渡す。 */
 export const defaultEmojiGroups: readonly EmojiGroup[] = [
   {
     label: "よく使う",
@@ -82,24 +82,24 @@ export const defaultEmojiGroups: readonly EmojiGroup[] = [
 ];
 
 export type EmojiPickerProps = Omit<ElementProps<"div">, "children"> & {
-  /** 探す欄と種類の見出しのIDの頭。ページ内で一意にする。 */
+  /** 検索欄と種類の見出しのIDの接頭辞。ページ内で一意にする。 */
   id: string;
-  /** 板全体（role="group"）の読み上げ名。 */
+  /** 絵文字パネル全体（role="group"）の読み上げ名。 */
   label?: string;
-  /** 種類ごとの絵文字。渡さなければ反応によく使う40個（defaultEmojiGroups）を並べる。 */
+  /** 種類ごとの絵文字。渡さなければリアクションによく使う40個（defaultEmojiGroups）を並べる。 */
   groups?: readonly EmojiGroup[];
-  /** 探す欄の薄い文字。欄の読み上げ名にも使う。 */
+  /** 検索欄のプレースホルダー。欄の読み上げ名にも使う。 */
   placeholder?: string;
-  /** 探した言葉に当てはまる絵文字が無い時に出す文。 */
+  /** 検索した言葉に当てはまる絵文字が無い時に出す文。 */
   emptyLabel?: string;
-  /** Popoverの中に置く時。開いた時に探す欄へ移る。 */
+  /** Popoverの中に置く時。開いた時に検索欄へフォーカスを移す。 */
   autofocus?: boolean;
 };
 
 /**
- * 絵文字を探して選ぶ板。上に探す欄、下に種類ごとの絵文字の格子を並べる。
- * 選ぶとemoji-picker:pickで絵文字と名前を知らせる。Popoverの中に置いて反応を追加する時などに使う。
- * 格子の中は矢印で移り、Enterか押して選ぶ。Tabで格子へ入る所は一か所だけにする。
+ * 絵文字を検索して選ぶ絵文字パネル。上に検索欄、下に種類ごとの絵文字のグリッドを並べる。
+ * 選ぶとemoji-picker:pickイベントを発火し、絵文字と名前を渡す。Popoverの中に置いてリアクションを追加する時などに使う。
+ * グリッドの中は矢印キーで移動し、Enterかクリックで選ぶ。Tabでグリッドへ入る位置は一か所だけにする。
  */
 export const EmojiPicker = ({
   id,

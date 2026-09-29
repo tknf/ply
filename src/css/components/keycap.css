@@ -1,5 +1,5 @@
 @layer components {
-  /* キーの印。キーボードの操作を表す所は、どの部品でもこの印を使う。 */
+  /* ショートカットキーの表示。キーボードの操作を表す所は、どのコンポーネントでもこの表示を使う。 */
   .ply-keycap {
     display: inline-flex;
     flex-wrap: wrap;
@@ -22,7 +22,7 @@
       text-align: center;
       overflow-wrap: anywhere;
     }
-    /* タイルの角やメニューの行の終わりに添える小さな印。 */
+    /* タイルの角やメニューの行の終わりに添える小さな表示。 */
     &[data-size="small"] {
       gap: 0.125rem;
       font-size: 0.6875rem;

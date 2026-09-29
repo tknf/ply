@@ -27,12 +27,12 @@ import {
   type ComponentDoc,
 } from "../reference";
 
-/** カタログの入口。利用例のアプリの画面と、分類ごとの全部品を並べる。 */
+/** カタログのトップページ。利用例のアプリの画面と、分類ごとの全コンポーネントを並べる。 */
 export const CatalogIndex = ({ components }: { components: readonly ComponentEntry[] }) => (
   <CatalogFrame components={components}>
     <PageHeader
       title="Ply"
-      description={`${components.length}種類の部品。上部中央のコマンドから名前で探せます。`}
+      description={`${components.length}種類のコンポーネント。上部中央のコマンドメニューから名前で探せます。`}
     />
     <LayerCard
       title="実務アプリの利用例"
@@ -155,7 +155,7 @@ const TypeReference = ({
   </section>
 );
 
-/** 部品のページの説明とAPI。docs/components/<id>.mdと同じ内容を持つ。 */
+/** コンポーネントのページの説明とAPI。docs/components/<id>.mdと同じ内容を持つ。 */
 const Reference = ({ doc }: { doc: ComponentDoc }) => {
   const apis = componentApi();
   return (
@@ -205,7 +205,7 @@ const Reference = ({ doc }: { doc: ComponentDoc }) => {
       )}
       {doc.events && doc.events.length > 0 && (
         <Section title="イベント">
-          <Table caption={`${doc.name}が知らせるイベント`}>
+          <Table caption={`${doc.name}が発火するイベント`}>
             <thead>
               <tr>
                 <th scope="col">イベント</th>
@@ -281,7 +281,7 @@ const Reference = ({ doc }: { doc: ComponentDoc }) => {
 
 type Code = Awaited<ReturnType<typeof import("../code-format").formatExample>>;
 
-/** 部品のページ。見本・説明・API・同じ見本のHTMLとHono JSXを並べ、分類の中で前後の部品へ移れる。 */
+/** コンポーネントのページ。見本・説明・API・同じ見本のHTMLとHono JSXを並べ、分類の中で前後のコンポーネントへ移動できる。 */
 export const ComponentPage = ({
   components,
   entry,
@@ -356,7 +356,7 @@ export const ComponentPage = ({
           </Disclosure>
         </DisclosureGroup>
       </Section>
-      <nav class="ply-cluster" aria-label="前後の部品">
+      <nav class="ply-cluster" aria-label="前後のコンポーネント">
         {previous && (
           <ActionLink href={`/components/${previous.id}`} variant="link">
             ← {previous.name}

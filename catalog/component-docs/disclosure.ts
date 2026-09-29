@@ -18,7 +18,7 @@ export default {
   ],
   keyboard: [["Enter / Space（見出し）", "開閉を切り替えます。"]],
   accessibility: [
-    "開閉の状態は、標準の `details` と `summary` のとおり読み上げます。矢印の印は読み上げから外します。",
+    "開閉の状態は、標準の `details` と `summary` のとおり読み上げます。矢印のアイコンは読み上げから外します。",
     '`DisclosureGroup` は `role="group"` で、`label` をまとまりの名前として読み上げます。',
   ],
   propNotes: {

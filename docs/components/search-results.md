@@ -12,7 +12,7 @@
 
 ## 使い方
 
-`results` に `title`・`href` と、任意の `excerpt`・`meta`・`leading` を渡します。結果は罫線を引かずに行間で区切り、題名（墨の太字のリンク、指を載せると青）・抜粋（二行まで）・淡い補足の順に積みます。`leading` に人の円や種類の印を渡すと、始まりの側の2.5remの列に置きます。
+`results` に `title`・`href` と、任意の `excerpt`・`meta`・`leading` を渡します。結果は罫線を引かずに行間で区切り、題名（濃い色の太字のリンク、ホバー時は青）・抜粋（二行まで）・淡い補足の順に積みます。`leading` にアバターや種類のアイコンを渡すと、先頭側の2.5remの列に置きます。
 
 `query` を渡すと、題名と、文字で渡した `excerpt` の中の一致した語を `mark` で包み、文中の強調と同じ淡い黄の面で示します。大文字と小文字は区別せず、前後の空白は無視します。`excerpt` に要素を渡した時は強調しないので、必要なら利用側で `mark` を書きます。
 
@@ -28,7 +28,7 @@
 
 ### SearchResults
 
-題名・抜粋・補足を並べ、一致した語を淡い黄の面で強調する。条件を足す列はOptionalFieldsのstackで、ページの側に置く。
+題名・抜粋・補足を並べ、一致した語を淡い黄の背景で強調する。条件を追加する列はOptionalFieldsのstackで、ページの側に置く。
 
 | 名前              | 型                        | 既定値 | 説明                                         |
 | ----------------- | ------------------------- | ------ | -------------------------------------------- |
@@ -48,7 +48,7 @@
 | `href`（必須）  | `string` |        | 題名のリンクの移動先。                                      |
 | `excerpt`       | `Child`  |        | 本文の抜粋。文字で渡すと、queryに一致した語を強調する。     |
 | `meta`          | `Child`  |        | 置き場所・日付などの補足。                                  |
-| `leading`       | `Child`  |        | 人の円や種類の印。                                          |
+| `leading`       | `Child`  |        | アバターや種類のアイコン。                                  |
 
 ## コード
 
@@ -83,9 +83,9 @@ export default () => (
   <div class="ply-stack">
     <SearchResults label="「読書会」の検索の結果" query="読書会" results={results} />
     <DisclosureGroup label="並べ方の違い">
-      <Disclosure summary="人の円を添える" open>
+      <Disclosure summary="アバターを添える" open>
         <SearchResults
-          label="人の円を添えた結果"
+          label="アバターを添えた結果"
           query="案内"
           results={[
             {
@@ -104,7 +104,7 @@ export default () => (
           ]}
         />
       </Disclosure>
-      <Disclosure summary="条件を足す列と並べる">
+      <Disclosure summary="条件を追加する列と並べる">
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr)); gap: var(--ply-space-6)">
           <OptionalFields
             label="結果を絞る"
@@ -203,10 +203,10 @@ export default () => (
             focusable="false"
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
-        ><span class="label"><span class="title">人の円を添える</span></span>
+        ><span class="label"><span class="title">アバターを添える</span></span>
       </summary>
       <div class="body">
-        <ol class="ply-search-results" aria-label="人の円を添えた結果">
+        <ol class="ply-search-results" aria-label="アバターを添えた結果">
           <li data-leading="true">
             <span class="leading"
               ><span
@@ -250,7 +250,7 @@ export default () => (
             focusable="false"
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
-        ><span class="label"><span class="title">条件を足す列と並べる</span></span>
+        ><span class="label"><span class="title">条件を追加する列と並べる</span></span>
       </summary>
       <div class="body">
         <div
@@ -278,8 +278,8 @@ export default () => (
                 </div>
                 <button
                   data-icon-only="true"
-                  aria-label="差出人を外す"
-                  title="差出人を外す"
+                  aria-label="差出人を削除"
+                  title="差出人を削除"
                   data-action="optional-fields#remove"
                   hidden=""
                   class="ply-button remove"
@@ -312,8 +312,8 @@ export default () => (
                 </div>
                 <button
                   data-icon-only="true"
-                  aria-label="添付があるを外す"
-                  title="添付があるを外す"
+                  aria-label="添付があるを削除"
+                  title="添付があるを削除"
                   data-action="optional-fields#remove"
                   hidden=""
                   class="ply-button remove"

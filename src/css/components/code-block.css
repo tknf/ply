@@ -1,13 +1,13 @@
 @layer components {
   /*
-    コードは名前とコピーをLayerCardの層の見出しに置き、層の上の紙に書く（層と紙の見た目はLayerCardが持つ）。
-    ここではコードの書き方だけを決める。目印の行は平らな淡い黄色の地にし、行番号は余白に小さく書いてコピーには含めない。
+    コードは名前とコピーをLayerCardの層の見出しに置き、層の上のカードに書く（層とカードの見た目はLayerCardが持つ）。
+    ここではコードの書き方だけを決める。ハイライト行は平らな淡い黄色の背景にし、行番号は余白に小さく書いてコピーには含めない。
   */
   .ply-code-block {
     min-inline-size: 0;
     margin: 0;
     color: var(--ply-text);
-    /* 紙にはコードだけを書き、コードの面が余白とスクロールを持つので、紙の余白を持たない。 */
+    /* カードにはコードだけを書き、コードの面が余白とスクロールを持つので、カードの余白を持たない。 */
     & > .ply-layer-card > .body {
       padding-block: 0;
       padding-inline: 0;
@@ -21,7 +21,7 @@
       margin: 0;
       padding-block: var(--ply-space-4);
       padding-inline: var(--ply-space-5);
-      /* 紙の角丸の中でスクロールさせ、目印の行の地を角からはみ出させない。 */
+      /* カードの角丸の中でスクロールさせ、ハイライト行の背景を角からはみ出させない。 */
       border-radius: inherit;
       font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
       font-size: var(--ply-small);

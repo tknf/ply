@@ -23,25 +23,25 @@ import {
 export type { WeekStart } from "../internal/calendar-date";
 
 export type CalendarEvent = {
-  /** 予定の題名。札に太字で書き、長い時は一行で省略する。 */
+  /** 予定の題名。太字で書き、長い時は一行で省略する。 */
   label: string;
-  /** 予定のページ。detailsを渡す時は省略でき、札は詳細の紙を開く操作になる。 */
+  /** 予定のページ。detailsを渡す時は省略でき、予定は詳細のパネルを開くボタンになる。 */
   href?: string;
   /**
-   * 札を押すとPopoverと同じ紙で開く、予定の詳細（場所・参加者・メモなど）。idは紙のidで、画面の中で一意にする。
+   * 予定を押すとPopoverと同じパネルで開く、予定の詳細（場所・参加者・メモなど）。idはパネルのidで、画面の中で一意にする。
    * 開閉と位置決めはPopoverと同じ（PopoverControllerをpopoverとして登録する）。
    */
   details?: {
-    /** 詳細の紙のid。札の`popovertarget`が指すので、画面の中で一意にする。 */
+    /** 詳細のパネルのid。予定のボタンの`popovertarget`が指すので、画面の中で一意にする。 */
     id: string;
-    /** 紙に書く中身（場所・参加者・メモなど）。 */
+    /** パネルに書く中身（場所・参加者・メモなど）。 */
     content: Child;
   };
   /** 開始時刻（HH:MM）。省略すると終日の予定。 */
   start?: string;
   /** 終了時刻（HH:MM）。省略すると開始から1時間。 */
   end?: string;
-  /** 分類の色。札の面をその色で淡く塗る。省略すると青。 */
+  /** 分類の色。予定の面をその色で淡く塗る。省略すると青。 */
   accent?: Accent;
   /** 仮の予定。破線の縁と斜線で、まだ確定していないことを示す。 */
   tentative?: boolean;
@@ -85,7 +85,7 @@ export type CalendarSelection =
 export type CalendarPeriodLink = {
   /** 操作の名前。今日への移動は文字で書き、前後への移動は矢印の読み上げ名とtitleにする。 */
   label: string;
-  /** 移る先のURL。期間を変えた表示は利用側がこのURLで返す。 */
+  /** 移動先のURL。期間を変えた表示は利用側がこのURLで返す。 */
   href: string;
 };
 export type CalendarMonth = {
@@ -293,7 +293,7 @@ const EventLink = ({
     );
   const { id, content: details } = event.details;
   const anchor = overlayAnchorName("popover", id);
-  // 札と詳細の紙は兄弟に置く。開閉のcontroller（popover）は札を包むliが持つ（eventControllerを参照）。
+  // 予定のボタンと詳細のパネルは兄弟に置く。開閉のcontroller（popover）は予定のボタンを包むliが持つ（eventControllerを参照）。
   return (
     <>
       <button
@@ -346,7 +346,7 @@ const EventLink = ({
   );
 };
 
-/** 詳細を持つ予定の札を包むliは、Popoverと同じ開閉のcontrollerを持つ。 */
+/** 詳細を持つ予定のボタンを包むliは、Popoverと同じ開閉のcontrollerを持つ。 */
 const eventController = (event: CalendarEvent) => (event.details ? "popover" : undefined);
 
 const DayEvents = ({ day, clockState }: { day: CalendarDay; clockState: Clock }) =>

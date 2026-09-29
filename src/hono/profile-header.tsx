@@ -4,13 +4,13 @@ import { classes, type ElementProps } from "./types";
 export type ProfileHeaderProps = ElementProps<"header"> & {
   /** 人やグループの名前。headingLevelの見出しで出す。 */
   name: string;
-  /** 大きな人の円（Avatarのlarge）。 */
+  /** 大きなアバター（Avatarのlarge）。 */
   avatar: Child;
   /** 名前の下の淡い補足（メールアドレスなど）。 */
   detail?: Child;
-  /** 始まりの側の上の角に置く小さな札（所属など）。 */
+  /** 先頭側の上の角に置く小さなバッジ（所属など）。 */
   badge?: Child;
-  /** 終わりの側の上の角に置く操作（編集など）。 */
+  /** 末尾側の上の角に置く操作（編集など）。 */
   actions?: Child;
   /** 名前の下に並べる、この人への設定（通知・振り分けなど）。DropdownMenuやButtonを渡す。 */
   preferences?: Child;
@@ -19,7 +19,7 @@ export type ProfileHeaderProps = ElementProps<"header"> & {
 };
 
 /**
- * 大きな人の円と名前を中央に据え、その下に、この人への設定を灰色の帯にまとめて並べる。
+ * 大きなアバターと名前を中央に据え、その下に、この人への設定を灰色の領域にまとめて並べる。
  */
 export const ProfileHeader = ({
   name,

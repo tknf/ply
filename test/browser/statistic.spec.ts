@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("Statisticは横並びの束に入れても狭幅で潰れない", async ({ page }) => {
+test("Statisticは横並びのグループに入れても狭幅で潰れない", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 800 });
   await page.goto("/components/statistic");
   const statistic = page.locator('[data-example="hono"] .ply-statistic').first();

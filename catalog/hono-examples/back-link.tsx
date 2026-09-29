@@ -7,7 +7,7 @@ export default () => (
       <BackLink href="/" label="設定" />
     </div>
     <DisclosureGroup label="形の違い">
-      <Disclosure summary="面を持たない太字とキーの印" open>
+      <Disclosure summary="背景を持たない太字とショートカットキーの表示" open>
         <BackLink href="/" label="ボードへ戻る" tone="plain" shortcut="ESC" />
       </Disclosure>
       <Disclosure summary="長い名前">

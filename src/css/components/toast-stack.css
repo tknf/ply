@@ -18,7 +18,7 @@
     }
     /*
       出入りの動き（overlay.css）より強い指定にして、重ね方のtransformの動きを足す。
-      束の中は幅をそろえ、奥のToastが手前と同じ幅の縁として覗くようにする。
+      スタック内は幅をそろえ、奥のToastが手前と同じ幅の縁として覗くようにする。
     */
     & > .ply-toast.ply-overlay[popover] {
       --ply-toast-index: 0;
@@ -42,7 +42,7 @@
       }
     }
     /*
-      畳んだ束の奥のToastは、手前と同じ高さに縮めて中身を隠し、上へずらした縁だけを見せる。
+      畳んだスタックの奥のToastは、手前と同じ高さに縮めて中身を隠し、上へずらした縁だけを見せる。
       縁は上端へ向かって薄れ、三枚目より奥は消える。
     */
     &:not([data-expanded="true"]) > .ply-toast[data-stack="back"] {
@@ -60,7 +60,7 @@
     &[data-count]:not([data-count="0"], [data-count="1"]) > .ply-toast[data-stack="front"] {
       cursor: pointer;
     }
-    /* 広げた束は、新しいものから上へ積む。四枚目より上は上端へ向かって薄れて消える。 */
+    /* 広げたスタックは、新しいものから上へ積む。四枚目より上は上端へ向かって薄れて消える。 */
     &[data-expanded="true"] > .ply-toast[data-stack] {
       transform: translateY(calc(-1 * var(--ply-toast-offset)));
       opacity: clamp(0, calc(1 - (var(--ply-toast-index) - 3) * 0.35), 1);

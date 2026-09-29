@@ -2,40 +2,40 @@
 
 # ActionList
 
-作業の入口を、一覧や内容の見えるカードで示します。
+作業へのリンクを、一覧や内容の見えるカードで示します。
 
 ## 使いどころ
 
-- 別の画面へ移って行う作業や道具の入口を、印と名前で並べる時に使います。
+- 別の画面へ移動して行う作業やツールへのリンクを、アイコンと名前で並べる時に使います。
 - 各行は一つのリンクです。行に状態やボタンなど別の操作が付く時は `DataList` を使います。
-- 印と名前を縦に積んだ大きな入口や、その場で行う操作には `ActionTile` を使います。
+- アイコンと名前を縦に積んだ大きなショートカットや、その場で行う操作には `ActionTile` を使います。
 
 ## 使い方
 
-`items` に入口ごとの `title` と `href` を渡し、`description` と塗りつぶしの `Icon`（`icon`）を添えます。名前は、移った先で行う作業を動詞で書きます。
+`items` にリンクごとの `title` と `href` を渡し、`description` と塗りつぶしの `Icon`（`icon`）を添えます。名前は、移動先で行う作業を動詞で書きます。
 
-`layout="list"` は淡い板に行を積み、名前の書き始めから細い線で区切ります。`layout="grid"` は各入口を角丸のタイルにし、13rem以上の幅で格子に並べます。
+`layout="list"` は淡い背景に行を積み、名前の書き始めから細い線で区切ります。`layout="grid"` は各リンクを角丸のタイルにし、13rem以上の幅で格子に並べます。
 
-`accent` は印の丸の色で、`blue`・`green`・`amber`・`coral` で用途を見分けます。状態を示す色には使いません。確かめていない連絡先のように手当てが要る行は `attention` にすると、`accent` より優先して印・名前・説明を危険の色で書きます。
+`accent` はアイコンの丸の色で、`blue`・`green`・`amber`・`coral` で用途を見分けます。状態を示す色には使いません。未確認の連絡先のように対応が必要な行は `attention` にすると、`accent` より優先してアイコン・名前・説明を危険を示す色で表示します。
 
 `preview` に直近の数件などを渡すと、説明の下に中身の見本を置きます。行全体がリンクなので、見本の中にボタンやリンクを置きません。
 
-指を載せると行が淡い面になり、押すと内側へへこみます。JavaScriptは使いません。
+ホバーすると行が淡い面になり、押すと内側へへこみます。JavaScriptは使いません。
 
 ## アクセシビリティ
 
-- ルートは `ul` で、各入口は `li` の中の一つの `a` です。一覧の名前は `aria-label` などで利用側が付けます。
-- `icon` に置く `Icon` は読み上げから外れます。名前だけで移る先が分かるように書きます。
-- `attention` は色で示すので、手当てが要る理由を `description` に書きます。
+- ルートは `ul` で、各リンクは `li` の中の一つの `a` です。一覧の名前は `aria-label` などで利用側が付けます。
+- `icon` に置く `Icon` は読み上げから外れます。名前だけで移動先が分かるように書きます。
+- `attention` は色で示すので、対応が必要な理由を `description` に書きます。
 
 ## API
 
 ### ActionList
 
-| 名前            | 型                          | 既定値   | 説明                                                                                           |
-| --------------- | --------------------------- | -------- | ---------------------------------------------------------------------------------------------- |
-| `items`（必須） | `readonly ActionListItem[]` |          | 並べる入口。                                                                                   |
-| `layout`        | `"list" \| "grid"`          | `"list"` | listは淡い板に行を積み、行の間を細い線で区切る。gridは各入口を角丸のタイルにして格子に並べる。 |
+| 名前            | 型                          | 既定値   | 説明                                                                                               |
+| --------------- | --------------------------- | -------- | -------------------------------------------------------------------------------------------------- |
+| `items`（必須） | `readonly ActionListItem[]` |          | 並べる項目。                                                                                       |
+| `layout`        | `"list" \| "grid"`          | `"list"` | listは淡いパネルに行を積み、行の間を細い線で区切る。gridは各項目を角丸のタイルにして格子に並べる。 |
 
 ほかに、`<ul>`へ標準のHTML属性を渡せます。
 
@@ -43,17 +43,17 @@
 
 #### `ActionListItem`
 
-入口の一件。行（またはタイル）全体が一つのリンクになる。
+一件の項目。行（またはタイル）全体が一つのリンクになる。
 
 | 名前            | 型        | 既定値 | 説明                                                                                         |
 | --------------- | --------- | ------ | -------------------------------------------------------------------------------------------- |
-| `title`（必須） | `string`  |        | 入口の名前。移る先で行う作業を動詞で書く。                                                   |
-| `href`（必須）  | `string`  |        | 移る先。行全体をこのリンクにする。                                                           |
+| `title`（必須） | `string`  |        | 項目の名前。移動先で行う作業を動詞で書く。                                                   |
+| `href`（必須）  | `string`  |        | 移動先。行全体をこのリンクにする。                                                           |
 | `description`   | `string`  |        | 名前の下に淡い文字で添える一文。                                                             |
-| `icon`          | `Child`   |        | 名前の前に置く印。accentの色を淡く敷いた丸に載せる。塗りつぶしのIconを想定する。             |
+| `icon`          | `Child`   |        | 名前の前に置くアイコン。accentの色を淡く敷いた丸に載せる。塗りつぶしのIconを想定する。       |
 | `preview`       | `Child`   |        | 説明の下に置く中身の見本（直近の数件など）。リンクの中に入るので、ボタンやリンクを入れない。 |
-| `accent`        | `Accent`  |        | 印の色。用途を見分けるためだけに使い、状態の色には使わない。                                 |
-| `attention`     | `boolean` |        | 手当てが要る行（確かめていない予備の連絡先など）。名前と説明を危険の色で書く。               |
+| `accent`        | `Accent`  |        | アイコンの色。用途を見分けるためだけに使い、状態の色には使わない。                           |
+| `attention`     | `boolean` |        | 対応が必要な行（未確認の予備の連絡先など）。名前と説明を危険の色で書く。                     |
 
 #### `Accent`
 
@@ -66,7 +66,7 @@ import { ActionList, Icon, Disclosure, DisclosureGroup } from "ply/hono";
 export default () => (
   <div class="ply-stack">
     <ActionList
-      aria-label="よく使う道具"
+      aria-label="よく使うツール"
       items={[
         {
           title: "記事を書く",
@@ -94,7 +94,7 @@ export default () => (
       ]}
     />
     <DisclosureGroup label="並べ方と置き場所の違い">
-      <Disclosure summary="手当てが要る行" open>
+      <Disclosure summary="対応が必要な行" open>
         <ActionList
           aria-label="ログインと確認"
           items={[
@@ -111,7 +111,7 @@ export default () => (
               attention: true,
             },
             {
-              title: "二段階の確認",
+              title: "二段階認証",
               href: "/apps/docs",
               description: "まだ設定していません",
               icon: <Icon name="info" fill />,
@@ -123,7 +123,7 @@ export default () => (
       <Disclosure summary="タイルに並べる">
         <ActionList
           layout="grid"
-          aria-label="道具の入口"
+          aria-label="ツールへのショートカット"
           items={[
             {
               title: "記事",
@@ -150,7 +150,7 @@ export default () => (
       <Disclosure summary="中身の見えるタイル">
         <ActionList
           layout="grid"
-          aria-label="内容の見える道具の入口"
+          aria-label="内容の見えるツールへのショートカット"
           items={[
             {
               title: "記事",
@@ -188,7 +188,7 @@ export default () => (
       <Disclosure summary="狭い場所で折り返す">
         <div style="max-inline-size: 16rem">
           <ActionList
-            aria-label="狭い場所の道具"
+            aria-label="狭い場所のツール"
             items={[
               {
                 title: "初めて利用する方への案内を書く",
@@ -231,7 +231,7 @@ export default () => (
 
 ```html
 <div class="ply-stack">
-  <ul aria-label="よく使う道具" class="ply-action-list" data-layout="list">
+  <ul aria-label="よく使うツール" class="ply-action-list" data-layout="list">
     <li>
       <a href="/apps/docs" data-accent="blue"
         ><span class="icon"
@@ -298,7 +298,7 @@ export default () => (
             focusable="false"
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
-        ><span class="label"><span class="title">手当てが要る行</span></span>
+        ><span class="label"><span class="title">対応が必要な行</span></span>
       </summary>
       <div class="body">
         <ul aria-label="ログインと確認" class="ply-action-list" data-layout="list">
@@ -344,7 +344,7 @@ export default () => (
                   focusable="false"
                 >
                   <use href="/assets/ply-icons.svg#ply-info-fill"></use></svg></span
-              ><span class="title">二段階の確認</span
+              ><span class="title">二段階認証</span
               ><small class="description">まだ設定していません</small></a
             >
           </li>
@@ -365,7 +365,11 @@ export default () => (
         ><span class="label"><span class="title">タイルに並べる</span></span>
       </summary>
       <div class="body">
-        <ul aria-label="道具の入口" class="ply-action-list" data-layout="grid">
+        <ul
+          aria-label="ツールへのショートカット"
+          class="ply-action-list"
+          data-layout="grid"
+        >
           <li>
             <a href="/apps/search" data-accent="amber"
               ><span class="icon"
@@ -440,7 +444,7 @@ export default () => (
       </summary>
       <div class="body">
         <ul
-          aria-label="内容の見える道具の入口"
+          aria-label="内容の見えるツールへのショートカット"
           class="ply-action-list"
           data-layout="grid"
         >
@@ -499,7 +503,7 @@ export default () => (
       </summary>
       <div class="body">
         <div style="max-inline-size: 16rem">
-          <ul aria-label="狭い場所の道具" class="ply-action-list" data-layout="list">
+          <ul aria-label="狭い場所のツール" class="ply-action-list" data-layout="list">
             <li>
               <a href="/apps/docs" data-accent="blue"
                 ><span class="icon"

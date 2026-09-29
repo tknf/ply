@@ -1,8 +1,8 @@
 import { Controller } from "@hotwired/stimulus";
 
 /**
- * 絞り込めるメニュー。打った文字で候補を絞り、上下の矢印で候補を移り、Enterで選ぶ。
- * 一つだけ選ぶ時は選ぶと閉じ、複数を選べる時は開いたまま選んだ印を切り替える。
+ * 絞り込めるメニュー。入力した文字で候補を絞り込み、上下の矢印キーで候補を移動し、Enterで選ぶ。
+ * 一つだけ選ぶ時は選ぶと閉じ、複数を選べる時は開いたままチェックマークを切り替える。
  */
 export class FilterMenuController extends Controller<HTMLElement> {
   static targets = ["trigger", "panel", "input", "option", "empty"];
@@ -44,7 +44,7 @@ export class FilterMenuController extends Controller<HTMLElement> {
     if (this.hasTriggerTarget) this.triggerTarget.removeAttribute("aria-expanded");
   };
 
-  /** 開いた時は、前に打った文字を消して絞り込みの欄へ移る。 */
+  /** 開いた時は、前に入力した文字を消して絞り込みの入力欄へ移る。 */
   opened = (event: Event) => {
     if (!(event instanceof ToggleEvent)) return;
     this.expanded(event.newState === "open");

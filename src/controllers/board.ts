@@ -14,9 +14,9 @@ export class BoardController extends Controller<HTMLElement> {
   } | null = null;
   private mode: "pointer" | "keyboard" | null = null;
   private ghost: HTMLElement | null = null;
-  /** 指で運ぶ間、運び込む先の入る位置に置く線の印。項目そのものは離すまで元の場所に残す。 */
+  /** ドラッグ中、移動先に表示する挿入位置の線。項目そのものは離すまで元の場所に残す。 */
   private marker: HTMLElement | null = null;
-  /** 掴んだ位置。手に持った写しを、項目のどこを掴んだかのまま指に付いて動かす。 */
+  /** 掴んだ位置。ドラッグ中のコピーを、項目を掴んだ位置のままポインターに合わせて動かす。 */
   private grab = { x: 12, y: 12 };
   private frame = 0;
   private suppressClick = false;
@@ -29,7 +29,7 @@ export class BoardController extends Controller<HTMLElement> {
     document.addEventListener("pointercancel", this.cancel);
     document.addEventListener("turbo:before-cache", this.cancel);
     window.addEventListener("blur", this.cancel);
-    // 開閉のボタンは、押して働く時だけ見せる。
+    // 開閉ボタンは、押して機能する時だけ表示する。
     for (const button of this.element.querySelectorAll<HTMLButtonElement>(
       ":scope > section > .title > button[data-board-toggle]",
     ))
@@ -70,7 +70,7 @@ export class BoardController extends Controller<HTMLElement> {
     const status = this.element.querySelector(":scope > [data-board-announcement]");
     if (status) status.textContent = message;
   };
-  /** 列の開閉。表示だけを切り替え、取り消せるboard:toggleで利用側へ知らせる。 */
+  /** 列の開閉。表示だけを切り替え、取り消し可能なboard:toggleイベントを発火する。 */
   toggle = (event: Event) => {
     const button = event.currentTarget;
     if (!(button instanceof HTMLButtonElement)) return;
@@ -91,7 +91,7 @@ export class BoardController extends Controller<HTMLElement> {
     } else {
       delete column.dataset.collapsed;
       if (!locked) delete column.dataset.dropDisabled;
-      // 開いた時だけ、中の項目を一枚ずつ差し出す。読み込み時には動かさない。
+      // 開いた時だけ、中の項目を1件ずつ順に表示する。読み込み時にはアニメーションしない。
       column.dataset.unfolding = "true";
       window.setTimeout(() => delete column.dataset.unfolding, 600);
     }
@@ -156,7 +156,7 @@ export class BoardController extends Controller<HTMLElement> {
       );
     }
   };
-  /** 指で運ぶ間の入る位置。項目は動かさずに先の列へ線の印だけを差し込む。 */
+  /** ドラッグ中の挿入位置。項目は動かさずに移動先の列へ挿入位置の線だけを差し込む。 */
   private aim = (column: HTMLElement, before: HTMLElement | null) => {
     for (const other of this.columns()) if (other !== column) other.removeAttribute("data-over");
     const container = column.querySelector(":scope > .items");
@@ -183,7 +183,7 @@ export class BoardController extends Controller<HTMLElement> {
     const item = this.item,
       origin = this.origin;
     const wasPointer = this.mode === "pointer";
-    // 指で運んだ時は、離した時に初めて項目を印の位置へ移す。
+    // ドラッグで移動した時は、離した時に初めて項目を挿入位置へ移す。
     if (item && commit && wasPointer && this.marker?.parentElement)
       this.marker.parentElement.insertBefore(item, this.marker);
     this.marker?.remove();
@@ -229,8 +229,8 @@ export class BoardController extends Controller<HTMLElement> {
   };
   private cancel = () => this.finish(false);
   /**
-   * 手に持った項目。項目そのものの写しを同じ幅・同じ列の染まりで作り、
-   * 掴んだ位置のまま指に付けて動かす。写しは読み上げ・操作・idの重複から外す。
+   * ドラッグ中の項目。項目そのもののコピーを同じ幅・同じ列の色で作り、
+   * 掴んだ位置のままポインターに合わせて動かす。コピーは読み上げ・操作の対象から外し、idの重複を避ける。
    */
   private preview = (item: HTMLElement, pointer: { startX: number; startY: number }) => {
     const rect = item.getBoundingClientRect();

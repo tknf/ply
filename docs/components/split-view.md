@@ -12,35 +12,35 @@
 
 ## 使い方
 
-`primary`・`secondary`を渡します。DOMの読み順は常に`primary`、`secondary`の順です。二つの領域は一枚の紙に並べ、境目に罫線を一本引きます。
+`primary`・`secondary`を渡します。DOMの読み順は常に`primary`、`secondary`の順です。二つの領域は一枚の面に並べ、境目に罫線を一本引きます。
 
 `SplitView`自身の幅が52rem以上で左右に並べます。`inspector`は`primary`を広く（おおよそ2:1）、`reader`は`primary`を狭く（おおよそ3:5）取ります。52rem未満では`primary`を上、`secondary`を下に積み、境目の罫線は横になります。
 
-`resizable`を指定し、`SplitterController`を`splitter`として登録すると、境目に持ち手を出します。持ち手のドラッグと矢印キーで、`primary`の幅を全体の20〜80%の間で変えられます。初めの幅は`initialSize`で決めます。幅を変えられるのは左右に並べた時だけです。
+`resizable`を指定し、`SplitterController`を`splitter`として登録すると、境目にハンドルを出します。ハンドルのドラッグと矢印キーで、`primary`の幅を全体の20〜80%の間で変えられます。初めの幅は`initialSize`で決めます。幅を変えられるのは左右に並べた時だけです。
 
-利用者が幅を変えると`splitter:beforechange`、続けて`splitter:change`を知らせます。ドラッグは離した時に一度だけ知らせます。幅を覚えておく時は、`splitter:change`の`detail.value`を利用側で保存し、次の描画で`initialSize`に渡します。
+利用者が幅を変えると`splitter:beforechange`、続けて`splitter:change`を発火します。ドラッグは離した時に一度だけ発火します。幅を覚えておく時は、`splitter:change`の`detail.value`を利用側で保存し、次の描画で`initialSize`に渡します。
 
-JavaScriptなしでは持ち手を出さず、`layout`の比率で並べます。
+JavaScriptなしではハンドルを出さず、`layout`の比率で並べます。
 
 ## キーボード
 
-| キー       | 動作                                                                                        |
-| ---------- | ------------------------------------------------------------------------------------------- |
-| ← / →      | 持ち手で、`primary`の幅を1%ずつ狭く・広くします。右から左へ書く言語では向きが逆になります。 |
-| Home / End | 持ち手で、`primary`を最小（20%）・最大（80%）の幅にします。                                 |
-| Enter      | 持ち手で、`primary`を最小の幅にします。もう一度押すと元の幅に戻します。                     |
+| キー       | 動作                                                                                          |
+| ---------- | --------------------------------------------------------------------------------------------- |
+| ← / →      | ハンドルで、`primary`の幅を1%ずつ狭く・広くします。右から左へ書く言語では向きが逆になります。 |
+| Home / End | ハンドルで、`primary`を最小（20%）・最大（80%）の幅にします。                                 |
+| Enter      | ハンドルで、`primary`を最小の幅にします。もう一度押すと元の幅に戻します。                     |
 
 ## アクセシビリティ
 
-- 持ち手は`role="separator"`・`aria-orientation="vertical"`で、「領域の幅を調整」という読み上げ名と、`primary`の領域を指す`aria-controls`を持ちます。今の幅はcontrollerが`aria-valuenow`・`aria-valuemin`・`aria-valuemax`で伝えます。
+- ハンドルは`role="separator"`・`aria-orientation="vertical"`で、「領域の幅を調整」という読み上げ名と、`primary`の領域を指す`aria-controls`を持ちます。今の幅はcontrollerが`aria-valuenow`・`aria-valuemin`・`aria-valuemax`で伝えます。
 - controllerが使う幅の範囲入力（「主領域の幅」）を、見た目からは隠して置きます。
 
 ## イベント
 
 | イベント                | 内容                                                                                                                                                           |
 | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `splitter:beforechange` | 利用者が幅を変える直前に知らせます。`detail`は`value`（新しい幅の%）・`previousValue`・`reason`（`pointer`または`keyboard`）です。取り消すと元の幅に戻します。 |
-| `splitter:change`       | 幅を変えた後に知らせます。`detail`は`splitter:beforechange`と同じです。                                                                                        |
+| `splitter:beforechange` | 利用者が幅を変える直前に発火します。`detail`は`value`（新しい幅の%）・`previousValue`・`reason`（`pointer`または`keyboard`）です。取り消すと元の幅に戻します。 |
+| `splitter:change`       | 幅を変えた後に発火します。`detail`は`splitter:beforechange`と同じです。                                                                                        |
 
 ## API
 
@@ -48,14 +48,14 @@ JavaScriptなしでは持ち手を出さず、`layout`の比率で並べます�
 
 inspectorは作業＋補足、readerは一覧＋本文。DOMの読み順は常にprimaryが先。
 
-| 名前                | 型                        | 既定値                          | 説明                                                                                                                                                            |
-| ------------------- | ------------------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                | `string`                  |                                 | ルートのid。省略すると自動で作り、持ち手と`primary`の領域、幅の入力の関連付けに使います。                                                                       |
-| `primary`（必須）   | `Child`                   |                                 | 先に読む領域。広い配置では始まりの側、狭い配置では上に置く。                                                                                                    |
-| `secondary`（必須） | `Child`                   |                                 | 後に読む領域。広い配置では終わりの側、狭い配置では下に置く。                                                                                                    |
-| `layout`            | `"inspector" \| "reader"` | `"inspector"`                   | inspectorはprimaryを広く取る作業＋補足、readerはprimaryを狭く取る一覧＋本文。                                                                                   |
-| `resizable`         | `boolean`                 | `false`                         | 境目に持ち手を置き、ドラッグと矢印キーで幅を変えられるようにする。 SplitterControllerをsplitterとして登録した時だけ働き、未接続ではlayoutの固定の比率で並べる。 |
-| `initialSize`       | `number`                  | `layout === "reader" ? 38 : 68` | resizableの時のprimaryの幅の初期値。全体に対する百分率で、20〜80に丸める。既定はreaderで38、inspectorで68。                                                     |
+| 名前                | 型                        | 既定値                          | 説明                                                                                                                                                              |
+| ------------------- | ------------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                | `string`                  |                                 | ルートのid。省略すると自動で作り、ハンドルと`primary`の領域、幅の入力の関連付けに使います。                                                                       |
+| `primary`（必須）   | `Child`                   |                                 | 先に読む領域。広い配置では先頭側、狭い配置では上に置く。                                                                                                          |
+| `secondary`（必須） | `Child`                   |                                 | 後に読む領域。広い配置では末尾側、狭い配置では下に置く。                                                                                                          |
+| `layout`            | `"inspector" \| "reader"` | `"inspector"`                   | inspectorはprimaryを広く取る作業＋補足、readerはprimaryを狭く取る一覧＋本文。                                                                                     |
+| `resizable`         | `boolean`                 | `false`                         | 境目にハンドルを置き、ドラッグと矢印キーで幅を変えられるようにする。 SplitterControllerをsplitterとして登録した時だけ働き、未接続ではlayoutの固定の比率で並べる。 |
+| `initialSize`       | `number`                  | `layout === "reader" ? 38 : 68` | resizableの時のprimaryの幅の初期値。全体に対する百分率で、20〜80の範囲に収める。既定はreaderで38、inspectorで68。                                                 |
 
 ほかに、`<div>`へ標準のHTML属性を渡せます。
 

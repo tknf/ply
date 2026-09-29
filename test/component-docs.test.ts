@@ -14,7 +14,7 @@ const apis = componentApi();
 const markdown = (text: string) =>
   format(text, { parser: "markdown", embeddedLanguageFormatting: "off" });
 
-describe("部品のリファレンス", () => {
+describe("コンポーネントのリファレンス", () => {
   test("全ての公開コンポーネントを、ちょうど一つのページで説明する", () => {
     const pages = new Map<string, string[]>();
     for (const doc of componentDocs)

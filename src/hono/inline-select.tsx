@@ -12,7 +12,7 @@ export type InlineSelectProps = Omit<ElementProps<"select">, "children"> & {
   label: string;
   /** 選べる語。並べた順にoptionにする。 */
   options: readonly InlineSelectOption[];
-  /** 初めに選んでおく選択肢のvalue。渡さなければ先頭を選ぶ。 */
+  /** 最初に選んでおく選択肢のvalue。渡さなければ先頭を選ぶ。 */
   value?: string;
 };
 

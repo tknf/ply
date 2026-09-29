@@ -1,8 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { componentIds } from "./catalog-pages";
 
-// 全部品の見本を回り、どの部品にも共通する崩れを確かめる。
-// 部品ごとの操作や寸法は、各部品のspecで確かめる。
+// 全コンポーネントの見本を回り、どのコンポーネントにも共通する崩れを確かめる。
+// コンポーネントごとの操作や寸法は、各コンポーネントのspecで確かめる。
 
 const overflowOf = (element: Element) => {
   if (element.scrollWidth <= element.clientWidth + 1) return [];

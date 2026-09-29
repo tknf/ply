@@ -6,13 +6,13 @@ export default {
   description: "関連する状態を一つまたは複数切り替える",
   api: ["ToggleGroup"],
   guidance: [
-    "表示密度や表示する項目のように、同じ画面の見え方を切り替えるボタンの束に使います。一つだけを選ぶ時は既定のまま、複数を選ぶ時は `multiple` を付けます。",
+    "表示密度や表示する項目のように、同じ画面の見え方を切り替えるボタンのグループに使います。一つだけを選ぶ時は既定のまま、複数を選ぶ時は `multiple` を付けます。",
     "URLで一覧の条件を切り替える時は `FilterBar`、パネルを切り替える時は `Tabs` を使います。",
     "フォームで送信する値を選ぶ時は、ラジオボタンの `Choice` か `CheckboxGroup` を使います。`ToggleGroup` は値を送信しません。",
   ],
   usage: [
     "`items` を押せるボタンとして並べ、`selected` の値をオンにします。オンのボタンは青い塗りにします。`value` が空白だけの項目と、重なった値の二つ目以降は出しません。",
-    "既定では一つだけをオンにし、別のボタンを押すと切り替わります。オンのボタンを押してもオンのままで、`toggle-group:beforechange`・`toggle-group:change` は出しません。`multiple` では押したボタンだけを切り替え、全てオフにもできます。",
+    "既定では一つだけをオンにし、別のボタンを押すと切り替わります。オンのボタンを押してもオンのままで、`toggle-group:beforechange`・`toggle-group:change` は発火しません。`multiple` では押したボタンだけを切り替え、全てオフにもできます。",
     '`orientation="vertical"` は縦に並べ、ボタンの幅を一番長い名前にそろえます。',
     "`ToggleGroupController` を `toggle-group` として登録します。選んだ結果は `toggle-group:change` で受け取り、画面への反映や保存は利用側が行います。",
     "JavaScriptが無い時は、初期の状態を見せるだけで、押しても切り替わりません。",
@@ -20,7 +20,7 @@ export default {
   keyboard: [
     [
       "Tab",
-      "束の中の一つのボタンへ入ります。前に移ったボタン、オンのボタン、最初のボタンの順に選びます。",
+      "グループの中の一つのボタンへ入ります。前に移ったボタン、オンのボタン、最初のボタンの順に選びます。",
     ],
     [
       "← / →（`horizontal`）",
@@ -34,17 +34,17 @@ export default {
     ],
   ],
   accessibility: [
-    '束は `role="group"` で、`label` を読み上げ名にします。',
+    'グループは `role="group"` で、`label` を読み上げ名にします。',
     "各ボタンは `aria-pressed` でオン・オフを伝えます。`disabled` のボタンには移りません。",
   ],
   events: [
     [
       "toggle-group:beforechange",
-      "ボタンを押して選択が変わる前に出します。取り消せます。detailは `selected`（変わった後の値）・`previousSelected`・`reason`（`pointer` か `keyboard`）です。",
+      "ボタンを押して選択が変わる前に発火します。取り消せます。detailは `selected`（変わった後の値）・`previousSelected`・`reason`（`pointer` か `keyboard`）です。",
     ],
     [
       "toggle-group:change",
-      "選択が変わった後に出します。detailは `toggle-group:beforechange` と同じです。",
+      "選択が変わった後に発火します。detailは `toggle-group:beforechange` と同じです。",
     ],
   ],
 } satisfies ComponentDoc;

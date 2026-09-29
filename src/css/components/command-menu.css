@@ -20,7 +20,7 @@
     & > .panel {
       container: ply-command-panel / inline-size;
       position: fixed;
-      /* 出入りの動きはoverlay.cssの共通の定義。上部中央の操作の下から膨らむ。 */
+      /* 開閉のアニメーションはoverlay.cssの共通の定義。上部中央の操作の下から膨らむ。 */
       transform-origin: top center;
       inset-block: var(--ply-space-4) auto;
       inset-inline: 0;
@@ -37,7 +37,7 @@
       background: var(--ply-surface);
       color: var(--ply-text);
       font-family: var(--ply-control-font-family);
-      /* メニューの文字は操作と同じ段。 */
+      /* メニューの文字は操作と同じ大きさの段階。 */
       font-size: var(--ply-label);
       line-height: 1.5;
       letter-spacing: normal;
@@ -67,7 +67,7 @@
         grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: var(--ply-space-3);
         padding-inline: var(--ply-space-3);
-        /* 入口の見た目はActionTile（action-tile.css）が持つ。ここでは格子に並べるだけ。 */
+        /* ショートカットの見た目はActionTile（action-tile.css）が持つ。ここではグリッドに並べるだけ。 */
         & > .shortcut {
           display: grid;
           min-inline-size: 0;
@@ -130,7 +130,7 @@
                 border-radius: var(--ply-radius-control);
                 color: var(--ply-text);
                 font-size: var(--ply-label);
-                /* 項目はMedium。アイコンは塗りつぶしの版。 */
+                /* 項目はMedium。アイコンは塗りつぶし版。 */
                 font-weight: 500;
                 line-height: calc(10 / 7);
                 text-decoration: none;

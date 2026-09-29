@@ -5,25 +5,25 @@ import { Keycap } from "./keycap";
 import { overlayAnchorName } from "./overlay-content";
 
 export type FilterMenuOption = {
-  /** 選んだ時に`filter-menu:select`の`detail.value`で知らせる値。nameがあれば送信する値にもなる。 */
+  /** 選んだ時に発火する`filter-menu:select`の`detail.value`に入る値。nameがあれば送信する値にもなる。 */
   value: string;
-  /** 候補の名前。絞り込みは、打った文字をこの名前に含むかで決める（大文字と小文字は区別しない）。 */
+  /** 候補の名前。絞り込みは、入力した文字をこの名前に含むかで決める（大文字と小文字は区別しない）。 */
   label: string;
-  /** 選んだ印の代わりに前に置く印。渡すと、選んだ印は行の終わりに出す。 */
+  /** 選択マークの代わりに前に置くアイコン。渡すと、選択マークは行の末尾に出す。 */
   icon?: IconName;
   /** 表示用の補助表記。ショートカットの登録は利用側で行う。 */
   shortcut?: string;
-  /** 初めから選んでおく。 */
+  /** 最初から選んでおく。 */
   selected?: boolean;
   /** 選べない候補にする。矢印の移動でも飛ばす。 */
   disabled?: boolean;
 };
 export type FilterMenuProps = {
-  /** 紙と候補のidの元。画面内で一意にする。紙は`<id>-panel`、候補の一覧は`<id>-list`になる。 */
+  /** パネルと候補のidの元。画面内で一意にする。パネルは`<id>-panel`、候補の一覧は`<id>-list`になる。 */
   id: string;
   /** 開く操作の名前。 */
   label: string;
-  /** 紙の見出し（「ラベルを選ぶ」「担当を決める」など）。 */
+  /** パネルの見出し（「ラベルを選ぶ」「担当を決める」など）。 */
   title: string;
   /** 候補。 */
   options: readonly FilterMenuOption[];
@@ -31,29 +31,29 @@ export type FilterMenuProps = {
   multiple?: boolean;
   /** 渡すと、選んだ値をこの名前の隠し入力で送る。 */
   name?: string;
-  /** 絞り込みの欄の見本の文字。欄の`aria-label`にもなる。 */
+  /** 絞り込みの欄のプレースホルダー。欄の`aria-label`にもなる。 */
   placeholder?: string;
-  /** 渡すと、絞り込みの欄の隣に「新しく作る」を置き、押すとfilter-menu:createで打った文字を知らせる。 */
+  /** 渡すと、絞り込みの欄の隣に「新しく作る」を置き、押すとfilter-menu:createイベントを発火して入力した文字を渡す。 */
   createLabel?: string;
   /** 当てはまる候補が無い時に出す文言。 */
   emptyLabel?: string;
-  /** 開く操作の文言の前に置く印。 */
+  /** 開く操作の文言の前に置くアイコン。 */
   icon?: IconName;
-  /** 開く操作を印だけにする。iconが無ければ▾の印を出す。labelは`aria-label`として読み上げる。 */
+  /** 開く操作をアイコンだけにする。iconが無ければ▾のマークを出す。labelは`aria-label`として読み上げる。 */
   iconOnly?: boolean;
   /** 開く操作の見た目。値の意味はButtonと同じ。 */
   variant?: ButtonProps["variant"];
-  /** 紙を開く操作のどちらの端に揃えるか。endは行の終わりの側に置いた操作に使う。 */
+  /** パネルを開く操作のどちらの端に揃えるか。endは行の末尾側に置いた操作に使う。 */
   align?: "start" | "end";
   /** 開く操作を押せなくする。 */
   disabled?: boolean;
 };
 
 /**
- * ラベル付けや担当の割り当てのように、候補を打って絞り込みながら選ぶ小さな紙。
- * 見た目はDropdownMenuと同じ青の面だが、中に文字の欄を持つので、メニューではなく
+ * ラベル付けや担当の割り当てのように、候補を入力して絞り込みながら選ぶ小さなパネル。
+ * 見た目はDropdownMenuと同じ青のパネルだが、中に入力欄を持つので、メニューではなく
  * コンボボックス（絞り込みの欄）とリストボックス（候補）の組み合わせにする。
- * 選ぶとfilter-menu:selectで値と選んだかどうかを知らせる。
+ * 選ぶとfilter-menu:selectイベントを発火し、値と選んだかどうかを渡す。
  */
 export const FilterMenu = ({
   id,

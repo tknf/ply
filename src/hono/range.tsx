@@ -5,9 +5,9 @@ import { classes, type ElementProps } from "./types";
 export type RangeProps = Omit<ElementProps<"input">, "type" | "value" | "children"> & {
   /** 名前。単一値ではラベル、範囲指定ではfieldsetのlegendになる。単位はここにも含める。 */
   label: string;
-  /** 下限。スライダーの始まりの端に数として出す。 */
+  /** 下限。スライダーの先頭側の端に数として出す。 */
   min: number;
-  /** 上限。スライダーの終わりの端に数として出す。 */
+  /** 上限。スライダーの末尾側の端に数として出す。 */
   max: number;
   /** 数値なら単一値、[下限, 上限]なら範囲指定になる。省略すると単一値で、位置はブラウザの既定（minとmaxの中間）になる。 */
   value?: number | readonly [number, number];

@@ -23,7 +23,7 @@ export const SettingsScreen = () => (
     <PageHeader
       title="設定"
       icon={<Icon name="grid" />}
-      description="仕事場の名前と通知を変えます。このブラウザに保存して、次回も同じ設定を使います。"
+      description="ワークスペースの名前と通知を変えます。このブラウザに保存して、次回も同じ設定を使います。"
     />
     <form
       class="ply-stack"
@@ -33,9 +33,9 @@ export const SettingsScreen = () => (
       <FieldGroup
         id="settings-basic"
         legend="基本情報"
-        description="仕事場の名前や分類、作業期間を設定します。"
+        description="ワークスペースの名前や分類、作業期間を設定します。"
       >
-        <Field id="workspace-name" label="仕事場の名前">
+        <Field id="workspace-name" label="ワークスペースの名前">
           {(attributes) => (
             <Input {...attributes} name="workspace" required value="小さな仕事場" maxlength={80} />
           )}
@@ -108,13 +108,13 @@ export const SettingsScreen = () => (
       />
     </Section>
     <DangerZone
-      title="仕事場を削除する"
+      title="ワークスペースを削除する"
       description="プロジェクト・連絡・資料をすべて削除します。削除した内容は元に戻せません。"
       actions={
         <Dialog
           id="settings-delete"
-          title="仕事場を削除しますか？"
-          trigger="仕事場を削除"
+          title="ワークスペースを削除しますか？"
+          trigger="ワークスペースを削除"
           triggerVariant="danger"
           closeLabel="やめる"
           actions={

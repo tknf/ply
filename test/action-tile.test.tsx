@@ -35,7 +35,7 @@ test("無効なリンクのタイルはaria-descriptionなどを保ち、リン�
   expect(root).not.toContain("tabindex");
 });
 
-test("CommandMenuの無効な入口でもdescriptionを読み上げに残す", async () => {
+test("CommandMenuの無効なリンクでもdescriptionを読み上げに残す", async () => {
   const result = await render(
     <CommandMenu
       id="commands"

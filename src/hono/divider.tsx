@@ -1,13 +1,13 @@
 import type { Child } from "hono/jsx";
 
 export type DividerProps = {
-  /** 線の始まりに置く名前。文字のほか、選択（InlineSelectなど）も置ける。 */
+  /** 線の先頭に置く名前。文字のほか、選択（InlineSelectなど）も置ける。 */
   label?: Child;
   /** solidは確定した区切り、dashedは破線（ここから先はまだ確定していない）。 */
   line?: "solid" | "dashed";
   /**
-   * 線の終わりに置く操作（ピルのActionLinkなど）。「最近のファイル ——— ［すべて見る］」のように、
-   * 区切りの先の物をまとめて扱う操作だけを置く。
+   * 線の末尾に置く操作（ピルのActionLinkなど）。「最近のファイル ——— ［すべて見る］」のように、
+   * 区切りの後の項目をまとめて扱う操作だけを置く。
    */
   actions?: Child;
 };

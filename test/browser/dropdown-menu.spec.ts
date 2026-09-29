@@ -5,9 +5,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/components/dropdown-menu");
 });
 
-test("Endで末尾へ移りEnterで選んだ値をdropdown-menu:selectで知らせ、操作へ戻る", async ({
-  page,
-}) => {
+test("Endで末尾へ移りEnterで選んだ値をdropdown-menu:selectで渡し、操作へ戻る", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.locator('[data-example="hono"]').evaluate((element) => {
     element.addEventListener("dropdown-menu:select", (event) => {
@@ -152,7 +150,7 @@ test("右端と狭い画面でも親子メニューが画面内に収まる", as
   await page.keyboard.press("ArrowRight");
   await expect(page.getByRole("menu")).toHaveCount(2);
   for (const menu of await page.getByRole("menu").all()) {
-    // 開く動きは少し行き過ぎてから戻るので、途中の膨らんだ箱で測らないよう、動きの終わりを待つ。
+    // 開く動きは少し行き過ぎてから戻るので、途中の拡大した状態で測らないよう、動きの終わりを待つ。
     await menu.evaluate((element) =>
       Promise.all(element.getAnimations().map((animation) => animation.finished)),
     );

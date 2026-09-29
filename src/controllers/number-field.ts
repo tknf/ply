@@ -1,6 +1,6 @@
 import { NumberFieldController as BaseNumberFieldController } from "@tknf/stimulus-ui";
 
-/** 上流の数の入力に、PageUp・PageDownで変えた値の標準の`input`・`change`を加える。 */
+/** 上流の数値入力に、PageUp・PageDownで変えた値の標準の`input`・`change`を加える。 */
 export class NumberFieldController extends BaseNumberFieldController {
   private paging = false;
 
@@ -23,12 +23,12 @@ export class NumberFieldController extends BaseNumberFieldController {
     };
   }
 
-  // 上流はPageUp・PageDownのkeydownの中で値を変え、number-field:changeを出す。
+  // 上流はPageUp・PageDownのkeydownの中で値を変え、number-field:changeを発火する。
   private watchPageKey = (event: KeyboardEvent) => {
     this.paging = event.key === "PageUp" || event.key === "PageDown";
   };
 
-  // 標準の操作で値が変わる時は、ブラウザがinputを出すので重ねて出さない。
+  // 標準の操作で値が変わる時は、ブラウザがinputを発火するので重ねて発火しない。
   private clearPageKey = () => {
     this.paging = false;
   };

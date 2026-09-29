@@ -4,8 +4,8 @@
     min-inline-size: 0;
     /* 寸法を保つため枠の幅は残し、線は見せない。 */
     border: var(--ply-stroke-width) solid transparent;
-    /* パンくずの帯は区切り線を持たず、本文と同じ左右の余白に揃える。 */
-    /* パンくずの帯は面の上端から左右と同じだけ離し、本文はパンくずの下から始める。 */
+    /* パンくずの行は区切り線を持たず、本文と同じ左右の余白に揃える。 */
+    /* パンくずの行は面の上端から左右と同じだけ離し、本文はパンくずの下から始める。 */
     & > .ply-context-bar {
       min-block-size: calc(var(--ply-control-size) + var(--ply-space-12) + var(--ply-space-2));
       padding-block-start: var(--ply-space-12);
@@ -38,7 +38,7 @@
         padding-inline: var(--ply-space-4);
       }
     }
-    /* パンくずがある時は、本文をパンくずの帯のすぐ下から始める。帯の下の8pxと見出しの行の余りで離れる。 */
+    /* パンくずがある時は、本文をパンくずの行のすぐ下から始める。行の下の8pxと見出しの行の余りで離れる。 */
     & > .ply-context-bar + .body {
       padding-block-start: 0;
     }

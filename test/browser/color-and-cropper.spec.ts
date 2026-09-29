@@ -23,7 +23,7 @@ test("ImageCropperの移動操作が位置スライダーを同期する", async
   await expect(cropper.locator('[data-image-cropper-target="xControl"]')).toHaveValue("13");
 });
 
-test("ImageCropperはJavaScriptなしでは持ち手と調整の欄を出さず、接続すると出す", async ({
+test("ImageCropperはJavaScriptなしではハンドルと調整の欄を出さず、接続すると出す", async ({
   browser,
   page,
 }) => {

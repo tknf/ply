@@ -6,11 +6,11 @@ export type PageHeaderProps = ElementProps<"header"> & {
   title: string;
   /** 見出しの下の補足の一文。 */
   description?: string;
-  /** 見出しの始まりの側に置く大きな印（Iconなど）。淡い面の角丸の枠に収める。 */
+  /** 見出しの先頭側に置く大きなアイコン（Iconなど）。淡い背景の角丸の枠に収める。 */
   icon?: Child;
-  /** 見出しの終わりの側に並べる操作。狭い場所では見出しの下の行へ回す。 */
+  /** 見出しの末尾側に並べる操作。狭い場所では見出しの下の行へ回す。 */
   actions?: Child;
-  /** startは始まりの側に揃える。centerは見出しを中央に置き、左右から線を伸ばして作業面の主題として示す。 */
+  /** startは先頭側に揃える。centerは見出しを中央に置き、左右から線を伸ばして作業面の主題として示す。 */
   align?: "center" | "start";
 };
 export const PageHeader = ({

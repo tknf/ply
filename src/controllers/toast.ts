@@ -8,7 +8,7 @@ const isInvoker = (node: EventTarget): node is Invoker =>
 /**
  * 開閉の操作を、閉じるボタンも含めて標準のpopovertargetのボタンで持つ。
  * 利用者がそのボタンを押した時は、標準の開閉の代わりにstimulus-uiのshow・hideへ操作として渡し、
- * 取り消せる`toast:beforeshow`・`toast:beforehide`と、`toast:show`・`toast:hide`を知らせる。
+ * 取り消せる`toast:beforeshow`・`toast:beforehide`と、`toast:show`・`toast:hide`を発火する。
  * controllerが働かない時は、標準の開閉に任せる。
  */
 export class ToastController extends BaseToastController {

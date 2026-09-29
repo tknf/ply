@@ -68,7 +68,7 @@ export const screens: readonly ScreenEntry[] = [
     label: "売上",
     icon: "chart",
     accent: "coral",
-    description: "数字と動きを確かめる",
+    description: "数値と推移を確かめる",
     keywords: ["集計", "レポート"],
   },
   {
@@ -76,7 +76,7 @@ export const screens: readonly ScreenEntry[] = [
     label: "検索",
     icon: "search",
     accent: "blue",
-    description: "記事と資料を言葉で探す",
+    description: "記事と資料をキーワードで探す",
   },
   {
     id: "people",
@@ -91,13 +91,13 @@ export const screens: readonly ScreenEntry[] = [
     label: "設定",
     icon: "grid",
     accent: "blue",
-    description: "仕事場の名前や通知を変える",
+    description: "ワークスペースの名前や通知を変える",
   },
 ];
 
 export const appPath = (screen: AppScreen) => `/apps/${screen}`;
 
-/** アプリの画面の枠。上部中央のコマンドで画面を移り、中央の作業面に画面を置く。wideは年の予定など横に広い画面。 */
+/** アプリの画面の枠。上部中央のコマンドメニューで画面を切り替え、中央の作業面に画面を置く。wideは年の予定など横に広い画面。 */
 export const AppFrame = ({
   current,
   wide = false,
@@ -141,7 +141,7 @@ export const AppFrame = ({
                 label: "コンポーネントカタログ",
                 href: "/",
                 icon: "grid",
-                description: "この画面の部品と使い方を見る",
+                description: "この画面のコンポーネントと使い方を見る",
               },
             ],
           },

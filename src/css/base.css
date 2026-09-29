@@ -1,7 +1,7 @@
 @layer base {
   :root {
     color-scheme: light;
-    /* スクロールバーは細く淡い親指だけにし、溝は透明にする。色は子へ引き継がれる。 */
+    /* スクロールバーはつまみを細く淡くし、トラックは透明にする。色は子へ引き継がれる。 */
     scrollbar-color: color-mix(in srgb, var(--ply-muted) 40%, transparent) transparent;
   }
 
@@ -10,7 +10,7 @@
   }
 
   body {
-    /* 地は白。作業面は縁取りではなく影で浮かせる。 */
+    /* 背景は白。作業面は縁取りではなく影で浮かせる。 */
     background: var(--ply-surface);
     color: var(--ply-text);
     font-family: var(--ply-control-font-family);
@@ -23,7 +23,7 @@
   /*
     リンクは下線を引かず、青い文字にする。
     文章（段落・引用・図の説明）の中に混ざるリンクだけは、色だけに頼らないよう細く淡い下線を残す。
-    コンポーネントが持つリンク（クラスを持つ物）は、それぞれのコンポーネントが見た目を決める。
+    コンポーネントが持つリンク（クラスを持つもの）は、それぞれのコンポーネントが見た目を決める。
   */
   a {
     color: var(--ply-link);
@@ -48,7 +48,7 @@
     outline-offset: 0.1875rem;
   }
 
-  /* 見つけた所・目印は平らな淡い黄色の地。行をまたいでも各行に同じ地を敷く。 */
+  /* 検索の一致箇所・ハイライトは平らな淡い黄色の背景。行をまたいでも各行に同じ背景を敷く。 */
   mark {
     padding-inline: 0.15em;
     border-radius: 0.2em;

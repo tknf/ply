@@ -47,13 +47,13 @@ export default () => (
           }
         />
       </Disclosure>
-      <Disclosure summary="リッチテキストの編集部品（ProseMirror・Tiptapの構造）">
+      <Disclosure summary="リッチテキストエディター（ProseMirror・Tiptapの構造）">
         <Composer
           id="composer-editor"
           label="議事録"
           name="minutes"
           submitLabel="保存する"
-          status="編集部品が送信用の値を持ちます"
+          status="エディターが送信用の値を持ちます"
           editor={
             <div class="tiptap">
               <div class="ProseMirror" contenteditable role="textbox" aria-multiline="true">
@@ -68,7 +68,7 @@ export default () => (
           }
         />
       </Disclosure>
-      <Disclosure summary="何も書いていない編集部品">
+      <Disclosure summary="何も書いていないエディター">
         <Composer
           id="composer-empty-editor"
           label="メモ"

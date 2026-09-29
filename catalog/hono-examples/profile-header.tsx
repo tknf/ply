@@ -60,7 +60,7 @@ export default () => (
           avatar={<Avatar name="佐藤 健" initials="健" size="large" tone="green" />}
         />
       </Disclosure>
-      <Disclosure summary="狭い場所：長い名前と設定の帯を折り返す">
+      <Disclosure summary="狭い場所：長い名前と設定のバーを折り返す">
         <div style="max-inline-size: 18rem">
           <ProfileHeader
             headingLevel={3}

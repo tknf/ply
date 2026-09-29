@@ -10,7 +10,7 @@ export type NavigationItem = {
   current?: boolean;
   /** 名前の後に出す件数。0も表示し、省略すると出さない。 */
   count?: number;
-  /** 名前の前の印（Iconなど）。 */
+  /** 名前の前のアイコン（Iconなど）。 */
   icon?: Child;
 };
 

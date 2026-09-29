@@ -32,15 +32,15 @@ export type ButtonProps = PropsWithChildren<
     variant?: ButtonVariant;
     /**
      * 大きさ。compactは同じ高さで左右の余白を狭め、largeはフォーム末尾などの大きな操作に使う。
-     * tagはTagの中の解除操作用で、タッチ環境でも小さな札の高さを保つ。
+     * tagはTagの中の解除操作用で、タッチ環境でも小さなタグの高さを保つ。
      */
     size?: "default" | "compact" | "large" | "tag";
     /**
      * 処理中にする。役割の色をゆっくり流して示し、押せなくし、aria-busyを付ける。
-     * 内容はbusyLabelに置き換える。印だけの操作（data-icon-only="true"）は形を保つため印のまま残す。
+     * 内容はbusyLabelに置き換える。アイコンだけの操作（data-icon-only="true"）は形を保つためアイコンのまま残す。
      */
     busy?: boolean;
-    /** 処理中に内容の代わりに出す文言。アイコンも含めて置き換える。印だけの操作では使わない。 */
+    /** 処理中に内容の代わりに出す文言。アイコンも含めて置き換える。アイコンだけの操作では使わない。 */
     busyLabel?: string;
   }
 >;

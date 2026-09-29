@@ -20,7 +20,7 @@ export type TooltipProps = {
    * 自分でstyleを持つ時は、受け取ったstyleと合わせる。
    */
   trigger: (attributes: TooltipTriggerAttributes) => Child;
-  /** 指を載せてから、またはフォーカスしてから補足を出すまでのミリ秒。0ならすぐ出す。負の数などは既定値に戻す。 */
+  /** ホバーしてから、またはフォーカスしてから補足を出すまでのミリ秒。0ならすぐ出す。負の数などは既定値に戻す。 */
   delay?: number;
 };
 

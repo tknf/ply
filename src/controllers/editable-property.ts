@@ -27,21 +27,21 @@ export class EditablePropertyController extends Controller<HTMLElement> {
     this.form = null;
   };
 
-  /** 確定した値を表示へ移し、書き終えた印をしばらく出す。 */
+  /** 確定した値を表示へ移し、完了のマークをしばらく出す。 */
   commit = () => {
     this.sync();
     window.clearTimeout(this.savedTask);
     delete this.element.dataset.saved;
-    // 続けて確定した時も印を描き直すため、属性を外した状態を一度描画させる。
+    // 続けて確定した時もマークを描き直すため、属性を外した状態を一度描画させる。
     void this.element.offsetWidth;
     this.element.dataset.saved = "true";
     this.savedTask = window.setTimeout(() => delete this.element.dataset.saved, 1600);
   };
 
   /**
-   * 値そのものを押した時も、鉛筆と同じく書き始める。文字を選んでいる時は選ぶ操作を優先する。
-   * 上流は鉛筆の押下だけを利用者の操作として扱い、公開のedit()はイベントを出さないので、
-   * 鉛筆と同じeditable:beforeedit（取り消せる）とeditable:editをここで出す。
+   * 値そのものを押した時も、鉛筆と同じく編集を始める。文字を選択している時は選択を優先する。
+   * 上流は鉛筆の押下だけを利用者の操作として扱い、公開のedit()はイベントを発火しないので、
+   * 鉛筆と同じeditable:beforeedit（取り消し可能）とeditable:editをここで発火する。
    */
   start = (event: Event) => {
     if (!window.getSelection()?.isCollapsed) return;
@@ -69,11 +69,11 @@ export class EditablePropertyController extends Controller<HTMLElement> {
       cancelable: true,
     });
     if (!this.element.dispatchEvent(before) || !editable.edit()) return;
-    // editable:editを受けて全体を選ぶ（data-actionのselect）。鉛筆で書き始めた時と同じ流れにする。
+    // editable:editを受けて全体を選択する（data-actionのselect）。鉛筆で編集を始めた時と同じ流れにする。
     this.element.dispatchEvent(new CustomEvent("editable:edit", { detail, bubbles: true }));
   };
 
-  /** 書き始めたら、一行の値は全体を選び、そのまま打てば置き換わるようにする。複数行は書き足せるよう末尾に置く。 */
+  /** 編集を始めたら、一行の値は全体を選択し、そのまま入力すれば置き換わるようにする。複数行は追記できるようカーソルを末尾に置く。 */
   select = () => {
     const input = this.inputTarget;
     if (input instanceof HTMLInputElement) input.select();

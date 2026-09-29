@@ -54,7 +54,7 @@ const baseEvents = (date: string): readonly CalendarEvent[] => {
   return [];
 };
 
-/** 予定ごとの場所・参加する人・メモ。札を押すと開く詳細の紙に書く。 */
+/** 予定ごとの場所・参加者・メモ。予定のボタンを押すと開く詳細パネルに表示する。 */
 const notes: Record<string, { place: string; people: readonly number[]; memo?: string }> = {
   編集会議: { place: "3階 会議室A", people: [0, 1, 2], memo: "公開前の記事の進み具合を確かめる。" },
   取材の準備: { place: "オンライン", people: [2], memo: "質問の一覧を先に共有する。" },

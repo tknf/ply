@@ -27,7 +27,7 @@ test("idを主操作のボタンに付け、▾のメニューと操作は派生
   expect(result.match(/\sid="send"/g)).toHaveLength(1);
 });
 
-test("処理中は主操作を置き換え、▾も同じ処理中の見た目で押せなくし、印は残す", async () => {
+test("処理中は主操作を置き換え、▾も同じ処理中の見た目で押せなくし、マークは残す", async () => {
   const result = await render(
     <SplitButton id="send" label="送る" busy busyLabel="送っています…" items={items()} />,
   );

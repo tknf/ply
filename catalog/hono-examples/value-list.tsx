@@ -39,8 +39,8 @@ export default () => (
         },
       ]}
     />
-    <DisclosureGroup label="印の有無と置き場所の違い">
-      <Disclosure summary="印なし">
+    <DisclosureGroup label="アイコンの有無と置き場所の違い">
+      <Disclosure summary="アイコンなし">
         <ValueList
           items={[
             { label: "部屋", value: "中会議室" },

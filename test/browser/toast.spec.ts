@@ -18,13 +18,13 @@ const recordedEvents = (page: Page) =>
     return Array.isArray(events) ? events.map(String) : [];
   });
 
-test("popovertargetのボタンと閉じるボタンで開閉すると、Dialogと同じく開閉を知らせる", async ({
+test("popovertargetのボタンと閉じるボタンで開閉すると、Dialogと同じく開閉のイベントを発火する", async ({
   page,
 }) => {
   await page.goto("/components/toast");
   await recordEvents(page, "hono-toast-short");
   const toast = page.locator("#hono-toast-short");
-  const open = page.getByRole("button", { name: "短い知らせ", exact: true });
+  const open = page.getByRole("button", { name: "短い通知", exact: true });
   await open.click();
   await expect(toast).toBeVisible();
   await toast.getByRole("button", { name: "閉じる", exact: true }).click();
@@ -54,7 +54,7 @@ test("toast:beforeshow・toast:beforehideを取り消すと、標準の開閉も
       .getElementById("hono-toast-short")
       ?.addEventListener("toast:beforeshow", (event) => event.preventDefault(), { once: true });
   });
-  const open = page.getByRole("button", { name: "短い知らせ", exact: true });
+  const open = page.getByRole("button", { name: "短い通知", exact: true });
   await open.click();
   await expect(toast).not.toBeVisible();
   await open.click();
@@ -106,7 +106,7 @@ test("JavaScriptがなくても、popovertargetのボタンで開き閉じるボ
     const page = await context.newPage();
     await page.goto("http://127.0.0.1:5178/components/toast");
     const toast = page.locator("#hono-toast-short");
-    await page.getByRole("button", { name: "短い知らせ", exact: true }).click();
+    await page.getByRole("button", { name: "短い通知", exact: true }).click();
     await expect(toast).toBeVisible();
     await toast.getByRole("button", { name: "閉じる", exact: true }).click();
     await expect(toast).not.toBeVisible();
@@ -135,12 +135,14 @@ test("長い通知と操作が狭幅に収まる", async ({ page }) => {
   expect(closeBox.x + closeBox.width).toBeLessThanOrEqual(375);
 });
 
-test("Toastの閉じる操作は紙の右上の角からはみ出し、本文と操作行へ混ざらない", async ({ page }) => {
+test("Toastの閉じる操作はパネルの右上の角からはみ出し、本文と操作行へ混ざらない", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 375, height: 850 });
   await page.goto("/components/toast");
   await page.getByRole("button", { name: "結果表示を試す", exact: true }).click();
   const toast = page.locator(".ply-toast").first();
-  // 下から差し出す動きの途中で二つを順に測ると位置がずれるため、動きの終わりを待つ。
+  // 下から現れる動きの途中で二つを順に測ると位置がずれるため、動きの終わりを待つ。
   await toast.evaluate((element) =>
     Promise.all(element.getAnimations({ subtree: true }).map((animation) => animation.finished)),
   );

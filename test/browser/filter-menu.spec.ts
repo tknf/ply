@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("開く操作のaria-expandedを紙の開閉に合わせる", async ({ page }) => {
+test("開く操作のaria-expandedをパネルの開閉に合わせる", async ({ page }) => {
   await page.goto("/components/filter-menu");
   const trigger = page.getByRole("button", { name: "担当", exact: true });
   await expect(trigger).toHaveAttribute("aria-expanded", "false");

@@ -15,7 +15,7 @@ import { AppFrame, appPath } from "./frame";
 
 const kinds = ["PDF", "画像", "表"] as const;
 
-/** 資料。種類で絞り込み、表で名前・種類・大きさ・更新日・担当を読む。アップロードはDialogで受ける。 */
+/** 資料。種類で絞り込み、表で名前・種類・大きさ・更新日・担当を読む。アップロードはDialogで受け付ける。 */
 export const FilesScreen = ({ kind }: { kind?: string }) => {
   const current = kinds.find((entry) => entry === kind);
   const shown = files.filter((file) => !current || file.kind === current);

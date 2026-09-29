@@ -25,7 +25,9 @@ test("↑↓は空き（null）をまたいでも同じ曜日の前後の週へ�
   await expect(day("2026-09-16")).toBeFocused();
 });
 
-test("日付を押すと選び、期間は始点を示し、予定の無い一覧は空を知らせる", async ({ page }) => {
+test("日付を押すと選び、期間は始点を示し、予定の無い一覧は空であることを伝える", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 720, height: 800 });
   await page.goto("/components/calendar");
   const week = page.getByRole("region", { name: "9月14日〜20日から選ぶ", exact: true });

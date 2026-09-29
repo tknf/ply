@@ -15,7 +15,7 @@ export type ComboboxProps = Omit<ElementProps<"input">, "type" | "role"> & {
   id: string;
   /** 一覧に出す候補。入力した文字では絞り込まない。 */
   options: readonly ComboboxOption[];
-  /** 一覧を開閉する矢印の操作の読み上げ名。何の候補かを含める。 */
+  /** 一覧を開閉する矢印ボタンの読み上げ名。何の候補かを含める。 */
   toggleLabel?: string;
   /** 候補の一覧の読み上げ名。 */
   listLabel?: string;

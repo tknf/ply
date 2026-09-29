@@ -2,44 +2,44 @@
 
 # FilterMenu
 
-候補を打って絞り込みながら選ぶ、青の面の小さな紙
+候補を打って絞り込みながら選ぶ、青の面の小さなパネル
 
 ## 使いどころ
 
 - ラベル付けや担当の割り当てのように、多めの候補から打って絞り込みながら選ぶ時に使います。
 - 候補が少なく、打って探す必要が無い操作は `DropdownMenu` を使います。
-- フォームの欄として値を入力・選択する時は、`Select`・`Suggestion`・`Picker` など欄の部品を使います。
+- フォームの欄として値を入力・選択する時は、`Select`・`Suggestion`・`Picker` など入力欄のコンポーネントを使います。
 
 ## 使い方
 
-`FilterMenuController` を `filter-menu` として登録します。`id` は画面内で一意にし、`label` に開く操作の文言、`title` に紙の見出し、`options` に候補を渡します。
+`FilterMenuController` を `filter-menu` として登録します。`id` は画面内で一意にし、`label` に開く操作の文言、`title` にパネルの見出し、`options` に候補を渡します。
 
-見た目は `DropdownMenu` と同じ青の面ですが、中に文字の欄を持つため、メニューではなく、コンボボックス（絞り込みの欄）とリストボックス（候補）を載せた紙にしています。紙は標準のPopover APIで開き、開く操作に揃えて置きます。Escapeと紙の外側を押すと閉じます。
+見た目は `DropdownMenu` と同じ青の面ですが、中に文字の欄を持つため、メニューではなく、コンボボックス（絞り込みの欄）とリストボックス（候補）を載せたパネルにしています。パネルは標準のPopover APIで開き、開く操作に揃えて置きます。Escapeとパネルの外側を押すと閉じます。
 
 開くと前に打った文字を消し、絞り込みの欄へ移ります。打った文字を名前に含む候補だけを残し（大文字と小文字は区別しません）、残った最初の候補を選ぶ位置にします。当てはまる候補が無い時は `emptyLabel` を出します。
 
-`multiple` なら開いたまま選んだ印を切り替え、そうでなければ選んだ一つに印を付けて閉じます。一つだけの時は、選んだ候補を選び直しても外れません。候補には `icon`・`shortcut`・`disabled` を添えられます。`shortcut` は表示だけで、キーの登録は利用側が行います。
+`multiple` なら開いたまま選択のチェックを切り替え、そうでなければ選んだ一つにチェックを付けて閉じます。一つだけの時は、選んだ候補を選び直しても外れません。候補には `icon`・`shortcut`・`disabled` を添えられます。`shortcut` は表示だけで、キーの登録は利用側が行います。
 
 選ぶたびに `filter-menu:select` を出します。`name` を渡すと、候補ごとに隠し入力を置き、選んだ候補の値だけをフォームで送ります。
 
-`createLabel` を渡すと絞り込みの欄の隣に作る操作を置き、押すと `filter-menu:create` で打った文字を知らせます。候補を作って紙の候補に加える処理と、選んだ結果の保存は利用側が行います。
+`createLabel` を渡すと絞り込みの欄の隣に作る操作を置き、押すと `filter-menu:create` を発火し、打った文字を渡します。候補を作ってパネルの候補に加える処理と、選んだ結果の保存は利用側が行います。
 
-JavaScriptなしでも紙は標準のPopover APIで開閉し、初めから選んだ候補の値は送信されますが、絞り込みと選択はできません。
+JavaScriptなしでもパネルは標準のPopover APIで開閉し、初めから選んだ候補の値は送信されますが、絞り込みと選択はできません。
 
 ## キーボード
 
 | キー                      | 動作                                                     |
 | ------------------------- | -------------------------------------------------------- |
-| Enter / Space（開く操作） | 紙を開き、絞り込みの欄へ移ります。                       |
+| Enter / Space（開く操作） | パネルを開き、絞り込みの欄へ移ります。                   |
 | 文字                      | 候補を名前で絞り込みます。                               |
 | ↓ / ↑                     | 次・前の選べる候補へ移ります。端では反対の端へ戻ります。 |
 | Enter                     | 選ぶ位置の候補を選びます。                               |
-| Escape                    | 紙を閉じます。                                           |
+| Escape                    | パネルを閉じます。                                       |
 
 ## アクセシビリティ
 
-- 開く操作は `aria-haspopup="dialog"`・`aria-controls` を持ち、紙は `title` を名前にした `role="dialog"` です。`iconOnly` の時は `label` を開く操作の `aria-label` にし、`icon` が無ければ▾の印を出します。
-- 開く操作の `aria-expanded` は、controllerが紙の開閉に合わせて切り替えます。JavaScriptなしでは初期HTMLに書かず、標準のPopover APIの開閉状態をブラウザが伝えます。
+- 開く操作は `aria-haspopup="dialog"`・`aria-controls` を持ち、パネルは `title` を名前にした `role="dialog"` です。`iconOnly` の時は `label` を開く操作の `aria-label` にし、`icon` が無ければ▾のマークを出します。
+- 開く操作の `aria-expanded` は、controllerがパネルの開閉に合わせて切り替えます。JavaScriptなしでは初期HTMLに書かず、標準のPopover APIの開閉状態をブラウザが伝えます。
 - 絞り込みの欄は `role="combobox"` で、`placeholder` を `aria-label` にし、選ぶ位置の候補を `aria-activedescendant` で伝えます。
 - 候補は `role="listbox"` の `option` で、選んだ状態を `aria-selected`、選べない候補を `aria-disabled` で伝えます。`multiple` の時は `aria-multiselectable="true"` を付けます。
 - 日本語の変換中の矢印とEnterは、候補の移動や選択に使いません。
@@ -56,24 +56,24 @@ JavaScriptなしでも紙は標準のPopover APIで開閉し、初めから選�
 
 ### FilterMenu
 
-ラベル付けや担当の割り当てのように、候補を打って絞り込みながら選ぶ小さな紙。見た目はDropdownMenuと同じ青の面だが、中に文字の欄を持つので、メニューではなくコンボボックス（絞り込みの欄）とリストボックス（候補）の組み合わせにする。選ぶとfilter-menu:selectで値と選んだかどうかを知らせる。
+ラベル付けや担当の割り当てのように、候補を入力して絞り込みながら選ぶ小さなパネル。見た目はDropdownMenuと同じ青のパネルだが、中に入力欄を持つので、メニューではなくコンボボックス（絞り込みの欄）とリストボックス（候補）の組み合わせにする。選ぶとfilter-menu:selectイベントを発火し、値と選んだかどうかを渡す。
 
-| 名前              | 型                            | 既定値                         | 説明                                                                                             |
-| ----------------- | ----------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------ |
-| `id`（必須）      | `string`                      |                                | 紙と候補のidの元。画面内で一意にする。紙は`<id>-panel`、候補の一覧は`<id>-list`になる。          |
-| `label`（必須）   | `string`                      |                                | 開く操作の名前。                                                                                 |
-| `title`（必須）   | `string`                      |                                | 紙の見出し（「ラベルを選ぶ」「担当を決める」など）。                                             |
-| `options`（必須） | `readonly FilterMenuOption[]` |                                | 候補。                                                                                           |
-| `multiple`        | `boolean`                     | `false`                        | 複数を選べる時（ラベル・タグ）。一つだけの時（担当）は選ぶと閉じる。                             |
-| `name`            | `string`                      |                                | 渡すと、選んだ値をこの名前の隠し入力で送る。                                                     |
-| `placeholder`     | `string`                      | `"絞り込む…"`                  | 絞り込みの欄の見本の文字。欄の`aria-label`にもなる。                                             |
-| `createLabel`     | `string`                      |                                | 渡すと、絞り込みの欄の隣に「新しく作る」を置き、押すとfilter-menu:createで打った文字を知らせる。 |
-| `emptyLabel`      | `string`                      | `"当てはまる候補はありません"` | 当てはまる候補が無い時に出す文言。                                                               |
-| `icon`            | `IconName`                    |                                | 開く操作の文言の前に置く印。                                                                     |
-| `iconOnly`        | `boolean`                     | `false`                        | 開く操作を印だけにする。iconが無ければ▾の印を出す。labelは`aria-label`として読み上げる。         |
-| `variant`         | `ButtonProps["variant"]`      | `"secondary"`                  | 開く操作の見た目。値の意味はButtonと同じ。                                                       |
-| `align`           | `"start" \| "end"`            | `"start"`                      | 紙を開く操作のどちらの端に揃えるか。endは行の終わりの側に置いた操作に使う。                      |
-| `disabled`        | `boolean`                     |                                | 開く操作を押せなくする。                                                                         |
+| 名前              | 型                            | 既定値                         | 説明                                                                                                           |
+| ----------------- | ----------------------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| `id`（必須）      | `string`                      |                                | パネルと候補のidの元。画面内で一意にする。パネルは`<id>-panel`、候補の一覧は`<id>-list`になる。                |
+| `label`（必須）   | `string`                      |                                | 開く操作の名前。                                                                                               |
+| `title`（必須）   | `string`                      |                                | パネルの見出し（「ラベルを選ぶ」「担当を決める」など）。                                                       |
+| `options`（必須） | `readonly FilterMenuOption[]` |                                | 候補。                                                                                                         |
+| `multiple`        | `boolean`                     | `false`                        | 複数を選べる時（ラベル・タグ）。一つだけの時（担当）は選ぶと閉じる。                                           |
+| `name`            | `string`                      |                                | 渡すと、選んだ値をこの名前の隠し入力で送る。                                                                   |
+| `placeholder`     | `string`                      | `"絞り込む…"`                  | 絞り込みの欄のプレースホルダー。欄の`aria-label`にもなる。                                                     |
+| `createLabel`     | `string`                      |                                | 渡すと、絞り込みの欄の隣に「新しく作る」を置き、押すとfilter-menu:createイベントを発火して入力した文字を渡す。 |
+| `emptyLabel`      | `string`                      | `"当てはまる候補はありません"` | 当てはまる候補が無い時に出す文言。                                                                             |
+| `icon`            | `IconName`                    |                                | 開く操作の文言の前に置くアイコン。                                                                             |
+| `iconOnly`        | `boolean`                     | `false`                        | 開く操作をアイコンだけにする。iconが無ければ▾のマークを出す。labelは`aria-label`として読み上げる。             |
+| `variant`         | `ButtonProps["variant"]`      | `"secondary"`                  | 開く操作の見た目。値の意味はButtonと同じ。                                                                     |
+| `align`           | `"start" \| "end"`            | `"start"`                      | パネルを開く操作のどちらの端に揃えるか。endは行の末尾側に置いた操作に使う。                                    |
+| `disabled`        | `boolean`                     |                                | 開く操作を押せなくする。                                                                                       |
 
 登録するcontroller：`filter-menu`（`FilterMenuController`）
 
@@ -81,14 +81,14 @@ JavaScriptなしでも紙は標準のPopover APIで開閉し、初めから選�
 
 #### `FilterMenuOption`
 
-| 名前            | 型         | 既定値 | 説明                                                                                         |
-| --------------- | ---------- | ------ | -------------------------------------------------------------------------------------------- |
-| `value`（必須） | `string`   |        | 選んだ時に`filter-menu:select`の`detail.value`で知らせる値。nameがあれば送信する値にもなる。 |
-| `label`（必須） | `string`   |        | 候補の名前。絞り込みは、打った文字をこの名前に含むかで決める（大文字と小文字は区別しない）。 |
-| `icon`          | `IconName` |        | 選んだ印の代わりに前に置く印。渡すと、選んだ印は行の終わりに出す。                           |
-| `shortcut`      | `string`   |        | 表示用の補助表記。ショートカットの登録は利用側で行う。                                       |
-| `selected`      | `boolean`  |        | 初めから選んでおく。                                                                         |
-| `disabled`      | `boolean`  |        | 選べない候補にする。矢印の移動でも飛ばす。                                                   |
+| 名前            | 型         | 既定値 | 説明                                                                                             |
+| --------------- | ---------- | ------ | ------------------------------------------------------------------------------------------------ |
+| `value`（必須） | `string`   |        | 選んだ時に発火する`filter-menu:select`の`detail.value`に入る値。nameがあれば送信する値にもなる。 |
+| `label`（必須） | `string`   |        | 候補の名前。絞り込みは、入力した文字をこの名前に含むかで決める（大文字と小文字は区別しない）。   |
+| `icon`          | `IconName` |        | 選択マークの代わりに前に置くアイコン。渡すと、選択マークは行の末尾に出す。                       |
+| `shortcut`      | `string`   |        | 表示用の補助表記。ショートカットの登録は利用側で行う。                                           |
+| `selected`      | `boolean`  |        | 最初から選んでおく。                                                                             |
+| `disabled`      | `boolean`  |        | 選べない候補にする。矢印の移動でも飛ばす。                                                       |
 
 #### `IconName`
 
@@ -135,7 +135,7 @@ export default () => (
       />
     </div>
     <DisclosureGroup label="候補と置き場所の違い">
-      <Disclosure summary="候補にアイコンとキーを添える・終わりの側に開く">
+      <Disclosure summary="候補にアイコンとキーを添える・末尾側に開く">
         <div class="ply-cluster" style="justify-content: end">
           <FilterMenu
             id="move-menu"
@@ -582,9 +582,7 @@ export default () => (
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
         ><span class="label"
-          ><span class="title"
-            >候補にアイコンとキーを添える・終わりの側に開く</span
-          ></span
+          ><span class="title">候補にアイコンとキーを添える・末尾側に開く</span></span
         >
       </summary>
       <div class="body">

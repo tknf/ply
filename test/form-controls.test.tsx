@@ -23,16 +23,16 @@ test("Comboboxは接続するまで一行の入力として出し、開閉の矢
   expect(markup).toMatch(/<ul class="options"[^>]* hidden/);
 });
 
-test("CopyFieldは写す印を接続まで隠し、写せなかった時の文を隠して用意する", async () => {
+test("CopyFieldはコピーボタンを接続まで隠し、コピーできなかった時の文を隠して用意する", async () => {
   const markup = await render(<CopyField id="link" label="公開リンク" value="https://a.test" />);
   expect(markup).toMatch(/<button[^>]*data-copy-field-target="trigger"[^>]* hidden/);
   expect(markup).toMatch(
-    /<p class="failure" data-copy-field-target="failure" hidden="">[\s\S]*写せませんでした。欄の値を選んでコピーしてください。/,
+    /<p class="failure" data-copy-field-target="failure" hidden="">[\s\S]*コピーできませんでした。欄の値を選んでコピーしてください。/,
   );
   const custom = await render(
-    <CopyField id="key" label="鍵" value="abc" failedLabel="写せませんでした。" />,
+    <CopyField id="key" label="鍵" value="abc" failedLabel="コピーできませんでした。" />,
   );
-  expect(custom).toContain("<span>写せませんでした。</span>");
+  expect(custom).toContain("<span>コピーできませんでした。</span>");
 });
 
 test("Rangeの範囲指定は下限・上限の数の入力にunitを添えて説明にする", async () => {
@@ -51,10 +51,10 @@ test("Rangeの範囲指定は下限・上限の数の入力にunitを添えて�
   expect(plain).not.toContain('class="affix"');
 });
 
-test("OptionalFieldsはJavaScriptが無くても全ての欄を出し、チップと外す操作を隠す", async () => {
+test("OptionalFieldsはJavaScriptが無くても全ての欄を出し、チップと削除する操作を隠す", async () => {
   const markup = await render(
     <OptionalFields
-      label="予定に足す項目"
+      label="予定に追加する項目"
       items={[
         { id: "place", label: "場所", open: true, field: <Input aria-label="場所" name="place" /> },
         { id: "note", label: "メモ", field: <Input aria-label="メモ" name="note" /> },
@@ -70,7 +70,7 @@ test("OptionalFieldsはJavaScriptが無くても全ての欄を出し、チッ�
     expect(slot).not.toContain("hidden");
     expect(slot).not.toContain("disabled");
   }
-  expect(markup).toMatch(/<button[^>]*aria-label="メモを外す"[^>]* hidden/);
+  expect(markup).toMatch(/<button[^>]*aria-label="メモを削除"[^>]* hidden/);
   expect(markup).toMatch(
     /<button[^>]*aria-controls="note-slot"[^>]*aria-expanded="false"[^>]* hidden/,
   );

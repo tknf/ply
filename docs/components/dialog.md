@@ -15,13 +15,13 @@
 
 `DialogController` を `dialog` として登録します。`id` は画面内で一意にします。閉じたネイティブの `dialog` と開く操作を出力し、開く操作を押すとモーダルで開きます。
 
-紙は見出し・本文・操作欄に分け、長い本文は本文だけをスクロールします。見出しの行の終わりに閉じる操作を置き、`closeLabel` はその名前です。`actions` を渡すと、操作欄の先頭に `closeLabel` の文言の閉じる操作を置き、その後ろに `actions` を並べます。
+パネルは見出し・本文・操作欄に分け、長い本文は本文だけをスクロールします。見出しの行の末尾に閉じる操作を置き、`closeLabel` はその名前です。`actions` を渡すと、操作欄の先頭に `closeLabel` の文言の閉じる操作を置き、その後ろに `actions` を並べます。
 
 操作欄の操作で閉じるには `data-dialog-target="close"` を付けます。確認の後の保存・削除・通信は利用側が行い、`dialog:close` などのイベントや、操作の `onclick` で受け取ります。
 
-フォームを載せる時は、`form` に `method="dialog"` を付けると、入力が有効な時だけ送信で閉じます。送信で閉じる時も `dialog:beforeclose`・`dialog:close` を出し、`dialog:beforeclose` を取り消すと開いたままにします。`initialFocus` を `content` にし、最初に入力する欄に `autofocus` を付けます。本文の外の操作欄から送る時は、送信の `Button` に `form` でフォームのidを渡します。
+フォームを載せる時は、`form` に `method="dialog"` を付けると、入力が有効な時だけ送信で閉じます。送信で閉じる時も `dialog:beforeclose`・`dialog:close` を発火し、`dialog:beforeclose` を取り消すと開いたままにします。`initialFocus` を `content` にし、最初に入力する欄に `autofocus` を付けます。本文の外の操作欄から送る時は、送信の `Button` に `form` でフォームのidを渡します。
 
-`size` は紙の幅の上限で、`compact` は26rem、`default` は32rem、`wide` は52remです。画面が狭い時は、画面の幅から余白を引いた幅に収めます。
+`size` はパネルの幅の上限で、`compact` は26rem、`default` は32rem、`wide` は52remです。画面が狭い時は、画面の幅から余白を引いた幅に収めます。
 
 幅40rem以下のタッチ画面では、下端に付くシートとして出します。上端のハンドルと見出しを下へ引くと閉じます（少し動かしただけでは閉じません）。
 
@@ -37,10 +37,10 @@
 
 ## アクセシビリティ
 
-- 紙はネイティブのモーダル `dialog` で、見出しを名前（`aria-labelledby`）、`description` を説明（`aria-describedby`）にします。背後の画面は操作できず、読み上げからも外れます。
+- パネルはネイティブのモーダル `dialog` で、見出しを名前（`aria-labelledby`）、`description` を説明（`aria-describedby`）にします。背後の画面は操作できず、読み上げからも外れます。
 - 開く操作は `aria-haspopup="dialog"`・`aria-controls`・`aria-expanded` を持ちます。
 - 既定では見出しへフォーカスを移し、読み上げが題名から始まるようにします。見出しは `tabindex="-1"` で、Tabの巡回には入りません。
-- 見出しの横の閉じる操作は印だけなので、`closeLabel` を `aria-label` にします。
+- 見出しの横の閉じる操作はアイコンだけなので、`closeLabel` を `aria-label` にします。
 
 ## イベント
 
@@ -65,8 +65,8 @@
 | `description`     | `string`                           |               | 見出しの下に置く短い説明。ダイアログの説明（`aria-describedby`）になる。                                                     |
 | `triggerVariant`  | `ButtonVariant`                    | `"secondary"` | 開く操作の見た目。削除の確認ならdangerにする。                                                                               |
 | `triggerDisabled` | `boolean`                          |               | 開く操作を押せなくする。                                                                                                     |
-| `size`            | `"compact" \| "default" \| "wide"` | `"default"`   | 紙の幅。compactは26rem、defaultは32rem、wideは52remを上限にする。                                                            |
-| `closeLabel`      | `string`                           | `"閉じる"`    | 見出しの横の閉じる操作の名前。actionsがある時は、操作欄の先頭に置くやめる操作の文言にもなる。                                |
+| `size`            | `"compact" \| "default" \| "wide"` | `"default"`   | パネルの幅。compactは26rem、defaultは32rem、wideは52remを上限にする。                                                        |
+| `closeLabel`      | `string`                           | `"閉じる"`    | 見出しの横の閉じる操作の名前。actionsがある時は、操作欄の先頭に置くキャンセル操作の文言にもなる。                            |
 | `actions`         | `Child`                            |               | 操作欄に並べる操作。渡すと、閉じる操作（closeLabel）の後ろに置く。押して閉じる操作には`data-dialog-target="close"`を付ける。 |
 | `initialFocus`    | `"title" \| "content"`             | `"title"`     | contentでは本文内のautofocus、または最初の操作へ移る。                                                                       |
 | `children`        | `Child`                            |               | 本文。長い時は本文だけをスクロールする。                                                                                     |

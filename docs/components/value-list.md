@@ -12,18 +12,18 @@
 
 ## 使い方
 
-`items` に `label` と `value` を渡します。項目名は淡いMediumの文字、値は墨の文字にし、各行の下に細い線を引きます。幅が22rem以上では項目名と値を横に並べ、狭い時は項目名の下に値を置きます。
+`items` に `label` と `value` を渡します。項目名は淡いMediumの文字、値は濃い色の文字にし、各行の下に細い線を引きます。幅が22rem以上では項目名と値を横に並べ、狭い時は項目名の下に値を置きます。
 
 `value` が `null`・`undefined` の時は淡い「未登録」を出し、`0` や空文字はそのまま出して、値の0と未登録を区別します。数値・日時の書式は利用側で決め、日時は `time` 要素で渡せます。`value` には段落やリンクなどの要素も渡せ、`description` は値の下に淡く添えます。
 
-`icon` に印（塗りつぶしの `Icon` など）を渡すと、項目名の前に色の淡い丸に入れて添えます。丸の色は `accent`（`blue`・`green`・`amber`・`coral`）で選びます。
+`icon` にアイコン（塗りつぶしの `Icon` など）を渡すと、項目名の前に淡い色の丸に入れて添えます。丸の色は `accent`（`blue`・`green`・`amber`・`coral`）で選びます。
 
 controllerを持たないので、JavaScriptなしでも同じように表示されます。
 
 ## アクセシビリティ
 
 - ルートは `dl` で、項目名は `dt`、値は `dd` として読み上げます。
-- `icon` の丸は読み上げから外します。印に項目名以外の意味を持たせないでください。
+- `icon` の丸は読み上げから外します。アイコンに項目名以外の意味を持たせないでください。
 
 ## API
 
@@ -44,8 +44,8 @@ controllerを持たないので、JavaScriptなしでも同じように表示さ
 | `label`（必須） | `string` |        | 項目名。dtに入れる。                                                                                             |
 | `value`（必須） | `Child`  |        | 現在の値。ddに入れる。nullかundefinedの時は淡い「未登録」を出し、0や空文字はそのまま出す。書式は利用側で決める。 |
 | `description`   | `string` |        | 値の下に添える淡い補足。                                                                                         |
-| `icon`          | `Child`  |        | 項目名の前に置く印。塗りつぶしの印を色の淡い丸に入れる。                                                         |
-| `accent`        | `Accent` |        | 印の丸の色。iconを渡した時だけ効き、省略時はblueにする。                                                         |
+| `icon`          | `Child`  |        | 項目名の前に置くアイコン。塗りつぶしのアイコンを淡い色の丸に入れる。                                             |
+| `accent`        | `Accent` |        | アイコンの丸の色。iconを渡した時だけ効き、省略時はblueにする。                                                   |
 
 #### `Accent`
 
@@ -107,8 +107,8 @@ export default () => (
         },
       ]}
     />
-    <DisclosureGroup label="印の有無と置き場所の違い">
-      <Disclosure summary="印なし">
+    <DisclosureGroup label="アイコンの有無と置き場所の違い">
+      <Disclosure summary="アイコンなし">
         <ValueList
           items={[
             { label: "部屋", value: "中会議室" },
@@ -269,7 +269,11 @@ export default () => (
       <dd>workspace-autumn-2026-abcdefghijklmnopqrstuvwxyz0123456789</dd>
     </div>
   </dl>
-  <div class="ply-disclosure-group" role="group" aria-label="印の有無と置き場所の違い">
+  <div
+    class="ply-disclosure-group"
+    role="group"
+    aria-label="アイコンの有無と置き場所の違い"
+  >
     <details class="ply-disclosure">
       <summary>
         <span class="marker" aria-hidden="true"
@@ -281,7 +285,7 @@ export default () => (
             focusable="false"
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
-        ><span class="label"><span class="title">印なし</span></span>
+        ><span class="label"><span class="title">アイコンなし</span></span>
       </summary>
       <div class="body">
         <dl class="ply-value-list">

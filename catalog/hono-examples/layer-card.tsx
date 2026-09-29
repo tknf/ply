@@ -50,10 +50,10 @@ export default () => (
       <Disclosure summary="Cardと並べる">
         <div class="ply-split">
           <Card title="次にすること">
-            <p>見出しを紙の中に書くと、題名が中身と同じ面で競います。</p>
+            <p>見出しをカードの中に書くと、題名と中身が同じ面に並び、区別しにくくなります。</p>
           </Card>
           <LayerCard title="次にすること">
-            <p>見出しを層に置くと、紙の中は中身だけになります。</p>
+            <p>見出しを層に置くと、カードの中は中身だけになります。</p>
           </LayerCard>
         </div>
       </Disclosure>

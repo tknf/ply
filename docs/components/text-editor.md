@@ -2,55 +2,55 @@
 
 # TextEditor
 
-書式の道具を並べた書く面
+書式ツールを並べた入力エリア
 
 ## 使いどころ
 
-- 返信・日記・コメントなど、太字や箇条書きの付いた文を書く面を置く時に使います。
-- 書式の要らない本文は `Textarea`、本文と添付・送信ボタンをまとめた入力面は `Composer` を使います。`Composer` の `editor` にこの部品を入れることもできます。
+- 返信・日記・コメントなど、太字や箇条書きの付いた文の入力エリアを置く時に使います。
+- 書式の要らない本文は `Textarea`、本文と添付・送信ボタンをまとめた入力エリアは `Composer` を使います。`Composer` の `editor` にこのコンポーネントを入れることもできます。
 
 ## 使い方
 
-`id` と `label` を渡します。書式の道具（太字・斜体・取り消し線・リンク・見出し・引用・コード・箇条書き・番号付きの箇条書き・ファイルを添える・元に戻す・やり直す）を並べ、その下に書く面を置きます。`tools` で並べる道具を選び、`"|"` で区切りを入れます。
+`id` と `label` を渡します。書式ツール（太字・斜体・取り消し線・リンク・見出し・引用・コード・箇条書き・番号付きの箇条書き・ファイルを添える・元に戻す・やり直す）を並べ、その下に入力エリアを置きます。`tools` で並べるツールを選び、`"|"` で区切りを入れます。
 
-`placement="bottom"` にすると道具を書く面の下に置きます。`actions` に渡した送信・下書きの保存などの操作は、道具の並びの終わりに置きます。
+`placement="bottom"` にするとツールバーを入力エリアの下に置きます。`actions` に渡した送信・下書きの保存などの操作は、ツールバーの末尾に置きます。
 
-この部品は見た目と道具の並びだけを持ち、特定のエディターに依存しません。書式を付ける動きは利用側のエディターに任せます。`editor` に任意のリッチテキストのエディターが描く書く面（`contenteditable` の要素）を渡し、道具のボタンの `data-text-editor-tool`（`bold`・`italic`・`link`・`bullets` など）を読んでエディターの操作を呼びます。今の書式の道具に `data-active="true"` を付けると、淡い青の面で示します。
+このコンポーネントは見た目とツールバーだけを持ち、特定のエディターに依存しません。書式を付ける動きは利用側のエディターに任せます。`editor` に任意のリッチテキストのエディターが描く入力エリア（`contenteditable` の要素）を渡し、ツールのボタンの `data-text-editor-tool`（`bold`・`italic`・`link`・`bullets` など）を読んでエディターの操作を呼びます。現在適用中の書式のツールに `data-active="true"` を付けると、淡い青の背景で示します。
 
-`editor` を渡さなければ `textarea` を置きます。`name`・`placeholder`・`value`・`disabled` などの残りの属性は `textarea` に付き、`class` は外側の要素に付きます。`textarea` のままの時も、道具を働かせるのは利用側です（書式の記号を差し込むなど）。道具を働かせない時は `tools={[]}` にします。道具も `actions` も無い時は、道具の並びを描きません。`disabled` は道具も押せなくします。
+`editor` を渡さなければ `textarea` を置きます。`name`・`placeholder`・`value`・`disabled` などの残りの属性は `textarea` に付き、`class` は外側の要素に付きます。`textarea` のままの時も、ツールを動かすのは利用側です（書式の記号を差し込むなど）。ツールを使わない時は `tools={[]}` にします。ツールも `actions` も無い時は、ツールバーを描きません。`disabled` はツールも押せなくします。
 
-道具の並びは `ToolbarController` を `toolbar` として登録して使います。書式を付ける動きのcontrollerは持ちません。送信する値は `textarea` の本文か、`editor` の側で用意した値です。JavaScriptが無い時は `textarea` に書いた文を送ります。
+ツールバーは `ToolbarController` を `toolbar` として登録して使います。書式を付ける動きのcontrollerは持ちません。送信する値は `textarea` の本文か、`editor` の側で用意した値です。JavaScriptが無い時は `textarea` に書いた文を送ります。
 
 ## キーボード
 
-| キー         | 動作                                                                       |
-| ------------ | -------------------------------------------------------------------------- |
-| Tab          | 道具の並びへは一か所だけで入ります。                                       |
-| ←・→         | 前後の道具へ移ります。端では反対の端へ回ります。右から左に読む時は逆です。 |
-| Home・End    | 最初・最後の使える道具へ移ります。                                         |
-| Enter・Space | フォーカスのある道具を押します。                                           |
+| キー         | 動作                                                                         |
+| ------------ | ---------------------------------------------------------------------------- |
+| Tab          | ツールバーへは一か所だけで入ります。                                         |
+| ←・→         | 前後のツールへ移ります。端では反対の端へ回ります。右から左に読む時は逆です。 |
+| Home・End    | 最初・最後の使えるツールへ移ります。                                         |
+| Enter・Space | フォーカスのあるツールを押します。                                           |
 
 ## アクセシビリティ
 
-- 道具の並びは `role="toolbar"` で、「`label`の書式」を名前にし、`aria-controls` で `id` の書く面を指します。`editor` を渡す時は、書く面の要素に同じ `id` と、`aria-label` などの名前を付けます。
-- 道具のボタンは名前を持ち、指を載せると同じ名前を出します。
-- 道具の並びは一つのTab停止点で、Tabで入ると前にいた道具（初めは先頭の使える道具）に止まり、矢印キーで道具の間を移ります。`actions` の操作は道具とは別のTab停止点です。
-- 道具はJavaScriptで働くものなので、controllerが付くまでは全ての道具を `tabindex="-1"` にして、Tabで止めません。
+- ツールバーは `role="toolbar"` で、「`label`の書式」を名前にし、`aria-controls` で `id` の入力エリアを指します。`editor` を渡す時は、入力エリアの要素に同じ `id` と、`aria-label` などの名前を付けます。
+- ツールのボタンは名前を持ち、ホバーすると同じ名前を表示します。
+- ツールバーは一つのTab停止点で、Tabで入ると前にいたツール（初めは先頭の使えるツール）に止まり、矢印キーでツールの間を移ります。`actions` の操作はツールとは別のTab停止点です。
+- ツールはJavaScriptで動くものなので、controllerが付くまでは全てのツールを `tabindex="-1"` にして、Tabで止めません。
 
 ## API
 
 ### TextEditor
 
-返信や日記、コメントに使う、書式の道具を並べた書く面。見た目と道具の並びだけを持ち、特定のエディターには依存しない。書式を付ける動きは利用側のエディターに任せ、道具のボタンのdata-text-editor-tool（"bold"など）を読んでエディターの操作を呼び、今の書式の道具には data-active="true"を付ける。textareaのままの時も、道具を働かせるのは利用側（記号を差し込むなど）。道具を働かせない時はtoolsを空にする。道具も操作も無い時は、道具の並びを描かない。道具の並びはToolbarControllerで一つのTab停止点にし、矢印キーで道具の間を移る。道具はJavaScriptで動くものなので、controllerが付くまではTabで止めない。
+返信や日記、コメントに使う、書式ツールを並べた入力エリア。見た目とツールバーだけを持ち、特定のエディターには依存しない。書式を付ける動きは利用側のエディターに任せ、ツールのボタンのdata-text-editor-tool（"bold"など）を読んでエディターの操作を呼び、今の書式のツールには data-active="true"を付ける。textareaのままの時も、ツールを動かすのは利用側（記号を差し込むなど）。ツールを使わない時はtoolsを空にする。ツールも操作も無い時は、ツールバーを描かない。ツールバーはToolbarControllerで一つのTab停止点にし、矢印キーでツールの間を移る。ツールはJavaScriptで動くものなので、controllerが付くまではTabで止めない。
 
-| 名前            | 型                                    | 既定値                                                                                                                                  | 説明                                                                                                                                                                                                       |
-| --------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`（必須）    | `string`                              |                                                                                                                                         | 書く面のID。textareaに付け、道具の並びのaria-controlsが指す。 editorを渡す時は、その書く面の要素に同じIDを付ける。                                                                                         |
-| `label`（必須） | `string`                              |                                                                                                                                         | 書く面の読み上げ名。道具の並びの名前（「〜の書式」）にも使う。editorを渡した時は書く面に付かない。                                                                                                         |
-| `tools`         | `readonly (TextEditorTool \| "\|")[]` | `[ "bold", "italic", "strike", "link", "\|", "heading", "quote", "code", "bullets", "numbers", "\|", "attach", "\|", "undo", "redo", ]` | 道具の並び。"\|"で区切りを入れる。                                                                                                                                                                         |
-| `placement`     | `"top" \| "bottom"`                   | `"top"`                                                                                                                                 | 道具を書く面の上（コメントなど、既定）と下（返信・日記など）のどちらに置くか。                                                                                                                             |
-| `editor`        | `Child`                               |                                                                                                                                         | 書く面の代わりに置く編集部品（リッチテキストのエディターが描くcontenteditableの要素）。渡さなければtextareaを置く。道具の並びのidは`${id}-toolbar`。エディターとのつなぎ方は、下のTextEditorの説明を参照。 |
-| `actions`       | `Child`                               |                                                                                                                                         | 道具の並びの終わりに置く操作（送信・下書きの保存など）。                                                                                                                                                   |
+| 名前            | 型                                    | 既定値                                                                                                                                  | 説明                                                                                                                                                                                                           |
+| --------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`（必須）    | `string`                              |                                                                                                                                         | 入力エリアのID。textareaに付け、ツールバーのaria-controlsが指す。 editorを渡す時は、その入力エリアの要素に同じIDを付ける。                                                                                     |
+| `label`（必須） | `string`                              |                                                                                                                                         | 入力エリアの読み上げ名。ツールバーの名前（「〜の書式」）にも使う。editorを渡した時は入力エリアに付かない。                                                                                                     |
+| `tools`         | `readonly (TextEditorTool \| "\|")[]` | `[ "bold", "italic", "strike", "link", "\|", "heading", "quote", "code", "bullets", "numbers", "\|", "attach", "\|", "undo", "redo", ]` | ツールバーに並べるツール。"\|"で区切りを入れる。                                                                                                                                                               |
+| `placement`     | `"top" \| "bottom"`                   | `"top"`                                                                                                                                 | ツールを入力エリアの上（コメントなど、既定）と下（返信・日記など）のどちらに置くか。                                                                                                                           |
+| `editor`        | `Child`                               |                                                                                                                                         | 入力エリアの代わりに置くエディター（リッチテキストエディターが描くcontenteditableの要素）。渡さなければtextareaを置く。ツールバーのidは`${id}-toolbar`。エディターとのつなぎ方は、下のTextEditorの説明を参照。 |
+| `actions`       | `Child`                               |                                                                                                                                         | ツールバーの末尾に置く操作（送信・下書きの保存など）。                                                                                                                                                         |
 
 ほかに、`<textarea>`へ標準のHTML属性を渡せます。
 
@@ -82,8 +82,8 @@ export default () => (
       name="comment"
       placeholder="コメントを書く…"
     />
-    <DisclosureGroup label="置き方と道具の違い">
-      <Disclosure summary="道具を下に置き、送る操作を並べる" open>
+    <DisclosureGroup label="置き方と書式ツールの違い">
+      <Disclosure summary="書式ツールを下に置き、送る操作を並べる" open>
         <TextEditor
           id="reply-editor"
           label="返信"
@@ -103,7 +103,7 @@ export default () => (
           }
         />
       </Disclosure>
-      <Disclosure summary="道具を絞る">
+      <Disclosure summary="書式ツールを絞る">
         <TextEditor
           id="note-editor"
           label="メモ"
@@ -112,7 +112,7 @@ export default () => (
           tools={["bold", "italic", "link", "|", "bullets"]}
         />
       </Disclosure>
-      <Disclosure summary="Composerの書く面に入れる">
+      <Disclosure summary="Composerの入力エリアに入れる">
         <Composer
           id="composer-with-editor"
           label="お知らせ"
@@ -128,7 +128,7 @@ export default () => (
           }
         />
       </Disclosure>
-      <Disclosure summary="狭い場所：道具は折り返す">
+      <Disclosure summary="狭い場所：ツールバーは折り返す">
         <div style="max-inline-size: 18rem">
           <TextEditor
             id="narrow-editor"
@@ -444,7 +444,7 @@ export default () => (
       ></textarea>
     </div>
   </div>
-  <div class="ply-disclosure-group" role="group" aria-label="置き方と道具の違い">
+  <div class="ply-disclosure-group" role="group" aria-label="置き方と書式ツールの違い">
     <details open="" class="ply-disclosure">
       <summary>
         <span class="marker" aria-hidden="true"
@@ -457,7 +457,7 @@ export default () => (
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
         ><span class="label"
-          ><span class="title">道具を下に置き、送る操作を並べる</span></span
+          ><span class="title">書式ツールを下に置き、送る操作を並べる</span></span
         >
       </summary>
       <div class="body">
@@ -860,7 +860,7 @@ export default () => (
             focusable="false"
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
-        ><span class="label"><span class="title">道具を絞る</span></span>
+        ><span class="label"><span class="title">書式ツールを絞る</span></span>
       </summary>
       <div class="body">
         <div class="ply-text-editor" data-placement="top">
@@ -983,7 +983,9 @@ export default () => (
             focusable="false"
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
-        ><span class="label"><span class="title">Composerの書く面に入れる</span></span>
+        ><span class="label"
+          ><span class="title">Composerの入力エリアに入れる</span></span
+        >
       </summary>
       <div class="body">
         <form id="composer-with-editor" class="ply-composer" aria-busy="false">
@@ -1299,7 +1301,9 @@ export default () => (
             focusable="false"
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
-        ><span class="label"><span class="title">狭い場所：道具は折り返す</span></span>
+        ><span class="label"
+          ><span class="title">狭い場所：ツールバーは折り返す</span></span
+        >
       </summary>
       <div class="body">
         <div style="max-inline-size: 18rem">

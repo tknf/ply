@@ -49,7 +49,7 @@ test("Boardはポインターで空の列へドロップできる", async ({ pag
   await page.mouse.move(target.x + target.width / 2, target.y + 70, { steps: 12 });
   await expect(page.locator("html")).toHaveAttribute("data-ply-board-dragging", "true");
   await expect(item.getByRole("button")).toHaveCSS("cursor", "grabbing");
-  // 運ぶ間は項目を元の列に残し、先の列には入る位置の印だけを出す。
+  // ドラッグ中は項目を元の列に残し、移動先の列には挿入位置の線だけを出す。
   await expect(board.locator('[data-column-id="todo"] [data-board-id="guide"]')).toBeVisible();
   await expect(column.locator(".drop-marker")).toBeVisible();
   await expect(column.locator(".title > small")).toHaveText("0");
@@ -63,14 +63,14 @@ test("Boardはポインターで空の列へドロップできる", async ({ pag
   await expect(board.locator(".drag-preview")).toHaveCount(0);
 });
 
-test("Boardは運んだ項目を置いた列の色に染め、たたんだ列はピルの幅になる", async ({ page }) => {
+test("Boardは移動した項目を置いた列の色に染め、たたんだ列はピルの幅になる", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/components/board");
   await page
     .locator('[data-example="hono"] details')
     .evaluateAll((elements) => elements.forEach((element) => element.setAttribute("open", "")));
   const approval = page.getByRole("region", { name: "原稿の承認", exact: true });
-  // 列の色は紙の地ではなく、斜めの染まり（背景の画像）に出る。
+  // 列の色はカードの地ではなく、斜めの色付け（背景の画像）に出る。
   const fill = (id: string) =>
     approval
       .locator(`[data-board-id="${id}"]`)
@@ -94,7 +94,7 @@ test("Boardは運んだ項目を置いた列の色に染め、たたんだ列は
   await expect(hiring.locator('[data-column-id="closed"] .items')).toBeHidden();
 });
 
-test("Boardのたたんだ列は押すと開き、たためて、取り消せるboard:toggleで知らせる", async ({
+test("Boardのたたんだ列は押すと開き、たためて、取り消せるboard:toggleを発火する", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
@@ -140,7 +140,7 @@ test("Boardのたたんだ列は押すと開き、たためて、取り消せる
   await expect(toggle).toHaveAttribute("aria-expanded", "true");
 });
 
-test("Boardは広い画面内でもコンポーネント幅に応じて横スクロールから縦の棚へ変わる", async ({
+test("Boardは広い画面内でもコンポーネント幅に応じて横スクロールから縦並びへ変わる", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });

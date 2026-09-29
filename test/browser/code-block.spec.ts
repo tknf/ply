@@ -5,7 +5,7 @@ test.beforeEach(async ({ context, browserName }) => {
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
 });
 
-test("表示したコードを実際にコピーし、成功を知らせる", async ({ page, browserName }) => {
+test("表示したコードを実際にコピーし、成功を通知する", async ({ page, browserName }) => {
   await page.goto("/components/code-block");
   const example = page.locator('[data-example="hono"] .ply-code-block').first();
   const source = await example.locator("code").textContent();
@@ -60,7 +60,7 @@ for (const width of [375, 1280])
       await expect(toast).toBeVisible();
       await expect(button).toBeFocused();
       expect(await bounds()).toEqual(before);
-      // 下から差し出す動きの途中は画面の下端より下にあるので、動きの終わりを待ってから測る。
+      // 下から現れる動きの途中は画面の下端より下にあるので、動きの終わりを待ってから測る。
       await toast.evaluate((element) =>
         Promise.all(element.getAnimations().map((animation) => animation.finished)),
       );
@@ -123,7 +123,7 @@ test("コピーが拒否されたら失敗を伝え、文字の選択とスク�
   );
   const example = page.locator('[data-example="hono"] .ply-code-block').nth(1);
   await example.getByRole("button", { name: "公開設定の例をコピー" }).click();
-  // 失敗は成功と別の知らせで、危険の色とrole="alert"で急いで伝える。
+  // 失敗は成功と別の通知で、危険の色とrole="alert"ですぐに伝える。
   const failure = example.locator(":scope > .ply-toast:popover-open");
   await expect(failure).toHaveCount(1);
   await expect(failure).toHaveAttribute("data-tone", "danger");
@@ -155,13 +155,13 @@ test("JavaScriptがなくてもコードを読め、動かないコピー操作�
   await context.close();
 });
 
-test("CodeBlockの紙は余白を持たず、コードの面が余白を持つ", async ({ page }) => {
+test("CodeBlockのカードは余白を持たず、コードの面が余白を持つ", async ({ page }) => {
   await page.goto("/components/code-block");
   const example = page.locator('[data-example="hono"] .ply-code-block').first();
   const padding = await example.evaluate((element) => {
     const body = element.querySelector(":scope > .ply-layer-card > .body"),
       pre = body?.querySelector(":scope > pre");
-    if (!body || !pre) throw new Error("紙かコードがありません");
+    if (!body || !pre) throw new Error("カードかコードがありません");
     const paper = getComputedStyle(body),
       code = getComputedStyle(pre);
     return {

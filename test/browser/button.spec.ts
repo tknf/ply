@@ -65,7 +65,7 @@ test("Buttonは画面幅で文字サイズが緩やかに変わり文字拡大�
   expect(large).toBeCloseTo(14, 2);
 });
 
-test("押す操作は浮かせず、指を載せると面が濃くなり、押すと内側へへこみ、focusで輪郭が見える", async ({
+test("ボタンは浮かせず、ホバーすると面が濃くなり、押すと内側へへこみ、focusで輪郭が見える", async ({
   page,
 }) => {
   // 変化の途中ではなく、確定したスタイル同士を比較する。
@@ -89,7 +89,7 @@ test("押す操作は浮かせず、指を載せると面が濃くなり、押�
     expect(before.shadow).toBe("none");
     await button.hover();
     const hovered = await look();
-    // 指を載せると面だけが変わり、文字と縁の色は変えない。影は付けない。
+    // ホバーすると面だけが変わり、文字と縁の色は変えない。影は付けない。
     expect({ color: hovered.color, border: hovered.border }).toEqual({
       color: before.color,
       border: before.border,
@@ -98,7 +98,7 @@ test("押す操作は浮かせず、指を載せると面が濃くなり、押�
     expect(hovered.shadow).toBe("none");
     const variant = await button.getAttribute("data-variant");
     if (variant === "link") {
-      // 文字だけの操作は下線を引かず、指を載せると淡い青のピルの面が現れる。
+      // 文字だけの操作は下線を引かず、ホバーすると淡い青のピルの面が現れる。
       expect(before.surface.startsWith("rgba(0, 0, 0, 0)")).toBe(true);
     } else {
       await page.mouse.down();

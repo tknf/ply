@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("Treegridのdisabledの行は押してもShift+Spaceでも選ばれず、変更も知らせない", async ({
+test("Treegridのdisabledの行は押してもShift+Spaceでも選ばれず、変更のイベントも発火しない", async ({
   page,
 }) => {
   await page.goto("/components/treegrid");
@@ -32,7 +32,7 @@ test("Treegridのdisabledの行は押してもShift+Spaceでも選ばれず、�
   await expect(grid).toHaveAttribute("data-changes", "1");
 });
 
-test("Treegridは接続すると閉じた行の子を隠し、つまみで開閉できる", async ({ page }) => {
+test("Treegridは接続すると閉じた行の子を隠し、開閉ボタンで開閉できる", async ({ page }) => {
   await page.goto("/components/treegrid");
   const grid = page.getByRole("treegrid", { name: "公開資料と進行状況", exact: true });
   const guide = grid.getByRole("row", { name: /利用案内/ }).first();
@@ -50,7 +50,7 @@ test("Treegridは接続すると閉じた行の子を隠し、つまみで開閉
   await expect(grid.getByRole("row", { name: /はじめに/ })).toBeHidden();
 });
 
-test("JavaScriptがなくてもTreegridの全ての行を読め、動かない開閉のつまみを出さない", async ({
+test("JavaScriptがなくてもTreegridの全ての行を読め、動かない開閉ボタンを出さない", async ({
   browser,
 }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });

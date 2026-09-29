@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 
-/** 写す動きはClipboardControllerに任せ、写した時の印の切り替えと読み上げを受け持つ。 */
+/** コピー処理はClipboardControllerに任せ、コピーした時のアイコンの切り替えと読み上げを受け持つ。 */
 export class CopyFieldController extends Controller<HTMLElement> {
   static targets = ["trigger", "status", "failure"];
   static values = { copied: String };
@@ -11,7 +11,7 @@ export class CopyFieldController extends Controller<HTMLElement> {
   declare readonly copiedValue: string;
   private timer: number | null = null;
 
-  // 写す印はJavaScriptが無いと押しても何も起きないので、接続してから出す。
+  // コピーボタンはJavaScriptが無いと押しても何も起きないので、接続してから表示する。
   connect = () => {
     this.triggerTarget.hidden = !navigator.clipboard?.writeText;
     this.element.addEventListener("clipboard:beforecopy", this.clearFailure);
@@ -26,7 +26,7 @@ export class CopyFieldController extends Controller<HTMLElement> {
     this.clearFailure();
     this.triggerTarget.hidden = true;
   };
-  /** 欄にフォーカスしたら値を全て選び、キーボードでも写せるようにする。 */
+  /** 入力欄にフォーカスしたら値を全て選択し、キーボードでもコピーできるようにする。 */
   select = (event: Event) => {
     if (event.target instanceof HTMLInputElement) event.target.select();
   };
@@ -37,7 +37,7 @@ export class CopyFieldController extends Controller<HTMLElement> {
   private copied = (event: Event) => {
     if (!(event instanceof CustomEvent)) return;
     if (!event.detail?.ok) {
-      // 写せなかった時は、印を変えずに欄の下へ理由と写す方法を出し、読み上げる。
+      // コピーできなかった時は、アイコンを変えずに入力欄の下へ理由とコピーする方法を表示し、読み上げる。
       if (this.timer !== null) window.clearTimeout(this.timer);
       this.timer = null;
       delete this.element.dataset.copied;

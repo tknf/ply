@@ -7,7 +7,7 @@ import {
 import { componentGroups } from "./component-groups";
 
 /**
- * 部品のページの説明。文中の`code`はコードとして表示する。
+ * コンポーネントのページの説明。文中の`code`はコードとして表示する。
  * propsの型と説明はsrc/honoの型とJSDocから作るので、ここには書かない。
  */
 export type ComponentDoc = {
@@ -15,9 +15,9 @@ export type ComponentDoc = {
   name: string;
   /** 一覧とページの見出しに出す一文。 */
   description: string;
-  /** このページで説明する公開コンポーネント。先頭が主役。 */
+  /** このページで説明する公開コンポーネント。先頭が主なコンポーネント。 */
   api: readonly string[];
-  /** 使いどころと、似た部品との使い分け。 */
+  /** 使いどころと、似たコンポーネントとの使い分け。 */
   guidance: readonly string[];
   /** 受け渡しと振る舞い。段落ごとに一要素。 */
   usage: readonly string[];
@@ -25,7 +25,7 @@ export type ComponentDoc = {
   keyboard?: readonly (readonly [key: string, action: string])[];
   /** 読み上げ・フォーカス・ARIAの約束と、利用側が担うこと。 */
   accessibility?: readonly string[];
-  /** 知らせるイベントと、detailの中身。 */
+  /** 発火するイベントと、detailの中身。 */
   events?: readonly (readonly [name: string, detail: string])[];
   /** JSDocを書けないprops（標準のHTML属性やchildren）の説明。コンポーネント名→prop名→説明。 */
   propNotes?: Readonly<Record<string, Readonly<Record<string, string>>>>;
@@ -35,11 +35,11 @@ const modules = import.meta.glob<{ default: ComponentDoc }>("./component-docs/*.
   eager: true,
 });
 
-/** 分類の順に並べた全部品の説明。 */
+/** 分類の順に並べた全コンポーネントの説明。 */
 export const componentDocs: readonly ComponentDoc[] = componentGroups.flatMap((group) =>
   group.ids.map((id) => {
     const doc = modules[`./component-docs/${id}.ts`]?.default;
-    if (!doc) throw new Error(`部品の説明がありません: ${id}`);
+    if (!doc) throw new Error(`コンポーネントの説明がありません: ${id}`);
     return doc;
   }),
 );
@@ -63,7 +63,7 @@ export const elementNote = (element: string) =>
         .join("または")}へそのまま渡します。`
     : `ほかに、\`<${element}>\`へ標準のHTML属性を渡せます。`;
 
-/** Markdownの表のセル。縦線と改行を逃がす。 */
+/** Markdownの表のセル。縦線と改行をエスケープする。 */
 const cell = (text: string) => text.replaceAll("|", "\\|").replaceAll("\n", " ");
 const code = (text: string) => (text ? `\`${text}\`` : "");
 
@@ -101,7 +101,7 @@ const typeSection = (doc: ComponentDoc, component: string, type: TypeDoc) => [
   ]),
 ];
 
-/** docs/components/<id>.mdの本文。カタログの部品のページと同じ内容を持つ。 */
+/** docs/components/<id>.mdの本文。カタログのコンポーネントのページと同じ内容を持つ。 */
 export const componentMarkdown = (doc: ComponentDoc, example: { jsx: string; html: string }) => {
   const apis = componentApi();
   const list = (items: readonly string[] | undefined) => (items ?? []).map((item) => `- ${item}`);
@@ -182,7 +182,7 @@ export const componentMarkdown = (doc: ComponentDoc, example: { jsx: string; htm
   return lines.join("\n");
 };
 
-/** docs/components/README.md。分類ごとの全部品と、controllerの登録名の一覧。 */
+/** docs/components/README.md。分類ごとの全コンポーネントと、controllerの登録名の一覧。 */
 export const componentIndexMarkdown = () => {
   const apis = componentApi();
   const controllers = new Map<string, { controller: string; components: Set<string> }>();
@@ -214,7 +214,7 @@ export const componentIndexMarkdown = () => {
     "",
     "`ply/controllers`のcontrollerを、次の登録名でStimulusのApplicationへ登録します。登録の仕方は[controller](../controllers.md)を参照してください。",
     "",
-    "| 登録名 | controller | 使う部品 |",
+    "| 登録名 | controller | 使うコンポーネント |",
     "| --- | --- | --- |",
     ...[...controllers]
       .sort(([a], [b]) => a.localeCompare(b))

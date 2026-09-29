@@ -49,7 +49,7 @@ FilterBarの一件。Navigationの項目と同じ形で、currentは選んでい
 | `href`（必須）  | `string`  |        | 移動先のURL。現在地の項目もリンクのまま出す。                       |
 | `current`       | `boolean` |        | 今いる項目。aria-current="page"を付け、見た目でも現在地として示す。 |
 | `count`         | `number`  |        | 名前の後に出す件数。0も表示し、省略すると出さない。                 |
-| `icon`          | `Child`   |        | 名前の前の印（Iconなど）。                                          |
+| `icon`          | `Child`   |        | 名前の前のアイコン（Iconなど）。                                    |
 
 ## コード
 

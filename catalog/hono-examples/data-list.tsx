@@ -59,7 +59,7 @@ export default () => (
           ]}
         />
       </Disclosure>
-      <Disclosure summary="印つきの一覧">
+      <Disclosure summary="アイコン付きの一覧">
         <DataList
           aria-label="資料の一覧"
           items={[

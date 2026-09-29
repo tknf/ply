@@ -9,7 +9,7 @@ export type TabItem = {
   content: Child;
   /** 選べないタブ。表示はするが押せず、矢印キーの移動でも飛ばす。 */
   disabled?: boolean;
-  /** 名前の前の印（Iconなど）。 */
+  /** 名前の前のアイコン（Iconなど）。 */
   icon?: Child;
   /** 名前の後に出す件数。0も表示し、省略すると出さない。 */
   count?: number;
@@ -26,7 +26,7 @@ export const Tabs = ({
   label: string;
   /** 並べるタブとパネル。選べるタブが一つもない時は「利用可能な項目はありません。」を出す。 */
   items: readonly TabItem[];
-  /** 初めに選んでおくタブのvalue。省略した時、見つからない時、無効なタブの時は、最初の選べるタブにする。 */
+  /** 最初に選んでおくタブのvalue。省略した時、見つからない時、無効なタブの時は、最初の選べるタブにする。 */
   selected?: string;
 }) => {
   const active =

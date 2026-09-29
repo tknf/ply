@@ -7,7 +7,7 @@ type MenuItemLabel = {
   label: string;
   /** 選べない項目にする。矢印の移動でも飛ばす。リンクは移動せず、サブメニューは開かない。 */
   disabled?: boolean;
-  /** 項目名の前に置く印。 */
+  /** 項目名の前に置くアイコン。 */
   icon?: IconName;
   /** 項目名の下に添える補足。読み上げでは`aria-description`になる。 */
   description?: string;
@@ -18,7 +18,7 @@ export type MenuItem =
   | (MenuItemLabel & {
       /** 通常の操作。省略してもよい。 */
       kind?: "action";
-      /** 選んだ時に`dropdown-menu:select`の`detail.value`で知らせる値。 */
+      /** 選んだ時に発火する`dropdown-menu:select`の`detail.value`に入る値。 */
       value: string;
       /** 削除など取り返しのつかない操作として、淡い赤の文字で分ける。 */
       danger?: boolean;
@@ -26,7 +26,7 @@ export type MenuItem =
       closeOnSelect?: boolean;
     })
   | (MenuItemLabel & {
-      /** ページの移動。選ぶと標準のページ移動を行い、選択のイベントは出さない。 */
+      /** ページの移動。選ぶと標準のページ移動を行い、選択のイベントは発火しない。 */
       kind: "link";
       /** 移動先。 */
       href: string;
@@ -34,13 +34,13 @@ export type MenuItem =
       target?: "_blank" | "_self";
     })
   | (MenuItemLabel & {
-      /** 入り切りを切り替える複数選択の項目。 */
+      /** オン・オフを切り替える複数選択の項目。 */
       kind: "checkbox";
-      /** 選んだ時に`dropdown-menu:select`の`detail.value`で知らせる値。 */
+      /** 選んだ時に発火する`dropdown-menu:select`の`detail.value`に入る値。 */
       value: string;
       /**
-       * 印の初期状態。mixedは一部だけ選んだ状態。選ぶたびにcontrollerが切り替え、
-       * 切り替えた後の値を`detail.checked`で知らせる（mixedから選ぶとtrue）。
+       * チェックマークの初期状態。mixedは一部だけ選んだ状態。選ぶたびにcontrollerが切り替え、
+       * 切り替えた後の値を`detail.checked`で渡す（mixedから選ぶとtrue）。
        */
       checked?: boolean | "mixed";
       /** 選んだ後に閉じるか。チェックは既定で開いたまま更新する。trueで閉じる。 */
@@ -49,11 +49,11 @@ export type MenuItem =
   | (MenuItemLabel & {
       /** 同じnameの中から一つを選ぶ単一選択の項目。 */
       kind: "radio";
-      /** 選んだ時に`dropdown-menu:select`の`detail.value`で知らせる値。 */
+      /** 選んだ時に発火する`dropdown-menu:select`の`detail.value`に入る値。 */
       value: string;
       /** 選択のまとまりの名前。同じ階層で同じnameを持つ項目から一つだけを選ぶ。 */
       name: string;
-      /** 初めに選んでおく項目。 */
+      /** 最初に選んでおく項目。 */
       checked?: boolean;
       /** 選んだ後に閉じるか。単一選択は既定で開いたまま更新する。trueで閉じる。 */
       closeOnSelect?: boolean;
@@ -89,13 +89,13 @@ export type DropdownMenuProps = Pick<ButtonProps, "variant" | "size" | "disabled
    * `dropdown-menu:select->editor#apply`のように、選択のイベントを利用側のcontrollerへつなぐ。
    */
   action?: string;
-  /** メニューを開く操作のどちらの端に揃えるか。endは行の終わりの側に置いた操作に使う。 */
+  /** メニューを開く操作のどちらの端に揃えるか。endは行の末尾側に置いた操作に使う。 */
   align?: "start" | "end";
   /** 文字の向き。rtlでは左右の矢印キーとサブメニューの開く向きが反転する。 */
   dir?: "ltr" | "rtl";
-  /** 開く操作の文言の前に置く印。 */
+  /** 開く操作の文言の前に置くアイコン。 */
   icon?: IconName;
-  /** 開く操作を印だけの正方形にする。iconが無ければ▾だけを出す。 */
+  /** 開く操作をアイコンだけの正方形にする。iconが無ければ▾だけを出す。 */
   iconOnly?: boolean;
 };
 

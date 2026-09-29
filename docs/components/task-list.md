@@ -8,27 +8,27 @@
 
 - やることを並べ、終えた項目にチェックを付けていく時に使います。担当や期日を行の終わりに添えられます。
 - 設定の選択肢を複数選ぶ時は、`Field` と `CheckboxGroup` を使います。
-- 状態ごとの列で仕事を運ぶ時は `Board` を使います。
+- 状態ごとの列でタスクを移動して管理する時は `Board` を使います。
 
 ## 使い方
 
-`items` の各行を標準のcheckboxで描き、`label` を題名、`detail` を題名の下の補足、`end` を行の終わりに置きます。`end` には担当の `Avatar` や期日の `Badge` を置けます。終えた題名は、書き始めの側からペンで引く線で消します。
+`items` の各行を標準のcheckboxで描き、`label` を題名、`detail` を題名の下の補足、`end` を行の終わりに置きます。`end` には担当の `Avatar` や期日の `Badge` を置けます。完了した題名は、先頭側からペンで引く線で消します。
 
 各行の `name` と `value` は、囲むフォームで送る名前と値になります。完了の保存は、フォームの送信か、`change` を受ける利用側のcontrollerで行います。標準のcheckboxと同じく、チェックの無い行は送られません。
 
-`title` を渡すと、行の一覧の始まりの行に一覧の名前を見出し（`h3`）で置きます。
+`title` を渡すと、行の一覧の先頭に一覧の名前を見出し（`h3`）で置きます。
 
-`heading` を渡すと、一覧を開閉できる `details`（最初は開いた状態）で包み、見出しに終えた割合だけ塗る円と「終えた数/全体」を添えます。`TaskListController` を `task-list` として登録すると、チェックに合わせて数え直し、全て終えると円を緑にしてチェックを置きます。この時、渡した `data-controller` と `data-action` は `task-list` のものに足して付けます。
+`heading` を渡すと、一覧を開閉できる `details`（最初は開いた状態）で包み、見出しに完了した割合を示す円グラフと「完了数/全体」を添えます。`TaskListController` を `task-list` として登録すると、チェックに合わせて数え直し、全て完了すると円グラフを緑にしてチェックを表示します。この時、渡した `data-controller` と `data-action` は `task-list` のものに追加して付けます。
 
-`add` を渡すと、最後の行に項目を書き足す欄を置きます。欄は `name` で文字を送るだけで、行を増やす処理は利用側のフォームと応答で行います。一覧の外にあるフォームへ送る時は、`form` にそのフォームのidを渡します。
+`add` を渡すと、最後の行に項目を追加する入力欄を置きます。入力欄は `name` で文字を送るだけで、行を増やす処理は利用側のフォームと応答で行います。一覧の外にあるフォームへ送る時は、`form` にそのフォームのidを渡します。
 
-JavaScriptが無い時も、checkboxとフォームの送信は働きます。見出しの数と円は描いた時の値のままです。
+JavaScriptが無い時も、checkboxとフォームの送信は働きます。見出しの数と円グラフは描画時の値のままです。
 
 ## アクセシビリティ
 
 - 行の一覧は `label` を読み上げ名にします。各行は `label` 要素で題名と結んだ標準のcheckboxです。
-- 見出しの数は「完了 1/3」のように読み、割合の円は読み上げから外します。
-- 書き足す欄は `placeholder` の文を読み上げ名にします。
+- 見出しの数は「完了 1/3」のように読み、割合の円グラフは読み上げから外します。
+- 追加の入力欄は `placeholder` の文を読み上げ名にします。
 - `end` に置く `Avatar` や `Badge` は、それぞれの名前と文言で担当や期日を伝えます。
 
 ## API
@@ -40,7 +40,7 @@ JavaScriptが無い時も、checkboxとフォームの送信は働きます。�
 | `title`         | `string`                                                                                                                          |        | 行の一覧の上に書く、この一覧の名前。                                   |
 | `label`（必須） | `string`                                                                                                                          |        | 行の一覧（ul）の読み上げ名。                                           |
 | `heading`       | `string`                                                                                                                          |        | 一覧の外側の見出し。開閉でき、終えた数と進み具合を添える。             |
-| `add`           | `{ name: string; placeholder: string; form?: string; }`                                                                           |        | 最後の行に置く、項目を書き足す欄。送信と追加は利用側のフォームで扱う。 |
+| `add`           | `{ name: string; placeholder: string; form?: string; }`                                                                           |        | 最後の行に置く、項目を追加する欄。送信と追加は利用側のフォームで扱う。 |
 | `items`（必須） | `readonly { name: string; label: string; checked?: boolean; disabled?: boolean; detail?: Child; value?: string; end?: Child; }[]` |        | 行の一覧。各行は標準のcheckbox。                                       |
 
 ほかに、`<div>`へ標準のHTML属性を渡せます。
@@ -53,8 +53,8 @@ JavaScriptが無い時も、checkboxとフォームの送信は働きます。�
 
 | 名前                  | 型       | 既定値 | 説明                                                 |
 | --------------------- | -------- | ------ | ---------------------------------------------------- |
-| `name`（必須）        | `string` |        | 書き足した文を送る名前。                             |
-| `placeholder`（必須） | `string` |        | 欄の淡い文。欄の読み上げ名にも使う。                 |
+| `name`（必須）        | `string` |        | 追加した文を送る名前。                               |
+| `placeholder`（必須） | `string` |        | 欄のプレースホルダー。欄の読み上げ名にも使う。       |
 | `form`                | `string` |        | 一覧の外にあるフォームのid。欄をそのフォームで送る。 |
 
 #### `items`の項目
@@ -67,7 +67,7 @@ JavaScriptが無い時も、checkboxとフォームの送信は働きます。�
 | `disabled`      | `boolean` |        | 操作できない項目。                           |
 | `detail`        | `Child`   |        | 題名の下に添える補足（担当・期日など）。     |
 | `value`         | `string`  |        | checkboxの値。省くと標準どおり`on`を送る。   |
-| `end`           | `Child`   |        | 行の終わりに置く物（AvatarやBadgeなど）。    |
+| `end`           | `Child`   |        | 行の末尾に置く要素（AvatarやBadgeなど）。    |
 
 ## コード
 
@@ -87,7 +87,7 @@ export default () => (
       label="公開前の確認"
       heading="チェックリスト"
       title="公開前の確認"
-      add={{ name: "new-task", placeholder: "項目を書き足す" }}
+      add={{ name: "new-task", placeholder: "項目を追加する" }}
       items={[
         { name: "proof", label: "本文を校正する", detail: "田中 · 9月12日" },
         { name: "photo", label: "写真を選ぶ", checked: true, detail: "佐藤 · 完了" },
@@ -95,7 +95,7 @@ export default () => (
       ]}
     />
     <DisclosureGroup label="項目の違い">
-      <Disclosure summary="担当と期限：行の終わりに人の円と期限の札" open>
+      <Disclosure summary="担当と期限：行の末尾にアバターと期限のバッジ" open>
         <TaskList
           label="秋の読書会の準備"
           heading="読書会の準備"
@@ -159,7 +159,7 @@ export default () => (
           ]}
         />
       </Disclosure>
-      <Disclosure summary="長い題名と狭い場所：題名は折り返し、終わりの札は次の行へ">
+      <Disclosure summary="長い題名と狭い場所：題名は折り返し、末尾のバッジは次の行へ">
         <div style="max-inline-size: 22rem">
           <TaskList
             label="長い題名"
@@ -182,7 +182,7 @@ export default () => (
           />
         </div>
       </Disclosure>
-      <Disclosure summary="まだ項目がない一覧：書き足す欄だけ">
+      <Disclosure summary="まだ項目がない一覧：追加する欄だけ">
         <TaskList
           label="来月の準備"
           heading="来月の準備"
@@ -261,8 +261,8 @@ export default () => (
           class="entry"
           type="text"
           name="new-task"
-          placeholder="項目を書き足す"
-          aria-label="項目を書き足す"
+          placeholder="項目を追加する"
+          aria-label="項目を追加する"
           autocomplete="off"
         />
       </li>
@@ -281,7 +281,7 @@ export default () => (
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
         ><span class="label"
-          ><span class="title">担当と期限：行の終わりに人の円と期限の札</span></span
+          ><span class="title">担当と期限：行の末尾にアバターと期限のバッジ</span></span
         >
       </summary>
       <div class="body">
@@ -513,7 +513,7 @@ export default () => (
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
         ><span class="label"
           ><span class="title"
-            >長い題名と狭い場所：題名は折り返し、終わりの札は次の行へ</span
+            >長い題名と狭い場所：題名は折り返し、末尾のバッジは次の行へ</span
           ></span
         >
       </summary>
@@ -592,7 +592,7 @@ export default () => (
           >
             <use href="/assets/ply-icons.svg#ply-caret"></use></svg></span
         ><span class="label"
-          ><span class="title">まだ項目がない一覧：書き足す欄だけ</span></span
+          ><span class="title">まだ項目がない一覧：追加する欄だけ</span></span
         >
       </summary>
       <div class="body">

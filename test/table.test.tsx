@@ -2,7 +2,7 @@ import { expect, test } from "vite-plus/test";
 import { html } from "hono/html";
 import { Button, Table } from "../src/hono";
 
-test("Tableの選択の棚は表の後に置き、JavaScriptがなくても見えるようpopoverにしない", async () => {
+test("Tableの選択バーは表の後に置き、JavaScriptがなくても見えるようpopoverにしない", async () => {
   const markup = String(
     await html`${(
       <Table caption="記事" selectable selectionActions={<Button type="submit">送る</Button>}>

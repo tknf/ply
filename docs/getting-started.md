@@ -2,11 +2,11 @@
 
 Plyは三つの層で提供します。必要な層だけを使えます。
 
-| 層                  | 内容                                              | 入口              |
-| ------------------- | ------------------------------------------------- | ----------------- |
-| CSS                 | フレームワークに依存しないCSSとセマンティックHTML | `ply/css/*`       |
-| Hono JSX            | 同じHTMLを出力するSSRコンポーネントと型           | `ply/hono`        |
-| Stimulus controller | 開閉・選択・キーボード操作などの動作              | `ply/controllers` |
+| 層                  | 内容                                              | エントリーポイント |
+| ------------------- | ------------------------------------------------- | ------------------ |
+| CSS                 | フレームワークに依存しないCSSとセマンティックHTML | `ply/css/*`        |
+| Hono JSX            | 同じHTMLを出力するSSRコンポーネントと型           | `ply/hono`         |
+| Stimulus controller | 開閉・選択・キーボード操作などの動作              | `ply/controllers`  |
 
 HonoのコンポーネントはブラウザのJavaScriptをimportしません。controllerは自動で起動・登録しないので、使うものだけを登録します。
 
@@ -54,10 +54,10 @@ vp run build
 - 読み込み順は`layers.css`、reset・tokens・base・layout、必要なcomponentsです。CSS内では`@import`を使いません。
 - カスケードレイヤーの優先順は`reset, base, tokens, layout, components, utilities, overrides`です。利用側の上書きは`@layer overrides`に書きます。
 - reset・baseはページ全体に効くので、既存のアプリにはページ単位で導入してください。
-- 全ての部品を使う場合の読み込み順は、`ply/hono`の`stylesheets`にまとまっています。
-- 部品を選んで読み込む場合は、各部品のページの「API」にある「読み込むCSS」を、上から順に読み込みます。中で使う別の部品のCSS（DatePickerの中のButtonなど）も含んでいます。
+- 全てのコンポーネントを使う場合の読み込み順は、`ply/hono`の`stylesheets`にまとまっています。
+- コンポーネントを選んで読み込む場合は、各コンポーネントのページの「API」にある「読み込むCSS」を、上から順に読み込みます。中で使う別のコンポーネントのCSS（DatePickerの中のButtonなど）も含んでいます。
 
-CSSだけで使う場合も、Honoのコンポーネントが出力するHTML構造と状態属性（`data-*`・`aria-*`）をそのまま書きます。各コンポーネントのHTMLはカタログのページに掲載しています。各部品のHTMLは[コンポーネントのリファレンス](components/README.md)の「コード」にもあります。クラス名の決まりは[CSSの構造](css.md)を参照してください。
+CSSだけで使う場合も、Honoのコンポーネントが出力するHTML構造と状態属性（`data-*`・`aria-*`）をそのまま書きます。各コンポーネントのHTMLはカタログのページに掲載しています。各コンポーネントのHTMLは[コンポーネントのリファレンス](components/README.md)の「コード」にもあります。クラス名の決まりは[CSSの構造](css.md)を参照してください。
 
 ## Honoで使う
 
@@ -111,7 +111,7 @@ application.register("dialog", DialogController);
 application.register("file-input", FileInputController);
 ```
 
-登録名は各部品のページの「API」と[controllerの登録名](components/README.md#controllerの登録名)、登録の決まりは[controller](controllers.md)を参照してください。controllerは`@tknf/stimulus-ui`と`@hotwired/stimulus`をpeer dependencyとして使います。
+登録名は各コンポーネントのページの「API」と[controllerの登録名](components/README.md#controllerの登録名)、登録の決まりは[controller](controllers.md)を参照してください。controllerは`@tknf/stimulus-ui`と`@hotwired/stimulus`をpeer dependencyとして使います。
 
 ## アイコンを配置する
 
@@ -119,4 +119,4 @@ application.register("file-input", FileInputController);
 
 ## データと保存
 
-業務データ・権限・通信・永続化は利用アプリが持ちます。Plyのコンポーネントは表示と操作だけを持ち、選択・移動・変更は標準のフォーム送信か、キャンセル可能なカスタムイベントで利用側へ知らせます。
+業務データ・権限・通信・永続化は利用アプリが持ちます。Plyのコンポーネントは表示と操作だけを持ち、選択・移動・変更は標準のフォーム送信か、キャンセル可能なカスタムイベントの発火で利用側へ伝えます。

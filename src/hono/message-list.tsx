@@ -16,23 +16,23 @@ export type MessageListItem = {
   preview?: string;
   /** 行を開く移動先。省略すると行はリンクにならない。 */
   href?: string;
-  /** 行の終わりに出す時刻の文字。書式は利用側で決める。 */
+  /** 行の末尾に出す時刻の文字。書式は利用側で決める。 */
   time?: string;
   /** timeに対応する機械可読の日時。日時として読める値の時だけtime要素にする。 */
   datetime?: string;
-  /** 差出人の円（Avatarなど）。一覧のどれかの行に渡すと全ての行に円の列を設け、無い行には手紙の印を置く。 */
+  /** 差出人のアバター（Avatarなど）。一覧のどれかの行に渡すと全ての行にアバターの列を設け、無い行には手紙のアイコンを置く。 */
   avatar?: Child;
   /** 未読。件名と差出人を太字にし、時刻の後ろに青い点と読み上げ用の「未読」を添える。 */
   unread?: boolean;
-  /** 今開いている連絡。行を淡い青の面にし、aria-current="page"を付ける。 */
+  /** 今開いている連絡。行を淡い青の背景にし、aria-current="page"を付ける。 */
   current?: boolean;
   /** 会話の件数。2以上の時だけ件名の後ろに数を出す。 */
   threadCount?: number;
-  /** 添付ファイルの数。1以上の時だけ件名の後ろにファイルの印と数を出す。 */
+  /** 添付ファイルの数。1以上の時だけ件名の後ろにファイルのアイコンと数を出す。 */
   attachments?: number;
-  /** 送信の状態。件名の前に札を置く（draftは「下書き」、sendingは「送信中」で行を控えめに、failedは赤い「送信失敗」）。 */
+  /** 送信の状態。件名の前にバッジを置く（draftは「下書き」、sendingは「送信中」で行を控えめに、failedは赤い「送信失敗」）。 */
   state?: "draft" | "sending" | "failed";
-  /** 閲覧できない理由。指定するとstateより優先して「閲覧不可」の札を出し、書き出しの位置に理由を出す。 */
+  /** 閲覧できない理由。指定するとstateより優先して「閲覧不可」のバッジを出し、書き出しの位置に理由を出す。 */
   unavailableReason?: string;
 };
 export type MessageListProps = ElementProps<"ul"> & {

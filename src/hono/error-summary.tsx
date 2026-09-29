@@ -16,9 +16,9 @@ export type ErrorSummaryProps = ElementProps<"aside"> & {
   }[];
 };
 /**
- * 直すところを、各欄へ移るリンクの一覧にまとめる。見た目はNoticeの危険の役割そのもの（紙と、印と見出しのピル）で、
+ * 直すところを、各欄へ移るリンクの一覧にまとめる。見た目はNoticeの危険の役割そのもの（カードと、アイコンと見出しのピル）で、
  * ErrorSummaryが持つのは直す欄への一覧だけ。
- * tabindex="-1"を持つので、送信の後に描き直したページではautofocusを渡すと、読み込んだ時にフォーカスが移る。
+ * tabindex="-1"を持つので、送信後に再描画したページではautofocusを渡すと、読み込んだ時にフォーカスが移る。
  */
 export const ErrorSummary = ({
   title = "入力内容を確認してください",

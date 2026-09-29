@@ -11,13 +11,13 @@ export type TableProps = PropsWithChildren<
     density?: "compact" | "comfortable";
     /**
      * 並べ替えの方式。TableSortの見出しを押すと、昇順・降順・元の順を順に切り替える。
-     * localは表示中の行をその場で並べ替え、manualは行を動かさずtable:sortだけを知らせる（サーバー側で並べ替える時に使う）。
+     * localは表示中の行をその場で並べ替え、manualは行を動かさずtable:sortイベントだけを発火する（サーバー側で並べ替える時に使う）。
      */
     sort?: "local" | "manual";
-    /** 行の選択を有効にする。TableSelectionのチェックで選び、選んでいる間は画面の下の中央に選択の棚を出す。 */
+    /** 行の選択を有効にする。TableSelectionのチェックで選び、選んでいる間は画面の下の中央に選択バーを出す。 */
     selectable?: boolean;
     /**
-     * 選択の棚に件数に続けて並べる一括操作（ActionTileやButton）。selectableの時だけ出す。
+     * 選択バーに件数に続けて並べる一括操作（ActionTileやButton）。selectableの時だけ出す。
      * JavaScriptがない時は表の下に置くので、行のチェックと同じformの送信ボタンにすると選んだ行を送れる。
      */
     selectionActions?: Child;
@@ -78,7 +78,7 @@ export const Table = ({
       </div>
     )}
     {selectable && (
-      // 選択の板はActionDockと同じ棚にし、画面の下の中央に浮かべて表を動かさない。件数と一括操作を横一列に並べ、解除の×はDialogと同じく紙の角に置く。
+      // 選択バーはActionDockと同じ操作バーにし、画面の下の中央に浮かべて表を動かさない。件数と一括操作を横一列に並べ、解除の×はDialogと同じくパネルの角に置く。
       // 行のチェックの後にTabで届くよう、DOMでは表の後に置く。popoverにして開閉するのはTableControllerで、JavaScriptがない時は表の下に一括操作を置く。
       <div class="selection-bar" role="group" aria-label="選択した行の操作">
         <header class="heading">
@@ -98,7 +98,7 @@ export const Table = ({
 
 export type TableSortProps = PropsWithChildren<
   ElementProps<"th"> & {
-    /** 列を識別する値。表の中で一意にし、table:sortのdetail.columnで知らせる。 */
+    /** 列を識別する値。表の中で一意にし、table:sortのdetail.columnで渡す。 */
     column: string;
     /**
      * sort="local"で値を比べる方法。textは文字の自然順、numberは桁区切りのカンマを除いた数、dateはDate.parseで読める日時で比べる。
@@ -143,7 +143,7 @@ export const TableSort = ({
 export type TableSelectionProps = Omit<ElementProps<"input">, "type"> & {
   /** チェックボックスの読み上げ名。aria-labelに入れる（例：「〇〇を選択」「すべての行を選択」）。 */
   label: string;
-  /** 行を識別する値。表の中で一意にし、table:selectionchangeのdetail.idsで知らせる。省略すると表の全ての行を選ぶチェックボックスになる。 */
+  /** 行を識別する値。表の中で一意にし、table:selectionchangeのdetail.idsで渡す。省略すると表の全ての行を選ぶチェックボックスになる。 */
   rowId?: string;
 };
 /** rowIdなしは現在の表の全選択。行のcheckboxは送信用name/value/formも指定できる。 */

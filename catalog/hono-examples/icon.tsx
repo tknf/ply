@@ -58,8 +58,8 @@ export default () => (
         記事を書く
       </Button>
     </div>
-    <DisclosureGroup label="印の一覧と塗りつぶしの形">
-      <Disclosure summary="すべての印（通常の形と塗りつぶしの形）">
+    <DisclosureGroup label="アイコンの一覧と塗りつぶしの形">
+      <Disclosure summary="すべてのアイコン（通常の形と塗りつぶしの形）">
         <ul class="catalog-icon-grid">
           {names.map((name) => (
             <li>
@@ -72,7 +72,7 @@ export default () => (
           ))}
         </ul>
       </Disclosure>
-      <Disclosure summary="塗りつぶしの印で項目を見分ける">
+      <Disclosure summary="塗りつぶしのアイコンで項目を見分ける">
         <ul class="catalog-icon-rows">
           <li>
             <Icon name="mail" fill />

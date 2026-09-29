@@ -1,9 +1,9 @@
 import { TreegridController as BaseTreegridController } from "@tknf/stimulus-ui";
 
 /**
- * 上流の選択は行の無効を見ないので、`data-disabled="true"`の行を押して選ぶ・外す変更を、
- * 選択が変わる前のtreegrid:beforechangeの段階で止める。利用側にはこの変更を知らせない。
- * JavaScriptがない間は開閉できないので、開閉のつまみは接続した後（行にdata-stateが付いた後）だけ見せる。
+ * 上流の選択は行の無効を見ないので、`data-disabled="true"`の行を押して選択・解除する変更を、
+ * 選択が変わる前のtreegrid:beforechangeの段階で止める。この変更のイベントは利用側へ発火しない。
+ * JavaScriptがない間は開閉できないので、開閉ボタンは接続した後（行にdata-stateが付いた後）だけ表示する。
  */
 export class TreegridController extends BaseTreegridController {
   constructor(...args: ConstructorParameters<typeof BaseTreegridController>) {
@@ -11,7 +11,7 @@ export class TreegridController extends BaseTreegridController {
     const connectTreegrid = this.connect;
     const disconnectTreegrid = this.disconnect;
     this.connect = () => {
-      // 同じ要素の他の受け手より先に見るため、捕捉の段階で受ける。
+      // 同じ要素の他のリスナーより先に処理するため、キャプチャフェーズで受ける。
       this.element.addEventListener("treegrid:beforechange", this.guardDisabled, true);
       connectTreegrid();
     };

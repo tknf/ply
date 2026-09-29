@@ -21,7 +21,7 @@ export type TableOfContentsProps = {
   sections: readonly TableOfContentsSection[];
   /**
    * 現在地を判定する位置。画面の上端からの距離（px）で、この位置を越えた最後の見出しを現在地にする。
-   * 固定した帯で見出しが隠れる時は、その高さに合わせる。0未満や数でない値は既定に戻す。
+   * 固定したバーで見出しが隠れる時は、その高さに合わせる。0未満や数でない値は既定に戻す。
    */
   offset?: number;
 };

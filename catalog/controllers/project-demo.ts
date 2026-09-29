@@ -1,8 +1,8 @@
 import { Controller } from "@hotwired/stimulus";
 
 /**
- * 利用例のプロジェクトの画面の動き。ボードの項目を言葉と担当で絞り込み、Dialogから新しい項目を「これから」へ足す。
- * 項目を運ぶ動きはBoardControllerが持つ。
+ * 利用例のプロジェクトの画面の動き。ボードの項目をキーワードと担当で絞り込み、Dialogから新しい項目を「これから」へ追加する。
+ * 項目を移動する動きはBoardControllerが持つ。
  */
 export class ProjectDemoController extends Controller<HTMLElement> {
   private query = "";

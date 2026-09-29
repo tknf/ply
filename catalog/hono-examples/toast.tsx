@@ -1,13 +1,13 @@
 import { Toast, ToastStack, Button, ActionLink, Disclosure, DisclosureGroup } from "../../src/hono";
 export default () => (
   <div class="ply-stack">
-    <p>続けて開くと右下に束なります。束を押すと広がり、外を押すかEscで畳みます。</p>
+    <p>続けて開くと右下に重なります。重なりを押すと広がり、外側を押すかEscで畳みます。</p>
     <div class="ply-cluster">
       <Button popovertarget="hono-toast">結果表示を試す</Button>
       <Button popovertarget="hono-toast-timed">5秒で閉じる通知</Button>
-      <Button popovertarget="hono-toast-short">短い知らせ</Button>
-      <Button popovertarget="hono-toast-warning">注意の知らせ</Button>
-      <Button popovertarget="hono-toast-danger">失敗の知らせ</Button>
+      <Button popovertarget="hono-toast-short">短い通知</Button>
+      <Button popovertarget="hono-toast-warning">注意の通知</Button>
+      <Button popovertarget="hono-toast-danger">失敗の通知</Button>
     </div>
     <ToastStack>
       <Toast
@@ -42,14 +42,14 @@ export default () => (
           <Button popovertarget="hono-toast-start">左下に出す</Button>
         </div>
         <ToastStack placement="center">
-          <Toast id="hono-toast-center">下の中央に出す知らせです。</Toast>
+          <Toast id="hono-toast-center">下の中央に出す通知です。</Toast>
         </ToastStack>
         <ToastStack placement="start">
-          <Toast id="hono-toast-start">左下に出す知らせです。</Toast>
+          <Toast id="hono-toast-start">左下に出す通知です。</Toast>
         </ToastStack>
       </Disclosure>
       <Disclosure summary="右から左に読む場合">
-        <Button popovertarget="hono-toast-rtl">右から左に読む知らせ</Button>
+        <Button popovertarget="hono-toast-rtl">右から左に読む通知</Button>
         <div dir="rtl" lang="ar">
           <ToastStack>
             <Toast id="hono-toast-rtl" closeLabel="إغلاق">

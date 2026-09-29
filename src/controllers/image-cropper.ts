@@ -1,6 +1,6 @@
 import { ImageCropperController as BaseImageCropperController } from "@tknf/stimulus-ui";
 
-/** 上流の切り抜きに、接続している間だけ持ち手と調整の欄を出す印を加える。 */
+/** 上流の切り抜きに、接続している間だけハンドルと調整の入力欄を表示するための目印を加える。 */
 export class ImageCropperController extends BaseImageCropperController {
   constructor(...args: ConstructorParameters<typeof BaseImageCropperController>) {
     super(...args);

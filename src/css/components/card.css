@@ -6,7 +6,7 @@
     min-inline-size: 0;
     padding-block: var(--ply-space-5);
     padding-inline: var(--ply-space-6);
-    /* Cardは紙。枠線を使わず、紙の影と大きな角丸で見せる。 */
+    /* Cardは枠線を使わず、カードの影と大きな角丸で見せる。 */
     border: 0;
     border-radius: var(--ply-radius-surface);
     background: var(--ply-surface) var(--ply-fill-paper);
@@ -43,7 +43,7 @@
         margin-block-start: var(--ply-space-1);
       }
     }
-    /* 題名はCardの中でいちばん強い字。補足・札より大きく太くする。 */
+    /* 題名はCardの中でいちばん強い字。補足・バッジより大きく太くする。 */
     & > .title {
       font-size: var(--ply-body);
       font-weight: 600;
@@ -61,7 +61,7 @@
     & > .body:not(:empty) {
       margin-block-start: var(--ply-space-2);
     }
-    /* 段落の間は紙の余白よりはっきり狭くする。行の余りと合わせて、段落の切れ目だけが分かる幅にする。 */
+    /* 段落の間はカードの余白よりはっきり狭くする。行の余りと合わせて、段落の切れ目だけが分かる幅にする。 */
     & > .body > * + * {
       margin-block-start: var(--ply-space-2);
     }
@@ -72,7 +72,7 @@
       justify-content: start;
       gap: var(--ply-space-2) var(--ply-space-3);
       margin-block-start: auto;
-      /* メタ情報は本文のすぐ下に添える。本文との間は紙の余白より狭くし、紙の中の一まとまりに見せる。 */
+      /* メタ情報は本文のすぐ下に添える。本文との間はカードの余白より狭くし、カードの中の一まとまりに見せる。 */
       padding-block-start: var(--ply-space-2);
       color: var(--ply-muted);
       font-size: var(--ply-small);
@@ -97,7 +97,7 @@
         padding-block-start: var(--ply-space-1);
       }
     }
-    /* 完了は縁取りではなく、淡い成功の色の地で示す。 */
+    /* 完了は縁取りではなく、淡い成功の色の背景で示す。 */
     &[data-state="complete"] {
       background: color-mix(in srgb, var(--ply-success-soft) 60%, var(--ply-surface));
     }

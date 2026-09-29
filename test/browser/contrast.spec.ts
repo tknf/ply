@@ -82,7 +82,7 @@ const cases = [
     id: "notice",
     targets: [
       { selector: '[data-example="hono"] .ply-notice', property: "color", threshold: 7 },
-      // 印と題名は、役割の色で塗ったピルの上の白い文字。全ての役割で本文と同じ基準にする。
+      // アイコンと題名は、役割の色で塗ったピルの上の白い文字。全ての役割で本文と同じ基準にする。
       {
         selector: '[data-example="hono"] .ply-notice > .heading',
         property: "color",
@@ -141,7 +141,7 @@ const cases = [
 ];
 
 for (const { id, targets } of cases)
-  test(`${id}の変種を実際の背景でコントラスト測定する`, async ({ page }, testInfo) => {
+  test(`${id}のバリエーションを実際の背景でコントラスト測定する`, async ({ page }, testInfo) => {
     await page.goto(`/components/${id}`);
     const { measurements, calibration } = await page.evaluate(async (targets) => {
       await document.fonts.ready;

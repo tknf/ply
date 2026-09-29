@@ -16,9 +16,9 @@ export type DialogProps = PropsWithChildren<{
   triggerVariant?: ButtonVariant;
   /** 開く操作を押せなくする。 */
   triggerDisabled?: boolean;
-  /** 紙の幅。compactは26rem、defaultは32rem、wideは52remを上限にする。 */
+  /** パネルの幅。compactは26rem、defaultは32rem、wideは52remを上限にする。 */
   size?: "compact" | "default" | "wide";
-  /** 見出しの横の閉じる操作の名前。actionsがある時は、操作欄の先頭に置くやめる操作の文言にもなる。 */
+  /** 見出しの横の閉じる操作の名前。actionsがある時は、操作欄の先頭に置くキャンセル操作の文言にもなる。 */
   closeLabel?: string;
   /**
    * 操作欄に並べる操作。渡すと、閉じる操作（closeLabel）の後ろに置く。

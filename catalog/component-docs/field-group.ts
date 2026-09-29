@@ -7,12 +7,12 @@ export default {
   api: ["FieldGroup"],
   guidance: [
     "長いフォームを「連絡先」「配送先」のような意味のまとまりに分け、まとまりごとに見出しと説明を添える時に使います。",
-    "一つの入力のラベルと補足は `Field`、チェックボックスやラジオボタンの束は `CheckboxGroup` か `fieldset.ply-choice-group` を使います。",
+    "一つの入力のラベルと補足は `Field`、チェックボックスやラジオボタンのグループは `CheckboxGroup` か `fieldset.ply-choice-group` を使います。",
     "公開範囲や通知のように、名前ごとに一つの操作が付く設定を並べる時は `SettingList` を使います。",
   ],
   usage: [
     "`children` に `Field` などの入力を並べます。入力の間の余白と、見出し・説明・入力の配置は `FieldGroup` が持ちます。",
-    "置き場所の幅が40rem以上で `description` がある時は、説明を始まりの側の列に、入力を終わりの側の広い列に並べます。狭い時は説明の下に入力を縦に積みます。`description` が無い時は入力に全幅を使います。",
+    "置き場所の幅が40rem以上で `description` がある時は、説明を先頭側の列に、入力を末尾側の広い列に並べます。狭い時は説明の下に入力を縦に積みます。`description` が無い時は入力に全幅を使います。",
     "ルートは標準の `fieldset` です。`disabled` を渡すと中の入力をまとめて使えなくし、その間は中の入力を送信しません。controllerの登録は要りません。",
   ],
   accessibility: [

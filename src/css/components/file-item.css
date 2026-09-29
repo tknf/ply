@@ -2,7 +2,7 @@
   .ply-file-item {
     container: ply-file-item / inline-size;
     display: grid;
-    /* 印の札と中身の縮小は同じ40pxの正方形の列に置き、混ぜても名前の書き始めをそろえる。 */
+    /* アイコンの背景とサムネイルは同じ40pxの正方形の列に置き、混ぜても名前の書き始めをそろえる。 */
     grid-template-columns: 2.5rem minmax(0, 1fr);
     align-items: center;
     gap: var(--ply-space-3);
@@ -11,7 +11,7 @@
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
-    /* ファイルの印は枠で囲まず、淡く塗った札に置く。 */
+    /* ファイルのアイコンは枠で囲まず、淡く塗った背景に置く。 */
     & > .icon {
       display: grid;
       place-items: center;
@@ -22,8 +22,8 @@
       color: var(--ply-link);
     }
     /*
-      中身の縮小は角丸を付けず淡い縁だけで囲み、印と同じ高さの正方形に切り抜く。
-      送信待ちは縮小を薄くする。
+      サムネイルは角丸を付けず淡い縁だけで囲み、アイコンと同じ高さの正方形に切り抜く。
+      送信待ちはサムネイルを薄くする。
     */
     & > .preview {
       grid-column: 1;
@@ -42,7 +42,7 @@
     &[data-state="pending"] > .preview {
       opacity: 0.6;
     }
-    /* 送信待ちは印を控えめな色にし、状態は説明の文言で伝える。 */
+    /* 送信待ちはアイコンを控えめな色にし、状態は説明の文言で伝える。 */
     &[data-state="pending"] > .icon {
       background: var(--ply-background);
       color: var(--ply-muted);

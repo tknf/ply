@@ -53,7 +53,7 @@ export default async () => {
         <Disclosure summary="コマンド：短い数行" open>
           <CodeBlock label="インストール" code={command} tokens={shellTokens} copy />
         </Disclosure>
-        <Disclosure summary="行番号と目印の行">
+        <Disclosure summary="行番号と強調した行">
           <CodeBlock
             label="controllers.ts"
             code={controller}

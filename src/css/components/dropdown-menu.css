@@ -27,8 +27,8 @@
     }
   }
   /*
-    操作のメニューは白い紙ではなく青の面に白い文字で出す。
-    項目に指を載せると白を薄く重ね、区切りや補足も白の濃さで分ける。読み物を載せるPopoverやDialogは白い紙のまま。
+    操作のメニューは白いパネルではなく青の面に白い文字で出す。
+    項目にホバーすると白を薄く重ね、区切りや補足も白の濃さで分ける。読み物を載せるPopoverやDialogは白いパネルのまま。
   */
   .ply-menu {
     position: fixed;
@@ -57,7 +57,7 @@
     list-style: none;
     box-shadow: var(--ply-shadow-menu);
     scrollbar-color: color-mix(in srgb, var(--ply-surface) 40%, transparent) transparent;
-    /* 出入りの動きはoverlay.cssの共通の定義。支点は開いた操作の側の角にする。 */
+    /* 開閉のアニメーションはoverlay.cssの共通の定義。支点は開いた操作の側の角にする。 */
     transform-origin: top left;
     &::backdrop {
       background: transparent;
@@ -132,7 +132,7 @@
       outline: 0.125rem solid var(--ply-surface);
       outline-offset: -0.125rem;
     }
-    /* 青の面の上では赤の文字が沈むため、危険の操作は淡い赤の文字と印で分ける。 */
+    /* 青の面の上では赤の文字が沈むため、危険の操作は淡い赤の文字とアイコンで分ける。 */
     &[data-tone="danger"] {
       color: var(--ply-danger-soft);
     }

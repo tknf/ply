@@ -4,32 +4,32 @@ import { Popover } from "./popover";
 import { classes, type ElementProps } from "./types";
 
 export type Reaction = {
-  /** 絵文字や短い言葉。同じ内容の反応は一枚の札にまとめる。 */
+  /** 絵文字や短い言葉。同じ内容のリアクションは一つにまとめる。 */
   content: string;
   /** 読み上げの名前（絵文字の名前など）。渡さなければcontentを読む。 */
   name?: string;
-  /** 付けた人の名前。数はこの人数で、指を載せた時と読み上げで誰が付けたかを伝える。 */
+  /** 付けた人の名前。数はこの人数で、ホバー時と読み上げで誰が付けたかを伝える。 */
   by: readonly string[];
   /** 自分も付けているもの。 */
   mine?: boolean;
 };
 export type ReactionsProps = ElementProps<"div"> & {
-  /** 反応の一覧の名前。札の並びのaria-labelにする。画面には出さない。 */
+  /** リアクションの一覧の名前。リアクションの並びのaria-labelにする。画面には出さない。 */
   label: string;
-  /** 反応ごとに一件。付けた人（by）が空の反応は描かない。 */
+  /** リアクションごとに一件。付けた人（by）が空のリアクションは描かない。 */
   items: readonly Reaction[];
   /**
-   * 渡すと、札を押して自分の反応を付け外しでき、終わりに反応を追加する操作を置く。
-   * 追加の板はEmojiPickerと、短い言葉で反応する欄（16文字まで）を持つ。
-   * 付け外しは書き換える前にreactions:beforetoggle（取り消せる）、後にreactions:toggleで知らせる。
-   * 保存は利用側が持ち、失敗した時はReactionsControllerのsetReactionで札を戻す。
+   * 渡すと、リアクションを押して自分のリアクションを付け外しでき、末尾にリアクションを追加する操作を置く。
+   * 追加のパネルはEmojiPickerと、短い言葉でリアクションする欄（16文字まで）を持つ。
+   * 付け外しは書き換える前にreactions:beforetoggle（取り消せる）、後にreactions:toggleイベントを発火する。
+   * 保存は利用側が持ち、失敗した時はReactionsControllerのsetReactionでリアクションを戻す。
    */
   add?: {
-    /** 追加の板（Popover）のid。ページ内で一意にする。言葉の欄と絵文字の板のidにも使う。 */
+    /** 追加のパネル（Popover）のid。ページ内で一意にする。言葉の欄と絵文字パネルのidにも使う。 */
     id: string;
-    /** 自分の名前。付け外しでbyに足し引きする名前で、itemsのbyと同じ書き方にする。既定は「自分」。 */
+    /** 自分の名前。付け外しでbyに追加・削除する名前で、itemsのbyと同じ書き方にする。既定は「自分」。 */
     me?: string;
-    /** 追加の操作の名前。Tooltipと板の見出し（読み上げだけ）に使う。既定は「リアクションを追加」。 */
+    /** 追加の操作の名前。Tooltipとパネルの見出し（読み上げだけ）に使う。既定は「リアクションを追加」。 */
     label?: string;
     /** EmojiPickerに並べる絵文字。渡さなければEmojiPickerの既定の絵文字を使う。 */
     groups?: readonly EmojiGroup[];
@@ -43,9 +43,9 @@ export type ReactionsProps = ElementProps<"div"> & {
 const who = (by: readonly string[]) => by.join("、");
 
 /**
- * 項目に付いた反応。同じ絵文字や言葉は一枚の札にまとめ、付けた人数を添える。
- * 別々の人が同じ絵文字を付けると数が増え、自分が付けている札は淡い青にする。自分の札を押すと外し、
- * 他の人の札を押すと自分も同じ反応を付ける。新しい反応はEmojiPickerから選ぶか、短い言葉を書いて追加する。
+ * 項目に付いたリアクション。同じ絵文字や言葉は一つのリアクションにまとめ、付けた人数を添える。
+ * 別々の人が同じ絵文字を付けると数が増え、自分が付けているリアクションは淡い青にする。自分のリアクションを押すと外し、
+ * 他の人のリアクションを押すと自分も同じリアクションを付ける。新しいリアクションはEmojiPickerから選ぶか、短い言葉を入力して追加する。
  */
 export const Reactions = ({
   label,
@@ -121,7 +121,7 @@ export const Reactions = ({
           tooltip
         >
           <div class="add">
-            {/* 開いた時は言葉の欄へ移る。確定は日本語入力の変換中のEnterを除き、Enterか「追加」で行う。 */}
+            {/* 開いた時は言葉の欄へフォーカスを移す。確定は日本語入力の変換中のEnterを除き、Enterか「追加」で行う。 */}
             <InputGroup
               id={`${add.id}-text`}
               class="text"

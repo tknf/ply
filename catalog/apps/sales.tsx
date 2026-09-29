@@ -34,15 +34,15 @@ const months = [
   },
 ] as const;
 
-/** 千円単位の数を「¥1,284,000」の形にする。 */
+/** 千円単位の数値を「¥1,284,000」の形にする。 */
 const yen = (thousands: number) => `¥${(thousands * 1000).toLocaleString("ja-JP")}`;
 const latest = months[months.length - 1];
 const previous = months[months.length - 2];
 const growth = Math.round(((latest.total - previous.total) / previous.total) * 100);
-/** 図の棒の高さ。いちばん大きな月を110にそろえる。 */
+/** グラフの棒の高さ。最大の月を110にそろえる。 */
 const barHeight = (total: number) => Math.round((total / 1600) * 110);
 
-/** 売上。今月の数字、月ごとの推移、プラン別の内訳を読む。 */
+/** 売上。今月の数値、月ごとの推移、プラン別の内訳を確認する。 */
 export const SalesScreen = () => (
   <AppFrame current="sales">
     <PageHeader

@@ -7,7 +7,7 @@ import json from "shiki/langs/json.mjs";
 import theme from "shiki/themes/github-light.mjs";
 import type { CodeToken } from "../src/hono/code-block";
 
-// カタログのサーバーだけで生成する。ブラウザと配布するコンポーネントへ整形器を含めない。
+// カタログのサーバーだけで生成する。ブラウザと配布するコンポーネントへフォーマッターを含めない。
 const highlighter = createHighlighterCore({
   themes: [theme],
   langs: [html, tsx, json],

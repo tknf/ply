@@ -1,14 +1,14 @@
 @layer components {
   /*
-    判断を依頼する問いかけ。形はLayerCardのまま（淡い青の沈んだ層に問いの見出し、白い紙に中身）で、
-    紙の中に選択肢の行を並べる。行は円の印・太字の要点・淡い説明・進む矢印で、ActionListの行と同じく
-    普段は平らにし、指を載せると淡い青の面を出して印を青から紫の塗りに、押すと内側へへこむ。
+    判断を依頼する問いかけ。形はLayerCardのまま（淡い青の沈んだ層に問いの見出し、白いカードに中身）で、
+    カードの中に選択肢の行を並べる。行は丸いマーク・太字の要点・淡い説明・進む矢印で、ActionListの行と同じく
+    普段は平らにし、ホバーすると淡い青の面を出してマークを青から紫の塗りに、押すと内側へへこむ。
     尾（下向きの三角）は層と同じ色で、すぐ下の対象を指す。
     選択肢の行の文字の指定はこのファイルが持つ（共通Buttonとは別の専用の操作）。
   */
   .ply-prompt {
     position: relative;
-    /* 尾は層の外へ出るので、下の物との間は置く側の間隔（16px以上）で空ける。 */
+    /* 尾は層の外へ出るので、下の要素との間は置く側の間隔（16px以上）で空ける。 */
     &[data-pointer="true"]::after {
       content: "";
       position: absolute;
@@ -17,7 +17,7 @@
       border-inline: var(--ply-space-3) solid transparent;
       border-block-start: var(--ply-space-3) solid var(--ply-cover);
     }
-    /* 紙は行の面を端近くまで広げ、行の要点を層の見出しと同じ書き始めにそろえる。 */
+    /* カードは行の面を端近くまで広げ、行の要点を層の見出しと同じ書き始めにそろえる。 */
     & > .body {
       padding-block: var(--ply-space-2);
       padding-inline: calc(var(--ply-layer-card-inline) - var(--ply-space-3));
@@ -53,7 +53,7 @@
       transition:
         background-color var(--ply-duration) ease,
         box-shadow var(--ply-duration) ease;
-      /* 円の印。題名の一行目の高さにそろえ、答える前は淡い青の輪にする。 */
+      /* 丸いマーク。題名の一行目の高さにそろえ、答える前は淡い青の輪にする。 */
       & > .mark {
         display: grid;
         place-items: center;
@@ -117,7 +117,7 @@
         }
       }
     }
-    /* 行の間は、ActionListと同じく要点の書き始めから細い線で区切り、指を載せた行の前後は面に溶かす。 */
+    /* 行の間は、ActionListと同じく要点の書き始めから細い線で区切り、ホバーした行の前後は線を消す。 */
     & > .choice + .choice::before {
       content: "";
       position: absolute;

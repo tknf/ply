@@ -15,23 +15,23 @@
 
 Toastはページに置いておき、閉じた状態（`popover="manual"`）で描きます。開くのは、`popovertarget` にToastの `id` を指したボタンか、スクリプトからの `showPopover()` です。開いてもフォーカスは移しません。閉じるボタンも、Toastを指した `popovertarget` のボタンです。`ToastController` を `toast` として登録すると、`duration` と開閉のイベントが働きます。
 
-`tone` で知らせの種類を選び、面をその色で塗ります。印は `success` でチェック、`danger` で丸の中のバツ、他はiです。`actions` を渡すと、知らせの後に操作を置きます。
+`tone` で通知の種類を選び、背景をその色で塗ります。アイコンは `success` でチェック、`danger` で丸の中のバツ、他はiです。`actions` を渡すと、通知の文の後に操作を置きます。
 
-既定では閉じるボタンを押すまで残します。`duration` にミリ秒を渡すと、開いてからその時間で閉じます。フォーカスがToastの中にある間は数えず、外へ出てから数え直します。失敗の知らせは `live="assertive"` にして自動で閉じず、重要なエラーは入力の近くや `ErrorSummary` にも残します。
+既定では閉じるボタンを押すまで残します。`duration` にミリ秒を渡すと、開いてからその時間で閉じます。フォーカスがToastの中にある間は数えず、外へ出てから数え直します。失敗の通知は `live="assertive"` にして自動で閉じず、重要なエラーは入力の近くや `ErrorSummary` にも残します。
 
-単独のToastは、画面の下の書き終わりの側（左から右に読む画面では右下）に浮かべます。
+単独のToastは、画面下部の末尾側（左から右に読む画面では右下）に浮かべます。
 
-複数のToastは `ToastStack` で囲み、`ToastStackController` を `toast-stack` として登録します。開いた順に、新しいものを手前にして束ねます。二枚以上の時、束を押すと上へ広がり、外を押すかEscapeで畳みます。キーボードでフォーカスが束の中へ入った時も広がります。Toastの中のボタンやリンクを押しても、束は開閉しません。`placement` で置き場所を選びます。
+複数のToastは `ToastStack` で囲み、`ToastStackController` を `toast-stack` として登録します。開いた順に、新しいものを手前にして重ねます。二つ以上の時、スタックを押すと上へ広がり、外を押すかEscapeで畳みます。キーボードでフォーカスがスタックの中へ入った時も広がります。Toastの中のボタンやリンクを押しても、スタックは開閉しません。`placement` で置き場所を選びます。
 
-Toastを指した `popovertarget` のボタン（閉じるボタンを含む）を押して開閉した時は、`Dialog` と同じく、取り消せる `toast:beforeshow`・`toast:beforehide` と、`toast:show`・`toast:hide` を知らせます。スクリプトからの `showPopover()`・`hidePopover()` と `duration` で開閉した時は知らせません。開き方に関わらず開閉を受け取る時は、標準の `toggle` を使います。
+Toastを指した `popovertarget` のボタン（閉じるボタンを含む）を押して開閉した時は、`Dialog` と同じく、取り消せる `toast:beforeshow`・`toast:beforehide` と、`toast:show`・`toast:hide` を発火します。スクリプトからの `showPopover()`・`hidePopover()` と `duration` で開閉した時は発火しません。開き方に関わらず開閉を受け取る時は、標準の `toggle` を使います。
 
-JavaScriptが無い時も、`popovertarget` のボタンと閉じるボタンでToastを開閉できます。`duration`、開閉のイベント、束ねる動きは働きません。
+JavaScriptが無い時も、`popovertarget` のボタンと閉じるボタンでToastを開閉できます。`duration`、開閉のイベント、重ねる動きは働きません。
 
 ## キーボード
 
 | キー   | 動作                                                        |
 | ------ | ----------------------------------------------------------- |
-| Tab    | `ToastStack` の中へフォーカスが入ると、束を広げます。       |
+| Tab    | `ToastStack` の中へフォーカスが入ると、スタックを広げます。 |
 | Escape | 広げた `ToastStack` を畳みます。Toastそのものは閉じません。 |
 
 ## アクセシビリティ
@@ -40,16 +40,16 @@ JavaScriptが無い時も、`popovertarget` のボタンと閉じるボタンで
 - 開いてもフォーカスを移さないので、作業を続けたまま読み上げで結果を伝えます。
 - 閉じるボタンは `closeLabel` を読み上げ名にします。
 - 操作を持つToastに `duration` を付ける時は、読んで操作するまでに閉じない長さにします。フォーカスが中にある間は閉じません。
-- 知らせの色は見分けの補助です。成功か失敗かは文言で伝えます。
+- 通知の色は見分けの補助です。成功か失敗かは文言で伝えます。
 
 ## イベント
 
 | イベント           | 内容                                                                                                                                                             |
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `toast:beforeshow` | 取り消せます。`popovertarget` のボタンで開く前に知らせ、`preventDefault()` で開きません。`detail` は `{ reason }` で、`reason` は `pointer` か `keyboard` です。 |
-| `toast:show`       | `popovertarget` のボタンで開いた後に知らせます。`detail` は `toast:beforeshow` と同じです。                                                                      |
-| `toast:beforehide` | 取り消せます。閉じるボタンか `popovertarget` のボタンで閉じる前に知らせ、`preventDefault()` で閉じません。`detail` は `toast:beforeshow` と同じです。            |
-| `toast:hide`       | 閉じるボタンか `popovertarget` のボタンで閉じた後に知らせます。`detail` は `toast:beforeshow` と同じです。                                                       |
+| `toast:beforeshow` | 取り消せます。`popovertarget` のボタンで開く前に発火し、`preventDefault()` で開きません。`detail` は `{ reason }` で、`reason` は `pointer` か `keyboard` です。 |
+| `toast:show`       | `popovertarget` のボタンで開いた後に発火します。`detail` は `toast:beforeshow` と同じです。                                                                      |
+| `toast:beforehide` | 取り消せます。閉じるボタンか `popovertarget` のボタンで閉じる前に発火し、`preventDefault()` で閉じません。`detail` は `toast:beforeshow` と同じです。            |
+| `toast:hide`       | 閉じるボタンか `popovertarget` のボタンで閉じた後に発火します。`detail` は `toast:beforeshow` と同じです。                                                       |
 
 ## API
 
@@ -60,12 +60,12 @@ JavaScriptが無い時も、`popovertarget` のボタンと閉じるボタンで
 | 名前         | 型                         | 既定値     | 説明                                                                                                                                             |
 | ------------ | -------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `id`（必須） | `string`                   |            | popoverのid。開く操作のpopovertargetや、showPopover()で開く時に指す。画面の中で一意にする。                                                      |
-| `actions`    | `Child`                    |            | 知らせの下に置く操作（「記事を確認する」「もう一度保存する」など）。                                                                             |
+| `actions`    | `Child`                    |            | 通知の下に置く操作（「記事を確認する」「もう一度保存する」など）。                                                                               |
 | `closeLabel` | `string`                   | `"閉じる"` | 閉じるボタンの読み上げ名。                                                                                                                       |
 | `duration`   | `number`                   | `0`        | 開いてから自動で閉じるまでのミリ秒。0は閉じるボタンを押すまで残す。フォーカスが中にある間は数えず、外へ出てから数え直す。ToastControllerが要る。 |
-| `live`       | `"polite" \| "assertive"`  | `"polite"` | 読み上げの急ぎ方。politeはrole="status"、assertiveはrole="alert"にする。失敗の知らせはassertiveにする。                                          |
-| `tone`       | `Exclude<Tone, "neutral">` | `"info"`   | 知らせの種類。面をその役割の色で塗る。                                                                                                           |
-| `children`   | `Child`                    |            | 知らせの文。印の隣に書きます。                                                                                                                   |
+| `live`       | `"polite" \| "assertive"`  | `"polite"` | 読み上げの緊急度。politeはrole="status"、assertiveはrole="alert"にする。失敗の通知はassertiveにする。                                            |
+| `tone`       | `Exclude<Tone, "neutral">` | `"info"`   | 通知の種類。パネルをその役割の色で塗る。                                                                                                         |
+| `children`   | `Child`                    |            | 通知の文。アイコンの隣に表示します。                                                                                                             |
 
 登録するcontroller：`toast`（`ToastController`）
 
@@ -77,12 +77,12 @@ JavaScriptが無い時も、`popovertarget` のボタンと閉じるボタンで
 
 ### ToastStack
 
-開いているToastを、新しいものを手前にして束ねる。押すと広げ、外を押すかEscで畳む。重ね方と広げ方はToastStackControllerが扱う。childrenにはToastだけを置く。
+開いているToastを、新しいものを手前にして重ねる。押すと広げ、外を押すかEscで畳む。重ね方と広げ方はToastStackControllerが扱う。childrenにはToastだけを置く。
 
-| 名前        | 型                             | 既定値  | 説明                                                                   |
-| ----------- | ------------------------------ | ------- | ---------------------------------------------------------------------- |
-| `placement` | `"start" \| "center" \| "end"` | `"end"` | 束を置く場所。既定は書き終わりの側の下（左から右に読む画面では右下）。 |
-| `children`  | `Child`                        |         | 束ねる `Toast`。Toastだけを置きます。                                  |
+| 名前        | 型                             | 既定値  | 説明                                                                 |
+| ----------- | ------------------------------ | ------- | -------------------------------------------------------------------- |
+| `placement` | `"start" \| "center" \| "end"` | `"end"` | スタックを置く場所。既定は末尾側の下（左から右に読む画面では右下）。 |
+| `children`  | `Child`                        |         | 重ねる `Toast`。Toastだけを置きます。                                |
 
 ほかに、`<div>`へ標準のHTML属性を渡せます。
 
@@ -103,13 +103,15 @@ import {
 } from "ply/hono";
 export default () => (
   <div class="ply-stack">
-    <p>続けて開くと右下に束なります。束を押すと広がり、外を押すかEscで畳みます。</p>
+    <p>
+      続けて開くと右下に重なります。重なりを押すと広がり、外側を押すかEscで畳みます。
+    </p>
     <div class="ply-cluster">
       <Button popovertarget="hono-toast">結果表示を試す</Button>
       <Button popovertarget="hono-toast-timed">5秒で閉じる通知</Button>
-      <Button popovertarget="hono-toast-short">短い知らせ</Button>
-      <Button popovertarget="hono-toast-warning">注意の知らせ</Button>
-      <Button popovertarget="hono-toast-danger">失敗の知らせ</Button>
+      <Button popovertarget="hono-toast-short">短い通知</Button>
+      <Button popovertarget="hono-toast-warning">注意の通知</Button>
+      <Button popovertarget="hono-toast-danger">失敗の通知</Button>
     </div>
     <ToastStack>
       <Toast
@@ -144,14 +146,14 @@ export default () => (
           <Button popovertarget="hono-toast-start">左下に出す</Button>
         </div>
         <ToastStack placement="center">
-          <Toast id="hono-toast-center">下の中央に出す知らせです。</Toast>
+          <Toast id="hono-toast-center">下の中央に出す通知です。</Toast>
         </ToastStack>
         <ToastStack placement="start">
-          <Toast id="hono-toast-start">左下に出す知らせです。</Toast>
+          <Toast id="hono-toast-start">左下に出す通知です。</Toast>
         </ToastStack>
       </Disclosure>
       <Disclosure summary="右から左に読む場合">
-        <Button popovertarget="hono-toast-rtl">右から左に読む知らせ</Button>
+        <Button popovertarget="hono-toast-rtl">右から左に読む通知</Button>
         <div dir="rtl" lang="ar">
           <ToastStack>
             <Toast id="hono-toast-rtl" closeLabel="إغلاق">
@@ -170,7 +172,7 @@ export default () => (
 
 ```html
 <div class="ply-stack">
-  <p>続けて開くと右下に束なります。束を押すと広がり、外を押すかEscで畳みます。</p>
+  <p>続けて開くと右下に重なります。重なりを押すと広がり、外側を押すかEscで畳みます。</p>
   <div class="ply-cluster">
     <button
       popovertarget="hono-toast"
@@ -195,7 +197,7 @@ export default () => (
       data-variant="secondary"
       data-size="default"
     >
-      短い知らせ</button
+      短い通知</button
     ><button
       popovertarget="hono-toast-warning"
       class="ply-button"
@@ -203,7 +205,7 @@ export default () => (
       data-variant="secondary"
       data-size="default"
     >
-      注意の知らせ</button
+      注意の通知</button
     ><button
       popovertarget="hono-toast-danger"
       class="ply-button"
@@ -211,7 +213,7 @@ export default () => (
       data-variant="secondary"
       data-size="default"
     >
-      失敗の知らせ
+      失敗の通知
     </button>
   </div>
   <div class="ply-toast-stack" data-controller="toast-stack" data-placement="end">
@@ -549,7 +551,7 @@ export default () => (
                     focusable="false"
                   >
                     <use href="/assets/ply-icons.svg#ply-info-fill"></use></svg
-                  ><span>下の中央に出す知らせです。</span>
+                  ><span>下の中央に出す通知です。</span>
                 </div>
                 <span class="close"
                   ><button
@@ -605,7 +607,7 @@ export default () => (
                     focusable="false"
                   >
                     <use href="/assets/ply-icons.svg#ply-info-fill"></use></svg
-                  ><span>左下に出す知らせです。</span>
+                  ><span>左下に出す通知です。</span>
                 </div>
                 <span class="close"
                   ><button
@@ -656,7 +658,7 @@ export default () => (
           data-variant="secondary"
           data-size="default"
         >
-          右から左に読む知らせ
+          右から左に読む通知
         </button>
         <div dir="rtl" lang="ar">
           <div

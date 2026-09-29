@@ -72,7 +72,7 @@ test("Tableのmanualモードは行を動かさず列と方向を通知する", 
   expect(await rows.allTextContents()).toEqual(original);
 });
 
-test("Tableの欠損は末尾に保ちソート要求の取消を尊重する", async ({ page }) => {
+test("Tableの欠損は末尾に保ちソート要求の取消に従う", async ({ page }) => {
   await page.goto("/components/table");
   await page.getByText("無効な行・数値の欠損・負の値・密度", { exact: true }).click();
   const table = page.getByRole("region", { name: "増減の確認", exact: true });
@@ -95,7 +95,7 @@ test("Tableの欠損は末尾に保ちソート要求の取消を尊重する", 
   ).not.toBeChecked();
 });
 
-test("Tableの選択の棚は表の後にあり、行を選んだ後にTabで一括操作へ進める", async ({ page }) => {
+test("Tableの選択バーは表の後にあり、行を選んだ後にTabで一括操作へ進める", async ({ page }) => {
   await page.goto("/components/table");
   const table = page.getByRole("region", { name: "記事の公開状況", exact: true });
   const bar = table.locator(".selection-bar");
@@ -111,7 +111,7 @@ test("Tableの選択の棚は表の後にあり、行を選んだ後にTabで一
   await expect(bar).toHaveAttribute("popover", "manual");
   await table.locator('input[data-table-select-target="item"]').last().check();
   await expect(bar).toBeVisible();
-  // 表の最後の行のリンクから、Shift+Tabで戻らずにTabで棚へ進む。
+  // 表の最後の行のリンクから、Shift+Tabで戻らずにTabで選択バーへ進む。
   await table.locator("tbody > tr").last().getByRole("link").focus();
   await page.keyboard.press("Tab");
   expect(await bar.evaluate((element) => element.contains(document.activeElement))).toBe(true);
@@ -148,7 +148,7 @@ test("JavaScriptがなくてもTableの一括操作を表の下に置き、選�
   await expect(submit).toBeVisible();
   const grid = await table.locator(":scope > table").boundingBox(),
     shelf = await bar.boundingBox();
-  if (!grid || !shelf) throw new Error("表か棚がありません");
+  if (!grid || !shelf) throw new Error("表か選択バーがありません");
   expect(shelf.y).toBeGreaterThanOrEqual(grid.y + grid.height - 1);
   const item = table.locator('input[data-table-select-target="item"]').first();
   await item.check();

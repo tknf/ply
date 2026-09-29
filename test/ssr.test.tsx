@@ -268,7 +268,7 @@ test("同日の期間はサーバーが指定した種別を保持する", async
   expect(result).toContain('data-date-picker-mode-value="range"');
 });
 
-// 全ページを描き、部品のページは型の解析も行うので、既定の5秒では足りない。
+// 全ページを描き、コンポーネントのページは型の解析も行うので、既定の5秒では足りない。
 test("カタログの全経路を生成でき内部routeへ到達できる", async () => {
   const generatedRoutes = new Set(paths);
   const unresolved = new Set<string>();

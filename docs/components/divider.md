@@ -12,11 +12,11 @@
 
 ## 使い方
 
-`label`を省略すると、線だけの区切り（`actions`があれば線と操作）を出します。`label`を渡すと、始まりの側に名前、残りの幅に線を引きます。名前には文字のほか、`InlineSelect`などの選択も置けます。
+`label`を省略すると、線だけの区切り（`actions`があれば線と操作）を出します。`label`を渡すと、先頭側に名前、残りの幅に線を引きます。名前には文字のほか、`InlineSelect`などの選択も置けます。
 
 `line="solid"`は確定した区切り、`line="dashed"`は破線で、ここから先はまだ確定していないことを示します。
 
-`actions`には、区切りの先の物をまとめて扱う操作（「すべて見る」の`ActionLink`など）だけを置きます。操作は線の終わりに置き、狭い場所では次の行の終わりの側へ回します。
+`actions`には、区切りの先の項目をまとめて扱う操作（「すべて見る」の`ActionLink`など）だけを置きます。操作は線の末尾に置き、狭い場所では次の行の末尾側へ回します。
 
 長い名前は折り返し、線は残りの幅に引きます。
 
@@ -31,9 +31,9 @@
 
 | 名前      | 型                    | 既定値    | 説明                                                                                                                                      |
 | --------- | --------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `label`   | `Child`               |           | 線の始まりに置く名前。文字のほか、選択（InlineSelectなど）も置ける。                                                                      |
+| `label`   | `Child`               |           | 線の先頭に置く名前。文字のほか、選択（InlineSelectなど）も置ける。                                                                        |
 | `line`    | `"solid" \| "dashed"` | `"solid"` | solidは確定した区切り、dashedは破線（ここから先はまだ確定していない）。                                                                   |
-| `actions` | `Child`               |           | 線の終わりに置く操作（ピルのActionLinkなど）。「最近のファイル ——— ［すべて見る］」のように、区切りの先の物をまとめて扱う操作だけを置く。 |
+| `actions` | `Child`               |           | 線の末尾に置く操作（ピルのActionLinkなど）。「最近のファイル ——— ［すべて見る］」のように、区切りの後の項目をまとめて扱う操作だけを置く。 |
 
 読み込むCSS：`layers.css`、`reset.css`、`tokens.css`、`base.css`、`layout.css`、`components/divider.css`
 
@@ -62,7 +62,7 @@ export default () => (
         </ActionLink>
       }
     />
-    <p>線の終わりには、区切りの先の物をまとめて扱う操作だけを置きます。</p>
+    <p>線の終わりには、区切りの後の項目をまとめて扱う操作だけを置きます。</p>
     <Divider
       label={
         <InlineSelect
@@ -81,7 +81,7 @@ export default () => (
         </ActionLink>
       }
     />
-    <p>名前の代わりに文の中の選択を置くと、区切りの先の並べ方を選べます。</p>
+    <p>名前の代わりに文の中の選択を置くと、区切りの後の項目の並べ方を選べます。</p>
     <div dir="rtl" lang="ar" class="ply-stack">
       <Divider label="ملاحظة" />
       <Divider label="مسودة" line="dashed" />
@@ -115,7 +115,7 @@ export default () => (
       ></span
     >
   </div>
-  <p>線の終わりには、区切りの先の物をまとめて扱う操作だけを置きます。</p>
+  <p>線の終わりには、区切りの後の項目をまとめて扱う操作だけを置きます。</p>
   <div class="ply-divider">
     <span
       ><span class="ply-inline-select"
@@ -136,7 +136,7 @@ export default () => (
       ></span
     >
   </div>
-  <p>名前の代わりに文の中の選択を置くと、区切りの先の並べ方を選べます。</p>
+  <p>名前の代わりに文の中の選択を置くと、区切りの後の項目の並べ方を選べます。</p>
   <div dir="rtl" lang="ar" class="ply-stack">
     <div class="ply-divider"><span>ملاحظة</span></div>
     <div class="ply-divider" data-line="dashed"><span>مسودة</span></div>

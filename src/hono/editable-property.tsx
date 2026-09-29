@@ -3,9 +3,9 @@ import { Input, Textarea } from "./field";
 import { Icon } from "./icon";
 
 export type EditablePropertyProps = {
-  /** 部品の中の要素のidの元。`${id}-label`・`${id}-input`・`${id}-editor`を作るので、画面の中で一意にする。 */
+  /** コンポーネント内の要素のidの元。`${id}-label`・`${id}-input`・`${id}-editor`を作るので、画面の中で一意にする。 */
   id: string;
-  /** 項目名。値の上に出し、欄の名前（aria-labelledby）と鉛筆の読み上げ名「〇〇を編集」にも使う。 */
+  /** 項目名。値の上に出し、欄の名前（aria-labelledby）と鉛筆ボタンの読み上げ名「〇〇を編集」にも使う。 */
   label: string;
   /** 欄のname。フォームで送る時の名前になる。 */
   name: string;
@@ -15,13 +15,13 @@ export type EditablePropertyProps = {
   emptyLabel?: string;
   /** 空のままでは確定できなくする。確定の時に欄の標準の検証を行う。 */
   required?: boolean;
-  /** 編集できなくする。鉛筆を押せず、値を押しても書き始めない。欄も無効になるので、フォームでは送られない。 */
+  /** 編集できなくする。鉛筆ボタンを押せず、値を押しても編集を始めない。欄も無効になるので、フォームでは送られない。 */
   disabled?: boolean;
-  /** 欄を結び付けるformのid。部品がformの外にある時に使う。 */
+  /** 欄を結び付けるformのid。コンポーネントがformの外にある時に使う。 */
   form?: string;
   /** 入力できる文字数の上限。欄のmaxlengthに入れる。 */
   maxLength?: number;
-  /** 複数行の値。複数行の欄で書き、改行はそのまま表示する。 */
+  /** 複数行の値。複数行の欄で入力し、改行はそのまま表示する。 */
   multiline?: boolean;
 };
 
@@ -91,7 +91,7 @@ export const EditableProperty = ({
         {/* textareaの初期値は属性ではなく中身に書く。 */}
         {multiline ? <Textarea {...field}>{value}</Textarea> : <Input {...field} value={value} />}
         <div class="actions">
-          {/* 確定は小さい主操作、取消は文字だけの操作にして、書いている値より重くしない。面の下に並べる。 */}
+          {/* 確定は小さい主操作、取消は文字だけの操作にして、入力中の値より目立たせない。入力欄の下に並べる。 */}
           <Button
             type="button"
             variant="primary"

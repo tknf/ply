@@ -16,22 +16,22 @@ export const TagGroup = ({
   </div>
 );
 export type TagProps = ElementProps<"span"> & {
-  /** 札の文言。長い文言は省略せずに折り返す。 */
+  /** タグの文言。長い文言は省略せずに折り返す。 */
   label: string;
-  /** 縁と文字の色。分類を見分けるために使う。渡さなければ淡い灰の札にする。 */
+  /** 縁と文字の色。分類を見分けるために使う。渡さなければ淡い灰のタグにする。 */
   accent?: Accent;
 } & (
     | {
-        /** 渡すと札を分類へ移るリンクにする。removeButtonとは同時に使えない。 */
+        /** 渡すとタグを分類へ移るリンクにする。removeButtonとは同時に使えない。 */
         href?: string;
         removeButton?: never;
       }
     | {
         href?: never;
         /**
-         * 札の終わりに置く外す操作。空のButton（variant="link"・size="tag"・class="remove"・
-         * data-icon-only="true"）に「〇〇を解除」のaria-labelを付けて渡すと、×の印を描く。
-         * 外した後の処理は利用側が持つ。
+         * タグの末尾に置く解除操作。空のButton（variant="link"・size="tag"・class="remove"・
+         * data-icon-only="true"）に「〇〇を解除」のaria-labelを付けて渡すと、×のアイコンを描く。
+         * 解除した後の処理は利用側が持つ。
          */
         removeButton: Child;
       }

@@ -13,7 +13,7 @@ export type FileInputProps = Omit<
   label: string;
   /** 欄の下に出す補足。ファイル入力のaria-describedbyに関連付ける。 */
   help?: string;
-  /** 欄の下に出す誤りの文。ファイル入力をaria-invalidにする。形式・容量の確かめは利用側で行う。 */
+  /** 欄の下に出すエラー文。ファイル入力をaria-invalidにする。形式・容量の検証は利用側で行う。 */
   error?: string;
 };
 
@@ -65,7 +65,7 @@ export const FileInput = ({
             data-file-input-target="files"
             hidden
           />
-          {/* 選んだファイルの行はFileItemの形。controllerがこの型を複製し、名前と大きさを入れる。 */}
+          {/* 選んだファイルの行はFileItemの形。controllerがこのテンプレートを複製し、名前とサイズを入れる。 */}
           <template data-file-input-target="template">
             <li>
               <FileItem name="" description="" />

@@ -104,8 +104,8 @@ export default () => (
       ]}
     />
     <p class="catalog-footnote">
-      右上の持ち手で移動します。Space → 矢印キー →
-      Enterでも操作できます。Escapeで元へ戻します。運んだ項目は、置いた列の色に染まります。
+      右上のハンドルで移動します。Space → 矢印キー →
+      Enterでも操作できます。Escapeで元へ戻します。移動した項目は、置いた列の色に変わります。
     </p>
     <DisclosureGroup label="列と項目の違い">
       <Disclosure summary="列の色：状態ごとの見出しと項目の色、今の列" open>
@@ -134,7 +134,7 @@ export default () => (
           ]}
         />
       </Disclosure>
-      <Disclosure summary="完了の列：運ぶと置いた列の色に変わる">
+      <Disclosure summary="完了の列：移動すると置いた列の色に変わる">
         <Board
           label="原稿の承認"
           movable
@@ -195,7 +195,7 @@ export default () => (
           ]}
         />
       </Disclosure>
-      <Disclosure summary="項目の中身：担当者・分類・期限・チェック・進み具合・ファイル">
+      <Disclosure summary="項目の中身：担当者・分類・期限・チェック・進捗・ファイル">
         <Board
           label="イベントの準備"
           columns={[
