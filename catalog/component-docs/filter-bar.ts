@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "filter-bar",
   name: "FilterBar",
-  description: "一覧を絞り込む条件をリンクで切り替える",
+  description: "一覧の絞り込み条件を、リンクで切り替えます。",
   api: ["FilterBar"],
   guidance: [
     '一覧の上で、状態や期間などの条件を一つ選んで絞り込む時に使います。`appearance="segmented"` にすると、月・週・一覧のような表示の切り替えにも使えます。',

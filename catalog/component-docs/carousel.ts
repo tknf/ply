@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "carousel",
   name: "Carousel",
-  description: "関連する内容を一枚ずつ読み、前後へ移動します。",
+  description: "関連する内容を1件ずつ表示し、前後に切り替えます。",
   api: ["Carousel"],
   guidance: [
     "お知らせや特集など、関連する少数の内容を同じ場所で一枚ずつ読ませる時に使います。",

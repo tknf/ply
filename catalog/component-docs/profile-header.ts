@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "profile-header",
   name: "ProfileHeader",
-  description: "大きなアバターと名前、この人への設定のバー",
+  description: "人物の大きなアバターと名前に、その人に関する設定を並べます。",
   api: ["ProfileHeader"],
   guidance: [
     "人やグループの画面の上部で、名前と、この人に対する設定（通知・振り分け・メモなど）をまとめる時に使います。",

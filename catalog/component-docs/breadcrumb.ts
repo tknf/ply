@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "breadcrumb",
   name: "Breadcrumb",
-  description: "階層をたどって上位へ戻る",
+  description: "階層をたどって、上の階層へ戻ります。",
   api: ["Breadcrumb"],
   guidance: [
     "階層の深い画面で、上位の階層をたどって戻れるようにする時に使います。",

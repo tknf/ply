@@ -3,7 +3,8 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "action-tile",
   name: "ActionTile",
-  description: "塗りつぶしのアイコンと名前を縦に積み、格子に並べるショートカットや操作",
+  description:
+    "塗りつぶしのアイコンと名前を縦に並べたタイルです。リンクや操作をグリッドに並べます。",
   api: ["ActionTile"],
   guidance: [
     "よく使う画面へのショートカットや、選んだ項目への一括操作を、アイコンと名前で格子に並べる時に使います。`CommandMenu` の上段のショートカットと、`Table` の `selectionActions` の一括操作もこのタイルです。",

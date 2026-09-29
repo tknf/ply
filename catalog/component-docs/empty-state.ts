@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "empty-state",
   name: "EmptyState",
-  description: "情報がない理由と次の行動を示します。",
+  description: "表示する情報がない理由と、次の操作を示します。",
   api: ["EmptyState"],
   guidance: [
     "一覧や検索の結果が0件の時、初めて使う時、確認などの作業を全て終えた時に、その理由と次の操作を示す時に使います。",

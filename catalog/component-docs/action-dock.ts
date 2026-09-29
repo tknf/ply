@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "action-dock",
   name: "ActionDock",
-  description: "画面の下に浮かぶ、アイコン・名前・ショートカットキーの表示を並べた操作バー",
+  description: "画面の下に表示する操作バーです。アイコン・名前・ショートカットキーを並べます。",
   api: ["ActionDock"],
   guidance: [
     "開いている一件（スレッドや記事）に対する主な操作を、内容を読みながらいつでも押せるよう、下に浮かべて並べる時に使います。",

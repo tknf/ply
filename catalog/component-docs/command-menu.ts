@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "command-menu",
   name: "CommandMenu",
-  description: "アプリ全体の移動・操作を検索する、上部中央の専用パネル。",
+  description: "アプリ全体の移動先と操作を検索する、上部中央のパネルです。",
   api: ["CommandMenu"],
   guidance: [
     "アプリ全体の移動先と操作を一か所から探す導線として、`AppShell`の`commands`に一つ置きます。",

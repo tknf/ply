@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "editable-property",
   name: "EditableProperty",
-  description: "値をその場所で編集し、確定と取消を揃える",
+  description: "値をその場で編集し、確定と取り消しの操作をそろえます。",
   api: ["EditableProperty"],
   guidance: [
     "担当者・件名・メモのように、属性の一つだけを画面を移らずに書き換えさせる時に使います。",

@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "inline-select",
   name: "InlineSelect",
-  description: "文の中の語を押して選ぶ選択",
+  description: "文中の語をクリックして、選択肢から選びます。",
   api: ["InlineSelect"],
   guidance: [
     "「30分前に知らせる」「全員が送ったファイル」のように、設定や条件を一つの文として読ませ、その中の語だけを選べるようにする時に使います。",

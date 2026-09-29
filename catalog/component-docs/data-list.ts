@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "data-list",
   name: "DataList",
-  description: "主情報・補足・状態を行で比較します。",
+  description: "主な情報・補足・状態を行ごとに並べて比較します。",
   api: ["DataList"],
   guidance: [
     "人・記事・資料などを一件ずつ、題名・補足・状態で見比べる時に使います。",

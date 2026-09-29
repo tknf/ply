@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "table",
   name: "Table",
-  description: "数値・短い状態・長文を列の役割に合わせて表示します。",
+  description: "数値・短い状態・長い文章を、列の役割に合わせて表示します。",
   api: ["Table", "TableSort", "TableSelection"],
   guidance: [
     "複数の項目を同じ列で見比べる時に使います。列の並べ替え、行の選択と一括操作、見出しの固定を足せます。",

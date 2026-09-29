@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "split-button",
   name: "SplitButton",
-  description: "主操作と、ほかのやり方を選ぶ▾をつなげたピル",
+  description: "主な操作のボタンと、別の方法を選ぶ▾のボタンをつなげて並べます。",
   api: ["SplitButton"],
   guidance: [
     "「送る」に対する「送る日時を決める」「下書きとして保存」のように、主操作に同じ目的のほかのやり方を添える時に使います。",

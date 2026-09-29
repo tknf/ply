@@ -3,10 +3,10 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "app-shell",
   name: "AppShell",
-  description: "上部中央のコマンドメニューと、中央の作業面を持つアプリの骨格。",
+  description: "上部中央のコマンドメニューと中央の作業面を持つ、アプリの基本の画面構成です。",
   api: ["AppShell"],
   guidance: [
-    "アプリの各画面に共通する骨格として、上部中央のコマンドメニューと中央の作業面を置く時に使います。",
+    "アプリの各画面に共通する画面構成として、上部中央のコマンドメニューと中央の作業面を置く時に使います。",
     "画面の端に固定するサイドバーは持ちません。画面全体の移動は`commands`の`CommandMenu`、作業面に付属する補助パネルは`wings`（`Wing`）で扱います。",
     "`AppShell`を使わない画面で作業面だけを置く時は`Surface`を使います。",
   ],

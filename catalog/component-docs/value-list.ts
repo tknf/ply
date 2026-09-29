@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "value-list",
   name: "ValueList",
-  description: "現在値を補足より明確に表示します。",
+  description: "項目の現在の値を、項目名より目立たせて表示します。",
   api: ["ValueList"],
   guidance: [
     "予約の内容や記事の公開状態のように、一つの対象の属性を「項目名と値」の組で見せる時に使います。",

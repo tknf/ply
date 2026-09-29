@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "task-list",
   name: "TaskList",
-  description: "完了操作と担当・期日を並べる",
+  description: "タスクの完了チェックと、担当・期日を並べます。",
   api: ["TaskList"],
   guidance: [
     "やることを並べ、終えた項目にチェックを付けていく時に使います。担当や期日を行の終わりに添えられます。",

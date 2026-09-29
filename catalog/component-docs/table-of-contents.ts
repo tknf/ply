@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "table-of-contents",
   name: "TableOfContents",
-  description: "長い資料の見出しへ移動し、現在地を示す",
+  description: "長い資料の見出しへ移動し、現在の位置を示します。",
   api: ["TableOfContents"],
   guidance: [
     "規約や手順書などの長い資料で、本文の冒頭に番号付きの目次を置き、見出しへ移れるようにする時に使います。",

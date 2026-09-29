@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "tag-input",
   name: "TagInput",
-  description: "自由入力したタグを追加・解除する",
+  description: "入力した文字をタグとして追加・解除します。",
   api: ["TagInput"],
   guidance: [
     "キーワードや分類など、利用者が自由に書いた短い言葉を複数付ける時に使います。",

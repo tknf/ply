@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "tabs",
   name: "Tabs",
-  description: "同じ場所で関連するパネルを切り替えます。",
+  description: "同じ場所で、関連するパネルを切り替えます。",
   api: ["Tabs"],
   guidance: [
     "同じ対象についての関連するパネル（内容・設定・履歴など）を、同じ場所で切り替える時に使います。",

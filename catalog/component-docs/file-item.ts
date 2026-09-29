@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "file-item",
   name: "FileItem",
-  description: "既存ファイルの名前と状態を示します。",
+  description: "既存のファイルの名前と状態を示します。",
   api: ["FileItem"],
   guidance: [
     "添付済み・送信待ち・送信に失敗したファイルを、一件ずつ名前と状態で示す時に使います。",

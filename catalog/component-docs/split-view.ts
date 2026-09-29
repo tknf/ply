@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "split-view",
   name: "SplitView",
-  description: "一覧と本文、作業と補足を並べる。",
+  description: "一覧と本文、作業と補足を並べて表示します。",
   api: ["SplitView"],
   guidance: [
     '一覧と、その中で選んだ一件の本文を並べる時は`layout="reader"`を使います。',

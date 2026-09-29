@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "tooltip",
   name: "Tooltip",
-  description: "操作に添える短い補足を、hoverとfocusで示す",
+  description: "操作に添える短い補足を、ホバーとフォーカスで表示します。",
   api: ["Tooltip"],
   guidance: [
     "操作の意味を一言で補う時や、アイコンだけの操作に名前を見せる時に使います。",

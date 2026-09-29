@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "section",
   name: "Section",
-  description: "関連する内容を見出し・件数・操作とまとめる。",
+  description: "関連する内容を、見出し・件数・操作と一緒にまとめます。",
   api: ["Section"],
   guidance: [
     "作業面の中で、関連する一覧や内容を見出しと件数でまとめる時に使います。",

@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "field-group",
   name: "FieldGroup",
-  description: "見出しと説明、入力欄をひとまとまりのフォームとして配置します。",
+  description: "見出し・説明・入力欄を、ひとまとまりのフォームとして配置します。",
   api: ["FieldGroup"],
   guidance: [
     "長いフォームを「連絡先」「配送先」のような意味のまとまりに分け、まとまりごとに見出しと説明を添える時に使います。",

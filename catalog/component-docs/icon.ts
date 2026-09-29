@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "icon",
   name: "Icon",
-  description: "操作や用途の文言を補う小さな図形。",
+  description: "操作や用途を表す文言に添えるアイコンです。",
   api: ["Icon"],
   guidance: [
     "操作名や項目名の前に置き、文言を補う時に使います。アイコンだけで意味を伝えません。",

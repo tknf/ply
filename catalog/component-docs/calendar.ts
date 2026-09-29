@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "calendar",
   name: "Calendar",
-  description: "月・週・年を行き来し、日付と予定を探す",
+  description: "月・週・年の表示を切り替えて、日付と予定を確認します。",
   api: ["Calendar"],
   guidance: [
     "予定を月・週・年・日付順の一覧で見渡し、期間を行き来する時に使います。",

@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "reactions",
   name: "Reactions",
-  description: "同じ絵文字をまとめ、付けた人数を添えたリアクション",
+  description: "同じ絵文字ごとに、付けた人数を添えてリアクションを表示します。",
   api: ["Reactions"],
   guidance: [
     "投稿やコメントに付いたリアクションを、絵文字や短い言葉ごとにまとめて示し、自分も付け外しさせる時に使います。",

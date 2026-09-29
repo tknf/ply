@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "back-link",
   name: "BackLink",
-  description: "一つ上の場所へ戻るだけのピル",
+  description: "一つ上の階層へ戻るためのリンクです。",
   api: ["BackLink"],
   guidance: [
     "詳細の画面から、一つ上の場所（一覧や設定など）へ戻るだけのリンクを、画面の先頭側の角に置く時に使います。",

@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "filter-menu",
   name: "FilterMenu",
-  description: "候補を打って絞り込みながら選ぶ、青の面の小さなパネル",
+  description: "文字を入力して候補を絞り込み、選択する小さなパネルです。",
   api: ["FilterMenu"],
   guidance: [
     "ラベル付けや担当の割り当てのように、多めの候補から打って絞り込みながら選ぶ時に使います。",

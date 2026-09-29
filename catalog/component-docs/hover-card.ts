@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "hover-card",
   name: "HoverCard",
-  description: "対象の概要と関連操作を近くに表示する",
+  description: "対象の概要と関連する操作を、近くに表示します。",
   api: ["HoverCard"],
   guidance: [
     "人・案件・資料へのリンクのように、移る前に中身の概要を確かめたい対象に使います。",

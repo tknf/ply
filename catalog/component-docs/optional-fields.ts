@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "optional-fields",
   name: "OptionalFields",
-  description: "必要な時だけ追加する欄と、追加できる項目のチップ",
+  description: "必要な時だけ追加する入力欄と、追加できる項目のチップです。",
   api: ["OptionalFields"],
   guidance: [
     "予定のリンク・場所・招待・メモ・繰り返しのように、多くの場合は空のままの欄を隠し、必要な時だけ追加してフォームを短く見せる時に使います。",

@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "message-list",
   name: "MessageList",
-  description: "差出人・件名・プレビュー・時刻をまとめる受信一覧。",
+  description: "差出人・件名・本文の冒頭・時刻を並べた受信の一覧です。",
   api: ["MessageList"],
   guidance: [
     "受信箱や通知の一覧のように、連絡を差出人・件名・書き出し・時刻で並べ、一件を開かせる時に使います。",

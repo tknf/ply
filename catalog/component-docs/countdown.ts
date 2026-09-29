@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "countdown",
   name: "Countdown",
-  description: "期限や残りを大きな数字で示す丸いバッジ",
+  description: "期限や残りの数を、大きな数字の丸いバッジで示します。",
   api: ["Countdown"],
   guidance: [
     "締め切りまでの日数や残りの件数を、カードなどの端で目立たせる時に使います。",

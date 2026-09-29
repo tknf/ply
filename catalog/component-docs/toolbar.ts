@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "toolbar",
   name: "Toolbar",
-  description: "対象に対する複数の操作をまとめる",
+  description: "対象に対する複数の操作をまとめます。",
   api: ["Toolbar"],
   guidance: [
     "一つの対象やフォームに対する複数の操作（送信・リセット・移動）を、一続きの並びにまとめる時に使います。",

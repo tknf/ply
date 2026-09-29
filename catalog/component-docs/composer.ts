@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "composer",
   name: "Composer",
-  description: "本文・添付・送信操作を一つの入力エリアにまとめる",
+  description: "本文・添付・送信の操作を、一つの入力エリアにまとめます。",
   api: ["Composer"],
   guidance: [
     "メッセージ・コメント・返信のように、本文を書いて送る入力エリアを置く時に使います。",

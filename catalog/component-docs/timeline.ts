@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "timeline",
   name: "Timeline",
-  description: "出来事を時系列で読む",
+  description: "出来事を時系列で表示します。",
   api: ["Timeline"],
   guidance: [
     "変更の履歴や対応の記録など、起きた出来事を時系列で読ませる時に使います。",

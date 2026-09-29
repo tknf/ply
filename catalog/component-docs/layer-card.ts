@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "layer-card",
   name: "LayerCard",
-  description: "見出しを淡い青の層に置き、中身を白いカードに載せる",
+  description: "見出しを淡い青の層に置き、内容を白いカードに載せます。",
   api: ["LayerCard"],
   guidance: [
     "一覧や属性のまとまりに見出しを付ける時に使います。見出しをカードの外に置くので、題名が中身と同じ面で競いません。",

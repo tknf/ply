@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "treegrid",
   name: "Treegrid",
-  description: "階層を持つ行を、列の対応を保って確認します。",
+  description: "階層のある行を、列をそろえて表示します。",
   api: ["Treegrid"],
   guidance: [
     "フォルダと資料、章と節のように親子の階層を持つ行を、担当・状態などの列と並べて見比べる時に使います。",

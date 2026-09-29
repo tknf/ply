@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "toggle-group",
   name: "ToggleGroup",
-  description: "関連する状態を一つまたは複数切り替える",
+  description: "関連する状態を、一つまたは複数切り替えます。",
   api: ["ToggleGroup"],
   guidance: [
     "表示密度や表示する項目のように、同じ画面の見え方を切り替えるボタンのグループに使います。一つだけを選ぶ時は既定のまま、複数を選ぶ時は `multiple` を付けます。",

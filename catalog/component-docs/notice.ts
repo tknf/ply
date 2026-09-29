@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "notice",
   name: "Notice",
-  description: "事実・影響・次の操作を、継続して読める形で示します。",
+  description: "事実・影響・次の操作を、画面に残る形で示します。",
   api: ["Notice"],
   guidance: [
     "公開期限や保存の条件など、その場所で読み続けてほしい事実と、その影響・次の操作を本文のそばに示す時に使います。",

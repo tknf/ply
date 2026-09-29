@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "error-summary",
   name: "ErrorSummary",
-  description: "送信時の問題と修正先をまとめる",
+  description: "送信時のエラーと、修正する欄へのリンクをまとめます。",
   api: ["ErrorSummary"],
   guidance: [
     "フォームの送信に失敗した時、直すところをフォームの上にまとめ、各欄へ移れるようにする時に使います。",

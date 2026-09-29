@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "emoji-picker",
   name: "EmojiPicker",
-  description: "絵文字を探して選ぶパネル",
+  description: "絵文字を検索して選ぶパネルです。",
   api: ["EmojiPicker"],
   guidance: [
     "リアクションや状態のアイコンとして、絵文字を一つ探して選ぶ時に使います。",

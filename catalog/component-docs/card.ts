@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "card",
   name: "Card",
-  description: "関連する内容と操作を一つにまとめる",
+  description: "関連する内容と操作を一つにまとめます。",
   api: ["Card"],
   guidance: [
     "予定・記事・依頼のように、一件の項目を題名・本文・補足で一枚のカードにまとめて表示する時に使います。",

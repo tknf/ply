@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "keycap",
   name: "Keycap",
-  description: "キーボード操作の表記を揃える",
+  description: "キーボードのキーの表記をそろえて表示します。",
   api: ["Keycap"],
   guidance: [
     "文中や操作の横で、キーボードの操作を示す時に使います。ショートカットキーの表示には、どのコンポーネントでもこれを使います。",

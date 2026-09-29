@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "copy-field",
   name: "CopyField",
-  description: "コピーして使う値の欄と、コピーボタン",
+  description: "コピーして使う値を表示する欄と、コピーボタンです。",
   api: ["CopyField"],
   guidance: [
     "公開リンクや招待リンク、APIキーのように、ほかの場所へコピーして使う値を見せる時に使います。",

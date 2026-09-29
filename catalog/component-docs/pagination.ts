@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "pagination",
   name: "Pagination",
-  description: "分割された一覧を移動します。",
+  description: "分割された一覧のページを移動します。",
   api: ["Pagination"],
   guidance: [
     "検索結果や一覧を複数のページに分け、ページの間を移る時に使います。",

@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "tree",
   name: "Tree",
-  description: "中央の作業面で階層を開閉・選択する",
+  description: "作業面の中で、階層を開閉して項目を選択します。",
   api: ["Tree"],
   guidance: [
     "作業面の中で、資料やフォルダの階層を開閉しながら一件を選ぶ時に使います。",

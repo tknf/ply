@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "chart-frame",
   name: "ChartFrame",
-  description: "集計の図と数値表を一緒に読む",
+  description: "グラフと数値の表を並べて表示します。",
   api: ["ChartFrame"],
   guidance: [
     "利用側で描いたグラフに、要点・凡例・同じ値の表・出典を添えて見せる時に使います。",

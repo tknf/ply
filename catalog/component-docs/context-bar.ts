@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "context-bar",
   name: "ContextBar",
-  description: "現在の位置と関連する移動・操作を、作業面の上部にまとめます。",
+  description: "現在の位置と、関連する移動・操作を作業面の上部にまとめます。",
   api: ["ContextBar"],
   guidance: [
     "作業面の上端で、現在地のパンくずと、その対象への移動・操作をまとめる時に使います。",

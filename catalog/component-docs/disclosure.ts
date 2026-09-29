@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "disclosure",
   name: "Disclosure",
-  description: "補足を標準HTMLで開閉します。",
+  description: "補足の内容を、HTMLの標準の要素で開閉します。",
   api: ["Disclosure", "DisclosureGroup"],
   guidance: [
     "よくある質問、条件ごとの補足、普段は使わない設定のように、読む人が必要な時だけ開く内容に使います。",
