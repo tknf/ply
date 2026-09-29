@@ -64,7 +64,7 @@ JavaScriptが無い時は、単一値は現在値の表示の無いスライダ�
 ## コード
 
 ```tsx
-import { Disclosure, Button, Range } from "ply/hono";
+import { Disclosure, Button, Range } from "@tknf/ply/hono";
 
 export default () => (
   <form class="ply-stack" aria-label="表示と予算の設定">

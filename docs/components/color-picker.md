@@ -81,7 +81,7 @@ JavaScriptが無い時は色の面を隠し、四本の標準のスライダー�
 ## コード
 
 ```tsx
-import { Button, ColorPicker, Disclosure, Popover } from "ply/hono";
+import { Button, ColorPicker, Disclosure, Popover } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

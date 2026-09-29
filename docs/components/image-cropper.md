@@ -70,7 +70,7 @@
 ## コード
 
 ```tsx
-import { Disclosure, ImageCropper } from "ply/hono";
+import { Disclosure, ImageCropper } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

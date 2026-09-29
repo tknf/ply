@@ -69,7 +69,7 @@ JavaScriptなしでは補足は出ません。補足の文は `aria-describedby`
 ## コード
 
 ```tsx
-import { ActionLink, Button, Tooltip } from "ply/hono";
+import { ActionLink, Button, Tooltip } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-cluster">

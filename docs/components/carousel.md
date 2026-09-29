@@ -77,7 +77,7 @@ JavaScriptがない時は `initialIndex` のスライドだけを表示し、前
 ## コード
 
 ```tsx
-import { Carousel, ImageFrame, Tag } from "ply/hono";
+import { Carousel, ImageFrame, Tag } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

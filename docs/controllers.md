@@ -1,10 +1,10 @@
 # controller
 
-開閉・選択・キーボード操作などが必要なコンポーネントは、`ply/controllers`のcontrollerを利用側のStimulus Applicationへ登録して使います。
+開閉・選択・キーボード操作などが必要なコンポーネントは、`@tknf/ply/controllers`のcontrollerを利用側のStimulus Applicationへ登録して使います。
 
 ```ts
 import { Application } from "@hotwired/stimulus";
-import { DropdownMenuController, DialogController } from "ply/controllers";
+import { DropdownMenuController, DialogController } from "@tknf/ply/controllers";
 
 const application = Application.start(); // 既存のApplicationがあればそれを使う
 application.register("dropdown-menu", DropdownMenuController);

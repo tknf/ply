@@ -44,7 +44,7 @@
 ## コード
 
 ```tsx
-import { Steps, Disclosure, DisclosureGroup } from "ply/hono";
+import { Steps, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack" data-space="small">

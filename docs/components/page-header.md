@@ -42,7 +42,7 @@
 ## コード
 
 ```tsx
-import { PageHeader } from "ply/hono";
+import { PageHeader } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

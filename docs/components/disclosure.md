@@ -63,7 +63,7 @@
 ## コード
 
 ```tsx
-import { Disclosure, DisclosureGroup, Button, Field, Input } from "ply/hono";
+import { Disclosure, DisclosureGroup, Button, Field, Input } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

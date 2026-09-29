@@ -73,7 +73,7 @@ JavaScriptが無い時は、初期の状態を見せるだけで、押しても�
 ## コード
 
 ```tsx
-import { ToggleGroup, Disclosure, DisclosureGroup } from "ply/hono";
+import { ToggleGroup, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

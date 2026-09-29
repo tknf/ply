@@ -58,7 +58,7 @@ import {
   Button,
   Disclosure,
   DisclosureGroup,
-} from "ply/hono";
+} from "@tknf/ply/hono";
 
 const manyErrors = [
   "記事名を入力してください",

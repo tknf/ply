@@ -127,7 +127,7 @@ valueを持つ形
 ## コード
 
 ```tsx
-import { CommandMenu } from "ply/hono";
+import { CommandMenu } from "@tknf/ply/hono";
 export default () => (
   <div class="ply-stack" data-space="small" data-controller="command-demo">
     <CommandMenu

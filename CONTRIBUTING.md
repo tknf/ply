@@ -11,20 +11,22 @@ vp install
 vp run dev
 ```
 
+`vp install`は、コミットの前にステージしたファイルを`vp check`で検査するフック（`.vite-hooks/pre-commit`）も入れます。
+
 `vp run dev`はCSSの検査とアイコンの生成を行ってから、`http://127.0.0.1:5173`でカタログを起動します。ポートは`vp run dev --port 5178`のように変えられます。
 
 ## ソースの構成
 
-| パス              | 内容                                                                 | エントリーポイント |
-| ----------------- | -------------------------------------------------------------------- | ------------------ |
-| `src/css`         | フレームワークに依存しないCSS                                        | `ply/css/*`        |
-| `src/hono`        | HonoのSSRコンポーネントと型                                          | `ply/hono`         |
-| `src/controllers` | Stimulus controllerのエントリーポイント                              | `ply/controllers`  |
-| `src/internal`    | アイコンの一覧や計算など、内部で共有する処理                         | —                  |
-| `catalog`         | カタログのHonoアプリと利用例のアプリ                                 | 配布に含めない     |
-| `public`          | カタログが配信するアイコンのスプライトと見本の画像                   | 配布に含めない     |
-| `scripts`         | ビルド・検査・アイコン生成のスクリプト                               | —                  |
-| `test`            | 単体テスト（`test/*.test.ts`）と表示・操作のテスト（`test/browser`） | —                  |
+| パス              | 内容                                                                 | エントリーポイント      |
+| ----------------- | -------------------------------------------------------------------- | ----------------------- |
+| `src/css`         | フレームワークに依存しないCSS                                        | `@tknf/ply/css/*`       |
+| `src/hono`        | HonoのSSRコンポーネントと型                                          | `@tknf/ply/hono`        |
+| `src/controllers` | Stimulus controllerのエントリーポイント                              | `@tknf/ply/controllers` |
+| `src/internal`    | アイコンの一覧や計算など、内部で共有する処理                         | —                       |
+| `catalog`         | カタログのHonoアプリと利用例のアプリ                                 | 配布に含めない          |
+| `public`          | カタログが配信するアイコンのスプライトと見本の画像                   | 配布に含めない          |
+| `scripts`         | ビルド・検査・アイコン生成のスクリプト                               | —                       |
+| `test`            | 単体テスト（`test/*.test.ts`）と表示・操作のテスト（`test/browser`） | —                       |
 
 - `index.ts`は再exportだけを持ちます。
 - Honoのコンポーネントはブラウザ用のコードをimportしません。
@@ -52,7 +54,7 @@ vp run dev
 
 - propsと、propsが参照する型の項目には、全てJSDocを書きます。標準のHTML属性や`children`のようにJSDocを書けないものは、`propNotes`に書きます。
 - 公開する全てのコンポーネントは、いずれか一つのページの`api`に載せます。
-- `docs/components/`は生成物です。説明や型を変えたら`vp run docs:components`で生成し直します。
+- `docs/components/`と`skills/ply/references/components.md`は生成物です。説明や型を変えたら`vp run docs:components`で生成し直します。
 - `vp run test`は、載っていないコンポーネント、説明の無いprops、古い`docs/components/`を検出して失敗します。
 
 ## 検証
@@ -65,7 +67,7 @@ vp run check:package  # 配布物の型で見本をコンパイル
 ```
 
 - `check:css`（`check`に含む）は、論理プロパティ、ネスト、レイヤー、禁止記法、未定義のトークン、コンポーネントのクラス名、操作コンポーネントの文字指定を検査します。
-- `check:package`はカタログの見本を`ply/hono`の配布型でもコンパイルし、ソースと公開型の食い違いを検出します。
+- `check:package`はカタログの見本を`@tknf/ply/hono`の配布型でもコンパイルし、ソースと公開型の食い違いを検出します。
 - 表示と操作のテストはPlaywrightで、Chromium・Firefox・WebKitを使います。合否の基準はChromiumです。FirefoxとWebKitは補助の確認で、そこだけの失敗は報告したうえで、直すかどうかを別に決めます。
 - ブラウザテストはコンポーネント単位にします。カタログのサイトや利用例のアプリ（`/apps/*`）の流れ、画面の移動は配布物ではないのでテストしません。各コンポーネントの責任範囲は、そのコンポーネントのページで確かめます。
 
@@ -142,3 +144,46 @@ CSSの行ボックスが枠の中央にあっても、字形の見た目の中�
 - DropdownMenuの項目は上揃えです。上下の余白は「一行時の高さ − 行高 − 上下の枠線」の半分ずつにし、一行なら中央に見え、複数行なら同じ上端から下へ伸びるようにします。`align-items: center`で内容全体を中央へ寄せません。
 - 検査に失敗したら実装を直します。検査を通すために基準や例外を増やしません。基準を変える必要がある場合は、影響するコンポーネント、変更の理由、既知の崩れ方を検出し続ける回帰テストをそろえます。
 - 再発した時は、共通フォントの適用・上書き・フォールバックを先に調べ、次に高さ・行高・上下余白・枠線の組み合わせを確かめます。
+
+## プルリクエスト
+
+- 一つのプルリクエストには、一つの論理的な変更だけを入れます。
+- 変更を確かめるテストを足します。
+- `vp run check`・`vp run test`・`vp run build`・`vp run check:package`が通ることを確かめます。CIでも同じ検査を流します。ブラウザテストはCIでは流さないので、見た目や操作を変えた場合は、変えたコンポーネントのspecをChromiumで流した結果を書いてください。
+- 利用者に関わる変更は、`CHANGELOG.md`の`[Unreleased]`に書きます。
+- 公開の面（props・HTML構造・クラス名・登録名・イベントなど）を変えた場合は、リファレンス・ガイド・Agent Skill（`skills/ply`）も同じ変更で直します。
+
+### ブランチ
+
+- 最新の`origin/main`から作ります。
+- 名前は`{prefix}/{issue番号|yyyymmdd}_{name}`にします（例：`feat/85_file-input-drop`、`docs/20260929_controller-guide`）。
+- `prefix`は`feat`・`fix`・`docs`・`refactor`・`test`・`chore`・`ci`・`release`から選びます。
+- メンテナーが求めない限り、force pushしません。
+
+### コミット
+
+- 一つのコミットには一つの論理的な変更だけを入れ、明示したパスをステージします。
+- 件名は日本語の1行で、末尾に句点を付けず、原則20〜72文字にします。
+- 自明でない変更は、本文に何を・なぜ変えたかを書きます。
+- コードや設定を変えた場合は、`検証:`に流したコマンドと結果を書きます。流していない確認は`未確認:`と書きます。
+- issueとの関係は、分かっている時だけ`Refs #<番号>`か`Closes #<番号>`で書きます。
+- ツールに固有のtrailerや、貢献していないco-authorを足しません。
+
+## 版と公開
+
+Semantic VersioningとKeep a Changelogに従います。互換性のない公開APIやHTML構造の変更は`major`、互換性を保った追加は`minor`、互換性を保った修正は`patch`です。`0.x`の間は、互換性のない変更を`minor`で出すことがあります。ドキュメントだけ、リポジトリだけの変更では版を上げません。
+
+公開の準備では、`vp pm version X.Y.Z -- --no-git-tag-version`の後に`vp run check`・`vp run test`・`vp run build`・`vp run check:package`を流します。公開のコミットの件名は`vX.Y.Zを公開する`にし、同じコミットに注釈付きタグ`vX.Y.Z`を付けます。タグをpushするとGitHub Actionsがnpmへ公開するので、手動では公開しません。公開のコミット・タグ・pushには、メンテナーの明示的な許可が要ります。
+
+## AIエージェントで作業する
+
+CodexやClaude Codeで作業する場合は、[AGENTS.md](AGENTS.md)の決まりに従います。
+
+- 開発用のスキル（`issue`・`plan`・`impl`・`release`）は`.agents/skills/`にあり、Claude Codeは`.claude/skills/`から読みます。
+- Codexのサブエージェントの定義は`.codex/agents/`にあります。
+- スキルやエージェントの定義を変えたら、`vp run check:workflow-safety`で構成を確かめます。
+- 利用者に配る`skills/ply`は、Plyを使って画面を組むためのスキルです。開発用のスキルとは別物です。
+
+## セキュリティ
+
+脆弱性は公開のissueではなく、[SECURITY.md](SECURITY.md)の手順で非公開で報告してください。

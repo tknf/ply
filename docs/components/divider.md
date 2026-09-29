@@ -40,7 +40,7 @@
 ## コード
 
 ```tsx
-import { Divider, ActionLink, InlineSelect } from "ply/hono";
+import { Divider, ActionLink, InlineSelect } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

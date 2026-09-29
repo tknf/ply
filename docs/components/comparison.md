@@ -44,7 +44,7 @@
 ## コード
 
 ```tsx
-import { Comparison, ValueList } from "ply/hono";
+import { Comparison, ValueList } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

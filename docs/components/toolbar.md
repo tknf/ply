@@ -56,7 +56,7 @@
 ## コード
 
 ```tsx
-import { Toolbar, Button, ActionLink, Field, Input, Disclosure } from "ply/hono";
+import { Toolbar, Button, ActionLink, Field, Input, Disclosure } from "@tknf/ply/hono";
 
 export default ({ id = "hono-toolbar" }: { id?: string } = {}) => (
   <div class="ply-stack">

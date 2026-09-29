@@ -8,10 +8,18 @@ Plyは、管理画面・業務システム・一般利用者向けのサービ�
 
 ButtonやInputなどの基本コンポーネントに加え、Toolbar・DangerZone・Board・Calendarなど、特定の用途で情報と操作をまとめるコンポーネントを含めて約90種類を提供します。業務データ・権限・通信・永続化は利用するアプリが持ち、Plyは情報の読み順・配置・操作を共通化します。
 
+## インストール
+
+```sh
+pnpm add @tknf/ply
+```
+
+`hono`・`@hotwired/stimulus`・`@tknf/stimulus-ui`はpeer dependencyです。Hono JSXのコンポーネントを使う場合は`hono`、controllerを使う場合は`@hotwired/stimulus`と`@tknf/stimulus-ui`を追加します。CSSだけで使う場合は追加しません。ESMのみを提供しています。詳しくは[導入](docs/getting-started.md)を参照してください。
+
 ## 使ってみる
 
 ```tsx
-import { Button, Field, Input } from "ply/hono";
+import { Button, Field, Input } from "@tknf/ply/hono";
 
 const EditForm = () => (
   <form method="post" action="/items">
@@ -46,14 +54,14 @@ vp run dev
 
 ## パッケージ
 
-| エントリーポイント | 内容                                      |
-| ------------------ | ----------------------------------------- |
-| `ply/css/*`        | フレームワークに依存しないCSS             |
-| `ply/hono`         | HonoのSSRコンポーネントと型               |
-| `ply/controllers`  | Stimulus controller（自動では登録しない） |
-| `ply/icons.svg`    | アイコンのSVGスプライト                   |
+| エントリーポイント      | 内容                                      |
+| ----------------------- | ----------------------------------------- |
+| `@tknf/ply/css/*`       | フレームワークに依存しないCSS             |
+| `@tknf/ply/hono`        | HonoのSSRコンポーネントと型               |
+| `@tknf/ply/controllers` | Stimulus controller（自動では登録しない） |
+| `@tknf/ply/icons.svg`   | アイコンのSVGスプライト                   |
 
-`hono`・`@hotwired/stimulus`・`@tknf/stimulus-ui`はpeer dependencyで、使う層に応じて導入します。現在は公開パッケージにしておらず、ライトテーマのみを提供しています。
+テーマはライトテーマだけを提供しています。
 
 ## ドキュメント
 
@@ -65,8 +73,26 @@ vp run dev
 - [controller](docs/controllers.md)：登録の決まりとイベントの規約
 - [アイコン](docs/icons.md)：大きさ、配置、ライセンス
 
-Plyの開発に参加する場合は[開発ガイド](CONTRIBUTING.md)を参照してください。
+- [変更履歴](CHANGELOG.md)
+
+## Agent Skill
+
+Plyを使って画面を組むためのAgent Skillを[`skills/ply`](skills/ply/SKILL.md)に同梱しています。コンポーネントの選び方、CSSの読み込み、controllerの登録、文字位置などの注意点をまとめています。
+
+Codexでは、組み込みのskill installerでこのリポジトリから入れます。
+
+```text
+$skill-installer Install the ply skill from https://github.com/tknf/ply/tree/main/skills/ply
+```
+
+Claude Codeでは、`skills/ply`ディレクトリを利用するプロジェクトの`.claude/skills/ply/`に置きます。Codexでプロジェクトだけに置く場合は`.agents/skills/ply/`に置きます。
+
+## 開発に参加する
+
+Plyの開発に参加する場合は[開発ガイド](CONTRIBUTING.md)を参照してください。脆弱性は公開のissueではなく、[セキュリティポリシー](SECURITY.md)の手順で報告してください。
 
 ## ライセンス
+
+Plyは[MITライセンス](LICENSE)で公開しています。
 
 アイコンには[Phosphor Icons](https://github.com/phosphor-icons/core)（MIT）を使っています。著作権・許諾文はスプライトと`dist/PHOSPHOR-LICENSE`に同梱しています。

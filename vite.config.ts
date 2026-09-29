@@ -3,6 +3,7 @@ import devServer, { defaultOptions } from "@hono/vite-dev-server";
 import { controlTextPlugin } from "./scripts/control-text-plugin";
 
 export default defineConfig(({ mode }) => ({
+  staged: { "*": "vp check" },
   plugins: [
     controlTextPlugin(),
     ...(mode === "client"

@@ -62,7 +62,7 @@ import {
   Input,
   Disclosure,
   DisclosureGroup,
-} from "ply/hono";
+} from "@tknf/ply/hono";
 
 const results = [
   {

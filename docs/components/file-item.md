@@ -46,7 +46,7 @@ JavaScriptは使いません。
 ## コード
 
 ```tsx
-import { FileItem, ActionLink, Button } from "ply/hono";
+import { FileItem, ActionLink, Button } from "@tknf/ply/hono";
 export default () => (
   <div>
     <FileItem

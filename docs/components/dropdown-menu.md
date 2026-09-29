@@ -187,7 +187,13 @@ kind: "group"
 ## コード
 
 ```tsx
-import { DropdownMenu, Disclosure, Button, ButtonGroup, type MenuItem } from "ply/hono";
+import {
+  DropdownMenu,
+  Disclosure,
+  Button,
+  ButtonGroup,
+  type MenuItem,
+} from "@tknf/ply/hono";
 
 const basicItems = () =>
   [

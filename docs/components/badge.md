@@ -51,7 +51,7 @@ childrenに短い文言を渡し、`tone` で役割を選びます。役割の�
 ## コード
 
 ```tsx
-import { Badge, Disclosure, DisclosureGroup } from "ply/hono";
+import { Badge, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 export default () => (
   <div class="ply-stack" data-space="small">
     <div class="ply-cluster">

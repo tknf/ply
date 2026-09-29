@@ -41,7 +41,7 @@
 ## コード
 
 ```tsx
-import { Statistic } from "ply/hono";
+import { Statistic } from "@tknf/ply/hono";
 export default () => (
   <div class="ply-split">
     <Statistic

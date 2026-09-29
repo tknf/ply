@@ -61,7 +61,7 @@ import {
   Icon,
   Disclosure,
   DisclosureGroup,
-} from "ply/hono";
+} from "@tknf/ply/hono";
 export default () => (
   <div class="ply-stack">
     <ValueList

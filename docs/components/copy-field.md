@@ -59,7 +59,7 @@ JavaScriptが無い時は、コピーボタンを表示しません。欄の値�
 ## コード
 
 ```tsx
-import { CopyField, Button, Icon, Disclosure, DisclosureGroup } from "ply/hono";
+import { CopyField, Button, Icon, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

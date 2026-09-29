@@ -61,7 +61,7 @@
 ## コード
 
 ```tsx
-import { ChartFrame } from "ply/hono";
+import { ChartFrame } from "@tknf/ply/hono";
 
 export default () => (
   <ChartFrame

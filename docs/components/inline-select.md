@@ -50,7 +50,7 @@ controllerは持ちません。選び直しは標準の `change` で受け取り
 ## コード
 
 ```tsx
-import { InlineSelect, Disclosure, DisclosureGroup } from "ply/hono";
+import { InlineSelect, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 
 const before = [
   { value: "0", label: "予定の時刻に" },

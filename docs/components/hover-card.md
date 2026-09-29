@@ -69,7 +69,7 @@ Escapeと、見出しの横の閉じる操作で閉じます。閉じた後は�
 ## コード
 
 ```tsx
-import { ActionLink, HoverCard } from "ply/hono";
+import { ActionLink, HoverCard } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-cluster">

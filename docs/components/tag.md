@@ -63,7 +63,7 @@ HTML属性はルート（リンクの時はa、それ以外はspan）に渡す�
 ## コード
 
 ```tsx
-import { Tag, TagGroup, Button, Disclosure, DisclosureGroup } from "ply/hono";
+import { Tag, TagGroup, Button, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 
 const removeButton = (label: string) => (
   <Button

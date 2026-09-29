@@ -65,7 +65,7 @@
 ## コード
 
 ```tsx
-import { Avatar, AvatarGroup, Disclosure, DisclosureGroup } from "ply/hono";
+import { Avatar, AvatarGroup, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 export default () => (
   <div class="ply-stack">
     <div class="ply-cluster">

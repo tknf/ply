@@ -70,7 +70,7 @@ JavaScriptが無い時は、標準の `datalist` で候補を出し、右の矢�
 ## コード
 
 ```tsx
-import { Disclosure, Button, Field, Input, Suggestion } from "ply/hono";
+import { Disclosure, Button, Field, Input, Suggestion } from "@tknf/ply/hono";
 
 export default () => (
   <form class="ply-stack" aria-label="記事の分類設定">

@@ -84,7 +84,7 @@ Gridはセルの間の移動だけを持ち、値の選択・予約・更新と�
 ## コード
 
 ```tsx
-import { Grid, Disclosure } from "ply/hono";
+import { Grid, Disclosure } from "@tknf/ply/hono";
 
 const days = [
   { id: "mon", label: "月 14" },

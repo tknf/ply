@@ -52,7 +52,7 @@
 ## コード
 
 ```tsx
-import { Disclosure, Field, InputGroup, Icon } from "ply/hono";
+import { Disclosure, Field, InputGroup, Icon } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-split">

@@ -77,7 +77,7 @@ import {
   Textarea,
   Disclosure,
   DisclosureGroup,
-} from "ply/hono";
+} from "@tknf/ply/hono";
 
 const field = (id: string, label: string, textarea = false) => (
   <Field id={id} label={label}>

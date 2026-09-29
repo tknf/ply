@@ -76,7 +76,7 @@ import {
   Avatar,
   Disclosure,
   DisclosureGroup,
-} from "ply/hono";
+} from "@tknf/ply/hono";
 
 const draft = (
   <Section title="公開案内の原稿">

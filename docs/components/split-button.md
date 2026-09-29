@@ -152,7 +152,7 @@ kind: "group"
 ## コード
 
 ```tsx
-import { SplitButton, Disclosure, DisclosureGroup } from "ply/hono";
+import { SplitButton, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 
 const items = [
   { value: "schedule", label: "送る日時を決める" },

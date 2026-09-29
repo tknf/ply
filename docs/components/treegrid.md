@@ -94,7 +94,7 @@ Tableの見た目・階層表示を共有し、開閉と二次元移動はTreegr
 ## コード
 
 ```tsx
-import { Badge, Disclosure, Treegrid } from "ply/hono";
+import { Badge, Disclosure, Treegrid } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

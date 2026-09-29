@@ -40,7 +40,7 @@
 ## コード
 
 ```tsx
-import { Keycap } from "ply/hono";
+import { Keycap } from "@tknf/ply/hono";
 export default () => (
   <div class="ply-stack" data-space="small">
     <p>

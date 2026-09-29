@@ -58,7 +58,7 @@
 ## コード
 
 ```tsx
-import { Prompt, ActionLink, Disclosure, DisclosureGroup } from "ply/hono";
+import { Prompt, ActionLink, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

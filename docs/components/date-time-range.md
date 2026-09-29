@@ -74,7 +74,7 @@ JavaScriptが無い時も、標準の日付・時刻入力とチェックボッ�
 ## コード
 
 ```tsx
-import { DateTimeRange, Disclosure, DisclosureGroup } from "ply/hono";
+import { DateTimeRange, Disclosure, DisclosureGroup } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

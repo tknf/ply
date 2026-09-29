@@ -48,7 +48,14 @@
 ## コード
 
 ```tsx
-import { Card, Badge, Button, ActionLink, Disclosure, DisclosureGroup } from "ply/hono";
+import {
+  Card,
+  Badge,
+  Button,
+  ActionLink,
+  Disclosure,
+  DisclosureGroup,
+} from "@tknf/ply/hono";
 export default () => (
   <div class="ply-stack">
     <div class="ply-split">

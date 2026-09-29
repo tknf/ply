@@ -54,7 +54,7 @@ FilterBarの一件。Navigationの項目と同じ形で、currentは選んでい
 ## コード
 
 ```tsx
-import { Disclosure, FilterBar } from "ply/hono";
+import { Disclosure, FilterBar } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

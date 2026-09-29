@@ -13,7 +13,7 @@ Plyは[Phosphor Icons](https://github.com/phosphor-icons/core)（MIT）のregula
 Honoでは`Icon`を使います。
 
 ```tsx
-import { Icon } from "ply/hono";
+import { Icon } from "@tknf/ply/hono";
 
 const Label = () => (
   <span>
@@ -37,7 +37,7 @@ CSSだけで使う場合も同じ構造を書きます。
 
 ## 配置
 
-- パッケージの`ply/icons.svg`（`dist/icons.svg`）を、利用するアプリと同じオリジンへ配置します。既定のURLは`/assets/ply-icons.svg`です。
+- パッケージの`@tknf/ply/icons.svg`（`dist/icons.svg`）を、利用するアプリと同じオリジンへ配置します。既定のURLは`/assets/ply-icons.svg`です。
 - 配置先が異なる場合は`<Icon name="pencil" sprite="/static/icons.svg" />`のように指定します。
 - キャッシュ期間は利用側のHTTPヘッダーで設定します。
 - スプライトの中と`dist/PHOSPHOR-LICENSE`にMITの著作権・許諾文を同梱しています。

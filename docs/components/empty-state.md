@@ -46,7 +46,13 @@
 ## コード
 
 ```tsx
-import { EmptyState, ActionLink, Disclosure, DisclosureGroup, Icon } from "ply/hono";
+import {
+  EmptyState,
+  ActionLink,
+  Disclosure,
+  DisclosureGroup,
+  Icon,
+} from "@tknf/ply/hono";
 export default () => (
   <div class="ply-stack">
     <EmptyState

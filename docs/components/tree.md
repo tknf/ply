@@ -78,7 +78,7 @@ JavaScriptなしでは、開閉のボタンを隠してすべての階層を開�
 ## コード
 
 ```tsx
-import { Disclosure, Tree } from "ply/hono";
+import { Disclosure, Tree } from "@tknf/ply/hono";
 
 export default () => (
   <div class="ply-stack">

@@ -61,7 +61,7 @@ import {
   FileItem,
   Disclosure,
   DisclosureGroup,
-} from "ply/hono";
+} from "@tknf/ply/hono";
 
 const mori = <Avatar name="森 美咲" initials="美" tone="green" size="small" />;
 const sato = <Avatar name="佐藤 健" initials="健" size="small" />;
