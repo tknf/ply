@@ -508,7 +508,7 @@ export default () => (
 ```html
 <div class="ply-stack">
   <div
-    id="board-:r2j:"
+    id="board-:r2l:"
     class="ply-board"
     style="--ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr) minmax(auto, 1fr)"
     role="region"
@@ -539,7 +539,7 @@ export default () => (
             data-icon-only="true"
             data-board-handle="true"
             aria-label="「仕事場の案内を更新する」を移動"
-            aria-describedby="board-:r2j:-help"
+            aria-describedby="board-:r2l:-help"
             class="ply-button handle"
             type="button"
             data-variant="link"
@@ -586,7 +586,7 @@ export default () => (
             data-icon-only="true"
             data-board-handle="true"
             aria-label="「見積内容の確認」を移動"
-            aria-describedby="board-:r2j:-help"
+            aria-describedby="board-:r2l:-help"
             class="ply-button handle"
             type="button"
             data-variant="link"
@@ -644,7 +644,7 @@ export default () => (
             data-icon-only="true"
             data-board-handle="true"
             aria-label="「秋の読書会のお知らせ」を移動"
-            aria-describedby="board-:r2j:-help"
+            aria-describedby="board-:r2l:-help"
             class="ply-button handle"
             type="button"
             data-variant="link"
@@ -691,7 +691,7 @@ export default () => (
             data-icon-only="true"
             data-board-handle="true"
             aria-label="「仕事場の案内.pdf」を移動"
-            aria-describedby="board-:r2j:-help"
+            aria-describedby="board-:r2l:-help"
             class="ply-button handle"
             type="button"
             data-variant="link"
@@ -717,7 +717,7 @@ export default () => (
       <div class="items" role="list" aria-label="完了"></div>
       <div class="empty">終わった項目をここへ</div>
     </section>
-    <p id="board-:r2j:-help" class="ply-visually-hidden">
+    <p id="board-:r2l:-help" class="ply-visually-hidden">
       移動ボタンをドラッグします。キーボードではSpaceで持ち上げ、左右矢印で列、上下矢印で位置を選び、Enterで確定、Escapeで取り消します。
     </p>
     <p
@@ -749,7 +749,7 @@ export default () => (
       </summary>
       <div class="body">
         <div
-          id="board-:r2k:"
+          id="board-:r2m:"
           class="ply-board"
           style="
             --ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr) minmax(auto, 1fr)
@@ -844,7 +844,7 @@ export default () => (
       </summary>
       <div class="body">
         <div
-          id="board-:r2l:"
+          id="board-:r2n:"
           class="ply-board"
           style="
             --ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr) minmax(auto, 1fr);
@@ -869,7 +869,7 @@ export default () => (
                   data-icon-only="true"
                   data-board-handle="true"
                   aria-label="「10月の利用案内」を移動"
-                  aria-describedby="board-:r2l:-help"
+                  aria-describedby="board-:r2n:-help"
                   class="ply-button handle"
                   type="button"
                   data-variant="link"
@@ -898,7 +898,7 @@ export default () => (
                   data-icon-only="true"
                   data-board-handle="true"
                   aria-label="「年末年始の営業」を移動"
-                  aria-describedby="board-:r2l:-help"
+                  aria-describedby="board-:r2n:-help"
                   class="ply-button handle"
                   type="button"
                   data-variant="link"
@@ -936,7 +936,7 @@ export default () => (
                   data-icon-only="true"
                   data-board-handle="true"
                   aria-label="「9月の利用案内」を移動"
-                  aria-describedby="board-:r2l:-help"
+                  aria-describedby="board-:r2n:-help"
                   class="ply-button handle"
                   type="button"
                   data-variant="link"
@@ -971,7 +971,7 @@ export default () => (
                   data-icon-only="true"
                   data-board-handle="true"
                   aria-label="「夏の特別料金」を移動"
-                  aria-describedby="board-:r2l:-help"
+                  aria-describedby="board-:r2n:-help"
                   class="ply-button handle"
                   type="button"
                   data-variant="link"
@@ -992,7 +992,7 @@ export default () => (
             </div>
             <div class="empty">ここへ移動できます</div>
           </section>
-          <p id="board-:r2l:-help" class="ply-visually-hidden">
+          <p id="board-:r2n:-help" class="ply-visually-hidden">
             移動ボタンをドラッグします。キーボードではSpaceで持ち上げ、左右矢印で列、上下矢印で位置を選び、Enterで確定、Escapeで取り消します。
           </p>
           <p
@@ -1023,7 +1023,7 @@ export default () => (
       </summary>
       <div class="body">
         <div
-          id="board-:r2m:"
+          id="board-:r2o:"
           class="ply-board"
           style="--ply-board-tracks: auto minmax(auto, 1fr) minmax(auto, 1fr) auto"
           role="region"
@@ -1274,7 +1274,7 @@ export default () => (
       </summary>
       <div class="body">
         <div
-          id="board-:r2n:"
+          id="board-:r2p:"
           class="ply-board"
           style="--ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr)"
           role="region"
@@ -1399,7 +1399,7 @@ export default () => (
       </summary>
       <div class="body">
         <div
-          id="board-:r2o:"
+          id="board-:r2q:"
           class="ply-board"
           style="--ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr)"
           role="region"
@@ -1506,7 +1506,7 @@ export default () => (
       </summary>
       <div class="body">
         <div
-          id="board-:r2p:"
+          id="board-:r2r:"
           class="ply-board"
           style="
             --ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr) minmax(auto, 1fr);
@@ -1535,7 +1535,7 @@ export default () => (
                   data-icon-only="true"
                   data-board-handle="true"
                   aria-label="「確認が完了した資料」を移動"
-                  aria-describedby="board-:r2p:-help"
+                  aria-describedby="board-:r2r:-help"
                   class="ply-button handle"
                   type="button"
                   data-variant="link"
@@ -1564,7 +1564,7 @@ export default () => (
                   data-icon-only="true"
                   data-board-handle="true"
                   aria-label="「動かせる資料」を移動"
-                  aria-describedby="board-:r2p:-help"
+                  aria-describedby="board-:r2r:-help"
                   class="ply-button handle"
                   type="button"
                   data-variant="link"
@@ -1600,7 +1600,7 @@ export default () => (
             <div class="items" role="list" aria-label="受付終了"></div>
             <div class="empty">この列へは移動できません</div>
           </section>
-          <p id="board-:r2p:-help" class="ply-visually-hidden">
+          <p id="board-:r2r:-help" class="ply-visually-hidden">
             移動ボタンをドラッグします。キーボードではSpaceで持ち上げ、左右矢印で列、上下矢印で位置を選び、Enterで確定、Escapeで取り消します。
           </p>
           <p
@@ -1630,7 +1630,7 @@ export default () => (
       <div class="body">
         <div style="max-inline-size: 28rem">
           <div
-            id="board-:r2q:"
+            id="board-:r2s:"
             class="ply-board"
             style="--ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr) auto"
             role="region"
@@ -1704,7 +1704,7 @@ export default () => (
       <div class="body">
         <div dir="rtl" lang="ar">
           <div
-            id="board-:r2r:"
+            id="board-:r2t:"
             class="ply-board"
             style="--ply-board-tracks: minmax(auto, 1fr) minmax(auto, 1fr) auto"
             role="region"
@@ -1730,7 +1730,7 @@ export default () => (
                     data-icon-only="true"
                     data-board-handle="true"
                     aria-label="「تحديث دليل المكان」を移動"
-                    aria-describedby="board-:r2r:-help"
+                    aria-describedby="board-:r2t:-help"
                     class="ply-button handle"
                     type="button"
                     data-variant="link"
@@ -1767,7 +1767,7 @@ export default () => (
                     data-icon-only="true"
                     data-board-handle="true"
                     aria-label="「اختيار الصور」を移動"
-                    aria-describedby="board-:r2r:-help"
+                    aria-describedby="board-:r2t:-help"
                     class="ply-button handle"
                     type="button"
                     data-variant="link"
@@ -1807,7 +1807,7 @@ export default () => (
                     data-icon-only="true"
                     data-board-handle="true"
                     aria-label="「المقابلة」を移動"
-                    aria-describedby="board-:r2r:-help"
+                    aria-describedby="board-:r2t:-help"
                     class="ply-button handle"
                     type="button"
                     data-variant="link"
@@ -1828,7 +1828,7 @@ export default () => (
               </div>
               <div class="empty">ここへ移動できます</div>
             </section>
-            <p id="board-:r2r:-help" class="ply-visually-hidden">
+            <p id="board-:r2t:-help" class="ply-visually-hidden">
               移動ボタンをドラッグします。キーボードではSpaceで持ち上げ、左右矢印で列、上下矢印で位置を選び、Enterで確定、Escapeで取り消します。
             </p>
             <p

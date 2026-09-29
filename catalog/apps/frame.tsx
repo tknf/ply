@@ -1,5 +1,12 @@
 import type { PropsWithChildren } from "hono/jsx";
-import { ActionLink, AppShell, Avatar, CommandMenu, type IconName } from "../../src/hono";
+import {
+  ActionLink,
+  AppShell,
+  Avatar,
+  CommandMenu,
+  type AppShellProps,
+  type IconName,
+} from "../../src/hono";
 
 /** 利用例のアプリ「つむぐ」の画面。小さな制作チームが、ヘルプセンターを作り直す仕事を進めている。 */
 export type AppScreen =
@@ -97,14 +104,14 @@ export const screens: readonly ScreenEntry[] = [
 
 export const appPath = (screen: AppScreen) => `/apps/${screen}`;
 
-/** アプリの画面の枠。上部中央のコマンドメニューで画面を切り替え、中央の作業面に画面を置く。wideは年の予定など横に広い画面。 */
+/** アプリの画面の枠。上部中央のコマンドメニューで画面を切り替え、中央の作業面に画面を置く。sizeは作業面の幅。 */
 export const AppFrame = ({
   current,
-  wide = false,
+  size,
   children,
-}: PropsWithChildren<{ current: AppScreen; wide?: boolean }>) => (
+}: PropsWithChildren<{ current: AppScreen; size?: AppShellProps["size"] }>) => (
   <AppShell
-    style={wide ? "--ply-page: 112rem" : undefined}
+    size={size}
     home={<ActionLink href={appPath("project")}>つむぐ</ActionLink>}
     commands={
       <CommandMenu

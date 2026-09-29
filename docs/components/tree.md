@@ -254,7 +254,7 @@ export default () => (
     </summary>
     <div class="body">
       <div
-        id="ply-tree-:r7:"
+        id="ply-tree-:r9:"
         class="ply-tree"
         data-empty="true"
         role="status"
@@ -263,7 +263,7 @@ export default () => (
         項目はありません。
       </div>
       <ul
-        id="ply-tree-:r8:"
+        id="ply-tree-:ra:"
         class="ply-tree"
         role="tree"
         aria-label="重複値のある資料"
@@ -273,9 +273,9 @@ export default () => (
         data-tree-expanded-value="[]"
       >
         <li
-          id="ply-tree-:r8:-item-0"
+          id="ply-tree-:ra:-item-0"
           role="treeitem"
-          aria-labelledby="ply-tree-:r8:-item-0-label"
+          aria-labelledby="ply-tree-:ra:-item-0-label"
           data-tree-target="item"
           data-tree-value="guide"
         >
@@ -298,27 +298,27 @@ export default () => (
               >
                 <use href="/assets/ply-icons.svg#ply-caret"></use>
               </svg></button
-            ><span id="ply-tree-:r8:-item-0-label" class="label">案内</span>
+            ><span id="ply-tree-:ra:-item-0-label" class="label">案内</span>
           </div>
           <ul role="group">
             <li
-              id="ply-tree-:r8:-item-0-0"
+              id="ply-tree-:ra:-item-0-0"
               role="treeitem"
-              aria-labelledby="ply-tree-:r8:-item-0-0-label"
+              aria-labelledby="ply-tree-:ra:-item-0-0-label"
               data-tree-target="item"
               data-tree-value="start"
             >
               <div class="row">
                 <span class="spacer" aria-hidden="true"></span
-                ><span id="ply-tree-:r8:-item-0-0-label" class="label">はじめに</span>
+                ><span id="ply-tree-:ra:-item-0-0-label" class="label">はじめに</span>
               </div>
             </li>
           </ul>
         </li>
         <li
-          id="ply-tree-:r8:-item-1"
+          id="ply-tree-:ra:-item-1"
           role="treeitem"
-          aria-labelledby="ply-tree-:r8:-item-1-label"
+          aria-labelledby="ply-tree-:ra:-item-1-label"
           data-tree-target="item"
           data-tree-value="rules"
         >
@@ -341,19 +341,19 @@ export default () => (
               >
                 <use href="/assets/ply-icons.svg#ply-caret"></use>
               </svg></button
-            ><span id="ply-tree-:r8:-item-1-label" class="label">規約</span>
+            ><span id="ply-tree-:ra:-item-1-label" class="label">規約</span>
           </div>
           <ul role="group">
             <li
-              id="ply-tree-:r8:-item-1-0"
+              id="ply-tree-:ra:-item-1-0"
               role="treeitem"
-              aria-labelledby="ply-tree-:r8:-item-1-0-label"
+              aria-labelledby="ply-tree-:ra:-item-1-0-label"
               data-tree-target="item"
               data-tree-value="policy"
             >
               <div class="row">
                 <span class="spacer" aria-hidden="true"></span
-                ><span id="ply-tree-:r8:-item-1-0-label" class="label">運用方針</span>
+                ><span id="ply-tree-:ra:-item-1-0-label" class="label">運用方針</span>
               </div>
             </li>
           </ul>

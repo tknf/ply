@@ -213,7 +213,7 @@ export default () => (
 ```html
 <div class="ply-stack">
   <div
-    id="ply-split-view-:r0:"
+    id="ply-split-view-:r2:"
     class="ply-split-view"
     data-layout="inspector"
     data-resizable="true"
@@ -226,7 +226,7 @@ export default () => (
     <div class="panes">
       <div
         class="primary"
-        id="ply-split-view-:r0:-primary"
+        id="ply-split-view-:r2:-primary"
         data-splitter-target="primary"
       >
         <section class="ply-section" data-tone="neutral">
@@ -242,7 +242,7 @@ export default () => (
         role="separator"
         tabindex="0"
         aria-label="領域の幅を調整"
-        aria-controls="ply-split-view-:r0:-primary"
+        aria-controls="ply-split-view-:r2:-primary"
         aria-orientation="vertical"
         data-splitter-target="handle"
       >
@@ -260,9 +260,9 @@ export default () => (
       </div>
     </div>
     <div class="size-control ply-visually-hidden">
-      <label for="ply-split-view-:r0:-size">主領域の幅</label
+      <label for="ply-split-view-:r2:-size">主領域の幅</label
       ><input
-        id="ply-split-view-:r0:-size"
+        id="ply-split-view-:r2:-size"
         type="range"
         min="20"
         max="80"
@@ -291,7 +291,7 @@ export default () => (
       </summary>
       <div class="body">
         <div
-          id="ply-split-view-:r1:"
+          id="ply-split-view-:r3:"
           class="ply-split-view"
           data-layout="reader"
           data-resizable="true"
@@ -304,7 +304,7 @@ export default () => (
           <div class="panes">
             <div
               class="primary"
-              id="ply-split-view-:r1:-primary"
+              id="ply-split-view-:r3:-primary"
               data-splitter-target="primary"
             >
               <ul
@@ -391,7 +391,7 @@ export default () => (
               role="separator"
               tabindex="0"
               aria-label="領域の幅を調整"
-              aria-controls="ply-split-view-:r1:-primary"
+              aria-controls="ply-split-view-:r3:-primary"
               aria-orientation="vertical"
               data-splitter-target="handle"
             >
@@ -407,9 +407,9 @@ export default () => (
             </div>
           </div>
           <div class="size-control ply-visually-hidden">
-            <label for="ply-split-view-:r1:-size">主領域の幅</label
+            <label for="ply-split-view-:r3:-size">主領域の幅</label
             ><input
-              id="ply-split-view-:r1:-size"
+              id="ply-split-view-:r3:-size"
               type="range"
               min="20"
               max="80"
@@ -436,9 +436,9 @@ export default () => (
         >
       </summary>
       <div class="body">
-        <div id="ply-split-view-:r2:" class="ply-split-view" data-layout="inspector">
+        <div id="ply-split-view-:r4:" class="ply-split-view" data-layout="inspector">
           <div class="panes">
-            <div class="primary" id="ply-split-view-:r2:-primary">
+            <div class="primary" id="ply-split-view-:r4:-primary">
               <section class="ply-section" data-tone="neutral">
                 <header class="heading"><h2>公開案内の原稿</h2></header>
                 <p>
@@ -484,7 +484,7 @@ export default () => (
       </summary>
       <div class="body">
         <div
-          id="ply-split-view-:r3:"
+          id="ply-split-view-:r5:"
           class="ply-split-view"
           data-layout="inspector"
           data-resizable="true"
@@ -497,7 +497,7 @@ export default () => (
           <div class="panes">
             <div
               class="primary"
-              id="ply-split-view-:r3:-primary"
+              id="ply-split-view-:r5:-primary"
               data-splitter-target="primary"
             >
               <section class="ply-section" data-tone="neutral">
@@ -518,7 +518,7 @@ export default () => (
               role="separator"
               tabindex="0"
               aria-label="領域の幅を調整"
-              aria-controls="ply-split-view-:r3:-primary"
+              aria-controls="ply-split-view-:r5:-primary"
               aria-orientation="vertical"
               data-splitter-target="handle"
             >
@@ -536,9 +536,9 @@ export default () => (
             </div>
           </div>
           <div class="size-control ply-visually-hidden">
-            <label for="ply-split-view-:r3:-size">主領域の幅</label
+            <label for="ply-split-view-:r5:-size">主領域の幅</label
             ><input
-              id="ply-split-view-:r3:-size"
+              id="ply-split-view-:r5:-size"
               type="range"
               min="20"
               max="80"
@@ -567,7 +567,7 @@ export default () => (
       <div class="body">
         <div style="max-inline-size: 28rem">
           <div
-            id="ply-split-view-:r4:"
+            id="ply-split-view-:r6:"
             class="ply-split-view"
             data-layout="inspector"
             data-resizable="true"
@@ -580,7 +580,7 @@ export default () => (
             <div class="panes">
               <div
                 class="primary"
-                id="ply-split-view-:r4:-primary"
+                id="ply-split-view-:r6:-primary"
                 data-splitter-target="primary"
               >
                 <section class="ply-section" data-tone="neutral">
@@ -596,7 +596,7 @@ export default () => (
                 role="separator"
                 tabindex="0"
                 aria-label="領域の幅を調整"
-                aria-controls="ply-split-view-:r4:-primary"
+                aria-controls="ply-split-view-:r6:-primary"
                 aria-orientation="vertical"
                 data-splitter-target="handle"
               >
@@ -614,9 +614,9 @@ export default () => (
               </div>
             </div>
             <div class="size-control ply-visually-hidden">
-              <label for="ply-split-view-:r4:-size">主領域の幅</label
+              <label for="ply-split-view-:r6:-size">主領域の幅</label
               ><input
-                id="ply-split-view-:r4:-size"
+                id="ply-split-view-:r6:-size"
                 type="range"
                 min="20"
                 max="80"
@@ -644,7 +644,7 @@ export default () => (
       <div class="body">
         <div dir="rtl" lang="ar">
           <div
-            id="ply-split-view-:r5:"
+            id="ply-split-view-:r7:"
             class="ply-split-view"
             data-layout="inspector"
             data-resizable="true"
@@ -657,7 +657,7 @@ export default () => (
             <div class="panes">
               <div
                 class="primary"
-                id="ply-split-view-:r5:-primary"
+                id="ply-split-view-:r7:-primary"
                 data-splitter-target="primary"
               >
                 <section class="ply-section" data-tone="neutral">
@@ -670,7 +670,7 @@ export default () => (
                 role="separator"
                 tabindex="0"
                 aria-label="領域の幅を調整"
-                aria-controls="ply-split-view-:r5:-primary"
+                aria-controls="ply-split-view-:r7:-primary"
                 aria-orientation="vertical"
                 data-splitter-target="handle"
               >
@@ -684,9 +684,9 @@ export default () => (
               </div>
             </div>
             <div class="size-control ply-visually-hidden">
-              <label for="ply-split-view-:r5:-size">主領域の幅</label
+              <label for="ply-split-view-:r7:-size">主領域の幅</label
               ><input
-                id="ply-split-view-:r5:-size"
+                id="ply-split-view-:r7:-size"
                 type="range"
                 min="20"
                 max="80"

@@ -12,7 +12,7 @@ export default {
   ],
   usage: [
     "`commands`に`CommandMenu`を一つ渡し、`home`・`account`を上部のバーの左右に置きます。バーは画面の上端に留まり、左右の内容の幅に関わらず`commands`を画面の中央に置きます。`home`・`account`を省略すると、その枠を出しません。",
-    "`children`は中央の作業面に置きます。作業面は白い面で、幅の上限は`--ply-page`（既定は68rem）です。横に広い画面では、ルートの`style`で`--ply-page`を上書きします。作業面の列は作業面の幅に収まるので、広い表などは中身の側で横にスクロールさせます。",
+    "`children`は中央の作業面に置きます。作業面は白い面で、幅の上限は`size`で選びます。`default`は`--ply-page`（68rem）、`compact`は本文の行の長さ（`--ply-measure`）に左右の余白を足した46rem、`wide`は112remです。設定画面など入力が中心の画面は`compact`、`Board`や年の予定など横に広い画面は`wide`にします。ほかの幅が必要な時は、ルートの`style`で`--ply-page`を上書きします。作業面の列は作業面の幅に収まるので、広い表などは中身の側で横にスクロールさせます。`Board`・`Table`・`Grid`・`Calendar`は、作業面の左右の余白の分だけ外側に広がり、作業面の端までスクロールします。段組み（`SplitView`など）や、`Card`・`LayerCard`・`Notice`・`ChartFrame`の中では広げません。",
     "`AppShell`の幅が45rem未満では作業面の外側と内側の余白を詰め、28rem未満では`commands`を一段目、`home`・`account`を二段目の左右に置きます。",
     "`wings`に`start`・`end`を渡すと、作業面を`Wing`で包み、左右に開閉できる補助パネルを付けます。開閉の状態を保存する時は`storageKey`・`savedState`も渡し、`WingController`を`wing`として登録します（詳しくは`Wing`のページ）。",
     "`AppShell`自身はcontrollerを使わず、JavaScriptなしでも同じ配置で表示します。",

@@ -182,15 +182,15 @@ export default () => (
     </div>
     <div class="options">
       <span class="all-day"
-        ><label class="ply-switch" for="ply-switch-:r1q:"
+        ><label class="ply-switch" for="ply-switch-:r1s:"
           ><input
             name="event[all_day]"
             value="1"
-            id="ply-switch-:r1q:"
+            id="ply-switch-:r1s:"
             type="checkbox"
             role="switch"
-            aria-labelledby="ply-switch-:r1q:-label"
-          /><span><span id="ply-switch-:r1q:-label">終日</span></span></label
+            aria-labelledby="ply-switch-:r1s:-label"
+          /><span><span id="ply-switch-:r1s:-label">終日</span></span></label
         ></span
       ><span class="timezone"
         ><svg
@@ -272,16 +272,16 @@ export default () => (
           </div>
           <div class="options">
             <span class="all-day"
-              ><label class="ply-switch" for="ply-switch-:r1r:"
+              ><label class="ply-switch" for="ply-switch-:r1t:"
                 ><input
                   name="holiday[all_day]"
                   value="1"
                   checked=""
-                  id="ply-switch-:r1r:"
+                  id="ply-switch-:r1t:"
                   type="checkbox"
                   role="switch"
-                  aria-labelledby="ply-switch-:r1r:-label"
-                /><span><span id="ply-switch-:r1r:-label">終日</span></span></label
+                  aria-labelledby="ply-switch-:r1t:-label"
+                /><span><span id="ply-switch-:r1t:-label">終日</span></span></label
               ></span
             >
           </div>
@@ -359,15 +359,15 @@ export default () => (
             </div>
             <div class="options">
               <span class="all-day"
-                ><label class="ply-switch" for="ply-switch-:r1s:"
+                ><label class="ply-switch" for="ply-switch-:r1u:"
                   ><input
                     name="interview[all_day]"
                     value="1"
-                    id="ply-switch-:r1s:"
+                    id="ply-switch-:r1u:"
                     type="checkbox"
                     role="switch"
-                    aria-labelledby="ply-switch-:r1s:-label"
-                  /><span><span id="ply-switch-:r1s:-label">終日</span></span></label
+                    aria-labelledby="ply-switch-:r1u:-label"
+                  /><span><span id="ply-switch-:r1u:-label">終日</span></span></label
                 ></span
               >
             </div>
@@ -444,16 +444,16 @@ export default () => (
             </div>
             <div class="options">
               <span class="all-day"
-                ><label class="ply-switch" for="ply-switch-:r1t:"
+                ><label class="ply-switch" for="ply-switch-:r1v:"
                   ><input
                     name="rtl-event[all_day]"
                     value="1"
-                    id="ply-switch-:r1t:"
+                    id="ply-switch-:r1v:"
                     type="checkbox"
                     role="switch"
-                    aria-labelledby="ply-switch-:r1t:-label"
+                    aria-labelledby="ply-switch-:r1v:-label"
                   /><span
-                    ><span id="ply-switch-:r1t:-label">طوال اليوم</span></span
+                    ><span id="ply-switch-:r1v:-label">طوال اليوم</span></span
                   ></label
                 ></span
               >

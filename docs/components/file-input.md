@@ -368,14 +368,14 @@ export default () => (
         </div>
         <div class="ply-field">
           <div class="heading">
-            <label for="ply-file-input-:r21:">添付資料（エラー）</label>
+            <label for="ply-file-input-:r23:">添付資料（エラー）</label>
           </div>
           <div class="ply-file-input" data-controller="file-input">
             <input
               name="reviewed_attachment"
               accept=".pdf"
-              id="ply-file-input-:r21:"
-              aria-describedby="ply-file-input-:r21:-error"
+              id="ply-file-input-:r23:"
+              aria-describedby="ply-file-input-:r23:-error"
               aria-invalid="true"
               data-invalid="true"
               type="file"
@@ -396,7 +396,7 @@ export default () => (
             </p>
             <label
               class="ply-button choose"
-              for="ply-file-input-:r21:"
+              for="ply-file-input-:r23:"
               data-variant="link"
               data-size="default"
               aria-hidden="true"
@@ -441,7 +441,7 @@ export default () => (
             <p class="status" role="status" data-file-input-target="status"></p>
           </div>
           <div class="messages">
-            <p class="error" id="ply-file-input-:r21:-error">
+            <p class="error" id="ply-file-input-:r23:-error">
               <svg
                 class="ply-icon"
                 viewBox="0 0 256 256"
@@ -456,13 +456,13 @@ export default () => (
         </div>
         <div class="ply-field">
           <div class="heading">
-            <label for="ply-file-input-:r22:">添付資料（利用不可）</label>
+            <label for="ply-file-input-:r24:">添付資料（利用不可）</label>
           </div>
           <div class="ply-file-input" data-controller="file-input">
             <input
               name="unavailable_attachment"
               disabled=""
-              id="ply-file-input-:r22:"
+              id="ply-file-input-:r24:"
               type="file"
               data-file-input-target="input"
               class="ply-input"
@@ -481,7 +481,7 @@ export default () => (
             </p>
             <label
               class="ply-button choose"
-              for="ply-file-input-:r22:"
+              for="ply-file-input-:r24:"
               data-variant="link"
               data-size="default"
               aria-hidden="true"
