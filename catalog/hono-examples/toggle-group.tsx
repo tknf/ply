@@ -21,7 +21,7 @@ export default () => (
       multiple
     />
     <DisclosureGroup label="並べ方の違い">
-      <Disclosure summary="縦に並べる（Fizzyのカードの段）" open>
+      <Disclosure summary="縦に並べる" open>
         <ToggleGroup
           label="カードの段"
           orientation="vertical"

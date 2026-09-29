@@ -20,7 +20,7 @@ export default () => (
         </ActionLink>
       }
     />
-    <p>線の終わりには、区切りの先の物をまとめて扱う操作だけを置きます（HEYの連絡先）。</p>
+    <p>線の終わりには、区切りの先の物をまとめて扱う操作だけを置きます。</p>
     <Divider
       label={
         <InlineSelect

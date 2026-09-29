@@ -40,9 +40,9 @@ export default () => (
             title="移動する先"
             align="end"
             options={[
-              { value: "imbox", label: "Imbox", icon: "mail", shortcut: "1", selected: true },
-              { value: "feed", label: "The Feed", icon: "files", shortcut: "2" },
-              { value: "paper", label: "Paper Trail", icon: "file", shortcut: "3" },
+              { value: "inbox", label: "受信トレイ", icon: "mail", shortcut: "1", selected: true },
+              { value: "feed", label: "お知らせ", icon: "files", shortcut: "2" },
+              { value: "paper", label: "控え", icon: "file", shortcut: "3" },
             ]}
           />
         </div>

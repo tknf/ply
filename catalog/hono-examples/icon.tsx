@@ -72,7 +72,7 @@ export default () => (
           ))}
         </ul>
       </Disclosure>
-      <Disclosure summary="塗りつぶしの印で項目を見分ける（HEYの一覧と同じ）">
+      <Disclosure summary="塗りつぶしの印で項目を見分ける">
         <ul class="catalog-icon-rows">
           <li>
             <Icon name="mail" fill />

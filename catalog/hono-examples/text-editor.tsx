@@ -11,7 +11,7 @@ export default () => (
   <div class="ply-stack">
     <TextEditor id="comment-editor" label="コメント" name="comment" placeholder="コメントを書く…" />
     <DisclosureGroup label="置き方と道具の違い">
-      <Disclosure summary="道具を下に置き、送る操作を並べる（HEYの返信・日記）" open>
+      <Disclosure summary="道具を下に置き、送る操作を並べる" open>
         <TextEditor
           id="reply-editor"
           label="返信"

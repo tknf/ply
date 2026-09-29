@@ -30,11 +30,17 @@ export default () => (
           />
           <DropdownMenu
             id="profile-deliver"
-            label="Imboxに届ける"
+            label="受信トレイに届ける"
             icon="mail"
             items={[
-              { kind: "radio", name: "deliver", value: "imbox", label: "Imbox", checked: true },
-              { kind: "radio", name: "deliver", value: "feed", label: "The Feed" },
+              {
+                kind: "radio",
+                name: "deliver",
+                value: "inbox",
+                label: "受信トレイ",
+                checked: true,
+              },
+              { kind: "radio", name: "deliver", value: "feed", label: "お知らせ" },
             ]}
           />
           <DropdownMenu
@@ -71,9 +77,9 @@ export default () => (
                 />
                 <DropdownMenu
                   id="narrow-deliver"
-                  label="Imboxに届ける"
+                  label="受信トレイに届ける"
                   icon="mail"
-                  items={[{ value: "feed", label: "The Feed" }]}
+                  items={[{ value: "feed", label: "お知らせ" }]}
                 />
               </>
             }

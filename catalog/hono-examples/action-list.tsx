@@ -27,7 +27,7 @@ export default () => (
       ]}
     />
     <DisclosureGroup label="並べ方と置き場所の違い">
-      <Disclosure summary="手当てが要る行（HEYの設定）" open>
+      <Disclosure summary="手当てが要る行" open>
         <ActionList
           aria-label="ログインと確認"
           items={[

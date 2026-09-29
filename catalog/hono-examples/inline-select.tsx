@@ -15,7 +15,7 @@ export default () => (
       知らせる
     </p>
     <DisclosureGroup label="置き場所の違い">
-      <Disclosure summary="一つの文に二つ（HEYの全ファイル）" open>
+      <Disclosure summary="一つの文に二つ" open>
         <p>
           <InlineSelect
             label="ファイルの種類"

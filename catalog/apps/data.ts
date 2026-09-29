@@ -90,8 +90,6 @@ export const articles = [
   },
 ] as const;
 
-export type Article = (typeof articles)[number];
-
 export const files = [
   {
     name: "ヘルプセンターの構成案.pdf",

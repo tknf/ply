@@ -7,7 +7,7 @@ export default () => (
     tableLabel="月別売上の数値"
     graphic={
       <svg viewBox="0 0 420 142" width="420" height="142">
-        {/* 棒はHEYのメニューと同じ、青から紫寄りへの塗り。 */}
+        {/* 棒は青から紫寄りへの塗り。 */}
         <defs>
           <linearGradient id="chart-frame-bar" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="var(--ply-link)" />

@@ -4,9 +4,7 @@ import { getCookie } from "hono/cookie";
 import { stylesheets } from "../src/hono/index";
 import { getHonoExample } from "./hono-examples";
 import { formatExample } from "./code-format";
-import { examples } from "./examples";
-import { interactiveExamples } from "./interactive-examples";
-import { extendedExamples } from "./extended-examples";
+import { catalogComponents } from "./components";
 import { Document } from "./layout";
 import { CatalogIndex, ComponentPage } from "./pages/catalog";
 import { appPath, screens } from "./apps/frame";
@@ -20,13 +18,12 @@ import { SearchScreen } from "./apps/search";
 import { PeopleScreen } from "./apps/people";
 import { SettingsScreen } from "./apps/settings";
 
-const catalogExamples = [...examples, ...interactiveExamples, ...extendedExamples];
 const inboxMessages = ["categories", "meeting", "review"] as const;
 
 /** 静的に書き出すページ。カタログの入口・部品のページ・利用例のアプリの画面だけを持つ。 */
 export const paths = [
   "/",
-  ...catalogExamples.map(({ id }) => `/components/${id}`),
+  ...catalogComponents.map(({ id }) => `/components/${id}`),
   "/components/page-header/preview",
   ...screens.map((screen) => appPath(screen.id)),
   ...inboxMessages.map((id) => `${appPath("inbox")}/${id}`),
@@ -38,7 +35,7 @@ app.get("/", (c) =>
   c.html(
     html`<!doctype html>${(
         <Document title="カタログ">
-          <CatalogIndex components={catalogExamples} />
+          <CatalogIndex components={catalogComponents} />
         </Document>
       )}`,
   ),
@@ -64,7 +61,7 @@ app.get("/components/page-header/preview", (c) =>
 );
 
 app.get("/components/:id", async (c) => {
-  const entry = catalogExamples.find(({ id }) => id === c.req.param("id"));
+  const entry = catalogComponents.find(({ id }) => id === c.req.param("id"));
   if (!entry) return c.notFound();
   const example = getHonoExample(entry.id);
   const markup = String(await html`${example.render({ cookies: getCookie(c) })}`);
@@ -76,7 +73,7 @@ app.get("/components/:id", async (c) => {
     html`<!doctype html>${(
         <Document title={entry.name}>
           <ComponentPage
-            components={catalogExamples}
+            components={catalogComponents}
             entry={entry}
             usage={entry.usage}
             markup={markup}

@@ -43,7 +43,7 @@ export default () => (
       ]}
     />
     <DisclosureGroup label="並べ方と状態の違い">
-      <Disclosure summary="縦に並べる（HEYの検索の条件）" open>
+      <Disclosure summary="縦に並べる（検索の条件）" open>
         <OptionalFields
           label="検索の条件"
           layout="stack"

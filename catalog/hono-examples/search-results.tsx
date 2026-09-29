@@ -37,7 +37,7 @@ export default () => (
               title: "仕事場の案内を更新しました",
               href: "/",
               excerpt: "料金とキャンセル条件の案内を書き足しました。",
-              meta: "Playground · 12月8日",
+              meta: "ヘルプセンター · 12月8日",
               leading: <Avatar name="田中 遥" initials="遥" />,
             },
             {
@@ -49,7 +49,7 @@ export default () => (
           ]}
         />
       </Disclosure>
-      <Disclosure summary="条件を足す列と並べる（HEYの検索）">
+      <Disclosure summary="条件を足す列と並べる">
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr)); gap: var(--ply-space-6)">
           <OptionalFields
             label="結果を絞る"
@@ -91,7 +91,7 @@ export default () => (
               href: "/",
               excerpt:
                 "予約はウェブから受け付けます。予約の取り消しは前日まで無料です。当日の受付では予約の番号を伝えてください。予約がない方も空きがあれば利用できます。",
-              meta: "Playground · 12月8日",
+              meta: "ヘルプセンター · 12月8日",
             },
           ]}
         />
