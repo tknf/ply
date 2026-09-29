@@ -58,7 +58,7 @@ test("選択済みCheckboxは状態だけでなく白いcheckを実際に描画�
   expect(white).toBeGreaterThanOrEqual(4);
 });
 
-test("基本色を変えてもhover・押下が旧色へ戻らず、塗りと文字の位置を保つ", async ({ page }) => {
+test("基本色を変えてもhover・押下が既定の色へ戻らず、塗りと文字の位置を保つ", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/components/button");
   await page.evaluate(() => document.documentElement.style.setProperty("--ply-brand", "#146f53"));

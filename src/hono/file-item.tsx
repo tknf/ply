@@ -8,7 +8,7 @@ export type FileItemProps = ElementProps<"div"> & {
   href?: string;
   state?: "ready" | "pending" | "error";
   actions?: Child;
-  /** 画像やPDFの1ページ目の縮小。渡すとファイルの印の代わりに中身を見せる（HEYのファイル一覧と同じ）。 */
+  /** 画像やPDFの1ページ目の縮小。渡すとファイルの印の代わりに中身を見せる。 */
   preview?: Child;
 };
 export const FileItem = ({

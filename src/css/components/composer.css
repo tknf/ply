@@ -85,7 +85,7 @@
   }
 
   /*
-    差し替えた編集部品（ProseMirror・Tiptap・Lexxyなど）の書く場所は、深さによらず本文と同じ文字で書く。
+    差し替えた編集部品（ProseMirror・Tiptapなど）の書く場所は、深さによらず本文と同じ文字で書く。
     段落や箇条の間は、本文の欄と同じく一定の間隔にする。
   */
   .ply-composer > .ply-field > .editor {

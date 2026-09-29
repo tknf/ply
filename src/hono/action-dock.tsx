@@ -9,7 +9,7 @@ export type ActionDockProps = ElementProps<"nav"> & {
 };
 
 /**
- * HEYのスレッドの下に浮かぶ操作の棚。白い紙を画面の下の中央に浮かべ、印・名前・キーの印を縦に積んだ操作を横に並べる。
+ * 内容の下に浮かぶ操作の棚。白い紙を画面の下の中央に浮かべ、印・名前・キーの印を縦に積んだ操作を横に並べる。
  * 操作はActionTileで、棚の中では浮き上がりを消して平らにする。
  */
 export const ActionDock = ({

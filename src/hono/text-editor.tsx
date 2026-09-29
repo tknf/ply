@@ -38,7 +38,7 @@ export type TextEditorProps = Omit<ElementProps<"textarea">, "children"> & {
   label: string;
   /** 道具の並び。"|"で区切りを入れる。 */
   tools?: readonly (TextEditorTool | "|")[];
-  /** 道具を書く面の上（Fizzyのコメント、既定）と下（HEYの返信・日記）のどちらに置くか。 */
+  /** 道具を書く面の上（コメントなど、既定）と下（返信・日記など）のどちらに置くか。 */
   placement?: "top" | "bottom";
   /**
    * 書く面の代わりに置く編集部品（リッチテキストのエディターが描くcontenteditableの要素）。渡さなければtextareaを置く。
@@ -50,7 +50,7 @@ export type TextEditorProps = Omit<ElementProps<"textarea">, "children"> & {
 };
 
 /**
- * HEYの返信や日記、Fizzyのコメントと同じく、書式の道具を並べた書く面。
+ * 返信や日記、コメントに使う、書式の道具を並べた書く面。
  * 見た目と道具の並びだけを持ち、特定のエディターには依存しない。書式を付ける動きは利用側のエディターに任せ、
  * 道具のボタンのdata-text-editor-tool（"bold"など）を読んでエディターの操作を呼び、今の書式の道具には
  * data-active="true"を付ける。textareaのままの時は、道具は見た目だけで働かない。

@@ -101,7 +101,7 @@ test("Button・Inputの通常とlargeで直書き・子要素・placeholderが�
   }
 });
 
-test("旧フォント指定へ戻すとWebKitの入力文字の上ずれを実際に検出する", async ({
+test("Helvetica Neueを優先するフォント指定ではWebKitの入力文字の上ずれを実際に検出する", async ({
   page,
   browserName,
 }) => {

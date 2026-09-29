@@ -23,7 +23,7 @@
       flex: none;
       inline-size: var(--ply-treegrid-toggle-size);
     }
-    /* 題名はリンクかどうかに関わらず、HEYの一覧と同じ墨のMediumの文字にそろえる。 */
+    /* 題名はリンクかどうかに関わらず、墨のMediumの文字にそろえる。 */
     & > :is(.label, a) {
       min-inline-size: 0;
       font-weight: 500;

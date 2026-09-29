@@ -11,7 +11,7 @@
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
-    /* ファイルの印は枠で囲まず、淡く塗った札に置く。HEYのファイル一覧の小さな見本の代わり。 */
+    /* ファイルの印は枠で囲まず、淡く塗った札に置く。 */
     & > .icon {
       display: grid;
       place-items: center;
@@ -22,7 +22,7 @@
       color: var(--ply-link);
     }
     /*
-      中身の縮小はHEYのファイル一覧と同じく、角丸を付けず淡い縁だけで囲み、印と同じ高さの正方形に切り抜く。
+      中身の縮小は角丸を付けず淡い縁だけで囲み、印と同じ高さの正方形に切り抜く。
       送信待ちは縮小を薄くする。
     */
     & > .preview {

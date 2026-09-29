@@ -5,7 +5,7 @@ export type ValueItem = {
   label: string;
   value: Child;
   description?: string;
-  /** 項目名の前に置く印。HEYの操作の並びと同じく、塗りつぶしの印を色の淡い丸に入れる。 */
+  /** 項目名の前に置く印。塗りつぶしの印を色の淡い丸に入れる。 */
   icon?: Child;
   accent?: Accent;
 };

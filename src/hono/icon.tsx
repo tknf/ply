@@ -4,7 +4,7 @@ import { classes } from "./types";
 export type { IconName } from "../internal/icon-manifest-types";
 export type IconProps = {
   name: IconName;
-  /** 塗りつぶしの版。縦並びの一覧など、HEYのように太いアイコンで項目を見分ける場所で使う。 */
+  /** 塗りつぶしの版。縦並びの一覧など、太いアイコンで項目を見分ける場所で使う。 */
   fill?: boolean;
   sprite?: string;
   class?: string;

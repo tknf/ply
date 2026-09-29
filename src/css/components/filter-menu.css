@@ -1,6 +1,6 @@
 @layer components {
   /*
-    絞り込めるメニュー。HEYのラベル付けやFizzyの担当のように、DropdownMenuと同じ青の面の紙に、
+    絞り込めるメニュー。DropdownMenuと同じ青の面の紙に、
     上に白い絞り込みの欄と「新しく作る」、その下に淡い大文字の見出しと候補を並べる。
     候補は選んだものに白いチェックを置き、上下の矢印で移っている候補と指を載せた候補は白を薄く重ねる。
     位置と出入りの動きは、Popoverと同じoverlay.cssの共通の定義に任せる。
@@ -24,7 +24,7 @@
         grid-template-rows: auto auto minmax(0, 1fr) auto;
         gap: var(--ply-space-1);
       }
-      /* 絞り込みの欄。HEYの検索の欄と同じく、枠のない白い面のピルにする。 */
+      /* 絞り込みの欄。枠のない白い面のピルにする。 */
       & > .search {
         display: flex;
         align-items: center;

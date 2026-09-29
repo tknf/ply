@@ -240,7 +240,7 @@ test("Boardはポインターで空の列へドロップできる", async ({ pag
   await page.mouse.move(target.x + target.width / 2, target.y + 70, { steps: 12 });
   await expect(page.locator("html")).toHaveAttribute("data-ply-board-dragging", "true");
   await expect(item.getByRole("button")).toHaveCSS("cursor", "grabbing");
-  // Fizzyと同じく、運ぶ間は項目を元の列に残し、先の列には入る位置の印だけを出す。
+  // 運ぶ間は項目を元の列に残し、先の列には入る位置の印だけを出す。
   await expect(board.locator('[data-column-id="todo"] [data-board-id="guide"]')).toBeVisible();
   await expect(column.locator(".drop-marker")).toBeVisible();
   await expect(column.locator(".title > small")).toHaveText("0");

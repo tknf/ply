@@ -19,7 +19,7 @@ test("ButtonGroupは配置を所有するが内部Buttonの文字上書きは引
   );
 });
 
-test("Badgeの印をベースラインへ下げる変更と本文フォントへの戻しを拒否する", async () => {
+test("Badgeの印をベースラインへ下げる変更と操作用フォントの削除を拒否する", async () => {
   const css = await badgeCss();
   expect(check(css, "src/css/components/badge.css")).toEqual([]);
   expect(
@@ -36,7 +36,7 @@ test("Badgeの印をベースラインへ下げる変更と本文フォントへ
   ).not.toEqual([]);
 });
 
-test("現行メニューは共通Buttonの文字と縦配置を上書きしない", async () => {
+test("メニューのCSSは共通Buttonの文字と縦配置を上書きしない", async () => {
   expect(check(await menuCss())).toEqual([]);
 });
 
@@ -93,7 +93,7 @@ test("説明文を分けたラベル行でも文字の移動や行高変更を�
   }
 });
 
-test("メニューは上揃えを保ち中央配置への戻しを拒否する", async () => {
+test("メニューは上揃えを保ち中央配置を拒否する", async () => {
   expect(
     check(
       await addMenuRule(
@@ -107,7 +107,7 @@ test("メニューは上揃えを保ち中央配置への戻しを拒否する",
   expect(check(await menuCss())).toEqual([]);
 });
 
-test("初回のように独自buttonへフォントだけを追加しても旧余白を見逃さない", () => {
+test("独自buttonへフォントだけを指定しても上下余白の上書きを見逃さない", () => {
   expect(
     check(`@layer components { .ply-dropdown-menu { & > .ply-menu {
     font-family: var(--ply-control-font-family);
@@ -124,7 +124,7 @@ test("基準のButton自体から中央揃えを削除した場合も検出す�
   ).not.toEqual([]);
 });
 
-test("操作用フォントのトークンを本文用に戻す変更を検出する", async () => {
+test("操作用フォントのトークンを本文用に替える変更を検出する", async () => {
   const css = await readFile("src/css/tokens.css", "utf8");
   expect(check(css, "src/css/tokens.css")).toEqual([]);
   expect(
@@ -135,7 +135,7 @@ test("操作用フォントのトークンを本文用に戻す変更を検出�
   ).not.toEqual([]);
 });
 
-test("フォント名を保っても行メトリクスを元に戻したら検出する", async () => {
+test("フォント名を保っても行メトリクスの補正を外したら検出する", async () => {
   const css = await readFile("src/css/tokens.css", "utf8");
   for (const declaration of [
     "ascent-override: 89%;",
@@ -170,7 +170,7 @@ test("色の変更や説明文の文字サイズまで禁止しない", async ()
   ).toEqual([]);
 });
 
-test("旧実装のような共通コンポーネントを迂回したボタンを新規ファイルでも検出する", () => {
+test("共通コンポーネントを迂回したボタンを新規ファイルでも検出する", () => {
   const source = 'export const Example = () => <button type="button">確認する</button>;';
   expect(controlMarkupErrors(source, "src/hono/new-menu.tsx")).not.toEqual([]);
   expect(

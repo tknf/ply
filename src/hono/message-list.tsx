@@ -97,7 +97,7 @@ export const MessageList = ({
                   )}
                   <span class="body">
                     <strong class="title">
-                      {/* 状態はHEYの「DRAFT」の札と同じく、件名の前に共通のBadgeで置く。 */}
+                      {/* 状態（「下書き」など）は、件名の前に共通のBadgeで置く。 */}
                       {(item.state || item.unavailableReason) && (
                         <Badge
                           class="state"

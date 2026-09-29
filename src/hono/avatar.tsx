@@ -43,7 +43,7 @@ export type AvatarGroupProps = PropsWithChildren<
     size?: "small" | "default" | "large";
   }
 >;
-/** HEYのスレッドの見出しと同じく、人の円を少しずつ重ねて並べる。childrenにはAvatarだけを置く。 */
+/** 人の円を少しずつ重ねて並べる。childrenにはAvatarだけを置く。 */
 export const AvatarGroup = ({
   label,
   more,

@@ -217,7 +217,7 @@
       & > tbody > tr[data-selected="true"] {
         background: var(--ply-info-soft);
       }
-      /* 行の題名のリンクはHEYの一覧と同じく墨のMediumの文字にし、指を載せた時だけ青くする。 */
+      /* 行の題名のリンクは墨のMediumの文字にし、指を載せた時だけ青くする。 */
       & > tbody > tr > :is(th, td) > a {
         color: var(--ply-text);
         font-weight: 500;

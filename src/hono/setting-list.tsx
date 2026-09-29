@@ -16,7 +16,7 @@ export type SettingListProps = ElementProps<"ul"> & {
 };
 
 /**
- * Fizzyの設定と同じく、名前と行の終わりの操作を点線でつなぐ設定の行。
+ * 名前と行の終わりの操作を点線でつなぐ設定の行。
  * 「Everyone ……… スイッチ」「人の名前 ……… ✓」のように、どの名前にどの操作が付くかを目でたどれるようにする。
  */
 export const SettingList = ({

@@ -15,12 +15,12 @@ export type OptionalField = {
 export type OptionalFieldsProps = ElementProps<"div"> & {
   label: string;
   items: readonly OptionalField[];
-  /** inlineはHEYの予定のようにチップを横に並べ（既定）、stackはHEYの検索の条件のように縦に並べる。 */
+  /** inlineは予定の入力のようにチップを横に並べ（既定）、stackは検索の条件のように縦に並べる。 */
   layout?: "inline" | "stack";
 };
 
 /**
- * HEYの予定（リンク・場所・招待・メモ・繰り返し）や検索の条件のように、必要な時だけ足す欄。
+ * 予定のリンク・場所・招待・メモ・繰り返しや検索の条件のように、必要な時だけ足す欄。
  * 足せる項目をチップで並べ、押すとその欄が現れてチップは消える。長いフォームを短く見せる。
  */
 export const OptionalFields = ({

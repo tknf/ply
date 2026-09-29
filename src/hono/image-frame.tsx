@@ -7,7 +7,7 @@ export type ImageFrameProps = ElementProps<"figure"> & {
   fit?: "contain" | "cover";
   missingLabel?: string;
   caption?: string;
-  /** 説明の下に淡い文字で添える大きさや日付（HEYの添付と同じ）。 */
+  /** 説明の下に淡い文字で添える大きさや日付。 */
   meta?: string;
 };
 export const ImageFrame = ({

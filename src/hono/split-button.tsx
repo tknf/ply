@@ -11,7 +11,7 @@ export type SplitButtonProps = Omit<ButtonProps, "children"> & {
 };
 
 /**
- * HEYの「Send email ▾」と同じく、主操作と、ほかのやり方を選ぶ▾を一つのピルにつなげた操作。
+ * 「送信 ▾」のように、主操作と、ほかのやり方を選ぶ▾を一つのピルにつなげた操作。
  * 主操作は共通Button、▾は共通DropdownMenuで、見た目だけを一体にする。
  */
 export const SplitButton = ({

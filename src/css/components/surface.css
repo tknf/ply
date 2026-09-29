@@ -23,7 +23,7 @@
       gap: var(--ply-space-4);
       min-inline-size: 0;
       /*
-        HEYの面は左右55px、Fizzyの詳細は内側47.5px。狭い面では詰める。
+        左右は上下より広く取り、狭い面では詰める。
         上下は同じ余白にそろえ、中の段の間（16px）より面の余白をはっきり広くする。
       */
       padding-block: var(--ply-space-8) var(--ply-space-8);

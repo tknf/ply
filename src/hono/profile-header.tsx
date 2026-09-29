@@ -18,7 +18,7 @@ export type ProfileHeaderProps = ElementProps<"header"> & {
 };
 
 /**
- * HEYの連絡先と同じく、大きな人の円と名前を中央に据え、その下に、この人への設定を灰色の帯にまとめて並べる。
+ * 大きな人の円と名前を中央に据え、その下に、この人への設定を灰色の帯にまとめて並べる。
  */
 export const ProfileHeader = ({
   name,

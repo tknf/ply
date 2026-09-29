@@ -13,7 +13,7 @@ export type CountdownProps = ElementProps<"span"> & {
 };
 
 /**
- * Fizzyのカードの「CLOSES IN 70 DAYS」と同じ、期限や残りを大きな数で示す丸い印。
+ * 期限や残りを大きな数で示す丸い印。
  * 役割の色の細い輪で縁取り、紙の影で浮かせる。カードの縁にまたがせる時は、置く側で位置を決める。
  */
 export const Countdown = ({

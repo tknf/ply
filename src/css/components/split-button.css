@@ -11,7 +11,7 @@
       border-start-end-radius: 0;
       border-end-end-radius: 0;
     }
-    /* ▾の部分はHEYと同じく細くし、四角い最小幅を持たせない。 */
+    /* ▾の部分は細くし、四角い最小幅を持たせない。 */
     & > .ply-dropdown-menu > .ply-button {
       min-inline-size: 0;
       padding-inline: 0.625em 0.75em;

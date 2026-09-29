@@ -25,7 +25,7 @@ export type ActionTileProps =
 
 /**
  * 塗りつぶしの印を上・名前を下に置いた、格子に並べる入口や操作のタイル。
- * HEYのメニューの上段と同じ形で、CommandMenuの入口やTableの一括操作に使う。hrefを渡すと移動のリンク、渡さなければボタンになる。
+ * CommandMenuの入口やTableの一括操作に使う。hrefを渡すと移動のリンク、渡さなければボタンになる。
  */
 export const ActionTile = (props: ActionTileProps) => {
   const { label, icon, accent, disabled, class: className, shortcut, badge } = props;

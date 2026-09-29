@@ -356,7 +356,7 @@ const CalendarWeek = ({
             data-weekend={isWeekend(day.date) ? "true" : undefined}
           >
             <div class="heading">
-              {/* 曜日と日付を一つにまとめ、今日はHEYのように両方をまとめて塗る。 */}
+              {/* 曜日と日付を一つにまとめ、今日は両方をまとめて塗る。 */}
               <span class="date" data-current={day.current ? "true" : undefined}>
                 <span class="weekday" aria-hidden="true">
                   {weekdayLabel(day.date)}

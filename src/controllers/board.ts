@@ -151,7 +151,7 @@ export class BoardController extends Controller<HTMLElement> {
       );
     }
   };
-  /** 指で運ぶ間の入る位置。Fizzyと同じく、項目は動かさずに先の列へ線の印だけを差し込む。 */
+  /** 指で運ぶ間の入る位置。項目は動かさずに先の列へ線の印だけを差し込む。 */
   private aim = (column: HTMLElement, before: HTMLElement | null) => {
     for (const other of this.columns()) if (other !== column) other.removeAttribute("data-over");
     const container = column.querySelector(":scope > .items");
@@ -224,7 +224,7 @@ export class BoardController extends Controller<HTMLElement> {
   };
   private cancel = () => this.finish(false);
   /**
-   * 手に持った項目。Fizzyのドラッグの像と同じく、項目そのものの写しを同じ幅・同じ列の染まりで作り、
+   * 手に持った項目。項目そのものの写しを同じ幅・同じ列の染まりで作り、
    * 掴んだ位置のまま指に付けて動かす。写しは読み上げ・操作・idの重複から外す。
    */
   private preview = (item: HTMLElement, pointer: { startX: number; startY: number }) => {

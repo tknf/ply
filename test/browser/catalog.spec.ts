@@ -183,7 +183,6 @@ test("動作コンポーネントのフォーカスがforced-colorsでも見え�
 test("押す操作は浮かせず、指を載せると面が濃くなり、押すと内側へへこみ、focusで輪郭が見える", async ({
   page,
 }) => {
-  // 2026年9月29日、ユーザーの指定で「浮かせる影」をやめ、普段は平ら・押すとへこむ手触りに変えた。
   await page.goto("/components/button");
   const buttons = page.locator('[data-example="hono"] .ply-button:not(:disabled)');
   for (const button of await buttons.all()) {

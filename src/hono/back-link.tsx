@@ -4,11 +4,11 @@ import { classes, type ElementProps } from "./types";
 
 export type BackLinkProps = Omit<ElementProps<"a">, "children"> & {
   href: string;
-  /** 戻る先の名前（「Imbox」「設定」など）。 */
+  /** 戻る先の名前（「受信トレイ」「設定」など）。 */
   label: string;
-  /** 表示用のキーの印（Fizzyの「ESC」など）。登録は利用側で行う。 */
+  /** 表示用のキーの印（「Esc」など）。登録は利用側で行う。 */
   shortcut?: string;
-  /** filledはHEYのように淡い青のピル（既定）、plainはFizzyのように面を持たない太字の文字。 */
+  /** filledは淡い青のピル（既定）、plainは面を持たない太字の文字。 */
   tone?: "filled" | "plain";
 };
 

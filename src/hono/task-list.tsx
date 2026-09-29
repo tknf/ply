@@ -92,7 +92,7 @@ export const TaskList = ({
           <Icon name="caret" />
         </span>
         <span class="name">{heading}</span>
-        {/* Fizzyのカードの手順と同じく、終えた割合だけ塗る円と「終えた数/全体」で進み具合を示す。 */}
+        {/* 終えた割合だけ塗る円と「終えた数/全体」で進み具合を示す。 */}
         <span class="pie" aria-hidden="true" />
         <span class="count">
           <span class="ply-visually-hidden">完了</span>

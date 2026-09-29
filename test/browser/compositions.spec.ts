@@ -117,7 +117,7 @@ test("Popoverの表示APIがなくても設定の保存と初期値への復帰�
   await expect(status).toContainText("初期値に戻しました");
 });
 
-test("追加した標準コンポーネントはJavaScript無効でも操作できる", async ({ browser }) => {
+test("Switch・Popover・予定の月送りはJavaScript無効でも操作できる", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto("/components/switch");

@@ -207,7 +207,7 @@
   }
   /*
     選択肢の束はFieldと同じく、名前のラベルの下に選択肢を並べる。枠で囲まない。
-    行の間はHEYの設定の行のように、文字の高さより広めに空ける。
+    行の間は文字の高さより広めに空ける。
   */
   .ply-choice-group {
     border: 0;
@@ -381,7 +381,7 @@
     transition:
       border-color var(--ply-duration) ease,
       box-shadow var(--ply-duration) ease;
-    /* HEYの欄と同じく、青い縁の外に淡い青の輪を広げる。 */
+    /* 青い縁の外に淡い青の輪を広げる。 */
     &:focus-visible {
       outline: 0.125rem solid transparent;
       outline-offset: 0;

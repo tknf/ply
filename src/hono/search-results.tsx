@@ -36,7 +36,7 @@ const highlight = (text: string, query?: string): Child => {
 };
 
 /**
- * HEYやFizzyの検索の結果と同じく、題名・抜粋・補足を並べ、一致した語をHEYのように淡い黄の面で強調する。
+ * 題名・抜粋・補足を並べ、一致した語を淡い黄の面で強調する。
  * 条件を足す列はOptionalFieldsのstackで、ページの側に置く。
  */
 export const SearchResults = ({

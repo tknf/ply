@@ -10,7 +10,7 @@ export type InlineSelectProps = Omit<ElementProps<"select">, "children"> & {
 };
 
 /**
- * HEYの「30分前に知らせる」「All files sent by everyone」のように、文の中の語を押して選ぶ選択。
+ * 「30分前に知らせる」「全員が送ったファイル」のように、文の中の語を押して選ぶ選択。
  * 実体は標準のselectで、文の中の青い語に見せる。欄を並べずに、設定を一つの文として読ませる時に使う。
  */
 export const InlineSelect = ({

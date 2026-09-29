@@ -1,7 +1,7 @@
 import type { Child } from "hono/jsx";
 import { classes, type ElementProps } from "./types";
 
-/** currentは今日の列。HEYのカレンダーの今日と同じく、見出しを塗った楕円で囲む。 */
+/** currentは今日の列。見出しを塗った楕円で囲む。 */
 export type GridColumn = { id: string; label: string; current?: boolean };
 export type GridCell = { content: Child; disabled?: boolean };
 export type GridRow = { id: string; label: string; cells: readonly GridCell[] };

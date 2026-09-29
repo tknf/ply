@@ -1,5 +1,5 @@
 @layer components {
-  /* 集計の値。数字はFizzyの見出しと同じくとても太く大きく書き、名前・単位・補足は淡く小さく添える。 */
+  /* 集計の値。数字はとても太く大きく書き、名前・単位・補足は淡く小さく添える。 */
   .ply-statistic {
     min-inline-size: 0;
     max-inline-size: 100%;

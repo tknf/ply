@@ -88,7 +88,7 @@
         cursor: not-allowed;
       }
     }
-    /* HEYの返信と日記は、道具を書く面の下に置く。 */
+    /* bottomの配置では、道具を書く面の下に置く。 */
     &[data-placement="bottom"] {
       grid-template-rows: minmax(0, 1fr) auto;
       & > .toolbar {

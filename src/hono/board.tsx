@@ -9,7 +9,7 @@ export type BoardEntry = {
   label: string;
   content: Child;
   disabled?: boolean;
-  /** 項目の番号など。Fizzyのカードの札のように、紙の上の始まりの角に列の色で置く。 */
+  /** 項目の番号など。札にして、紙の上の始まりの角に列の色で置く。 */
   code?: string;
 };
 type Column = {

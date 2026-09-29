@@ -1,6 +1,6 @@
 import ts from "typescript";
 
-// 字形の見た目の保証ではなく、繰り返した実装上の退行を提出前に止める。
+// 字形の見た目の保証ではなく、既知の実装上の退行を提出前に止める。
 const buttonFile = "src/css/components/button.css";
 const requiredButton = new Map([
   ["font-family", "var(--ply-control-font-family)"],
@@ -55,7 +55,7 @@ const context = (rule) => {
 // カレンダーとメニューの行構造を、宣言単位で区別する。
 // ファイル全体を除外しない。メニュー項目への再導入は許可しない。
 const reviewedOverrides = new Map([
-  // ユーザー指定: 上から積み、一行時の中央は対称な上下余白で作る。
+  // 上から積み、一行時の中央は対称な上下余白で作る。
   [
     "src/css/components/dropdown-menu.css|.ply-menu > li > .item.ply-button",
     new Map([["padding-block", "calc((var(--ply-menu-row-size) - 10em / 7 - 0.125rem) / 2)"]]),

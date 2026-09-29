@@ -1,7 +1,7 @@
 @layer components {
   /*
     ToastStackは開いているToastを束ねる。新しいものを手前に置き、古いものは上へ少しずつずらして小さく重ね、
-    奥ほど薄れて上端から消える。押すと一枚ずつ少し遅れて上へ広がり、外を押すかEscで畳む（FizzyのPinの束と同じ振る舞い）。
+    奥ほど薄れて上端から消える。押すと一枚ずつ少し遅れて上へ広がり、外を押すかEscで畳む。
     順番（--ply-toast-index）・広げた時の持ち上げ幅（--ply-toast-offset）・手前の高さはToastStackControllerが渡す。
     重ね方はtransformで作り、出入りの動き（overlay.cssのtranslate・scale・opacity）と分ける。
   */
