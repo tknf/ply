@@ -274,12 +274,14 @@
       - 本文・一覧の題名 --ply-body：15〜16px
       - 小見出し --ply-section-title：20〜22px
       - 画面の見出し --ply-title：28〜36px
+      係数は割り切れない値を分数のまま書く。小数へ丸めると1280pxで上限にわずかに届かず（14pxが13.99999px）、
+      emで決める操作の高さが端数になって文字の縦位置がずれる。
     */
     --ply-body: clamp(0.9375rem, calc(0.9rem + 0.15625vw), 1rem);
-    --ply-label: clamp(0.84375rem, calc(0.833333rem + 0.052083vw), 0.875rem);
-    --ply-small: clamp(0.78125rem, calc(0.770833rem + 0.052083vw), 0.8125rem);
-    --ply-title: clamp(1.75rem, calc(1.583333rem + 0.833333vw), 2.25rem);
-    --ply-section-title: clamp(1.25rem, calc(1.208333rem + 0.208333vw), 1.375rem);
+    --ply-label: clamp(0.84375rem, calc(5rem / 6 + 5vw / 96), 0.875rem);
+    --ply-small: clamp(0.78125rem, calc(37rem / 48 + 5vw / 96), 0.8125rem);
+    --ply-title: clamp(1.75rem, calc(19rem / 12 + 5vw / 6), 2.25rem);
+    --ply-section-title: clamp(1.25rem, calc(29rem / 24 + 5vw / 24), 1.375rem);
     --ply-leading: 1.625;
     --ply-label-leading: calc(10 / 7);
     --ply-small-leading: calc(20 / 13);
