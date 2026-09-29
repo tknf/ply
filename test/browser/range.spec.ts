@@ -272,3 +272,13 @@ for (const width of [375, 1280]) {
     await form.screenshot({ path: testInfo.outputPath(`range-${width}-forced.png`) });
   });
 }
+
+test("範囲指定の数の入力にunitを添え、説明として読み上げる", async ({ page }) => {
+  await page.goto("/components/range");
+  const group = page.getByRole("group", { name: "予算（円）", exact: true });
+  for (const bound of ["下限", "上限"]) {
+    const number = group.getByRole("spinbutton", { name: `予算（円） ${bound}`, exact: true });
+    await expect(number).toHaveAccessibleDescription("円");
+  }
+  await expect(group.locator(".values .affix")).toHaveText(["円", "円"]);
+});

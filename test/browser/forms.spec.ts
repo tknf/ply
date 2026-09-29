@@ -37,7 +37,10 @@ test("説明付きの選択肢は文字200%でも印と重ならない", async (
   const text = await option.locator("span").first().boundingBox();
   if (!box || !text) throw new Error("選択肢がありません");
   expect(box.x + box.width).toBeLessThan(text.x);
-  await page.screenshot({ path: testInfo.outputPath("field-375-text-200.png"), fullPage: true });
+  // 部品のページはリファレンスで長く、Firefoxのページ全体の撮影の上限を超えるので、見本だけを撮る。
+  await page
+    .locator('[data-example="hono"]')
+    .screenshot({ path: testInfo.outputPath("field-375-text-200.png") });
 });
 
 test("狭幅でもアプリの画面の見出しを一文字だけ折り返さない", async ({ page }) => {

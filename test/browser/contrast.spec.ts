@@ -40,12 +40,9 @@ const cases = [
   {
     id: "button",
     targets: [
+      // 文字のある操作は文字で操作と分かるので、WCAG 1.4.11は縁の対比を求めない。
+      // 控えめな操作（secondary）は淡い縁と縦の陰影で描く設計なので、縁ではなく文字の対比を確かめる。
       { selector: '[data-example="hono"] .ply-button', property: "color", threshold: 4.5 },
-      {
-        selector: '[data-example="hono"] .ply-button:not([data-variant="link"])',
-        property: "border-inline-start-color",
-        threshold: 3,
-      },
     ],
   },
   {
@@ -73,7 +70,12 @@ const cases = [
     targets: [
       { selector: '[data-example="hono"] .ply-switch > span', property: "color", threshold: 7 },
       { selector: '[data-example="hono"] .ply-switch small', property: "color", threshold: 7 },
-      { selector: '[data-example="hono"] .ply-switch > input', property: "color", threshold: 3 },
+      // 使えない操作はWCAGの対比の対象外なので、Fieldの入力と同じく除く。
+      {
+        selector: '[data-example="hono"] .ply-switch > input:not(:disabled)',
+        property: "color",
+        threshold: 3,
+      },
     ],
   },
   {

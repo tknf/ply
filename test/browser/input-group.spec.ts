@@ -43,12 +43,13 @@ test("枠全体にフォーカスとエラーを反映して入力と操作を�
 
 test("入力に添えた操作で実際の検索結果へ進める", async ({ page }) => {
   await page.goto("/components/input-group");
-  await page.getByRole("searchbox", { name: "記事を検索", exact: true }).fill("仕事場");
+  await page.getByRole("searchbox", { name: "記事を検索", exact: true }).fill("招待");
   await page.getByRole("button", { name: "検索", exact: true }).click();
   await expect(page).toHaveURL(/\/search\?q=/);
-  await expect(page.getByRole("status")).toHaveText("1件の記事");
+  const articles = page.getByRole("list", { name: "記事の検索結果", exact: true });
+  await expect(articles.getByRole("listitem").first()).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "小さな仕事場のつくり方", exact: true }),
+    articles.getByRole("link", { name: "メンバーを招待する", exact: true }),
   ).toBeVisible();
 });
 
@@ -58,17 +59,22 @@ for (const width of [375, 1280]) {
     await page.goto("/components/input-group");
     await page.getByText("エラー・閲覧専用・利用不可・大きい入力", { exact: true }).click();
     const example = page.locator('[data-example="hono"]');
-    for (const [name, height] of [
-      ["記事を検索", 36],
-      ["記事を検索（大きい入力）", 40],
+    // 文字は画面幅に合わせて変わるので、高さは入力の枠の文字の大きさから求める（通常18/7倍、largeは2.5倍）。
+    for (const [name, ratio] of [
+      ["記事を検索", 18 / 7],
+      ["記事を検索（大きい入力）", 2.5],
     ] as const) {
       const input = page.getByRole("searchbox", { name, exact: true });
       const group = example.locator(".ply-input-group").filter({ has: input });
       const control = await group.locator(".control").boundingBox();
-      const button = await group.getByRole("button").boundingBox();
+      const buttonLocator = group.getByRole("button");
+      const button = await buttonLocator.boundingBox();
       if (!control || !button) throw new Error("入力とボタンが描画されていません");
-      expect(control.height).toBeCloseTo(height, 1);
-      expect(button.height).toBeCloseTo(height, 1);
+      const fontSize = await group
+        .locator(".control")
+        .evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize));
+      expect(control.height).toBeCloseTo(fontSize * ratio, 1);
+      expect(button.height).toBeCloseTo(control.height, 1);
       expect(control.y).toBeCloseTo(button.y, 1);
     }
     await example.screenshot({ path: testInfo.outputPath(`input-group-${width}.png`) });

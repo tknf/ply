@@ -116,12 +116,14 @@ test("クリアは終了日と左右・行高を揃えて文字を中央に置�
       if (!label) throw new Error("操作行のラベルがありません");
       const box = element.getBoundingClientRect();
       const text = label.getBoundingClientRect();
+      // Firefoxは同じ寸法でも小数の末尾がわずかにずれるので、0.01px単位で比べる。
+      const round = (value: number) => Math.round(value * 100) / 100;
       return {
-        left: box.left,
-        right: box.right,
-        height: box.height,
-        textOffset: text.top - box.top,
-        textHeight: text.height,
+        left: round(box.left),
+        right: round(box.right),
+        height: round(box.height),
+        textOffset: round(text.top - box.top),
+        textHeight: round(text.height),
         centered: Math.abs((text.left + text.right - box.left - box.right) / 2) < 0.5,
       };
     });

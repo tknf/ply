@@ -38,7 +38,8 @@ for (const width of [375, 1280])
     await page.goto("/components/code-block");
     const example = page.locator('[data-example="hono"] .ply-code-block').first();
     const button = example.getByRole("button", { name: "CSSの読み込みをコピー" });
-    const toast = example.locator(":scope > .ply-toast");
+    const toast = example.locator(':scope > .ply-toast[data-tone="success"]');
+    const failure = example.locator(':scope > .ply-toast[data-tone="danger"]');
     const bounds = () =>
       example.evaluate((element) =>
         [
@@ -68,7 +69,8 @@ for (const width of [375, 1280])
         }),
       ).toBe(true);
       await button.press("Enter");
-      await expect(toast.getByRole("status")).toHaveText("CSSの読み込みをコピーしました");
+      // Toastのルートそのものがstatusなので、見本の中のstatusで確かめる。
+      await expect(example.getByRole("status")).toHaveText("CSSの読み込みをコピーしました");
       expect(await bounds()).toEqual(before);
       await toast.hover();
       await page.clock.fastForward(5000);
@@ -85,12 +87,13 @@ for (const width of [375, 1280])
     );
     const before = await bounds();
     await button.press("Enter");
-    await expect(toast.getByRole("status")).toContainText("コピーできませんでした");
+    await expect(example.getByRole("alert")).toContainText("コピーできませんでした");
+    await expect(toast).not.toBeVisible();
     expect(await bounds()).toEqual(before);
     await page.clock.fastForward(8000);
-    await expect(toast).toBeVisible();
-    await toast.getByRole("button", { name: "コピー結果の通知を閉じる" }).press("Enter");
-    await expect(toast).not.toBeVisible();
+    await expect(failure).toBeVisible();
+    await failure.getByRole("button", { name: "コピー結果の通知を閉じる" }).press("Enter");
+    await expect(failure).not.toBeVisible();
     await expect(button).toBeFocused();
     expect(await bounds()).toEqual(before);
   });
@@ -99,7 +102,7 @@ test("別のコードを続けてコピーしても通知が重ならずEscで�
   await page.goto("/components/code-block");
   const examples = page.locator('[data-example="hono"] .ply-code-block');
   await examples.first().getByRole("button", { name: "CSSの読み込みをコピー" }).press("Enter");
-  await expect(examples.first().locator(".ply-toast")).toBeVisible();
+  await expect(examples.first().locator('.ply-toast[data-tone="success"]')).toBeVisible();
   const second = examples.nth(1).getByRole("button", { name: "公開設定の例をコピー" });
   await second.press("Enter");
   await expect(page.locator(".ply-code-block > .ply-toast:popover-open")).toHaveCount(1);
@@ -118,9 +121,15 @@ test("コピーが拒否されたら失敗を伝え、文字の選択とスク�
   );
   const example = page.locator('[data-example="hono"] .ply-code-block').nth(1);
   await example.getByRole("button", { name: "公開設定の例をコピー" }).click();
-  await expect(example.getByRole("status")).toHaveText(
+  // 失敗は成功と別の知らせで、危険の色とrole="alert"で急いで伝える。
+  const failure = example.locator(":scope > .ply-toast:popover-open");
+  await expect(failure).toHaveCount(1);
+  await expect(failure).toHaveAttribute("data-tone", "danger");
+  await expect(failure).toHaveAttribute("aria-live", "assertive");
+  await expect(example.getByRole("alert")).toHaveText(
     "コピーできませんでした。コードを選択してコピーしてください。",
   );
+  await expect(example.getByRole("status")).toHaveCount(0);
   await page.setViewportSize({ width: 375, height: 900 });
   const pre = example.getByRole("region");
   await pre.focus();
@@ -144,4 +153,22 @@ test("JavaScriptがなくてもコードを読め、動かないコピー操作�
   await html.locator("summary").press("Enter");
   await expect(html.locator("pre > code")).toContainText("ply-code-block");
   await context.close();
+});
+
+test("CodeBlockの紙は余白を持たず、コードの面が余白を持つ", async ({ page }) => {
+  await page.goto("/components/code-block");
+  const example = page.locator('[data-example="hono"] .ply-code-block').first();
+  const padding = await example.evaluate((element) => {
+    const body = element.querySelector(":scope > .ply-layer-card > .body"),
+      pre = body?.querySelector(":scope > pre");
+    if (!body || !pre) throw new Error("紙かコードがありません");
+    const paper = getComputedStyle(body),
+      code = getComputedStyle(pre);
+    return {
+      paper: [paper.paddingTop, paper.paddingLeft, paper.paddingRight, paper.paddingBottom],
+      code: Number.parseFloat(code.paddingLeft),
+    };
+  });
+  expect(padding.paper).toEqual(["0px", "0px", "0px", "0px"]);
+  expect(padding.code).toBeGreaterThan(0);
 });

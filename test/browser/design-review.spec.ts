@@ -58,7 +58,10 @@ test("Calendarの表示と選択、Overlayの共通構造と狭幅を確認す�
   await expect(schedule).toHaveAttribute("data-view", "year");
   await expect(schedule.locator(".year-grid .month-label")).toHaveCount(12);
   await expect(schedule.locator(".year-grid .year-day")).toHaveCount(365);
-  await schedule.locator(".year-grid").getByRole("link", { name: "1月", exact: true }).click();
+  await schedule
+    .locator(".year-grid")
+    .getByRole("link", { name: "1月を表示", exact: true })
+    .click();
   await expect(schedule).toHaveAttribute("data-view", "month");
   await expect(schedule).toContainText("2026年1月");
 
@@ -161,7 +164,9 @@ test("PageHeaderの見出しは幅を広げても寸法が飛ばない", async (
         titleSize - previousTitleSize,
         `${width}px幅で見出し寸法の飛び`,
       ).toBeGreaterThanOrEqual(0);
-      expect(titleSize - previousTitleSize, `${width}px幅で見出し寸法の飛び`).toBeLessThan(0.03);
+      // 1px広げた時の増分は約0.008px。Firefoxは文字の大きさを1/60pxの単位へ丸めるので0.03px前後の差が出るが、
+      // 段で切り替わる飛び（0.5px以上）とは桁が違うので、0.05pxまでを連続とみなす。
+      expect(titleSize - previousTitleSize, `${width}px幅で見出し寸法の飛び`).toBeLessThan(0.05);
     }
     previousTitleSize = titleSize;
   }

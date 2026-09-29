@@ -116,22 +116,26 @@ test.describe("タッチ操作", () => {
 
 test("複数チェックの全選択・一部選択・解除とresetが同期する", async ({ page }) => {
   await page.goto("/components/field");
-  const all = page.getByRole("checkbox", { name: "すべて選択", exact: true });
-  const articles = page.getByRole("checkbox", { name: "新しい記事", exact: true });
-  const comments = page.getByRole("checkbox", { name: "コメント", exact: true });
+  // 見本には全選択を持つ束が二つあるので、「複数選択・全選択」の束に絞る。
+  const group = page.getByRole("group", { name: "複数選択・全選択", exact: true });
+  const all = group.getByRole("checkbox", { name: "すべて選択", exact: true });
+  const articles = group.getByRole("checkbox", { name: "新しい記事", exact: true });
+  const comments = group.getByRole("checkbox", { name: "コメント", exact: true });
   await expect(all).toHaveJSProperty("indeterminate", true);
-  await page.getByText("すべて選択", { exact: true }).click();
+  await group.getByText("すべて選択", { exact: true }).click();
   await expect(all).toBeChecked();
   await expect(all).toHaveJSProperty("indeterminate", false);
   await expect(comments).toBeChecked();
   await expect(
-    page.getByRole("checkbox", { name: "利用できない通知", exact: true }),
+    group.getByRole("checkbox", { name: "利用できない通知", exact: true }),
   ).not.toBeChecked();
   await all.press("Space");
   await expect(all).not.toBeChecked();
   await expect(articles).not.toBeChecked();
   await expect(comments).not.toBeChecked();
-  await expect(page.getByRole("checkbox", { name: "常に受け取る通知", exact: true })).toBeChecked();
+  await expect(
+    group.getByRole("checkbox", { name: "常に受け取る通知", exact: true }),
+  ).toBeChecked();
   await comments.check();
   await expect(all).toHaveJSProperty("indeterminate", true);
   await page.getByRole("button", { name: "選択を戻す", exact: true }).click();
@@ -142,12 +146,13 @@ test("複数チェックの全選択・一部選択・解除とresetが同期す
 
 test("複数チェックの変更を利用アプリで取り消せる", async ({ page }) => {
   await page.goto("/components/field");
-  await page.locator('[data-controller="checkbox-group"]').evaluate((element) => {
+  const group = page.getByRole("group", { name: "複数選択・全選択", exact: true });
+  await group.evaluate((element) => {
     element.addEventListener("checkbox-group:beforechange", (event) => event.preventDefault());
   });
-  await page.getByRole("checkbox", { name: "コメント", exact: true }).click();
-  await expect(page.getByRole("checkbox", { name: "コメント", exact: true })).not.toBeChecked();
-  await expect(page.getByRole("checkbox", { name: "すべて選択", exact: true })).toHaveJSProperty(
+  await group.getByRole("checkbox", { name: "コメント", exact: true }).click();
+  await expect(group.getByRole("checkbox", { name: "コメント", exact: true })).not.toBeChecked();
+  await expect(group.getByRole("checkbox", { name: "すべて選択", exact: true })).toHaveJSProperty(
     "indeterminate",
     true,
   );
@@ -160,7 +165,8 @@ test("Fieldの補足・エラー・ラベルが入力に関連付く", async ({ 
   await expect(input).toHaveAttribute("data-invalid", "true");
   await expect(input).toHaveAccessibleDescription("一覧に表示します。 名前を入力してください。");
   await expect(input).toHaveAttribute("required", "");
-  await page.getByText("名前", { exact: true }).click();
+  // 部品のページの表にも「名前」があるので、見本の中のラベルに絞る。
+  await page.locator('[data-example="hono"]').getByText("名前", { exact: true }).click();
   await expect(input).toBeFocused();
   await input.fill("確認用の名前");
   await expect(input).toHaveValue("確認用の名前");
@@ -243,4 +249,96 @@ test("エラー・閲覧専用・disabledと長い補足が狭幅の文字拡大
     expect(bounds.x + bounds.width).toBeLessThanOrEqual(375);
   }
   await expect(page.getByText("名前を入力してください。", { exact: true })).toBeVisible();
+});
+
+test("文字数の欄はcontrollerが接続してから数えた値で出す", async ({ page }) => {
+  await page.goto("/components/field");
+  const counter = page.locator("#hono-counted-description-count");
+  await expect(counter).toBeVisible();
+  const text = await counter.evaluate(
+    (element) => `${getComputedStyle(element, "::before").content}${element.textContent}`,
+  );
+  expect(text).not.toContain("0 / 0");
+});
+
+test("候補を選ぶと欄で標準のinput・changeを出す", async ({ page }) => {
+  await page.goto("/components/field");
+  const input = page.getByRole("combobox", { name: "担当部署（候補選択）", exact: true });
+  await expect(
+    page.getByRole("button", { name: "担当部署の候補を開閉", exact: true }),
+  ).toBeVisible();
+  await input.evaluate((element) => {
+    const events: string[] = [];
+    (window as typeof window & { plyEvents?: string[] }).plyEvents = events;
+    for (const type of ["input", "change", "combobox:change"])
+      element
+        .closest(".ply-combobox")
+        ?.addEventListener(type, (event) =>
+          events.push(`${event.type}:${event.target === element}`),
+        );
+  });
+  await input.press("ArrowDown");
+  await input.press("ArrowDown");
+  await input.press("Enter");
+  await expect(input).toHaveValue("営業部");
+  expect(
+    await page.evaluate(() => (window as typeof window & { plyEvents?: string[] }).plyEvents),
+  ).toEqual(expect.arrayContaining(["combobox:change:false", "input:true", "change:true"]));
+  // 同じ候補を選び直しても値は変わらないので、標準のイベントも出さない。
+  await input.press("ArrowDown");
+  await page.getByRole("option", { name: "営業部", exact: true }).click();
+  await expect(input).toHaveValue("営業部");
+  expect(
+    await page.evaluate(() => (window as typeof window & { plyEvents?: string[] }).plyEvents),
+  ).toHaveLength(3);
+});
+
+test("PageUp・PageDownで変えた数も標準のinput・changeを一度ずつ出す", async ({ page }) => {
+  await page.goto("/components/field");
+  const number = page.getByRole("spinbutton", { name: "部数", exact: true });
+  await number.evaluate((element) => {
+    const events: string[] = [];
+    (window as typeof window & { plyEvents?: string[] }).plyEvents = events;
+    for (const type of ["input", "change", "number-field:change"])
+      element.addEventListener(type, (event) => events.push(event.type));
+  });
+  const recorded = async () => {
+    const result: Record<string, number> = { input: 0, change: 0, "number-field:change": 0 };
+    const events =
+      (await page.evaluate(() => (window as typeof window & { plyEvents?: string[] }).plyEvents)) ??
+      [];
+    for (const type of events) result[type] = (result[type] ?? 0) + 1;
+    return result;
+  };
+  await number.press("PageUp");
+  await expect(number).toHaveValue("20");
+  expect(await recorded()).toEqual({ input: 1, change: 1, "number-field:change": 1 });
+  // 矢印キーはブラウザがinput・changeを出すので、重ねて出さない。
+  await number.press("ArrowUp");
+  await number.press("Tab");
+  expect(await recorded()).toEqual({ input: 2, change: 2, "number-field:change": 2 });
+  // 取り消した時は値が戻るので、標準のイベントを出さない。
+  await number.evaluate((element) =>
+    element.addEventListener("number-field:beforechange", (event) => event.preventDefault(), {
+      once: true,
+    }),
+  );
+  await number.focus();
+  await number.press("PageDown");
+  await expect(number).toHaveValue("21");
+  expect(await recorded()).toEqual({ input: 2, change: 2, "number-field:change": 2 });
+});
+
+test.describe("JavaScriptなし（文字数・候補選択）", () => {
+  test.use({ javaScriptEnabled: false });
+  test("文字数の欄と候補の開閉を出さず、欄は一行の入力になる", async ({ page }) => {
+    await page.goto("/components/field");
+    await expect(page.locator("#hono-counted-description-count")).toBeHidden();
+    await expect(
+      page.getByRole("textbox", { name: "担当部署（候補選択）", exact: true }),
+    ).toBeEditable();
+    await expect(
+      page.getByRole("button", { name: "担当部署の候補を開閉", includeHidden: true }),
+    ).toBeHidden();
+  });
 });

@@ -81,7 +81,8 @@ test("操作メニュー・タブが上流controllerで操作できる", async (
 test("Turbo遷移とDOM再接続後もイベントが重複しない", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(() => (document.documentElement.dataset.visitMarker = "retained"));
-  await page.locator('a[href="/components/dialog"]').first().click();
+  // 閉じている全体のCommandMenuにも同じリンクがあるので、見えている一覧のリンクを押す。
+  await page.locator('a[href="/components/dialog"]:visible').first().click();
   await expect(page.getByRole("button", { name: "確認画面を開く", exact: true })).toBeVisible();
   await expect(page.locator("html")).toHaveAttribute("data-visit-marker", "retained");
   await page.evaluate(() => {

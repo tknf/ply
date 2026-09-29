@@ -122,20 +122,33 @@ test("画像の内在サイズにかかわらず指定比率を守り小さな�
   expect(await table.evaluate((element) => element.scrollWidth <= element.clientWidth + 1)).toBe(
     true,
   );
+  // 文字の列は14文字分（14em）を保つ。文字は画面幅に合わせて変わるので、その要素の文字の大きさから求める。
   const textCell = page.locator('[data-example="hono"] [data-cell="text"]').first();
-  expect(
-    await textCell.evaluate((element) => element.getBoundingClientRect().width),
-  ).toBeGreaterThanOrEqual(196);
+  const { width, fontSize } = await textCell.evaluate((element) => ({
+    width: element.getBoundingClientRect().width,
+    fontSize: Number.parseFloat(getComputedStyle(element).fontSize),
+  }));
+  expect(width).toBeGreaterThanOrEqual(fontSize * 14 - 0.5);
 });
 
-test("月カレンダーは狭幅でも日付の列を保ちキーボードでスクロールできる", async ({ page }) => {
+test("月は狭幅でも7日の列を収め、週は領域の中をキーボードでスクロールできる", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 800 });
   await page.goto("/components/calendar");
-  const viewport = page.locator('[data-example="hono"] .ply-calendar > .viewport').first();
-  await viewport.focus();
-  await expect(viewport).toBeFocused();
+  // 月は狭い幅では予定を点にして、7日の列を横にはみ出さずに収める。
+  const month = page
+    .locator('[data-example="hono"] .ply-calendar[data-view="month"] > .viewport')
+    .first();
+  expect(await month.evaluate((element) => element.scrollWidth <= element.clientWidth + 1)).toBe(
+    true,
+  );
+  // 週は時間割の列を保ち、収まらない分を領域の中でスクロールする。
+  const week = page
+    .locator('[data-example="hono"] .ply-calendar[data-view="week"] > .viewport')
+    .first();
+  await week.focus();
+  await expect(week).toBeFocused();
   await page.keyboard.press("ArrowRight", { delay: 100 });
-  await expect.poll(() => viewport.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+  await expect.poll(() => week.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
 });
 
 test("EditablePropertyは確定した時だけ書き終えた印を描き、未登録の色を値に合わせる", async ({
@@ -468,26 +481,29 @@ test("文章・数値・操作の文字寸法を親からの継承で変えな�
     await page.goto(`/components/${id}`);
     const element = page.locator(selector).first();
     const style = await element.evaluate((node) => ({
-      font: getComputedStyle(node).fontSize,
-      line: getComputedStyle(node).lineHeight,
+      font: Number.parseFloat(getComputedStyle(node).fontSize),
+      line: Number.parseFloat(getComputedStyle(node).lineHeight),
     }));
-    expect(style, selector).toEqual({ font: "14px", line: "20px" });
+    // FirefoxとWebKitは画面幅に合わせた文字の大きさ（clamp）を13.98pxのように丸めるので、0.05pxまでの差を許す。
+    expect(Math.abs(style.font - 14), selector).toBeLessThan(0.05);
+    expect(Math.abs(style.line - 20), selector).toBeLessThan(0.05);
   }
   await page.goto("/components/icon");
   const button = page.locator('[data-example="hono"] .ply-button').first();
   const dimensions = await button.evaluate((element) => {
     const style = getComputedStyle(element);
     return {
-      font: style.fontSize,
-      line: style.lineHeight,
+      // 上と同じく、clampの丸めによる0.05px未満の差は同じ大きさとして扱う。
+      font: Math.round(Number.parseFloat(style.fontSize) * 10) / 10,
+      line: Math.round(Number.parseFloat(style.lineHeight) * 10) / 10,
       block: Math.round(element.getBoundingClientRect().height),
       paddingStart: style.paddingBlockStart,
       paddingEnd: style.paddingBlockEnd,
     };
   });
   expect(dimensions).toEqual({
-    font: "14px",
-    line: "20px",
+    font: 14,
+    line: 20,
     block: 36,
     paddingStart: "0px",
     paddingEnd: "0px",

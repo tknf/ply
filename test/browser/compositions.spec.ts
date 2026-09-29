@@ -132,7 +132,8 @@ test("Switch・Popover・予定の月送りはJavaScript無効でも操作でき
   await page.goto("/apps/schedule");
   await page.getByRole("link", { name: "前月", exact: true }).click();
   await expect(page).toHaveURL(/month=8/);
-  await expect(page.getByText("2026年8月", { exact: true })).toBeVisible();
+  // 月の名前は見出しと表のcaptionの両方にあるので、見出しで確かめる。
+  await expect(page.getByRole("heading", { name: "2026年8月", exact: true })).toBeVisible();
   await context.close();
 });
 
