@@ -114,3 +114,43 @@ test("JavaScriptがなくても、popovertargetのボタンで開き閉じるボ
     await context.close();
   }
 });
+
+test("長い通知と操作が狭幅に収まる", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 800 });
+  await page.goto("/components/toast");
+  const sample = page.locator('[data-example="hono"]');
+  await sample.getByRole("button", { name: "結果表示を試す", exact: true }).click();
+  const toast = sample.locator(".ply-toast").first();
+  await expect(toast).toBeVisible();
+  // 閉じる操作は角からはみ出させるため、見出し・本文・操作の行がそれぞれ幅に収まるかを測る。
+  expect(
+    await toast.evaluate((element) =>
+      Array.from(element.querySelectorAll(":scope > *")).every(
+        (part) => part.scrollWidth <= part.clientWidth + 1,
+      ),
+    ),
+  ).toBe(true);
+  const closeBox = await toast.getByRole("button", { name: "閉じる", exact: true }).boundingBox();
+  if (!closeBox) throw new Error("閉じる操作がありません");
+  expect(closeBox.x + closeBox.width).toBeLessThanOrEqual(375);
+});
+
+test("Toastの閉じる操作は紙の右上の角からはみ出し、本文と操作行へ混ざらない", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 850 });
+  await page.goto("/components/toast");
+  await page.getByRole("button", { name: "結果表示を試す", exact: true }).click();
+  const toast = page.locator(".ply-toast").first();
+  // 下から差し出す動きの途中で二つを順に測ると位置がずれるため、動きの終わりを待つ。
+  await toast.evaluate((element) =>
+    Promise.all(element.getAnimations({ subtree: true }).map((animation) => animation.finished)),
+  );
+  const close = await toast.getByRole("button", { name: "閉じる", exact: true }).boundingBox();
+  const message = await toast.locator(".message").boundingBox();
+  const paper = await toast.boundingBox();
+  const actions = await toast.locator(".actions").boundingBox();
+  if (!close || !message || !paper || !actions) throw new Error("通知がありません");
+  expect(close.x).toBeGreaterThanOrEqual(message.x + message.width);
+  expect(close.y).toBeLessThan(paper.y);
+  expect(close.x + close.width).toBeGreaterThan(paper.x + paper.width);
+  expect(close.y + close.height).toBeLessThan(actions.y);
+});

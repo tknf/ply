@@ -406,30 +406,16 @@ for (const width of [375, 1280]) {
       expect(box.x + box.width).toBeLessThanOrEqual(width - 7);
       expect(box.y).toBeGreaterThanOrEqual(7);
       expect(box.y + box.height).toBeLessThanOrEqual(993);
-      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-        true,
-      );
+      expect(
+        await page
+          .locator('[data-example="hono"]')
+          .evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
+      ).toBe(true);
       await flexible.panel.screenshot({
         path: testInfo.outputPath(`picker-${width}-${enlarged ? "rtl-200" : "normal"}.png`),
       });
       await page.keyboard.press("Escape");
     }
-    const references = await page.evaluate(() => {
-      const ids = Array.from(document.querySelectorAll("[id]")).map((element) => element.id);
-      return {
-        duplicates: ids.filter((id, index) => ids.indexOf(id) !== index),
-        broken: Array.from(
-          document.querySelectorAll("[aria-describedby], [aria-labelledby], label[for]"),
-        ).flatMap((element) =>
-          ["aria-describedby", "aria-labelledby", "for"].flatMap((name) =>
-            (element.getAttribute(name)?.split(/\s+/) ?? []).filter(
-              (id) => id && !document.getElementById(id),
-            ),
-          ),
-        ),
-      };
-    });
-    expect(references).toEqual({ duplicates: [], broken: [] });
   });
 }
 

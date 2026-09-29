@@ -5,9 +5,7 @@ test.beforeEach(async ({ context, browserName }) => {
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
 });
 
-test("表示したコードを実際にコピーし、成功を知らせる", async ({ page, context, browserName }) => {
-  if (browserName === "chromium")
-    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+test("表示したコードを実際にコピーし、成功を知らせる", async ({ page, browserName }) => {
   await page.goto("/components/code-block");
   const example = page.locator('[data-example="hono"] .ply-code-block').first();
   const source = await example.locator("code").textContent();
@@ -62,6 +60,10 @@ for (const width of [375, 1280])
       await expect(toast).toBeVisible();
       await expect(button).toBeFocused();
       expect(await bounds()).toEqual(before);
+      // 下から差し出す動きの途中は画面の下端より下にあるので、動きの終わりを待ってから測る。
+      await toast.evaluate((element) =>
+        Promise.all(element.getAnimations().map((animation) => animation.finished)),
+      );
       expect(
         await toast.evaluate((element) => {
           const box = element.getBoundingClientRect();
@@ -136,7 +138,11 @@ test("コピーが拒否されたら失敗を伝え、文字の選択とスク�
   await expect(pre).toBeFocused();
   await page.keyboard.press("ArrowRight", { delay: 100 });
   await expect.poll(() => pre.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(
+    await page
+      .locator('[data-example="hono"]')
+      .evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
+  ).toBe(true);
 });
 
 test("JavaScriptがなくてもコードを読め、動かないコピー操作を出さない", async ({ browser }) => {
@@ -146,12 +152,6 @@ test("JavaScriptがなくてもコードを読め、動かないコピー操作�
   const examples = page.locator('[data-example="hono"]');
   await expect(examples.locator("code").first()).toContainText("<link");
   await expect(examples.getByRole("button")).toHaveCount(0);
-  const html = page
-    .getByRole("group", { name: "見本のコード", exact: true })
-    .locator("details")
-    .first();
-  await html.locator("summary").press("Enter");
-  await expect(html.locator("pre > code")).toContainText("ply-code-block");
   await context.close();
 });
 

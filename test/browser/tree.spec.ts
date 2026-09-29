@@ -2,9 +2,18 @@ import { expect, test } from "@playwright/test";
 
 const openVariants = async (page: import("@playwright/test").Page) => {
   await page.goto("/components/tree");
-  await page.getByText("リンクの項目・右から左に読む場合", { exact: true }).click();
-  // 開く動きの間は中身が見えず、WebKitはフォーカスを移さないので、見えるまで待つ。
-  await expect(page.getByRole("tree", { name: "リンクの資料", exact: true })).toBeVisible();
+  const summary = page.getByText("リンクの項目・右から左に読む場合", { exact: true });
+  await summary.click();
+  // WebKitは開いた直後の1フレームほど中身をcontent-visibility: hiddenのまま保ち、その間はfocus()が効かない。
+  // toBeVisibleはこの状態でも通るので、中身のcontent-visibilityが切り替わるまで待つ。
+  const disclosure = page.locator("details", { has: summary });
+  await expect
+    .poll(() =>
+      disclosure.evaluate(
+        (element) => getComputedStyle(element, "::details-content").contentVisibility,
+      ),
+    )
+    .toBe("visible");
 };
 
 test("Tabは一覧だけに止まり、中のリンクと開閉のボタンには止まらない", async ({ page }) => {
@@ -26,9 +35,17 @@ test("Enterでリンクの項目を選ぶとリンク先へ移る", async ({ pag
   const tree = page.getByRole("tree", { name: "リンクの資料", exact: true });
   await tree.focus();
   await page.keyboard.press("End");
+  // 移り先は利用するアプリが決めるので、画面は移さず、Enterで開くリンクを確かめる。
+  await page.evaluate(() =>
+    document.addEventListener("click", (event) => {
+      const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
+      if (!link) return;
+      event.preventDefault();
+      document.documentElement.dataset.followed = link.getAttribute("href") ?? "";
+    }),
+  );
   await page.keyboard.press("Enter");
-  // カタログはTurboでページを描き直すので、移った後の選択の状態は確かめず、リンク先へ移ったことだけを見る。
-  await expect(page).toHaveURL(/#linked-rules$/);
+  await expect(page.locator("html")).toHaveAttribute("data-followed", /#linked-rules$/);
 });
 
 test("右から左に書く時は←で開いて子へ進み、→で閉じる", async ({ page }) => {

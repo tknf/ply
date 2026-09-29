@@ -40,9 +40,11 @@ for (const width of [375, 1280])
           outside: false,
           overlap: false,
         });
-      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-        true,
-      );
+      expect(
+        await page
+          .locator('[data-example="hono"]')
+          .evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
+      ).toBe(true);
     }
   });
 
@@ -78,9 +80,13 @@ test("ContextBarの外部フォーム操作はresetと入力検証とGET送信�
   await expect(page).toHaveURL(/\/components\/context-bar$/);
   await expect(input).toBeFocused();
   await input.fill("暮らし");
-  await page.getByRole("button", { name: "検索する", exact: true }).click();
-  await expect(page).toHaveURL(/\/search\?q=/);
-  expect(new URL(page.url()).searchParams.get("q")).toBe("暮らし");
+  // 画面の移り先はアプリが決めるので、送る方法と値だけを確かめる。
+  expect(
+    await input.evaluate((element) => {
+      if (!(element instanceof HTMLInputElement) || !element.form) return null;
+      return { method: element.form.method, q: new FormData(element.form).get("q") };
+    }),
+  ).toEqual({ method: "get", q: "暮らし" });
 });
 
 test("NavigationとCommandMenuの行は通常時と選択時に同じ角丸を使う", async ({ page }) => {

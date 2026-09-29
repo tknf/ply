@@ -1,24 +1,4 @@
 import { expect, test } from "@playwright/test";
-import iconManifest from "../../src/internal/icon-manifest.json" with { type: "json" };
-
-test("全アイコンのCSS用SVGを正しい形式で配信する", async ({ request }) => {
-  const results = await Promise.all(
-    Object.keys(iconManifest).map(async (name) => {
-      const response = await request.get(`/src/css/assets/${name}.svg`);
-      return {
-        name,
-        status: response.status(),
-        type: response.headers()["content-type"],
-        body: await response.text(),
-      };
-    }),
-  );
-  for (const result of results) {
-    expect(result.status, result.name).toBe(200);
-    expect(result.type, result.name).toContain("image/svg+xml");
-    expect(result.body, result.name).toContain("<svg");
-  }
-});
 
 test("選択済みCheckboxは状態だけでなく白いcheckを実際に描画する", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });

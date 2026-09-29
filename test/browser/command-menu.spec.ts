@@ -32,8 +32,17 @@ test("検索中も主要な入口を保ち、候補の選択とフォーカス�
   await search.press("ArrowDown");
   await expect(search).toBeFocused();
   await expect(search).toHaveAttribute("aria-activedescendant", "command-example-entry-0-1");
+  // 移り先は利用するアプリが決めるので、画面は移さず、Enterで開くリンクを確かめる。
+  await page.evaluate(() =>
+    document.addEventListener("click", (event) => {
+      const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
+      if (!link) return;
+      event.preventDefault();
+      document.documentElement.dataset.followed = link.getAttribute("href") ?? "";
+    }),
+  );
   await search.press("Enter");
-  await expect(page).toHaveURL(/\/components\/table$/);
+  await expect(page.locator("html")).toHaveAttribute("data-followed", /\/components\/table$/);
 });
 
 test("操作の値を通知し、Esc・外側クリック・Tabで自然に閉じる", async ({ page }) => {
@@ -132,8 +141,17 @@ test("Tabで候補へ移った後も矢印・Home・End・Enterで操作でき�
   await expect(panel.getByRole("link", { name: /CommandMenu/ })).toBeFocused();
   await page.keyboard.press("Home");
   await page.keyboard.press("ArrowDown");
+  // 移り先は利用するアプリが決めるので、画面は移さず、Enterで開くリンクを確かめる。
+  await page.evaluate(() =>
+    document.addEventListener("click", (event) => {
+      const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
+      if (!link) return;
+      event.preventDefault();
+      document.documentElement.dataset.followed = link.getAttribute("href") ?? "";
+    }),
+  );
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/\/components\/table$/);
+  await expect(page.locator("html")).toHaveAttribute("data-followed", /\/components\/table$/);
 });
 
 test("ShiftとJの任意設定は入力や日本語変換を奪わない", async ({ page }) => {

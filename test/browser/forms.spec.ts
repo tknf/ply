@@ -31,7 +31,11 @@ test("説明付きの選択肢は文字200%でも印と重ならない", async (
   await page.evaluate(() => {
     document.documentElement.style.fontSize = "200%";
   });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(
+    await page
+      .locator('[data-example="hono"]')
+      .evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
+  ).toBe(true);
   const option = page.locator('[data-example="hono"] .ply-choice[data-kind="option"]').first();
   const box = await option.locator("input").boundingBox();
   const text = await option.locator("span").first().boundingBox();
@@ -42,34 +46,3 @@ test("説明付きの選択肢は文字200%でも印と重ならない", async (
     .locator('[data-example="hono"]')
     .screenshot({ path: testInfo.outputPath("field-375-text-200.png") });
 });
-
-test("狭幅でもアプリの画面の見出しを一文字だけ折り返さない", async ({ page }) => {
-  await page.setViewportSize({ width: 375, height: 1000 });
-  for (const path of ["/apps/files", "/apps/sales", "/apps/search"]) {
-    await page.goto(path);
-    const lines = await page
-      .locator("h1")
-      .evaluate(
-        (element) =>
-          element.getBoundingClientRect().height /
-          Number.parseFloat(getComputedStyle(element).lineHeight),
-      );
-    expect(lines, path).toBeLessThan(1.2);
-  }
-});
-
-for (const width of [375, 768, 1280]) {
-  test(`${width}pxでContextBarは項目の数で高さが変わらない`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 1000 });
-    const heights: number[] = [];
-    for (const path of ["/components/button", "/components/table", "/components/calendar"]) {
-      await page.goto(path);
-      const bounds = await page
-        .locator(".ply-app-shell .workspace > .ply-context-bar")
-        .boundingBox();
-      if (!bounds) throw new Error("ContextBarがありません");
-      heights.push(bounds.height);
-    }
-    expect(Math.max(...heights) - Math.min(...heights)).toBeLessThanOrEqual(1);
-  });
-}

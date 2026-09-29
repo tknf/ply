@@ -41,18 +41,6 @@ test("枠全体にフォーカスとエラーを反映して入力と操作を�
   await expect(page.getByRole("button", { name: "検索する", exact: true })).toBeDisabled();
 });
 
-test("入力に添えた操作で実際の検索結果へ進める", async ({ page }) => {
-  await page.goto("/components/input-group");
-  await page.getByRole("searchbox", { name: "記事を検索", exact: true }).fill("招待");
-  await page.getByRole("button", { name: "検索", exact: true }).click();
-  await expect(page).toHaveURL(/\/search\?q=/);
-  const articles = page.getByRole("list", { name: "記事の検索結果", exact: true });
-  await expect(articles.getByRole("listitem").first()).toBeVisible();
-  await expect(
-    articles.getByRole("link", { name: "メンバーを招待する", exact: true }),
-  ).toBeVisible();
-});
-
 for (const width of [375, 1280]) {
   test(`InputGroupが${width}pxと文字拡大で入力・単位・操作を収める`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width, height: 1000 });
@@ -81,9 +69,11 @@ for (const width of [375, 1280]) {
     await page.evaluate(() => {
       document.documentElement.style.fontSize = "200%";
     });
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-      true,
-    );
+    expect(
+      await page
+        .locator('[data-example="hono"]')
+        .evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
+    ).toBe(true);
     for (const input of await example.locator("input").all()) {
       const bounds = await input.boundingBox();
       if (!bounds) throw new Error("文字拡大後の入力が描画されていません");

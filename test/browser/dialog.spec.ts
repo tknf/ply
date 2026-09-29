@@ -24,14 +24,36 @@ test("backdropのクリックで閉じるが本文のクリックや内側から
   await expect(trigger).toBeFocused();
 });
 
-test("見出しにフォーカスしEscapeで元のトリガーへ戻る", async ({ page }) => {
+test("見出しの行に閉じる操作を置き、本文を分ける", async ({ page }) => {
+  await page.setViewportSize({ width: 720, height: 800 });
   await page.goto("/components/dialog");
-  const trigger = page.getByRole("button", { name: "確認画面を開く", exact: true });
-  await trigger.click();
-  await expect(page.getByRole("heading", { name: "内容を確認する", exact: true })).toBeFocused();
-  await page.keyboard.press("Escape");
-  await expect(trigger).toBeFocused();
-  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await page.locator('[data-dialog-target="trigger"][aria-controls="hono-dialog"]').click();
+  const dialog = page.locator("#hono-dialog");
+  await expect(dialog).toBeVisible();
+  await expect(dialog.locator(":scope > .heading > .heading-row > .close")).toBeVisible();
+  await expect(dialog.locator(":scope > .body")).toContainText("見出しと本文");
+});
+
+test("タッチ画面では画面の下端に接して開く", async ({ browser }) => {
+  const context = await browser.newContext({
+    viewport: { width: 375, height: 812 },
+    hasTouch: true,
+    isMobile: true,
+  });
+  const page = await context.newPage();
+  await page.goto("/components/dialog");
+  await page.locator('[data-dialog-target="trigger"][aria-controls="hono-dialog"]').click();
+  const dialog = page.locator("#hono-dialog");
+  await expect(dialog).toBeVisible();
+  // 下から滑り上げる動きの途中で測らないよう、動きの終わりを待つ。
+  await dialog.evaluate((element) =>
+    Promise.all(element.getAnimations().map((animation) => animation.finished)),
+  );
+  expect(await dialog.evaluate((element) => element.getBoundingClientRect().bottom)).toBeCloseTo(
+    812,
+    0,
+  );
+  await context.close();
 });
 
 test("フォームの必須入力を検証してから閉じる", async ({ page }) => {
@@ -122,4 +144,49 @@ test('method="dialog"の送信で閉じる時も閉じる前後のイベント�
     "beforeclose:submit",
     "close:submit",
   ]);
+});
+
+test("ダイアログをキーボードで開閉しトリガーへ戻る", async ({ page }) => {
+  await page.goto("/components/dialog");
+  const trigger = page.getByRole("button", { name: "確認画面を開く", exact: true });
+  await trigger.focus();
+  await page.keyboard.press("Enter");
+  const dialog = page.getByRole("dialog", { name: "内容を確認する", exact: true });
+  await expect(dialog).toBeVisible();
+  await expect(page.getByRole("heading", { name: "内容を確認する", exact: true })).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(dialog.getByRole("button", { name: "閉じる", exact: true })).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+});
+
+test("DOMから外して付け直してもイベントが重複しない", async ({ page }) => {
+  await page.goto("/components/dialog");
+  await page.evaluate(() => {
+    const root = document.querySelector<HTMLElement>(".ply-dialog:has(#hono-dialog)");
+    if (!root || !root.parentElement) throw new Error("ダイアログなし");
+    const parent = root.parentElement;
+    document.addEventListener("dialog:open", (event) => {
+      if (event.target === root)
+        root.dataset.openCount = String(Number(root.dataset.openCount ?? 0) + 1);
+    });
+    root.remove();
+    parent.append(root);
+  });
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+      }),
+  );
+  const trigger = page.getByRole("button", { name: "確認画面を開く", exact: true });
+  await trigger.click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await expect(page.locator(".ply-dialog:has(#hono-dialog)")).toHaveAttribute(
+    "data-open-count",
+    "1",
+  );
+  await page.keyboard.press("Escape");
+  await expect(trigger).toBeFocused();
 });

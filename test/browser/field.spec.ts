@@ -240,7 +240,11 @@ test("エラー・閲覧専用・disabledと長い補足が狭幅の文字拡大
     const help = document.querySelector("#hono-error-help > span");
     if (help) help.textContent = "入力内容を確認してください。".repeat(12);
   });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(
+    await page
+      .locator('[data-example="hono"]')
+      .evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
+  ).toBe(true);
   for (const name of ["名前", "現在の名前", "利用できない入力", "説明"]) {
     const input = page.getByRole("textbox", { name, exact: true });
     const bounds = await input.boundingBox();
@@ -327,6 +331,50 @@ test("PageUp・PageDownで変えた数も標準のinput・changeを一度ずつ�
   await number.press("PageDown");
   await expect(number).toHaveValue("21");
   expect(await recorded()).toEqual({ input: 2, change: 2, "number-field:change": 2 });
+});
+
+test("入力内の表示切替はhoverと文字拡大でも入力の枠内に収まる", async ({ page }) => {
+  for (const id of ["field", "date-picker"]) {
+    await page.goto("/components/" + id);
+    const toggle = page.locator('[data-example="hono"] .toggle').first();
+    await expect(toggle).toBeVisible();
+    for (const size of ["100%", "200%"]) {
+      await page.evaluate((value) => {
+        document.documentElement.style.fontSize = value;
+      }, size);
+      await toggle.hover();
+      const bounds = await toggle.evaluate((element) => {
+        const input = element.parentElement?.querySelector("input");
+        if (!input) throw new Error("入力がありません");
+        const control = input.getBoundingClientRect(),
+          button = element.getBoundingClientRect();
+        return {
+          insetTop: button.top - control.top,
+          insetBottom: control.bottom - button.bottom,
+          insetEnd: control.right - button.right,
+        };
+      });
+      expect(bounds.insetTop).toBeGreaterThanOrEqual(0.75);
+      expect(bounds.insetBottom).toBeGreaterThanOrEqual(0.75);
+      expect(bounds.insetEnd).toBeGreaterThanOrEqual(0.75);
+    }
+  }
+});
+
+test("タッチ画面では入力の文字を16px以上にし、入力時の拡大を起こさない", async ({ browser }) => {
+  const context = await browser.newContext({
+    viewport: { width: 375, height: 812 },
+    hasTouch: true,
+    isMobile: true,
+  });
+  const page = await context.newPage();
+  await page.goto("/components/field");
+  const inputSize = await page
+    .locator(".ply-input")
+    .first()
+    .evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize));
+  expect(inputSize).toBeGreaterThanOrEqual(16);
+  await context.close();
 });
 
 test.describe("JavaScriptなし（文字数・候補選択）", () => {

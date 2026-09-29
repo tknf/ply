@@ -66,14 +66,23 @@ vp run check:package  # 配布物の型で見本をコンパイル
 
 - `check:css`（`check`に含む）は、論理プロパティ、ネスト、レイヤー、禁止記法、未定義のトークン、部品のクラス名、操作コンポーネントの文字指定を検査します。
 - `check:package`はカタログの見本を`ply/hono`の配布型でもコンパイルし、ソースと公開型の食い違いを検出します。
-- 表示と操作のテストはPlaywrightで、Chromium・Firefox・WebKitを使います。
+- 表示と操作のテストはPlaywrightで、Chromium・Firefox・WebKitを使います。合否の基準はChromiumです。FirefoxとWebKitは補助の確認で、そこだけの失敗は報告したうえで、直すかどうかを別に決めます。
+- ブラウザテストは部品単位にします。カタログのサイトや利用例のアプリ（`/apps/*`）の流れ、画面の移動は配布物ではないのでテストしません。部品の責任は、その部品のページで確かめます。
 
 ```sh
 vp run browsers:install
-vp run test:visual
+vp exec playwright test test/browser/<部品>.spec.ts --project=chromium  # 変えた部品だけ
+vp exec playwright test --last-failed                                    # 失敗したテストだけ
+vp run test:visual                                                       # 3ブラウザ（@sweepを除く）
+vp run test:visual:full                                                  # 3ブラウザの全件
 ```
 
-`test:visual`は専用の5178番のサーバーを起動・終了し、スクリーンショット・失敗時のtrace・結果を`test-results`に出力します。
+- 普段は変えた部品のspecを1ブラウザで流し、3ブラウザの`test:visual`と全件の`test:visual:full`は区切りで流します。
+- `@sweep`は、全部品を回すテストと幅を細かく刻むテストに付けるタグです。時間がかかるので`test:visual`では外します。
+- `vp run test:visual -- <引数>`では引数が渡らないので、対象を絞る時は`vp exec playwright test`を使います。
+- 並列は2までです。WebKitは長く走らせるとページの移動が止まることがあるため（[microsoft/playwright#42385](https://github.com/microsoft/playwright/issues/42385)）、失敗したテストを一度だけやり直し、やり直して通ったテストはflakyとして報告します。traceはやり直した時だけ記録します。
+
+どの実行も専用の5178番のサーバーを起動・終了し、スクリーンショット・trace・結果を`test-results`に出力します。
 
 ### 確認の範囲
 
