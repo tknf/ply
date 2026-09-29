@@ -3,7 +3,7 @@ import devServer, { defaultOptions } from "@hono/vite-dev-server";
 import { controlTextPlugin } from "./scripts/control-text-plugin";
 
 export default defineConfig(({ mode }) => ({
-  staged: { "*": "vp check" },
+  staged: { "*": "vp check --no-error-on-unmatched-pattern" },
   plugins: [
     controlTextPlugin(),
     ...(mode === "client"
