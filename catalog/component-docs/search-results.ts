@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "search-results",
   name: "SearchResults",
-  description: "題名・抜粋・補足を並べ、一致した語を強調する検索の結果",
+  description: "題名・抜粋・補足を並べ、一致した語を強調した検索結果です。",
   api: ["SearchResults"],
   guidance: [
     "検索の結果を、題名・本文の抜粋・置き場所や日付の補足で並べ、一致した語を見つけやすくする時に使います。",

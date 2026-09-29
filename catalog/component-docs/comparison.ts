@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "comparison",
   name: "Comparison",
-  description: "変更前後を対応させて確認します。",
+  description: "変更前と変更後を並べて確認します。",
   api: ["Comparison"],
   guidance: [
     "設定や文面を変える前に、現在と変更後を並べて確かめさせる時に使います。",

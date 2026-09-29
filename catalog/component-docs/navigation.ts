@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "navigation",
   name: "Navigation",
-  description: "同じ領域のページを切り替える",
+  description: "同じ領域のページを切り替えます。",
   api: ["Navigation"],
   guidance: [
     "設定の項目や記事の分類など、同じ領域の中のページを縦に並べて切り替える時に使います。作業面の中に置き、画面の端に固定するサイドバーにはしません。",

@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "setting-list",
   name: "SettingList",
-  description: "名前と行の終わりの操作を点線でつなぐ設定の行",
+  description: "設定の名前と、行の末尾の操作を点線でつないだ一覧です。",
   api: ["SettingList"],
   guidance: [
     "公開範囲・通知・人の役割のように、名前ごとに一つの操作が付く設定を並べる時に使います。",

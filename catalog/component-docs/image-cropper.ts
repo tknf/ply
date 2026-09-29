@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "image-cropper",
   name: "ImageCropper",
-  description: "画像の切り抜き範囲を、画像面と数値の両方から調整します。",
+  description: "画像の切り抜く範囲を、画像の上の操作と数値の両方で調整します。",
   api: ["ImageCropper"],
   guidance: [
     "表紙やアイコンなど、画像のどこを使うかを利用者に決めてもらう時に使います。",

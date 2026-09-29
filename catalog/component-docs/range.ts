@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "range",
   name: "Range",
-  description: "連続する数値を調整する",
+  description: "スライダーで、数値や範囲を調整します。",
   api: ["Range"],
   guidance: [
     "表示倍率や音量のように、正確な数よりも位置の感覚で決める数値に使います。`value` に[下限, 上限]を渡すと、予算のような範囲を選べます。",

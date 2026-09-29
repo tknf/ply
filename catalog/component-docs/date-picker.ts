@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "date-picker",
   name: "DatePicker",
-  description: "単日・期間をひとつの欄で選ぶ",
+  description: "日付や期間を、一つの入力欄で選びます。",
   api: ["DatePicker"],
   guidance: [
     "日付を一つ、または開始日と終了日の期間を、一つの欄とカレンダーで選ぶ時に使います。",

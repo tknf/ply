@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "toast",
   name: "Toast",
-  description: "操作結果を閉じるまで読める形で示す",
+  description: "操作の結果を、閉じるまで読める通知として表示します。",
   api: ["Toast", "ToastStack"],
   guidance: [
     "保存・送信・コピーなど、今した操作の結果を、作業を止めずに短く知らせる時に使います。",

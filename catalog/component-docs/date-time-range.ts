@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "date-time-range",
   name: "DateTimeRange",
-  description: "開始と終了の日時を矢印でつないだ枠",
+  description: "開始と終了の日時を並べて入力します。",
   api: ["DateTimeRange"],
   guidance: [
     "予定や予約のように、開始と終了の日付と時刻をまとめて決める時に使います。",

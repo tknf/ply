@@ -4,7 +4,7 @@ export default {
   id: "surface",
   name: "Surface",
   description:
-    "中央の作業面。仕事の中身を一枚の白い面にまとめます。AppShellの作業面と同じ見た目で、AppShellを使わない画面で使います。",
+    "中央の作業面です。作業の内容を1枚の白い面にまとめます。AppShellの作業面と同じ見た目で、AppShellを使わない画面で使います。",
   api: ["Surface"],
   guidance: [
     "`AppShell`を使わない画面や`Wing`の中央で、仕事の中身を一枚の白い作業面にまとめる時に使います。見た目は`AppShell`の作業面と同じです。",

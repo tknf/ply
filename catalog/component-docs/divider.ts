@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "divider",
   name: "Divider",
-  description: "意味のある区切りと見出しを置く",
+  description: "内容の区切りに線を引き、見出しや操作を置きます。",
   api: ["Divider"],
   guidance: [
     "公開済みと下書きの境など、内容の意味が切り替わる所に、区切りと短い名前を置く時に使います。",

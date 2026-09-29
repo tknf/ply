@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "steps",
   name: "Steps",
-  description: "手順と現在の段階を示す",
+  description: "手順と現在の段階を示します。",
   api: ["Steps"],
   guidance: [
     "申し込みや公開の準備など、いくつかの段階に分かれた作業で、全体の手順と今の段階を示す時に使います。",

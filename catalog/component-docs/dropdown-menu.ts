@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "dropdown-menu",
   name: "DropdownMenu",
-  description: "現在の対象に関する補助操作をまとめます。",
+  description: "現在の対象に関する補助の操作をまとめます。",
   api: ["DropdownMenu"],
   guidance: [
     "今見ている対象への補助の操作（複製・書き出し・削除など）を、一つの操作の中にしまう時に使います。",

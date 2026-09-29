@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "field",
   name: "Field",
-  description: "ラベル・入力・補足・エラーを関連付けます。",
+  description: "ラベル・入力欄・補足・エラーを関連付けます。",
   api: [
     "Field",
     "Input",

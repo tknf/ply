@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "tag",
   name: "Tag",
-  description: "分類や選択した条件を短く示す",
+  description: "分類や選択した条件を短く示します。",
   api: ["Tag", "TagGroup"],
   guidance: [
     "記事の分類や、選んだ絞り込みの条件を短く示す時に使います。",

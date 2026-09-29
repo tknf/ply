@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "popover",
   name: "Popover",
-  description: "補足や小さな操作を必要な時に開く",
+  description: "補足の説明や小さな操作を、必要な時に開いて表示します。",
   api: ["Popover"],
   guidance: [
     "用語の補足、関連するリンク、短い入力のように、必要な時だけ開いて見る内容に使います。背後の画面は操作できるままです。",

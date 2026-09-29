@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "switch",
   name: "Switch",
-  description: "二択の設定を切り替える",
+  description: "オン・オフの設定を切り替えます。",
   api: ["Switch"],
   guidance: [
     "通知を受け取る・完了した仕事を表示する、のようなオン・オフの設定に使います。",

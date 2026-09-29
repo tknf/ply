@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "grid",
   name: "Grid",
-  description: "行と列を保ったまま、二方向にセルを読む作業面です。",
+  description: "行と列の見出しを見ながら、縦横に並んだセルを確認・選択する表です。",
   api: ["Grid"],
   guidance: [
     "日と時間の空き枠のように、行と列の交わりで意味が決まる表を、矢印キーでセルごとに読ませる時に使います。",

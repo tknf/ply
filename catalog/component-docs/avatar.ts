@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "avatar",
   name: "Avatar",
-  description: "人物やチームを名前と一緒に示す",
+  description: "人物やチームを、名前と一緒に示します。",
   api: ["Avatar", "AvatarGroup"],
   guidance: [
     "担当者や参加者など、人やチームを名前と一緒に示す時に使います。",

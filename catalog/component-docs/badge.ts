@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "badge",
   name: "Badge",
-  description: "短い状態を、文言と色の役割で示します。",
+  description: "短い状態を、文言と役割の色で示します。",
   api: ["Badge"],
   guidance: [
     "公開中・確認待ち・送信失敗など、対象の今の状態を短い言葉で示す時に使います。",

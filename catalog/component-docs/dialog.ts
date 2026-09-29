@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "dialog",
   name: "Dialog",
-  description: "文脈を保ちながら、影響や内容を確認します。",
+  description: "今の画面を離れずに、操作の影響や内容を確認します。",
   api: ["Dialog"],
   guidance: [
     "削除や公開の前の確認、短いフォームの入力のように、答えるまで背後の画面を操作させない時に使います。",

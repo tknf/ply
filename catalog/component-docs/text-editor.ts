@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "text-editor",
   name: "TextEditor",
-  description: "書式ツールを並べた入力エリア",
+  description: "書式ツールを並べた入力エリアです。",
   api: ["TextEditor"],
   guidance: [
     "返信・日記・コメントなど、太字や箇条書きの付いた文の入力エリアを置く時に使います。",

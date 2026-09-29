@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "dial",
   name: "Dial",
-  description: "周りの目盛りから一つを選ぶ、金属のつまみ",
+  description: "つまみの周りに並べた選択肢から、一つを選びます。",
   api: ["Dial"],
   guidance: [
     "自動で閉じるまでの日数や通知のまとめの間隔のように、3〜8個の決まった値から一つを選ぶ設定を、一目で分かる形で見せる時に使います。",

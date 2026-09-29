@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "statistic",
   name: "Statistic",
-  description: "集計値と単位をひとまとまりにする",
+  description: "集計値と単位をまとめて表示します。",
   api: ["Statistic"],
   guidance: [
     "売上や件数などの集計値を、何の値か・単位・集計の条件と一緒に大きく見せる時に使います。",

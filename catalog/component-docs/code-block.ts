@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "code-block",
   name: "CodeBlock",
-  description: "設定や短いコードを改行を保って読む",
+  description: "設定や短いコードを、改行を保って表示します。",
   api: ["CodeBlock"],
   guidance: [
     "設定・コマンド・短いコードを、改行と字下げを保って読ませる時に使います。",

@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "board",
   name: "Board",
-  description: "仕事を状態ごとの列で見る",
+  description: "タスクを状態ごとの列に分けて表示します。",
   api: ["Board"],
   guidance: [
     "仕事や問い合わせを「これから」「作業中」「完了」のような状態の列に分けて見渡し、列の間で移動する時に使います。",

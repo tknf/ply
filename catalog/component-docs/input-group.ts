@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "input-group",
   name: "InputGroup",
-  description: "単位や接頭辞を入力と並べる",
+  description: "入力欄の前後に、単位や接頭辞を並べます。",
   api: ["InputGroup"],
   guidance: [
     "「¥」「人」「https://」のように、値の前後に決まった文字を添えて入力させる時に使います。",

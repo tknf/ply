@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "danger-zone",
   name: "DangerZone",
-  description: "削除や公開の取り消しなど、影響のある操作を説明と一緒にまとめます。",
+  description: "削除や公開の取り消しなど、影響の大きい操作を説明と一緒にまとめます。",
   api: ["DangerZone"],
   guidance: [
     "設定画面の末尾などに、削除・公開の停止・所有者の変更のような影響の大きい操作を、通常の保存と分けて置く時に使います。",

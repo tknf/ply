@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "suggestion",
   name: "Suggestion",
-  description: "自由入力に候補を添える",
+  description: "自由に入力できる欄に、候補を表示します。",
   api: ["Suggestion"],
   guidance: [
     "記事の分類のように、よく使う値を候補で示しつつ、候補に無い値もそのまま入力させる時に使います。",

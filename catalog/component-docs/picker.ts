@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "picker",
   name: "Picker",
-  description: "検索して候補から値を選ぶ",
+  description: "検索して、候補から値を選びます。",
   api: ["Picker"],
   guidance: [
     "担当者や確認する人のように、候補が多く、名前で探して選ぶ時に使います。`multiple` で複数を選べます。",

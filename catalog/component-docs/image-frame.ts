@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "image-frame",
   name: "ImageFrame",
-  description: "比率を保って画像を比較します。",
+  description: "縦横比を保って画像を表示します。",
   api: ["ImageFrame"],
   guidance: [
     "ファイルの縮小や表紙など、比率をそろえて画像を並べる時に使います。",

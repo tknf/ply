@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "prompt",
   name: "Prompt",
-  description: "問いを層の見出しに置き、答えの行をカードに並べる問いかけ",
+  description: "質問を層の見出しに置き、回答の選択肢をカードに並べます。",
   api: ["Prompt"],
   guidance: [
     "すぐ下の対象について「どれに近いか」「最初に何をするか」など、作業の流れの中で一つの答えを求める時に使います。",

@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "file-input",
   name: "FileInput",
-  description: "ファイルを選択し、添付する内容を確認する",
+  description: "ファイルを選択し、添付する内容を確認します。",
   api: ["FileInput"],
   guidance: [
     "フォームにファイルを添えて送る時に使います。",

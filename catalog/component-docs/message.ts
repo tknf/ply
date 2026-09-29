@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "message",
   name: "Message",
-  description: "人・時刻・本文を同じ読み順で伝える。",
+  description: "投稿者・時刻・本文を、決まった順序で表示します。",
   api: ["Message"],
   guidance: [
     "コメント・チャット・メールのスレッドのように、誰がいつ何を書いたかを一件ずつ見せる時に使います。",

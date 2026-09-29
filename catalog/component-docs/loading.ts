@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "loading",
   name: "Loading",
-  description: "待っている処理を言葉で示す",
+  description: "読み込み中の処理を、文言とインジケーターで示します。",
   api: ["Loading"],
   guidance: [
     "次の記事やコメントの取得など、短い待ちを何を待っているかの言葉と一緒に示す時に使います。",

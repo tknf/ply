@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "progress",
   name: "Progress",
-  description: "確定または不確定の進行状況です。",
+  description: "処理の進み具合を示します。終わりが分からない処理にも使えます。",
   api: ["Progress"],
   guidance: [
     "送信や書き出しなど、時間のかかる処理がどこまで進んだかをバーで示す時に使います。",

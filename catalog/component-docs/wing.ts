@@ -3,7 +3,7 @@ import type { ComponentDoc } from "../reference";
 export default {
   id: "wing",
   name: "Wing",
-  description: "中央の作業面の後ろから、左右に開閉できる補助パネルを差し込む。",
+  description: "中央の作業面の左右に、開閉できる補助パネルを置きます。",
   api: ["Wing"],
   guidance: [
     "はじめの操作や最近の動きなど、中央の作業面に付属する補助の内容を、作業面の左右に開閉できる形で添える時に使います。",
