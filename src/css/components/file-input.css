@@ -1,15 +1,23 @@
 @layer components {
+  /*
+    ファイルを受け入れる場所。「ここに置ける」目印の破線の枠に、青から紫で塗った丸いアイコン・ドロップの案内・選ぶ操作を
+    一行に並べる。選んだファイルはFileItemの形で枠の中に並べ、解除の操作を添える。
+    ドロップを待つ間は枠を実線の青にして淡い青の面を敷く。標準の入力は隠し、フォーカスの輪は選ぶ操作に出す。
+  */
   .ply-file-input {
+    container: ply-file-input / inline-size;
     position: relative;
     display: grid;
-    gap: var(--ply-space-2);
-    padding-block: var(--ply-space-3);
-    padding-inline: var(--ply-space-4);
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--ply-space-2) var(--ply-space-3);
     min-inline-size: 0;
-    /* 受け入れ先は「ここに置ける」目印の細い破線で囲む。 */
-    border: var(--ply-stroke-width) dashed var(--ply-perforation);
+    padding-block: var(--ply-space-3);
+    padding-inline: var(--ply-space-3);
+    border: var(--ply-frame-width) dashed
+      color-mix(in srgb, var(--ply-link) 30%, var(--ply-surface));
     border-radius: var(--ply-radius-field);
-    background: color-mix(in srgb, var(--ply-background) 50%, var(--ply-surface));
+    background: color-mix(in srgb, var(--ply-link) 3%, var(--ply-surface));
     font-size: var(--ply-label);
     line-height: calc(10 / 7);
     transition:
@@ -17,13 +25,13 @@
       border-color var(--ply-duration) ease;
 
     &[data-state="dragover"] {
+      border-style: solid;
       border-color: var(--ply-link);
-      background: var(--ply-info-soft);
-      outline: 0.125rem solid var(--ply-link);
-      outline-offset: 0.125rem;
+      background: var(--ply-cover);
     }
     &:has(> .ply-input[data-invalid="true"]) {
-      border-color: var(--ply-danger);
+      border-color: color-mix(in srgb, var(--ply-danger) 60%, var(--ply-surface));
+      background: color-mix(in srgb, var(--ply-danger) 3%, var(--ply-surface));
     }
     &:has(> .ply-input:disabled) {
       border-color: var(--ply-border);
@@ -32,9 +40,38 @@
       outline: none;
     }
     &:has(> .ply-input:disabled) > .hint {
-      display: none;
+      visibility: hidden;
     }
-    /* 選択した名前は折り返せる一覧へ出し、標準入力との二重表示を避ける。 */
+    /* アイコン。EmptyStateのアイコンと同じ丸を、DropdownMenuと同じ青から紫で塗る。 */
+    & > .symbol {
+      display: grid;
+      grid-column: 1;
+      place-items: center;
+      inline-size: 2.25rem;
+      block-size: 2.25rem;
+      border-radius: 50%;
+      background: var(--ply-fill-menu);
+      color: var(--ply-surface);
+      font-size: 1.125rem;
+    }
+    &:has(> .ply-input[data-invalid="true"]) > .symbol {
+      background: var(--ply-fill-danger);
+    }
+    &:has(> .ply-input:disabled) > .symbol {
+      background: var(--ply-border);
+      color: var(--ply-muted);
+    }
+    & > .hint {
+      grid-column: 2;
+      min-inline-size: 0;
+      margin: 0;
+      color: var(--ply-text);
+      font-weight: 600;
+      overflow-wrap: anywhere;
+      /* 日本語は文節の切れ目で折り返し、行末に一、二文字だけを残さない。 */
+      word-break: auto-phrase;
+    }
+    /* 選んだ名前は折り返せる一覧へ出し、標準入力との二重表示を避ける。 */
     &[data-enhanced="true"] > .ply-input {
       color: transparent;
     }
@@ -43,18 +80,25 @@
       入力はフォーカスとキーボード操作のため残し、フォーカスの輪はラベルに出す。
     */
     & > .choose {
-      justify-self: start;
+      grid-column: 3;
+      justify-self: end;
       cursor: pointer;
+    }
+    /* 案内が隠れている時（JavaScriptの読み込み前・タッチの画面）は、選ぶ操作をアイコンの隣へ寄せる。 */
+    /* アイコンの隣に置く時は、文字の操作の左右の余白を打ち消し、文字の書き始めを案内と同じ位置にする。 */
+    & > .hint[hidden] + .choose {
+      grid-column: 2 / -1;
+      justify-self: start;
+      margin-inline-start: calc(-4em / 7);
     }
     &:has(> .ply-input:focus-visible) > .choose {
       outline: 0.125rem solid var(--ply-link);
       outline-offset: 0.125rem;
     }
+    /* 選ぶ操作は枠のない青い文字（Buttonのlink）。使えない時は淡い文字にし、斜線は枠の面に任せる。 */
     &:has(> .ply-input:disabled) > .choose {
-      border-color: var(--ply-border);
-      background: var(--ply-hatch), var(--ply-surface);
+      background: transparent;
       color: var(--ply-muted);
-      box-shadow: none;
       cursor: not-allowed;
     }
     & > .ply-input[type="file"] {
@@ -78,7 +122,7 @@
         border: var(--ply-stroke-width) solid var(--ply-border);
         border-radius: var(--ply-radius-pill);
         background: var(--ply-surface) var(--ply-fill-control);
-        box-shadow: var(--ply-shadow-control);
+        box-shadow: none;
         color: var(--ply-text);
         font: inherit;
         line-height: calc(10 / 7);
@@ -100,33 +144,29 @@
       }
     }
   }
-  .ply-file-input > .hint {
-    color: var(--ply-muted);
-    font-size: var(--ply-small);
-  }
   .ply-file-input > .files {
+    grid-column: 1 / -1;
     min-inline-size: 0;
-    padding: 0;
+    margin: 0;
+    padding-block: var(--ply-space-1) 0;
+    padding-inline: 0;
+    border-block-start: var(--ply-stroke-width) solid
+      color-mix(in srgb, var(--ply-link) 15%, var(--ply-surface));
     list-style: none;
-
     & > li {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: start;
-      gap: var(--ply-space-3);
-      padding-block: var(--ply-space-2);
+      min-inline-size: 0;
+    }
+    & > li + li {
       border-block-start: var(--ply-stroke-width) solid var(--ply-border);
     }
-    & > li > span {
-      overflow-wrap: anywhere;
-    }
-    & > li > small {
-      color: var(--ply-muted);
-      font-size: inherit;
-      white-space: nowrap;
-    }
+  }
+  .ply-file-input > .clear {
+    grid-column: 1 / -1;
+    justify-self: start;
   }
   .ply-file-input > .status {
+    grid-column: 1 / -1;
+    margin: 0;
     color: var(--ply-danger);
 
     &:not([data-invalid="true"]) {
@@ -138,6 +178,21 @@
       white-space: nowrap;
     }
   }
+  /* 狭い枠では、案内をアイコンの隣に広く置き、選ぶ操作をその下の行へ回す（案内を出さないタッチの画面を除く）。 */
+  @media not (pointer: coarse) {
+    @container ply-file-input (inline-size < 24rem) {
+      .ply-file-input > .hint {
+        grid-column: 2 / -1;
+      }
+      .ply-file-input > .hint:not([hidden]) + .choose {
+        grid-column: 2 / -1;
+        grid-row: 2;
+        justify-self: start;
+        margin-inline-start: calc(-4em / 7);
+      }
+    }
+  }
+  /* タッチの画面ではドロップの案内を出さず、選ぶ操作をアイコンの隣の一行目に置く。 */
   @media (pointer: coarse) {
     .ply-file-input > .ply-input[type="file"]::file-selector-button,
     .ply-file-input > .ply-button {
@@ -145,6 +200,21 @@
     }
     .ply-file-input > .hint {
       display: none;
+    }
+    .ply-file-input > .hint + .choose {
+      grid-column: 2 / -1;
+      grid-row: 1;
+      justify-self: start;
+      margin-inline-start: calc(-4em / 7);
+    }
+  }
+  /* さらに狭い枠（大きな文字の狭い画面）では、アイコン・案内・選ぶ操作を縦に積む。 */
+  @container ply-file-input (inline-size < 16rem) {
+    .ply-file-input > :is(.symbol, .hint, .choose),
+    .ply-file-input > .hint + .choose,
+    .ply-file-input > .hint[hidden] + .choose {
+      grid-column: 1 / -1;
+      grid-row: auto;
     }
   }
   @media (forced-colors: active) {
@@ -166,6 +236,10 @@
   @media (scripting: none) {
     .ply-file-input > .choose {
       display: none;
+    }
+    .ply-file-input > .ply-input[type="file"] {
+      grid-column: 2 / -1;
+      grid-row: 1;
     }
   }
 }

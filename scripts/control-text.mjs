@@ -1,6 +1,6 @@
 import ts from "typescript";
 
-// 字形の見た目の保証ではなく、繰り返した実装上の退行を提出前に止める。
+// 字形の見た目の保証ではなく、既知の実装上の退行を提出前に止める。
 const buttonFile = "src/css/components/button.css";
 const requiredButton = new Map([
   ["font-family", "var(--ply-control-font-family)"],
@@ -55,7 +55,7 @@ const context = (rule) => {
 // カレンダーとメニューの行構造を、宣言単位で区別する。
 // ファイル全体を除外しない。メニュー項目への再導入は許可しない。
 const reviewedOverrides = new Map([
-  // ユーザー指定: 上から積み、一行時の中央は対称な上下余白で作る。
+  // 上から積み、一行時の中央は対称な上下余白で作る。
   [
     "src/css/components/dropdown-menu.css|.ply-menu > li > .item.ply-button",
     new Map([["padding-block", "calc((var(--ply-menu-row-size) - 10em / 7 - 0.125rem) / 2)"]]),
@@ -129,7 +129,7 @@ export const controlTextErrors = (root, path) => {
       )
         report(rule, "Badgeの文字は共通の操作用フォントを使う");
       if (!declarations.some((node) => node.prop === "align-items" && node.value === "start"))
-        report(rule, "Badgeの印は先頭行に揃え、文字のベースラインへ下げない");
+        report(rule, "Badgeのアイコンは先頭行に揃え、文字のベースラインへ下げない");
     });
   }
   root.walkRules((rule) => {
@@ -199,14 +199,42 @@ export const controlMarkupErrors = (source, path) => {
       const attribute = (name) =>
         attributes.find((entry) => ts.isJsxAttribute(entry) && entry.name.getText(file) === name);
       const classValue = attribute("class")?.initializer;
+      // class="…"の文字列と、class={classes("…", 追加のclass)}の文字列の引数を読む。
+      const call =
+        classValue &&
+        ts.isJsxExpression(classValue) &&
+        classValue.expression &&
+        ts.isCallExpression(classValue.expression) &&
+        classValue.expression.expression.getText(file) === "classes"
+          ? classValue.expression
+          : undefined;
       const classes =
-        classValue && ts.isStringLiteral(classValue) ? classValue.text.split(/\s+/) : [];
+        classValue && ts.isStringLiteral(classValue)
+          ? classValue.text.split(/\s+/)
+          : (call?.arguments ?? [])
+              .filter((argument) => ts.isStringLiteral(argument))
+              .flatMap((argument) => argument.text.split(/\s+/));
       const role = attribute("role")?.initializer;
       const tab =
         path === "src/hono/tabs.tsx" && role && ts.isStringLiteral(role) && role.text === "tab";
+      // ActionTileはアイコンと名前を縦に積む専用の操作で、文字の指定はaction-tile.cssが持つ。
+      const tile = path === "src/hono/action-tile.tsx" && classes.includes("ply-action-tile");
+      // Promptの選択肢は要点と説明の複数行の文を持つ大きなカードで、文字の指定はprompt.cssが持つ。
+      const promptChoice = path === "src/hono/prompt.tsx" && classes.includes("choice");
+      // Calendarの詳細を持つ予定のボタンは、リンクの予定と同じ見た目の小さな操作で、文字の指定はcalendar.cssが持つ。
+      const calendarEvent = path === "src/hono/calendar.tsx" && classes.includes("event");
+      // EmojiPickerのセルは絵文字一字だけを大きく置く専用の操作で、文字の指定はemoji-picker.cssが持つ。
+      const emoji = path === "src/hono/emoji-picker.tsx" && classes.includes("emoji");
+      // Reactionsの各リアクションは絵文字と数を並べた小さな切り替えで、文字の指定はreactions.cssが持つ。
+      const reaction = path === "src/hono/reactions.tsx" && classes.includes("reaction");
       if (
         path !== "src/hono/button.tsx" &&
         !tab &&
+        !tile &&
+        !promptChoice &&
+        !emoji &&
+        !calendarEvent &&
+        !reaction &&
         !classes.includes("ply-button") &&
         !(
           classes.includes("toggle") &&

@@ -2,15 +2,16 @@
   .ply-file-item {
     container: ply-file-item / inline-size;
     display: grid;
-    grid-template-columns: 2rem minmax(0, 1fr);
+    /* アイコンの背景とサムネイルは同じ40pxの正方形の列に置き、混ぜても名前の書き始めをそろえる。 */
+    grid-template-columns: 2.5rem minmax(0, 1fr);
     align-items: center;
-    gap: var(--ply-space-2);
+    gap: var(--ply-space-3);
     min-inline-size: 0;
     padding-block: var(--ply-space-2);
     color: var(--ply-text);
     font-size: var(--ply-label);
     line-height: var(--ply-label-leading);
-    /* ファイルの印は枠で囲まず、淡く塗った札に置く。HEYのファイル一覧の小さな見本の代わり。 */
+    /* ファイルのアイコンは枠で囲まず、淡く塗った背景に置く。 */
     & > .icon {
       display: grid;
       place-items: center;
@@ -20,7 +21,28 @@
       background: var(--ply-info-soft);
       color: var(--ply-link);
     }
-    /* 送信待ちは印を控えめな色にし、状態は説明の文言で伝える。 */
+    /*
+      サムネイルは角丸を付けず淡い縁だけで囲み、アイコンと同じ高さの正方形に切り抜く。
+      送信待ちはサムネイルを薄くする。
+    */
+    & > .preview {
+      grid-column: 1;
+      inline-size: 2.5rem;
+      block-size: 2.5rem;
+      overflow: hidden;
+      border: var(--ply-stroke-width) solid color-mix(in srgb, var(--ply-ink) 15%, transparent);
+      background: var(--ply-background);
+      & > :is(img, svg:not(.ply-icon)) {
+        display: block;
+        inline-size: 100%;
+        block-size: 100%;
+        object-fit: cover;
+      }
+    }
+    &[data-state="pending"] > .preview {
+      opacity: 0.6;
+    }
+    /* 送信待ちはアイコンを控えめな色にし、状態は説明の文言で伝える。 */
     &[data-state="pending"] > .icon {
       background: var(--ply-background);
       color: var(--ply-muted);
@@ -65,7 +87,7 @@
       min-inline-size: 0;
     }
     @container ply-file-item (inline-size >= 26rem) {
-      grid-template-columns: 2rem minmax(0, 1fr) auto;
+      grid-template-columns: 2.5rem minmax(0, 1fr) auto;
       & > .actions {
         grid-column: 3;
         grid-row: 1;

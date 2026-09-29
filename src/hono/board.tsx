@@ -4,23 +4,66 @@ import { Button } from "./button";
 import { Icon } from "./icon";
 import { classes, type ElementProps, type Tone } from "./types";
 
-export type BoardEntry = { id: string; label: string; content: Child; disabled?: boolean };
-type Column = {
-  id?: string;
-  title: string;
-  tone?: Tone;
-  current?: boolean;
-  empty?: Child;
+export type BoardEntry = {
+  /** 項目のid。board:beforemoveとboard:moveのdetail.idで返る。Boardの中で一意にする。 */
+  id: string;
+  /** 項目の名前。ハンドルの読み上げ名（「〜を移動」）と、ドラッグ中の読み上げに使う。 */
+  label: string;
+  /** カードに載せる中身。見出し・本文・TagGroup・Progressなど任意の要素を置ける。 */
+  content: Child;
+  /** 動かせない項目。ハンドルを無効にする。 */
   disabled?: boolean;
-  /** たたんだ列。件数と縦書きの名前を載せた縦長のピルになり、中の項目は隠す。移動先にはならない。開閉の状態は利用側が持つ。 */
+  /** 項目の番号など。バッジにして、カードの上の先頭側の角に列の色で置く。 */
+  code?: string;
+};
+type Column = {
+  /** 列のid。移動と開閉のイベントで列を指す値になる。省略すると並び順の番号（"0"から）。 */
+  id?: string;
+  /** 列の名前。見出しに書き、項目の一覧の読み上げ名にもする。 */
+  title: string;
+  /** 列の役割の色。見出しの文字と、項目のカードの斜めの色付け・角のバッジに出す。neutralは色を付けない。 */
+  tone?: Tone;
+  /** 今の列（今日の担当など）。toneに関わらず青にする。 */
+  current?: boolean;
+  /**
+   * 項目が無い時に置く文。省略すると、movableなら「ここへ移動できます」（受け付けない列は「この列には移動できません」）、
+   * movableでなければ「項目はありません」を置く。
+   */
+  empty?: Child;
+  /** 項目を受け付けない列。斜線を引き、移動先にしない。 */
+  disabled?: boolean;
+  /** たたんだ列。件数と縦書きの名前を載せた縦長のピルになり、中の項目は隠す。移動先にはならない。 */
   collapsed?: boolean;
+  /**
+   * 列を押して開閉できるようにする。たたんだピルに「開く」、開いた列の見出しに「たたむ」を置き、
+   * 押すとBoardControllerが表示を切り替えて、取り消せるboard:toggleイベントを発火する。開閉の保存は利用側が持つ。
+   * 開閉のボタンは、BoardControllerが接続するまで隠す。
+   */
+  collapsible?: boolean;
 } & (
-  | { items: readonly BoardEntry[]; content?: never; count?: never }
-  | { content: Child; count: number; items?: never }
+  | {
+      /** 列の項目。渡した順に上から並べる。件数は項目の数から数える。 */
+      items: readonly BoardEntry[];
+      content?: never;
+      count?: never;
+    }
+  | {
+      /** 項目の代わりに置く任意の中身。移動先にはならない。 */
+      content: Child;
+      /** contentの時に見出しへ添える件数。 */
+      count: number;
+      items?: never;
+    }
 );
 export type BoardProps = ElementProps<"div"> & {
+  /** Board全体（role="region"）の読み上げ名。 */
   label: string;
+  /** 列。渡した順に先頭側から並べる。 */
   columns: readonly Column[];
+  /**
+   * 項目にハンドルを置き、列の間の移動と並べ替えを有効にする。BoardControllerをboardとして登録する。
+   * ハンドルはcontrollerが接続するまで無効のまま。
+   */
   movable?: boolean;
 };
 export const Board = ({
@@ -51,7 +94,9 @@ export const Board = ({
       role="region"
       aria-label={label}
       tabindex={0}
-      data-controller={movable ? "board" : undefined}
+      data-controller={
+        movable || columns.some((column) => column.collapsible) ? "board" : undefined
+      }
       data-movable={movable ? "true" : undefined}
     >
       {columns.map((column, index) => (
@@ -68,6 +113,21 @@ export const Board = ({
           <h3 class="title">
             <span class="label">{column.title}</span>
             <small>{column.items?.length ?? column.count}</small>
+            {column.collapsible && (
+              <Button
+                class="toggle"
+                variant="link"
+                data-icon-only="true"
+                data-action="board#toggle"
+                data-board-toggle
+                hidden
+                aria-expanded={column.collapsed ? "false" : "true"}
+                aria-label={`「${column.title}」の列を開閉`}
+              >
+                <Icon name="expand" class="expand" />
+                <Icon name="collapse" class="collapse" />
+              </Button>
+            )}
           </h3>
           <div
             class="items"
@@ -83,6 +143,7 @@ export const Board = ({
                     data-board-label={item.label}
                     data-disabled={item.disabled ? "true" : undefined}
                   >
+                    {item.code && <span class="code">{item.code}</span>}
                     <div class="body">{item.content}</div>
                     {movable && (
                       <Button

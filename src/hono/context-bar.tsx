@@ -4,7 +4,12 @@ import { Breadcrumb, type BreadcrumbItem } from "./breadcrumb";
 
 export type { BreadcrumbItem } from "./breadcrumb";
 export type ContextBarProps = PropsWithChildren<
-  ElementProps<"div"> & { items: readonly BreadcrumbItem[]; label?: string }
+  ElementProps<"div"> & {
+    /** 現在地までの階層。Breadcrumbのitemsと同じで、最後の項目が現在地になる。 */
+    items: readonly BreadcrumbItem[];
+    /** 現在地を示すnavの読み上げ名。 */
+    label?: string;
+  }
 >;
 export const ContextBar = ({
   items,

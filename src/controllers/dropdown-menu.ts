@@ -161,7 +161,7 @@ export class DropdownMenuController extends Controller<HTMLElement> {
       });
       panel.style.insetInlineStart = `${position.inlineStart}px`;
       panel.style.insetBlockStart = `${position.blockStart}px`;
-      // 出入りの動きを、開いた操作の側から始めるための向き。
+      // 開閉のアニメーションを、開いた操作要素の側から始めるための向き。
       panel.dataset.side =
         index > 0 ? "inline" : position.blockStart < anchorBounds.top ? "top" : "bottom";
     }

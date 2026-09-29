@@ -1,11 +1,13 @@
 @layer components {
   /*
-    閉じる操作は青いアイコンだけのButtonにし、紙の終わりの側の上の角から少しはみ出させて置く。
-    Wingの持ち手と同じく、紙の外から手を掛けられる印にする。見出しの行は操作の幅を取らない。
+    閉じる操作は青いアイコンだけのButtonにし、パネルの末尾側の上の角から少しはみ出させて置く。
+    Wingのハンドルと同じく、パネルの外から操作できる目印にする。見出しの行は操作の幅を取らない。
   */
-  .ply-overlay {
+  :is(.ply-overlay, .ply-table > .selection-bar) {
     --ply-overlay-close-size: 1.75rem;
     --ply-overlay-close-offset: 0.25rem;
+  }
+  .ply-overlay {
     --ply-overlay-title-line: calc(var(--ply-label) * 10 / 7);
     --ply-overlay-inset-inline: 1.25rem;
     border: 0;
@@ -45,16 +47,6 @@
           font-weight: 600;
           line-height: var(--ply-overlay-title-line);
         }
-        & > .close {
-          position: absolute;
-          inset-block-start: calc(-1 * var(--ply-overlay-close-offset));
-          inset-inline-end: calc(-1 * var(--ply-overlay-close-offset));
-          z-index: 1;
-          display: flex;
-          & > .ply-button {
-            --ply-button-size: var(--ply-overlay-close-size);
-          }
-        }
       }
       & > p {
         color: var(--ply-muted);
@@ -86,17 +78,31 @@
       padding-inline: var(--ply-overlay-inset-inline);
     }
   }
+  /* 閉じる操作の位置。Dialog・Popover・Toast・Tableの選択バーで同じ角に置く。 */
+  :is(.ply-overlay > .heading > .heading-row, .ply-table > .selection-bar > .heading) > .close {
+    position: absolute;
+    inset-block-start: calc(-1 * var(--ply-overlay-close-offset));
+    inset-inline-end: calc(-1 * var(--ply-overlay-close-offset));
+    z-index: 1;
+    display: flex;
+    & > .ply-button {
+      --ply-button-size: var(--ply-overlay-close-size);
+    }
+  }
   /*
-    浮かぶ物の出入り。Dialog・Popover・HoverCard・Tooltip・Toast・DropdownMenu・CommandMenu・DatePickerの全てで、
+    浮かぶ要素の出入り。Dialog・Popover・HoverCard・Tooltip・Toast・DropdownMenu・CommandMenu・DatePicker・Tableの選択バーの全てで、
     ここだけに書く。支点から小さく現れて一瞬膨らんでから収まり、閉じる時は同じ支点へ縮みながら速く消える。
-    各コンポーネントは支点（transform-origin）だけを決める。画面の端から差し出す物（Toast・下に付くDialog）は、
+    各コンポーネントは支点（transform-origin）だけを決める。画面の端から出てくる要素（Toast・下に付くDialog）は、
     --ply-motion-slideで滑らせる時間を、--ply-motion-scale-in・-outで膨らみを1にし、閉じた形と開き始めのtranslateを決める。
     位置を決めるスクリプトは変形前の寸法（layoutRect）で測るため、大きさを変えても配置は狂わない。
   */
-  :is(.ply-overlay, .ply-menu, .ply-command-menu > .panel, .ply-date-picker > .panel):is(
-    [popover],
-    dialog
-  ) {
+  :is(
+    .ply-overlay,
+    .ply-menu,
+    .ply-command-menu > .panel,
+    .ply-date-picker > .panel,
+    .ply-table > .selection-bar
+  ):is([popover], dialog) {
     transition:
       opacity var(--ply-duration-fade) ease-out,
       scale var(--ply-duration-pop) var(--ply-ease-pop),
@@ -111,15 +117,18 @@
     }
   }
   @starting-style {
-    :is(.ply-overlay, .ply-menu, .ply-command-menu > .panel, .ply-date-picker > .panel):is(
-      [popover]:popover-open,
-      dialog[open]
-    ) {
+    :is(
+      .ply-overlay,
+      .ply-menu,
+      .ply-command-menu > .panel,
+      .ply-date-picker > .panel,
+      .ply-table > .selection-bar
+    ):is([popover]:popover-open, dialog[open]) {
       opacity: 0;
       scale: var(--ply-motion-scale-in);
     }
   }
-  /* アンカーに付く紙（Popover・HoverCard）は、開いた操作の側の上の角を支点にする。 */
+  /* アンカーに付くパネル（Popover・HoverCard）は、開いた操作の側の上の角を支点にする。 */
   .ply-overlay[popover] {
     transform-origin: top left;
     &:dir(rtl),
@@ -143,7 +152,7 @@
     inline-size: min(var(--ply-overlay-width), calc(100vw - 1rem));
     max-inline-size: calc(100vw - 1rem);
     max-block-size: calc(100dvh - 1rem);
-    /* 角の操作をはみ出させるため、紙は切り取らず本文だけをスクロールする。 */
+    /* 角の操作をはみ出させるため、パネルは切り取らず本文だけをスクロールする。 */
     overflow: visible;
     margin: 0;
     padding: 0;
@@ -194,12 +203,14 @@
     }
   }
   @media (pointer: coarse) {
-    .ply-overlay {
+    :is(.ply-overlay, .ply-table > .selection-bar) {
       --ply-overlay-close-size: 2.75rem;
     }
   }
   @media (forced-colors: active) {
-    .ply-overlay > .heading > .heading-row > .close > .ply-button {
+    :is(.ply-overlay > .heading > .heading-row, .ply-table > .selection-bar > .heading)
+      > .close
+      > .ply-button {
       border-color: ButtonText;
     }
   }

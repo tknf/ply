@@ -4,32 +4,43 @@
     min-inline-size: 0;
     /* 寸法を保つため枠の幅は残し、線は見せない。 */
     border: var(--ply-stroke-width) solid transparent;
-    /* パンくずの帯は区切り線を持たず、本文と同じ左右の余白に揃える。 */
+    /* パンくずの行は区切り線を持たず、本文と同じ左右の余白に揃える。 */
+    /* パンくずの行は面の上端から左右と同じだけ離し、本文はパンくずの下から始める。 */
     & > .ply-context-bar {
-      min-block-size: calc(var(--ply-control-size) + var(--ply-space-4) + var(--ply-space-2));
-      padding-block-start: var(--ply-space-4);
+      min-block-size: calc(var(--ply-control-size) + var(--ply-space-12) + var(--ply-space-2));
+      padding-block-start: var(--ply-space-12);
       padding-inline: var(--ply-space-12);
       border-block-end: 0;
       @container ply-surface (inline-size < 40rem) {
+        min-block-size: calc(var(--ply-control-size) + var(--ply-space-6) + var(--ply-space-2));
+        padding-block-start: var(--ply-space-6);
         padding-inline: var(--ply-space-4);
       }
     }
     & > .body {
       display: grid;
       align-content: start;
-      gap: var(--ply-space-6);
+      gap: var(--ply-space-4);
       min-inline-size: 0;
-      /* HEYの面は左右55px、Fizzyの詳細は内側47.5px。狭い面では詰める。 */
-      padding-block: var(--ply-space-8) var(--ply-space-6);
+      /*
+        左右は上下より広く取り、狭い面では詰める。
+        上下は同じ余白にそろえ、中の段の間（16px）より面の余白をはっきり広くする。
+      */
+      padding-block: var(--ply-space-8) var(--ply-space-8);
       padding-inline: var(--ply-space-12);
       overflow-wrap: anywhere;
       &:empty {
         display: none;
       }
+      /* 狭い面でも、段の間（16px）より上下の余白を広くする。 */
       @container ply-surface (inline-size < 40rem) {
-        padding-block: var(--ply-space-5) var(--ply-space-4);
+        padding-block: var(--ply-space-8);
         padding-inline: var(--ply-space-4);
       }
+    }
+    /* パンくずがある時は、本文をパンくずの行のすぐ下から始める。行の下の8pxと見出しの行の余りで離れる。 */
+    & > .ply-context-bar + .body {
+      padding-block-start: 0;
     }
     /* 文書の配置では、パンくずも本文と同じ行長の書き始めにそろえる。 */
     &[data-layout="document"] > .ply-context-bar {

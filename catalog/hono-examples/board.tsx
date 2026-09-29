@@ -34,6 +34,7 @@ export default () => (
           items: [
             {
               id: "guide",
+              code: "No. 12",
               label: "仕事場の案内を更新する",
               content: (
                 <>
@@ -48,6 +49,7 @@ export default () => (
             },
             {
               id: "estimate",
+              code: "No. 15",
               label: "見積内容の確認",
               content: (
                 <>
@@ -71,6 +73,7 @@ export default () => (
           items: [
             {
               id: "reading",
+              code: "No. 9",
               label: "秋の読書会のお知らせ",
               content: (
                 <>
@@ -85,6 +88,7 @@ export default () => (
             },
             {
               id: "document",
+              code: "No. 10",
               label: "仕事場の案内.pdf",
               content: <FileItem name="仕事場の案内.pdf" description="PDF · 2.4 MB" />,
             },
@@ -100,8 +104,8 @@ export default () => (
       ]}
     />
     <p class="catalog-footnote">
-      右上の持ち手で移動します。Space → 矢印キー →
-      Enterでも操作できます。Escapeで元へ戻します。運んだ項目は、置いた列の色に染まります。
+      右上のハンドルで移動します。Space → 矢印キー →
+      Enterでも操作できます。Escapeで元へ戻します。移動した項目は、置いた列の色に変わります。
     </p>
     <DisclosureGroup label="列と項目の違い">
       <Disclosure summary="列の色：状態ごとの見出しと項目の色、今の列" open>
@@ -130,7 +134,7 @@ export default () => (
           ]}
         />
       </Disclosure>
-      <Disclosure summary="完了の列：運ぶと置いた列の色に変わる">
+      <Disclosure summary="完了の列：移動すると置いた列の色に変わる">
         <Board
           label="原稿の承認"
           movable
@@ -155,28 +159,43 @@ export default () => (
           ]}
         />
       </Disclosure>
-      <Disclosure summary="たたんだ列：件数と縦書きの名前のピルになる">
+      <Disclosure summary="たたんだ列：件数と縦書きの名前のピル、押すと開いてたためる">
         <Board
           label="採用の進行"
           columns={[
-            { id: "backlog", title: "応募", collapsed: true, items: [card("a1", "応募1")] },
+            {
+              id: "backlog",
+              title: "応募",
+              collapsed: true,
+              collapsible: true,
+              items: [card("a1", "応募1")],
+            },
             {
               id: "interview",
               title: "面接",
               tone: "info",
+              collapsible: true,
               items: [card("a2", "山本 さくら", "10月2日 14時"), card("a3", "高橋 大輔")],
             },
-            { id: "offer", title: "内定", tone: "success", items: [card("a4", "伊藤 蓮")] },
+            {
+              id: "offer",
+              title: "内定",
+              tone: "success",
+              collapsible: true,
+              items: [card("a4", "伊藤 蓮")],
+            },
             {
               id: "closed",
               title: "見送り",
+              tone: "danger",
               collapsed: true,
+              collapsible: true,
               items: [card("a5", "応募5"), card("a6", "応募6"), card("a7", "応募7")],
             },
           ]}
         />
       </Disclosure>
-      <Disclosure summary="項目の中身：担当者・分類・期限・チェック・進み具合・ファイル">
+      <Disclosure summary="項目の中身：担当者・分類・期限・チェック・進捗・ファイル">
         <Board
           label="イベントの準備"
           columns={[

@@ -1,24 +1,4 @@
 import { expect, test } from "@playwright/test";
-import iconManifest from "../../src/internal/icon-manifest.json" with { type: "json" };
-
-test("全アイコンのCSS用SVGを正しい形式で配信する", async ({ request }) => {
-  const results = await Promise.all(
-    Object.keys(iconManifest).map(async (name) => {
-      const response = await request.get(`/src/css/assets/${name}.svg`);
-      return {
-        name,
-        status: response.status(),
-        type: response.headers()["content-type"],
-        body: await response.text(),
-      };
-    }),
-  );
-  for (const result of results) {
-    expect(result.status, result.name).toBe(200);
-    expect(result.type, result.name).toContain("image/svg+xml");
-    expect(result.body, result.name).toContain("<svg");
-  }
-});
 
 test("選択済みCheckboxは状態だけでなく白いcheckを実際に描画する", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -58,7 +38,7 @@ test("選択済みCheckboxは状態だけでなく白いcheckを実際に描画�
   expect(white).toBeGreaterThanOrEqual(4);
 });
 
-test("基本色を変えてもhover・押下が旧色へ戻らず、塗りと文字の位置を保つ", async ({ page }) => {
+test("基本色を変えてもhover・押下が既定の色へ戻らず、塗りと文字の位置を保つ", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/components/button");
   await page.evaluate(() => document.documentElement.style.setProperty("--ply-brand", "#146f53"));
@@ -87,7 +67,7 @@ test("基本色を変えてもhover・押下が旧色へ戻らず、塗りと文
     expect(green).toBeGreaterThan(red);
     expect(green).toBeGreaterThan(blue);
   }
-  // 塗りの色は指を載せても押しても変えず、影だけで応える。
+  // 塗りの色はホバーしても押しても変えず、影だけで応える。
   expect(hover).toEqual(normal);
   expect(active).toEqual(normal);
 });

@@ -30,8 +30,8 @@ export default () => (
       <Button variant="primary" busy busyLabel="公開中…">
         公開する
       </Button>
-      <ActionLink href="/reservation" variant="link">
-        予約例へ移動
+      <ActionLink href="/apps/schedule" variant="link">
+        予定を開く
       </ActionLink>
     </div>
     <section class="ply-stack" aria-label="アイコン付きの操作">
@@ -48,7 +48,7 @@ export default () => (
               確定する
               <Icon name="check" />
             </Button>
-            <ActionLink size={size} href="/reservation">
+            <ActionLink size={size} href="/apps/schedule">
               予約へ
               <Icon name="arrow" />
             </ActionLink>

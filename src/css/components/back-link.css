@@ -1,0 +1,63 @@
+@layer components {
+  /*
+    一つ上の場所へ戻るだけのピル。淡い青の面に左向きのアイコンと太字の名前を置く（filled）。
+    ESCのショートカットキーの表示を添えられ、面を持たない太字の文字だけにもできる（plain）。
+  */
+  .ply-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ply-space-1);
+    inline-size: fit-content;
+    max-inline-size: 100%;
+    min-block-size: 2rem;
+    padding-block: 0.25rem;
+    padding-inline: 0.5rem 0.875rem;
+    border-radius: var(--ply-radius-pill);
+    background: var(--ply-cover);
+    color: var(--ply-text);
+    font-family: var(--ply-control-font-family);
+    font-size: var(--ply-label);
+    font-weight: 700;
+    line-height: var(--ply-label-leading);
+    text-decoration: none;
+    transition:
+      background-color var(--ply-duration) ease,
+      color var(--ply-duration) ease;
+    & > .ply-icon {
+      flex: none;
+      font-size: 1rem;
+    }
+    &:dir(rtl) > .ply-icon {
+      rotate: 180deg;
+    }
+    & > .label {
+      min-inline-size: 0;
+      overflow-wrap: anywhere;
+      /* 日本語は文節の切れ目で折り返し、行末に一、二文字だけを残さない。 */
+      word-break: auto-phrase;
+    }
+    & > .ply-keycap {
+      margin-inline-start: var(--ply-space-1);
+    }
+    &:hover {
+      background: color-mix(in srgb, var(--ply-link) 16%, var(--ply-surface));
+    }
+    &:focus-visible {
+      outline: 0.125rem solid var(--ply-link);
+      outline-offset: 0.125rem;
+    }
+    &[data-tone="plain"] {
+      padding-inline: 0.25rem;
+      background: transparent;
+      &:hover {
+        background: transparent;
+        color: var(--ply-link);
+      }
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-back-link {
+      border: var(--ply-stroke-width) solid CanvasText;
+    }
+  }
+}

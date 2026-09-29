@@ -40,7 +40,7 @@ export default () => (
         />
       )}
     </Field>
-    <form action="/search" method="get">
+    <form action="/apps/search" method="get">
       <Field id="hono-group-search" label="記事を検索">
         {(attributes) => (
           <InputGroup
@@ -85,7 +85,7 @@ export default () => (
             />
           )}
         </Field>
-        <form action="/search" method="get">
+        <form action="/apps/search" method="get">
           <Field id="hono-group-search-large" label="記事を検索（大きい入力）">
             {(attributes) => (
               <InputGroup

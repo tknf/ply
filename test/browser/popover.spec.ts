@@ -81,3 +81,47 @@ test("狭い画面の右端でも本文と閉じる操作が表示領域に収�
   }
   await expect(panel.getByRole("button", { name: "閉じる", exact: true })).toBeInViewport();
 });
+
+test("見出しの行に閉じる操作を置き、本文を分ける", async ({ page }) => {
+  await page.setViewportSize({ width: 720, height: 800 });
+  await page.goto("/components/popover");
+  await page.locator('[data-popover-target="trigger"][popovertarget="hono-popover"]').click();
+  const popover = page.locator("#hono-popover");
+  await expect(popover).toBeVisible();
+  await expect(popover.locator(":scope > .heading > .heading-row > .close")).toBeVisible();
+  await expect(popover.locator(":scope > .body")).toContainText("この案件に参加");
+});
+
+test("タッチ画面でも画面内に開き、閉じる操作で閉じる", async ({ browser }) => {
+  const context = await browser.newContext({
+    viewport: { width: 375, height: 812 },
+    hasTouch: true,
+    isMobile: true,
+  });
+  const page = await context.newPage();
+  await page.goto("/components/popover");
+  await page.locator('[data-popover-target="trigger"][popovertarget="hono-popover"]').click();
+  const popover = page.locator("#hono-popover");
+  await expect(popover).toBeVisible();
+  expect(
+    await popover.evaluate((element) => element.getBoundingClientRect().right),
+  ).toBeLessThanOrEqual(375);
+  await popover.getByRole("button", { name: "閉じる" }).click();
+  await expect(popover).toBeHidden();
+  await context.close();
+});
+
+test("JavaScriptがなくても開閉とEscapeで閉じる操作ができる", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  try {
+    const page = await context.newPage();
+    await page.goto("http://127.0.0.1:5178/components/popover");
+    const example = page.locator('[data-example="hono"]');
+    await example.getByRole("button", { name: "共有範囲", exact: true }).click();
+    await expect(example.locator("#hono-popover")).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(example.locator("#hono-popover")).not.toBeVisible();
+  } finally {
+    await context.close();
+  }
+});

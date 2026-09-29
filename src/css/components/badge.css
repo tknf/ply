@@ -1,7 +1,7 @@
 @layer components {
   /*
-    状態はピル。役割の色を淡く混ぜた地に、役割の色で文字を書く。枠線・影・印は付けず、色だけで分ける。
-    役割の色が無いものと、まだ確定していない下書きは、中立の灰色の地に--ply-mutedの文字にする。
+    状態はピル。役割の色を淡く混ぜた背景に、役割の色で文字を書く。枠線・影・アイコンは付けず、色だけで分ける。
+    役割の色が無いものと、まだ確定していない下書きは、中立の灰色の背景に--ply-mutedの文字にする。
   */
   .ply-badge {
     --ply-badge-ink: var(--ply-muted);
@@ -17,10 +17,10 @@
     padding-block: calc((1.625rem - 1lh) / 2);
     /* 左右は角丸の大きさに近く取り、折り返した時も文字が角のカーブに寄らないようにする。 */
     padding-inline: 0.75rem;
-    /* 一行では高さの半分で止まってピルになり、折り返すと紙と同じ角になる。 */
+    /* 一行では高さの半分で止まってピルになり、折り返すとカードと同じ角丸になる。 */
     border-radius: var(--ply-radius-surface);
     background: color-mix(in srgb, var(--ply-badge-ink) 11%, var(--ply-surface));
-    /* 透明な輪郭は、強制カラーで地が消えた時だけ見える縁になる。 */
+    /* 透明な輪郭は、強制カラーで背景が消えた時だけ見える縁になる。 */
     outline: var(--ply-stroke-width) solid transparent;
     outline-offset: calc(var(--ply-stroke-width) * -1);
     color: var(--ply-badge-ink);
@@ -48,6 +48,14 @@
     &[data-draft="true"] {
       --ply-badge-ink: var(--ply-muted);
       background: color-mix(in srgb, var(--ply-badge-ink) 11%, var(--ply-surface));
+    }
+    /* タイルのアイコンの上などに重ねる小さなバッジ。一行の高さは16px。 */
+    &[data-size="small"] {
+      padding-block: 0;
+      padding-inline: 0.375rem;
+      font-size: 0.625rem;
+      font-weight: 700;
+      line-height: 1rem;
     }
   }
 }

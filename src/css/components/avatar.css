@@ -1,7 +1,7 @@
 @layer components {
   /*
-    人の円はHEYと同じく、中間の濃さで塗った丸に濃いインクの太いイニシャルを置く。
-    淡い地に色の文字では、一覧の中で人が立たない。
+    アバターは、中間の濃さで塗った丸に濃いインクの太いイニシャルを置く。
+    淡い背景に色の文字では、一覧の中でアバターが目立たない。
   */
   .ply-avatar {
     --ply-avatar-fill: color-mix(in srgb, var(--ply-blue) 42%, var(--ply-surface));
@@ -12,7 +12,7 @@
     block-size: 2.25rem;
     flex: none;
     overflow: hidden;
-    /* HEYの人の円と同じく縁取りを持たず、塗りの円だけにする。 */
+    /* 縁取りを持たず、塗りの円だけにする。 */
     border-radius: 50%;
     background: var(--ply-avatar-fill);
     color: var(--ply-ink);

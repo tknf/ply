@@ -12,7 +12,7 @@
     min-block-size: var(--ply-button-size);
     max-inline-size: 100%;
     padding-block: 0;
-    /* 押す物はピル。主・控えめ・危険は形ではなく塗りの色で分ける。丸い端に文字が寄らないよう左右を広げる。 */
+    /* ボタンはピル。主・控えめ・危険は形ではなく塗りの色で分ける。丸い端に文字が寄らないよう左右を広げる。 */
     padding-inline: 1.25em;
     border: var(--ply-stroke-width) solid var(--ply-border);
     border-radius: var(--ply-radius-pill);
@@ -27,7 +27,8 @@
     text-decoration: none;
     overflow-wrap: anywhere;
     cursor: pointer;
-    box-shadow: var(--ply-shadow-control);
+    /* ボタンは浮かせない。通常時は平らにし、ホバーすると面を少し濃くし、押すと内側へへこむ（ActionTileと同じ手触り）。 */
+    box-shadow: none;
     transition:
       background-color var(--ply-duration) ease,
       border-color var(--ply-duration) ease,
@@ -38,9 +39,12 @@
     }
 
     &:hover:not(:disabled) {
-      box-shadow: var(--ply-shadow-control-hover);
+      background-color: color-mix(in srgb, var(--ply-ink) 4%, var(--ply-surface));
+      background-image: none;
     }
     &:active:not(:disabled) {
+      background-color: color-mix(in srgb, var(--ply-ink) 6%, var(--ply-surface));
+      background-image: none;
       box-shadow: var(--ply-shadow-control-pressed);
     }
 
@@ -54,43 +58,62 @@
       line-height: var(--ply-control-leading);
     }
     /*
-      主操作と危険は役割の色の135度で塗る。塗りは指を載せても押しても変えず、
-      白い押す物と同じく、影が広がる・内側へ移る動きだけで応える。
+      主操作と危険は役割の色の135度で塗る。浮かせず、ホバーすると塗りの上に薄い黒を重ねて少し濃くし、
+      押すと内側へへこむ。
     */
     &[data-variant="primary"],
     &[data-current="true"] {
+      --ply-button-color: var(--ply-link);
+      --ply-button-fill: var(--ply-fill-primary);
       background: var(--ply-link);
-      background-image: var(--ply-fill-primary);
+      background-image: var(--ply-button-fill);
       border-color: var(--ply-link);
     }
     &[data-variant="danger"] {
+      --ply-button-color: var(--ply-danger);
+      --ply-button-fill: var(--ply-fill-danger);
       background: var(--ply-danger);
-      background-image: var(--ply-fill-danger);
+      background-image: var(--ply-button-fill);
       border-color: var(--ply-danger);
     }
     &:is([data-variant="primary"], [data-variant="danger"], [data-current="true"]) {
       color: var(--ply-surface);
-      box-shadow: var(--ply-shadow-control-primary);
+      box-shadow: none;
 
+      /* 控えめな操作の淡い面の色へ戻さず、塗りの下の色も役割の色のままにする。 */
       &:hover:not(:disabled) {
-        box-shadow: var(--ply-shadow-control-primary-hover);
+        background-color: var(--ply-button-color);
+        background-image: linear-gradient(rgb(0 0 0 / 8%), rgb(0 0 0 / 8%)), var(--ply-button-fill);
       }
 
       &:active:not(:disabled) {
+        background-color: var(--ply-button-color);
+        background-image:
+          linear-gradient(rgb(0 0 0 / 12%), rgb(0 0 0 / 12%)), var(--ply-button-fill);
         box-shadow: var(--ply-shadow-control-primary-pressed);
       }
     }
 
+    /*
+      文字だけの操作は下線を引かず、青い文字にする。
+      ホバーすると淡い青のピルの面が現れ、押すと少し濃くなる。
+    */
     &[data-variant="link"] {
       background: transparent;
       border-color: transparent;
       color: var(--ply-link);
       box-shadow: none;
       padding-inline: calc(4em / 7);
-      text-decoration: underline;
-      text-underline-offset: 0.2em;
+      text-decoration: none;
+      transition: background-color var(--ply-duration) ease;
       &:is(:hover, :active) {
         box-shadow: none;
+      }
+      &:hover:not(:disabled) {
+        background: color-mix(in srgb, var(--ply-link) 8%, transparent);
+      }
+      &:active:not(:disabled) {
+        background: color-mix(in srgb, var(--ply-link) 14%, transparent);
       }
     }
 
@@ -120,8 +143,52 @@
       }
     }
 
+    /*
+      処理中は、Progressの終わりが分からない時と同じく、操作そのものは動かさず、役割の色だけを一方向にゆっくり流す。
+      模様は操作の幅の二倍で繰り返し、一巡りでちょうど元の色に戻る。流す色の組はバリエーションごとに下で決める。
+      塗った操作の明るい側は、白い文字との対比が4.5:1を下回らない割合にとどめる（primary 90%、danger 82%）。
+    */
     &[data-busy="true"] {
+      --ply-button-busy-from: var(--ply-surface);
+      --ply-button-busy-to: color-mix(in srgb, var(--ply-surface) 90%, var(--ply-ink));
+      background-image: linear-gradient(
+        to right,
+        var(--ply-button-busy-from),
+        var(--ply-button-busy-to),
+        var(--ply-button-busy-from)
+      );
+      background-size: 200% 100%;
+      background-repeat: repeat-x;
       cursor: progress;
+      animation: ply-button-busy 2.4s linear infinite;
+      &:where(:dir(rtl)) {
+        animation-direction: reverse;
+      }
+      &:is([data-variant="primary"], [data-current="true"]) {
+        --ply-button-busy-from: var(--ply-link);
+        --ply-button-busy-to: color-mix(in srgb, var(--ply-link) 90%, white);
+      }
+      &[data-variant="danger"] {
+        --ply-button-busy-from: var(--ply-danger);
+        --ply-button-busy-to: color-mix(in srgb, var(--ply-danger) 82%, white);
+      }
+      &[data-variant="link"] {
+        --ply-button-busy-from: transparent;
+        --ply-button-busy-to: color-mix(in srgb, var(--ply-link) 12%, transparent);
+      }
+    }
+  }
+
+  @keyframes ply-button-busy {
+    to {
+      background-position-x: -200%;
+    }
+  }
+
+  /* 動きを減らす設定の時は流さず、流す色の組を敷いたまま止める。 */
+  @media (prefers-reduced-motion: reduce) {
+    .ply-button[data-busy="true"] {
+      animation: none;
     }
   }
 }

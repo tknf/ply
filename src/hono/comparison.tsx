@@ -2,11 +2,20 @@ import type { Child } from "hono/jsx";
 import { classes, type ElementProps } from "./types";
 
 export type ComparisonProps = ElementProps<"section"> & {
+  /** 比べる項目の名前。見出し（h3）とルートのaria-labelにする。 */
   label: string;
+  /** 変更前の内容。nullかundefinedなら「未登録」と書く。 */
   before: Child;
+  /** 変更後の内容。nullかundefinedなら「未登録」と書く。 */
   after: Child;
+  /** 変更前の見出し（h4）。 */
   beforeLabel?: string;
+  /** 変更後の見出し（h4）。 */
   afterLabel?: string;
+  /**
+   * 値が変わるかどうか。trueは見出しに「変更あり」を添え、変更後を淡い青の背景にして間に矢印を置く。
+   * falseは「変更なし」を添え、両方を灰色の背景にして間に等号を置く。差分の判定は利用側が行う。
+   */
   changed?: boolean;
 };
 export const Comparison = ({

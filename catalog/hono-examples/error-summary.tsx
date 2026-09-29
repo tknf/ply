@@ -17,7 +17,7 @@ const manyErrors = [
 
 export default () => (
   <div class="ply-stack">
-    <form action="/search" method="get" class="ply-stack">
+    <form action="/apps/search" method="get" class="ply-stack">
       <ErrorSummary
         id="hono-errors"
         errors={[

@@ -1,14 +1,19 @@
 import { useId } from "hono/jsx";
 import { Button } from "./button";
 import { Field, Input } from "./field";
+import { FileItem } from "./file-item";
+import { Icon } from "./icon";
 import type { ElementProps } from "./types";
 
 export type FileInputProps = Omit<
   ElementProps<"input">,
   "type" | "value" | "readonly" | "children"
 > & {
+  /** 欄の名前。選んだファイルの一覧の読み上げ名（「〜で選択したファイル」）にも使う。 */
   label: string;
+  /** 欄の下に出す補足。ファイル入力のaria-describedbyに関連付ける。 */
   help?: string;
+  /** 欄の下に出すエラー文。ファイル入力をaria-invalidにする。形式・容量の検証は利用側で行う。 */
   error?: string;
 };
 
@@ -38,18 +43,21 @@ export const FileInput = ({
             標準のボタンの文言はページではなくブラウザの言語で決まるため、ラベルを共通Buttonの見た目で置く。
             操作とフォーカスは標準入力が持ち、JavaScriptが無効な時は標準入力をそのまま表示する。
           */}
+          <span class="symbol" aria-hidden="true">
+            <Icon name="attach" />
+          </span>
+          <p class="hint" data-file-input-target="hint" hidden>
+            ここにファイルをドロップ
+          </p>
           <label
             class="ply-button choose"
             for={inputId}
-            data-variant="secondary"
+            data-variant="link"
             data-size="default"
             aria-hidden="true"
           >
             ファイルを選択
           </label>
-          <p class="hint" data-file-input-target="hint" hidden>
-            ここにファイルをドロップすることもできます。
-          </p>
           <ul
             class="files"
             aria-label={`${label}で選択したファイル`}
@@ -57,7 +65,16 @@ export const FileInput = ({
             data-file-input-target="files"
             hidden
           />
+          {/* 選んだファイルの行はFileItemの形。controllerがこのテンプレートを複製し、名前とサイズを入れる。 */}
+          <template data-file-input-target="template">
+            <li>
+              <FileItem name="" description="" />
+            </li>
+          </template>
           <Button
+            class="clear"
+            variant="link"
+            size="compact"
             type="button"
             disabled={attributes.disabled}
             data-file-input-target="clear"

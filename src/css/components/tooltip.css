@@ -18,6 +18,25 @@
     line-height: var(--ply-small-leading);
     /* 操作の中央の下に出るため、上の中央を支点に膨らむ。 */
     transform-origin: top center;
+    /* 下のつなぎの領域を切り取らない。 */
+    overflow: visible;
+    /*
+      操作と補足の間の隙間に、上下へ透明なつなぎの領域を置く。操作から補足へポインターを移す間も補足の上にいるので、
+      補足は閉じない（WCAG 1.4.13）。上下どちらへ回り込んでも操作の側につなぎの領域がある。
+    */
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      block-size: var(--ply-space-1);
+    }
+    &::before {
+      inset-block-end: 100%;
+    }
+    &::after {
+      inset-block-start: 100%;
+    }
   }
   @supports (inset-block-start: anchor(end)) and (position-try-fallbacks: flip-block) {
     .ply-tooltip > .content {

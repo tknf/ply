@@ -1,7 +1,7 @@
 @layer components {
   /*
-    折りたたみはHEYのメニューの「YOUR ⌄」と同じく、控えめな矢印と名前だけにする。
-    枠付きのつまみや中身の縦線は引かず、中身は名前の書き始めに揃え、入れ子は字下げだけで示す（Treeと同じ）。
+    折りたたみは控えめな矢印と名前だけにする。
+    枠付きの開閉ボタンや中身の縦線は引かず、中身は名前の書き始めに揃え、入れ子は字下げだけで示す（Treeと同じ）。
     開く時は高さが伸びながら中身が現れ、閉じる時は縮みながら薄れる。矢印も同じ時間で回る。
   */
   .ply-disclosure {
@@ -92,11 +92,14 @@
       block-size: auto;
       opacity: 1;
     }
+    /* 列は本文の幅に収め、長い語や横に広いコンポーネントでも本文を押し広げない。 */
     & > div {
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
       gap: var(--ply-space-2);
       min-inline-size: 0;
-      padding-block: 0 var(--ply-space-4);
+      /* 中身の下は見出しの上と同じ余白にし、罫線で囲まれても上下の空きをそろえる。 */
+      padding-block: 0 var(--ply-space-2);
       padding-inline: calc(1.5rem + var(--ply-space-2)) 0;
       overflow-wrap: anywhere;
       & > p {

@@ -4,12 +4,17 @@ import { Icon } from "./icon";
 import type { ElementProps } from "./types";
 
 export type SuggestionProps = Omit<ElementProps<"input">, "list" | "type" | "role" | "children"> & {
+  /** 欄のラベル。候補の一覧と開閉の操作の読み上げ名にも使う。 */
   label: string;
+  /** 候補の文字列。空白だけの値と重なった値は除く。選ぶと、その文字列が欄の値になる。 */
   options: readonly string[];
+  /** 欄の下に出す淡い補足。Fieldと同じく説明として読み上げる。 */
   help?: string;
+  /** 直す所を書くエラー文。Fieldと同じく欄をaria-invalidにし、説明として読み上げる。 */
   error?: string;
 };
 
+/** 自由に入力でき、打った文字で絞り込んだ候補からも選べる欄。残りの属性はinputへ渡す。 */
 export const Suggestion = ({
   id,
   label,

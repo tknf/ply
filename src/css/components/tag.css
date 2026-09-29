@@ -1,6 +1,6 @@
 @layer components {
   /*
-    分類はピルの札。HEYのラベルと同じく、はっきりした役割の色の縁と文字にし、地は塗らない。
+    分類はピルのタグ。文字と同じ色の縁とMediumの文字にし、地は塗らない。
     塗った地のBadge（状態）とは、地の有無で分ける。
     一行の高さは26pxでBadgeと揃える（文字20px＋上下の余白と枠線3pxずつ）。
   */
@@ -11,12 +11,13 @@
     max-inline-size: 100%;
     padding-block: calc(0.1875rem - var(--ply-stroke-width));
     padding-inline: 0.75rem;
-    border: var(--ply-stroke-width) solid color-mix(in srgb, currentColor 72%, transparent);
+    border: var(--ply-stroke-width) solid currentColor;
     border-radius: var(--ply-radius-surface);
     background: transparent;
     color: var(--ply-muted);
     font-family: var(--ply-control-font-family);
     font-size: var(--ply-small);
+    font-weight: 500;
     line-height: var(--ply-small-leading);
     overflow-wrap: anywhere;
     text-decoration: none;
@@ -32,7 +33,7 @@
     &[data-accent="coral"] {
       color: var(--ply-coral-dark);
     }
-    /* 分類へ移る札は、指を載せると役割の色を淡く敷く。 */
+    /* 分類へ移動するタグは、ホバーすると役割の色を淡く敷く。 */
     &:is(a) {
       cursor: pointer;
       transition:
@@ -74,13 +75,14 @@
       &:disabled {
         opacity: 0.45;
       }
+      /* 削除の×はタグの文字と同じ大きさ・濃さにし、太字の形で小さくても見えるようにする。 */
       &::before {
         content: "";
         display: block;
-        inline-size: 0.75em;
-        block-size: 0.75em;
+        inline-size: 1em;
+        block-size: 1em;
         background: currentColor;
-        mask: url("../assets/x.svg") center / contain no-repeat;
+        mask: url("../assets/x-bold.svg") center / contain no-repeat;
       }
     }
   }

@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("検索中も主要な入口を保ち、候補の選択とフォーカスを同期する", async ({ page }) => {
+test("検索中も主要なリンクを保ち、候補の選択とフォーカスを同期する", async ({ page }) => {
   await page.goto("/components/command-menu");
   const root = page.locator('[data-example="hono"] .ply-command-menu');
   const trigger = root.getByRole("button", { name: "Plyの道具箱", exact: true });
@@ -32,11 +32,20 @@ test("検索中も主要な入口を保ち、候補の選択とフォーカス�
   await search.press("ArrowDown");
   await expect(search).toBeFocused();
   await expect(search).toHaveAttribute("aria-activedescendant", "command-example-entry-0-1");
+  // 移り先は利用するアプリが決めるので、画面は移さず、Enterで開くリンクを確かめる。
+  await page.evaluate(() =>
+    document.addEventListener("click", (event) => {
+      const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
+      if (!link) return;
+      event.preventDefault();
+      document.documentElement.dataset.followed = link.getAttribute("href") ?? "";
+    }),
+  );
   await search.press("Enter");
-  await expect(page).toHaveURL(/\/components\/table$/);
+  await expect(page.locator("html")).toHaveAttribute("data-followed", /\/components\/table$/);
 });
 
-test("操作の値を通知し、Esc・外側クリック・Tabで自然に閉じる", async ({ page }) => {
+test("操作の値を通知し、Esc・外側クリック・Tabで閉じる", async ({ page }) => {
   await page.goto("/components/command-menu");
   const root = page.locator('[data-example="hono"] .ply-command-menu');
   await root.evaluate((element) =>
@@ -76,7 +85,7 @@ test("CtrlまたはCmdとKで開閉し、パネルは480pxで背景を暗転し�
   await page.keyboard.press("Control+k");
   const panel = page.getByRole("dialog");
   await expect(panel).toBeVisible();
-  // 膨らんで現れる動きの途中で測らないよう、動きの終わりを待つ。
+  // 拡大しながら現れる動きの途中で測らないよう、動きの終わりを待つ。
   await panel.evaluate((element) =>
     Promise.all(element.getAnimations().map((animation) => animation.finished)),
   );
@@ -132,8 +141,17 @@ test("Tabで候補へ移った後も矢印・Home・End・Enterで操作でき�
   await expect(panel.getByRole("link", { name: /CommandMenu/ })).toBeFocused();
   await page.keyboard.press("Home");
   await page.keyboard.press("ArrowDown");
+  // 移り先は利用するアプリが決めるので、画面は移さず、Enterで開くリンクを確かめる。
+  await page.evaluate(() =>
+    document.addEventListener("click", (event) => {
+      const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
+      if (!link) return;
+      event.preventDefault();
+      document.documentElement.dataset.followed = link.getAttribute("href") ?? "";
+    }),
+  );
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/\/components\/table$/);
+  await expect(page.locator("html")).toHaveAttribute("data-followed", /\/components\/table$/);
 });
 
 test("ShiftとJの任意設定は入力や日本語変換を奪わない", async ({ page }) => {

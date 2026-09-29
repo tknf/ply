@@ -16,7 +16,7 @@
       flex-wrap: wrap;
       align-items: end;
       gap: var(--ply-space-3);
-      /* 並びの下に細い線を引き、今のタブの青い印をその上に重ねる。 */
+      /* 並びの下に細い線を引き、今のタブの青いインジケーターをその上に重ねる。 */
       box-shadow: inset 0 calc(var(--ply-stroke-width) * -1) var(--ply-border);
       & > button {
         appearance: none;
@@ -67,7 +67,7 @@
           outline: 0.125rem solid var(--ply-link);
           outline-offset: 0.125rem;
         }
-        /* 今のタブは現在地。インクの太字と、下の青い2pxの印。 */
+        /* 今のタブは現在地。濃い色の太字と、下の青い2pxのインジケーター。 */
         &[data-state="active"] {
           box-shadow: inset 0 calc(var(--ply-frame-width) * -1) var(--ply-link);
           color: var(--ply-text);

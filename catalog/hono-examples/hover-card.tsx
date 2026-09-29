@@ -6,11 +6,11 @@ export default () => (
       id="hover-card-summary"
       label="公開準備"
       description="案件の進行と担当者"
-      actions={<ActionLink href="/examples/project">案件を開く</ActionLink>}
+      actions={<ActionLink href="/apps/project">案件を開く</ActionLink>}
     >
       <p>担当者：田中 遥</p>
     </HoverCard>
-    <HoverCard id="hover-card-link" label="資料一覧" href="/files" size="compact">
+    <HoverCard id="hover-card-link" label="資料一覧" href="/apps/files" size="compact">
       <p>追加された資料と更新日を確認できます。</p>
     </HoverCard>
   </div>

@@ -5,11 +5,11 @@
     inline-size: min(var(--ply-dialog-width), calc(100% - var(--ply-space-8)));
     max-inline-size: calc(100% - var(--ply-space-8));
     max-block-size: calc(100dvh - var(--ply-space-8));
-    /* 角の閉じる操作をはみ出させるため、紙は切り取らず本文だけをスクロールする。 */
+    /* 角の閉じる操作をはみ出させるため、パネルは切り取らず本文だけをスクロールする。 */
     overflow: visible;
     padding: 0;
     font-family: var(--ply-control-font-family);
-    /* 出入りの動きはoverlay.cssの共通の定義。中央の紙は中央を支点に膨らむ。背景の暗さだけここで一緒に変える。 */
+    /* 開閉のアニメーションはoverlay.cssの共通の定義。中央のパネルは中央を支点に膨らむ。背景の暗さだけここで一緒に変える。 */
     &[open] {
       display: grid;
       grid-template-rows: auto minmax(0, 1fr) auto;
@@ -53,8 +53,8 @@
   }
   /*
     狭い画面のタッチ操作では、画面の下に付くシートにする。
-    上端のハンドルとその周りを下へ引くと閉じる（DialogControllerが--ply-dialog-sheetを見て有効にする）。
-    閉じる操作は見出しの行の終わりに置き、題名を隠さない。下端は操作の後にホームバーの分も空ける。
+    上端のハンドルとその周りを下へドラッグすると閉じる（DialogControllerが--ply-dialog-sheetを見て有効にする）。
+    閉じる操作は見出しの行の末尾に置き、題名を隠さない。下端は操作の後にホームバーの分も空ける。
   */
   @media (max-width: 40rem) and (pointer: coarse) {
     .ply-dialog > .panel {
@@ -72,7 +72,7 @@
       --ply-motion-slide: var(--ply-duration-pop);
       --ply-motion-scale-in: 1;
       --ply-motion-scale-out: 1;
-      /* 上端のハンドル。引いて閉じられることを示す。 */
+      /* 上端のハンドル。ドラッグして閉じられることを示す。 */
       &::before {
         content: "";
         position: absolute;
@@ -84,7 +84,7 @@
         background: color-mix(in srgb, var(--ply-ink) 18%, var(--ply-surface));
         translate: -50% 0;
       }
-      /* 画面の下に付く紙は、膨らませず下から滑り上げる。引いている間は指に付いて動かす。 */
+      /* 画面の下に付くパネルは、膨らませず下から滑り上げる。ドラッグしている間はポインターに合わせて動かす。 */
       &:not([open]) {
         translate: 0 100%;
       }

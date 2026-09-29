@@ -16,12 +16,12 @@ export default () => (
     <TagGroup label="記事の分類">
       <Tag label="暮らし" />
       <Tag label="読書会" accent="blue" />
-      <Tag label="仕事場の記事" href="/search?q=仕事場" />
+      <Tag label="仕事場の記事" href="/apps/search?q=仕事場" />
       <Tag label="公開済み" accent="green" />
       <Tag label="確認中" accent="amber" />
     </TagGroup>
     <DisclosureGroup label="色と置き場所の違い">
-      <Disclosure summary="色ごとの札" open>
+      <Disclosure summary="色ごとのタグ" open>
         <TagGroup label="色ごとの分類">
           <Tag label="分類なし" />
           <Tag label="読書会" accent="blue" />
@@ -30,16 +30,16 @@ export default () => (
           <Tag label="要対応" accent="coral" />
         </TagGroup>
       </Disclosure>
-      <Disclosure summary="分類へ移る札" open>
+      <Disclosure summary="分類へ移動するタグ" open>
         <TagGroup label="分類から探す">
-          <Tag label="仕事場の記事" href="/search?q=仕事場" />
-          <Tag label="読書会" accent="blue" href="/search?q=読書会" />
-          <Tag label="イベント" accent="green" href="/search?q=イベント" />
-          <Tag label="お知らせ" accent="amber" href="/search?q=お知らせ" />
-          <Tag label="締め切り" accent="coral" href="/search?q=締め切り" />
+          <Tag label="仕事場の記事" href="/apps/search?q=仕事場" />
+          <Tag label="読書会" accent="blue" href="/apps/search?q=読書会" />
+          <Tag label="イベント" accent="green" href="/apps/search?q=イベント" />
+          <Tag label="お知らせ" accent="amber" href="/apps/search?q=お知らせ" />
+          <Tag label="締め切り" accent="coral" href="/apps/search?q=締め切り" />
         </TagGroup>
       </Disclosure>
-      <Disclosure summary="外せる札">
+      <Disclosure summary="解除できるタグ">
         <TagGroup label="選んだ分類">
           <Tag label="暮らし" removeButton={removeButton("暮らし")} />
           <Tag label="読書会" accent="blue" removeButton={removeButton("読書会")} />
@@ -51,7 +51,7 @@ export default () => (
           <TagGroup label="長い分類">
             <Tag label="初めて仕事場を利用する方へのご案内" accent="blue" />
             <Tag label="https://example.com/articles/autumn-reading-club-2026" />
-            <Tag label="秋の読書会の参加者向け" href="/search?q=読書会" />
+            <Tag label="秋の読書会の参加者向け" href="/apps/search?q=読書会" />
           </TagGroup>
         </div>
       </Disclosure>
@@ -60,7 +60,7 @@ export default () => (
           <TagGroup label="التصنيفات">
             <Tag label="الحياة" />
             <Tag label="نادي القراءة" accent="blue" />
-            <Tag label="الفعاليات" accent="green" href="/search?q=events" />
+            <Tag label="الفعاليات" accent="green" href="/apps/search?q=events" />
             <Tag label="قيد المراجعة" accent="amber" removeButton={removeButton("قيد المراجعة")} />
           </TagGroup>
         </div>

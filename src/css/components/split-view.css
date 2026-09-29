@@ -1,6 +1,6 @@
 @layer components {
   /*
-    二つの面は一枚の紙に並べ、境目には細い罫線を一本だけ引く。
+    二つの面は一枚のカードに並べ、境目には細い罫線を一本だけ引く。
     狭い幅では上下に積み、罫線は横になる。
   */
   .ply-split-view {
@@ -21,7 +21,7 @@
         padding-inline: var(--ply-space-8);
         overflow-wrap: anywhere;
       }
-      /* 縦に積んだ時の境目は持ち手を持たないので、枠線の色の半分ほどの淡さにする。 */
+      /* 縦に積んだ時の境目はハンドルを持たないので、枠線の色の半分ほどの淡さにする。 */
       & > .secondary {
         border-block-start: var(--ply-stroke-width) solid
           color-mix(in srgb, var(--ply-border) 55%, var(--ply-surface));
@@ -44,11 +44,11 @@
       &[data-layout="reader"] > .panes {
         grid-template-columns: minmax(18rem, 0.6fr) minmax(0, 1fr);
       }
-      /* 幅を変えない時の境目は、持ち手の目印にならないので、縦に積んだ時と同じ淡い色にする。 */
+      /* 幅を変えない時の境目は、ハンドルの目印にならないので、縦に積んだ時と同じ淡い色にする。 */
       &:not([data-resizable="true"][data-state]) > .panes > .secondary {
         border-inline-start-color: color-mix(in srgb, var(--ply-border) 55%, var(--ply-surface));
       }
-      /* 幅を変えられる時は、境目の罫線の上に持ち手を重ねる。 */
+      /* 幅を変えられる時は、境目の罫線の上にハンドルを重ねる。 */
       &[data-resizable="true"][data-state] > .panes {
         position: relative;
         grid-template-columns:
@@ -60,8 +60,8 @@
       }
     }
     /*
-      持ち手は、境目の罫線の中ほどに置いた控えめなつまみ。
-      境目全体をつかめるように、持ち手は面の上下いっぱいに重ねる。
+      ハンドルは、境目の罫線の中ほどに置いた控えめなつまみ。
+      境目全体をつかめるように、ハンドルは面の上下いっぱいに重ねる。
     */
     & > .panes > .handle {
       display: none;
@@ -103,7 +103,7 @@
       &:focus-visible::before {
         background: var(--ply-link);
       }
-      /* つかんでいる間は、押した物と同じく影が内側へ移る。 */
+      /* つかんでいる間は、押したボタンと同じく影が内側へ移る。 */
       &[data-state="dragging"] > .grip {
         box-shadow: var(--ply-shadow-control-pressed);
       }

@@ -11,8 +11,8 @@ export type SurfaceProps = PropsWithChildren<
 >;
 
 /**
- * 作業面（sheet）。AppShellを使わない画面で、仕事の中身を一枚の白い面にまとめる。
- * 見た目の定義はAppShellの作業面と共通。一件の紙はCard、役割の色の面はNoticeを使う。
+ * 作業面（sheet）。AppShellを使わない画面で、仕事の中身を一つの白い領域にまとめる。
+ * 見た目の定義はAppShellの作業面と共通。一件ごとのカードはCard、役割の色の背景はNoticeを使う。
  */
 export const Surface = ({
   children,

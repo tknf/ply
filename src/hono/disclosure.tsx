@@ -2,12 +2,18 @@ import type { PropsWithChildren } from "hono/jsx";
 import { classes, type ElementProps } from "./types";
 import { Icon } from "./icon";
 
+/** 開閉する項目を狭い間隔で縦に並べ、一つのまとまりとして読ませる。 */
 export const DisclosureGroup = ({
   children,
   label,
   class: className,
   ...attributes
-}: PropsWithChildren<ElementProps<"div"> & { label: string }>) => (
+}: PropsWithChildren<
+  ElementProps<"div"> & {
+    /** まとまりの名前。`role="group"`の`aria-label`として読み上げる。 */
+    label: string;
+  }
+>) => (
   <div
     {...attributes}
     class={classes("ply-disclosure-group", className)}
@@ -25,7 +31,14 @@ export const Disclosure = ({
   description,
   class: className,
   ...attributes
-}: PropsWithChildren<ElementProps<"details"> & { summary: string; description?: string }>) => (
+}: PropsWithChildren<
+  ElementProps<"details"> & {
+    /** 開閉の操作になる見出し。`summary`の中に置く。 */
+    summary: string;
+    /** 見出しの下に添える、閉じていても見える短い補足。 */
+    description?: string;
+  }
+>) => (
   <details {...attributes} class={classes("ply-disclosure", className)}>
     <summary>
       <span class="marker" aria-hidden="true">

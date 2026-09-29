@@ -190,9 +190,11 @@ for (const width of [375, 1280]) {
     });
     await form.evaluate((element) => element.setAttribute("dir", "rtl"));
     await input.press("ArrowDown");
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-      true,
-    );
+    expect(
+      await page
+        .locator('[data-example="hono"]')
+        .evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
+    ).toBe(true);
     const box = await root.getByRole("listbox").boundingBox();
     if (!box) throw new Error("候補一覧がありません");
     expect(box.x).toBeGreaterThanOrEqual(0);

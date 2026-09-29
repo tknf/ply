@@ -5,27 +5,57 @@ export const TagGroup = ({
   label,
   class: className,
   ...attributes
-}: PropsWithChildren<ElementProps<"div"> & { label: string }>) => (
+}: PropsWithChildren<
+  ElementProps<"div"> & {
+    /** まとまりの名前。role="group"のaria-labelにする。 */
+    label: string;
+  }
+>) => (
   <div {...attributes} class={classes("ply-tag-group", className)} role="group" aria-label={label}>
     {children}
   </div>
 );
-export type TagProps = { label: string; accent?: Accent } & (
-  | { href?: string; removeButton?: never }
-  | { href?: never; removeButton: Child }
-);
-export const Tag = ({ label, href, accent, removeButton }: TagProps) =>
+export type TagProps = ElementProps<"span"> & {
+  /** タグの文言。長い文言は省略せずに折り返す。 */
+  label: string;
+  /** 縁と文字の色。分類を見分けるために使う。渡さなければ淡い灰のタグにする。 */
+  accent?: Accent;
+} & (
+    | {
+        /** 渡すとタグを分類へ移るリンクにする。removeButtonとは同時に使えない。 */
+        href?: string;
+        removeButton?: never;
+      }
+    | {
+        href?: never;
+        /**
+         * タグの末尾に置く解除操作。空のButton（variant="link"・size="tag"・class="remove"・
+         * data-icon-only="true"）に「〇〇を解除」のaria-labelを付けて渡すと、×のアイコンを描く。
+         * 解除した後の処理は利用側が持つ。
+         */
+        removeButton: Child;
+      }
+  );
+/** HTML属性はルート（リンクの時はa、それ以外はspan）に渡す。 */
+export const Tag = ({
+  label,
+  href,
+  accent,
+  removeButton,
+  class: className,
+  ...attributes
+}: TagProps) =>
   href ? (
-    <a class="ply-tag" data-accent={accent} href={href}>
+    <a {...attributes} class={classes("ply-tag", className)} data-accent={accent} href={href}>
       {label}
     </a>
   ) : removeButton ? (
-    <span class="ply-tag removable" data-accent={accent}>
+    <span {...attributes} class={classes("ply-tag removable", className)} data-accent={accent}>
       <span class="label">{label}</span>
       {removeButton}
     </span>
   ) : (
-    <span class="ply-tag" data-accent={accent}>
+    <span {...attributes} class={classes("ply-tag", className)} data-accent={accent}>
       {label}
     </span>
   );

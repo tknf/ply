@@ -4,20 +4,36 @@ import { Icon } from "./icon";
 import { classes, type ElementProps } from "./types";
 
 export type TaskListProps = ElementProps<"div"> & {
+  /** 行の一覧（ul）の読み上げ名。 */
   label: string;
-  /** 一覧の外側の見出し。開閉でき、未完了の数と進み具合を添える。 */
+  /** 一覧の外側の見出し。開閉でき、終えた数と進み具合を添える。 */
   heading?: string;
   /** 行の一覧の上に書く、この一覧の名前。 */
   title?: string;
-  /** 最後の行に置く、項目を書き足す欄。送信と追加は利用側のフォームで扱う。 */
-  add?: { name: string; placeholder: string; form?: string };
-  items: readonly {
+  /** 最後の行に置く、項目を追加する欄。送信と追加は利用側のフォームで扱う。 */
+  add?: {
+    /** 追加した文を送る名前。 */
     name: string;
+    /** 欄のプレースホルダー。欄の読み上げ名にも使う。 */
+    placeholder: string;
+    /** 一覧の外にあるフォームのid。欄をそのフォームで送る。 */
+    form?: string;
+  };
+  /** 行の一覧。各行は標準のcheckbox。 */
+  items: readonly {
+    /** checkboxをフォームで送る名前。 */
+    name: string;
+    /** 項目の題名。checkboxのラベルになる。 */
     label: string;
+    /** 終えた項目。チェックを付け、題名に線を引く。 */
     checked?: boolean;
+    /** 操作できない項目。 */
     disabled?: boolean;
+    /** 題名の下に添える補足（担当・期日など）。 */
     detail?: Child;
+    /** checkboxの値。省くと標準どおり`on`を送る。 */
     value?: string;
+    /** 行の末尾に置く要素（AvatarやBadgeなど）。 */
     end?: Child;
   }[];
 };
@@ -33,7 +49,7 @@ export const TaskList = ({
   const sheet = (
     <ul class="sheet" aria-label={label}>
       {title && (
-        <li class="heading" role="none">
+        <li class="heading">
           <h3 class="title">{title}</h3>
         </li>
       )}
@@ -85,16 +101,19 @@ export const TaskList = ({
       data-controller={controller}
       data-action={action}
       style={`--ply-task-progress: ${items.length ? done / items.length : 0}`}
+      data-complete={items.length > 0 && done === items.length ? "true" : undefined}
     >
       <summary>
         <span class="marker" aria-hidden="true">
           <Icon name="caret" />
         </span>
         <span class="name">{heading}</span>
-        <span class="remaining" data-task-list-target="remaining">
-          未完了{items.length - done}件
+        {/* 終えた割合だけ塗る円と「終えた数/全体」で進み具合を示す。 */}
+        <span class="pie" aria-hidden="true" />
+        <span class="count">
+          <span class="ply-visually-hidden">完了</span>
+          <span data-task-list-target="done">{done}</span>/{items.length}
         </span>
-        <span class="meter" aria-hidden="true" />
       </summary>
       {sheet}
     </details>

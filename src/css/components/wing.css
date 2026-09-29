@@ -1,14 +1,20 @@
 @layer components {
   /*
-    Wingは作業面の後ろへ差し込む固定幅の白い紙。縁取りを持たず、やわらかな影と作業面から落ちる影で分ける。
-    広い配置では開閉に関わらず作業面に合わせた全長の高さを持ち、閉じている間は作業面の縁から持ち手の幅だけを出す。
-    閉じた持ち手はアイコンと開閉の印だけを載せ、名前はツールチップで示す。開くと幅が伸び、上端に横書きの見出しが並ぶ。
+    Wingは作業面の後ろへ差し込む固定幅の白いパネル。縁取りを持たず、やわらかな影と作業面から落ちる影で分ける。
+    広い配置では開閉に関わらず作業面に合わせた全長の高さを持ち、閉じている間は作業面の縁からハンドルの幅だけを出す。
+    閉じたハンドルはアイコンと開閉のマークだけを載せ、名前はツールチップで示す。開くと幅が伸び、上端に横書きの見出しが並ぶ。
   */
   .ply-wing {
     --ply-wing-handle: 2.75rem;
     --ply-wing-panel: 14rem;
     --ply-wing-tuck: var(--ply-radius-surface);
     --ply-wing-inset: var(--ply-space-6);
+    /*
+      開閉の動きはDialog・Popoverと同じ時間と加速にする（overlay.cssの定義）。閉じる時は短くease-inで、
+      開く時（[open]で上書き）は少し長く、滑らかに減速して止まる。中身の出入りは短いease-outで薄れる。
+    */
+    --ply-wing-duration: var(--ply-duration-out);
+    --ply-wing-ease: ease-in;
     container: ply-wing / inline-size;
     min-inline-size: 0;
     /* 狭い配置で、閉じた高さ0から内容の高さ（auto）へ伸び縮みさせる。 */
@@ -23,18 +29,18 @@
         z-index: 1;
         min-inline-size: 0;
       }
-      /* 狭い配置の既定。見出しの行を持つ紙として、作業面の上下へ積む。 */
+      /* 狭い配置の既定。見出しの行を持つパネルとして、作業面の上下へ積む。 */
       & > :is(.start, .end) {
         position: relative;
         min-inline-size: 0;
         overflow: hidden;
-        /* ツールチップの基準を、Wingごとの持ち手に限る。 */
+        /* ツールチップの基準を、Wingごとのハンドルに限る。 */
         anchor-scope: --ply-wing-tab;
-        /* 寸法を保つため枠の幅は残し、線は見せない。持ち手と中身も同じ色で、区切り線を引かない。 */
+        /* 寸法を保つため枠の幅は残し、線は見せない。ハンドルと中身も同じ色で、区切り線を引かない。 */
         border: var(--ply-stroke-width) solid transparent;
         border-radius: var(--ply-radius-surface);
         background: var(--ply-surface);
-        /* 紙の白は透明な枠の内側だけに塗り、見出しの帯と紙の縁の間に白い縁を残さない。 */
+        /* パネルの白は透明な枠の内側だけに塗り、見出しの背景とパネルの縁の間に白い縁を残さない。 */
         background-clip: padding-box;
         box-shadow: var(--ply-shadow-paper);
         color: var(--ply-text);
@@ -55,12 +61,12 @@
           overflow-wrap: anywhere;
           cursor: pointer;
           anchor-name: --ply-wing-tab;
-          /* 帯の層を持ち手の中に閉じ込め、ボタンと名前の後ろに敷く。 */
+          /* 背景の層をハンドルの中に収め、ボタンと名前の後ろに敷く。 */
           position: relative;
           isolation: isolate;
           transition: color var(--ply-duration) ease;
           /*
-            見出しの帯。上端の淡い面の色から下端で紙の白へ溶けるグラデーションにし、下の縁を線にしない。
+            見出しの背景。上端の淡い面の色から下端でパネルの白へ変わるグラデーションにし、下の縁を線にしない。
             グラデーションは色の変化として動かせないので、層ごと薄れさせる。開いている間だけ見せる。
           */
           &::before {
@@ -71,7 +77,7 @@
             border-radius: inherit;
             background: linear-gradient(var(--ply-background), var(--ply-surface));
             opacity: 0;
-            transition: opacity calc(var(--ply-duration) * 2) ease;
+            transition: opacity var(--ply-duration-fade) ease-out;
           }
           /* 名前のツールチップは、広い配置で閉じている時だけ出す。 */
           & > .tip {
@@ -86,11 +92,11 @@
           &:focus-visible {
             outline-offset: -0.125rem;
           }
-          /* 持ち手のボタンは共通Buttonの主操作のアイコンだけの形。アイコンがない時は開閉の印で、向きで開閉を示す。 */
+          /* ハンドルのボタンは共通Buttonの主操作のアイコンだけの形。アイコンがない時は開閉のマークで、向きで開閉を示す。 */
           & > .handle {
             flex: none;
             &[data-fallback="caret"] > .ply-icon {
-              transition: rotate calc(var(--ply-duration) * 2) ease;
+              transition: rotate var(--ply-wing-duration) var(--ply-wing-ease);
             }
           }
           & > .label {
@@ -108,7 +114,7 @@
           font-size: var(--ply-label);
           line-height: var(--ply-label-leading);
           overflow-wrap: anywhere;
-          transition: opacity calc(var(--ply-duration) * 2) ease;
+          transition: opacity var(--ply-duration-fade) ease-out;
           @starting-style {
             opacity: 0;
           }
@@ -118,18 +124,20 @@
           block-size: 0;
           overflow: clip;
           transition:
-            block-size calc(var(--ply-duration) * 2) ease,
-            content-visibility calc(var(--ply-duration) * 2) allow-discrete;
+            block-size var(--ply-wing-duration) var(--ply-wing-ease),
+            content-visibility var(--ply-wing-duration) allow-discrete;
         }
         &:not([open]) > .body {
           opacity: 0;
         }
       }
       & > :is(.start, .end)[open] {
+        --ply-wing-duration: var(--ply-duration-pop);
+        --ply-wing-ease: var(--ply-ease-slide);
         &::details-content {
           block-size: auto;
         }
-        /* 開いている間は見出しの帯を見せる。閉じる時は紙が縮むのと同じ時間で薄れる。 */
+        /* 開いている間は見出しの背景を見せる。閉じる時はパネルが縮むのと同じ時間で薄れる。 */
         & > summary {
           color: var(--ply-text);
           &::before {
@@ -142,8 +150,8 @@
       }
     }
     /*
-      作業面の後ろへ差し込む配置。左右の列は開閉に関わらず持ち手＋パネルの幅を確保し、作業面を動かさない。
-      Wingは作業面の上端から一段下げ、内側の縁を作業面の角丸の分だけ潜らせる。
+      作業面の後ろへ差し込む配置。左右の列は開閉に関わらずハンドル＋パネルの幅を確保し、作業面を動かさない。
+      Wingは作業面の上端から一段下げ、内側の縁を作業面の角丸の分だけ作業面の下に入れる。
     */
     @container ply-wing (inline-size >= 56rem) {
       & > .layout {
@@ -167,19 +175,19 @@
           min-block-size: calc(100% - var(--ply-wing-inset) * 2);
           margin-block-start: var(--ply-wing-inset);
           /*
-            閉じている間は、紙を作業面の縁から10pxだけのぞかせ、持ち手のボタンを紙の外側の縁にまたがせて半分はみ出させる。
-            指を載せるか持ち手へ移ると、のぞきが少し広がる。はみ出た中身や名前は作業面の側へ伸びて作業面に隠れるので、
-            この配置では紙で切らない。
+            閉じている間は、パネルを作業面の縁から10pxだけのぞかせ、ハンドルのボタンをパネルの外側の縁にまたがせて半分はみ出させる。
+            ホバーするかハンドルへ移ると、のぞく幅が少し広がる。はみ出た中身や名前は作業面の側へ伸びて作業面に隠れるので、
+            この配置ではパネルで切らない。
           */
           overflow: visible;
           inline-size: calc(0.625rem + var(--ply-wing-tuck));
-          transition: inline-size calc(var(--ply-duration) * 2) ease;
+          transition: inline-size var(--ply-wing-duration) var(--ply-wing-ease);
           &:not([open]):has(> summary:is(:hover, :focus-visible)) {
             inline-size: calc(1.125rem + var(--ply-wing-tuck));
           }
           /*
-            持ち手は開閉に関わらず、開き切った時の幅の横並びのまま外側の縁に付け、ボタンは常に外側の縁に置く。
-            閉じている間、名前は紙の潜った部分に隠れ、紙の伸び縮みと一緒に現れ・隠れる。組み替えないのでちらつかない。
+            ハンドルは開閉に関わらず、開き切った時の幅の横並びのまま外側の縁に付け、ボタンは常に外側の縁に置く。
+            閉じている間、名前はパネルの作業面の下に入った部分に隠れ、パネルの伸び縮みと一緒に現れ・隠れる。組み替えないのでちらつかない。
             フォーカスの輪は、閉じても隠れないようボタンの周りに出す。
           */
           & > summary {
@@ -188,8 +196,8 @@
             inline-size: calc(var(--ply-wing-handle) + var(--ply-wing-panel));
             transition:
               color var(--ply-duration) ease,
-              inset-inline-start calc(var(--ply-duration) * 2) ease,
-              inset-inline-end calc(var(--ply-duration) * 2) ease;
+              inset-inline-start var(--ply-wing-duration) var(--ply-wing-ease),
+              inset-inline-end var(--ply-wing-duration) var(--ply-wing-ease);
             &:focus-visible {
               outline: none;
               & > .handle {
@@ -199,8 +207,8 @@
             }
           }
           /*
-            中身は開き切った時の幅に固定し、外側の縁に付けて置く。紙が作業面の後ろから滑り出るのに合わせて
-            中身も縁と一緒に出てくるので、途中で折り返し直さない。はみ出た分は紙の内側の縁で切れる。
+            中身は開き切った時の幅に固定し、外側の縁に付けて置く。パネルが作業面の後ろから出てくるのに合わせて
+            中身も縁と一緒に出てくるので、途中で折り返し直さない。はみ出た分はパネルの内側の縁で切れる。
           */
           & > .body {
             position: absolute;
@@ -211,14 +219,14 @@
             overflow-y: auto;
             padding-block: var(--ply-space-4);
           }
-          /* 横の配置では高さを縮めず、紙の伸び縮みと中身の薄れだけで開閉する。 */
+          /* 横の配置では高さを縮めず、パネルの伸び縮みと中身の薄れだけで開閉する。 */
           &::details-content {
             block-size: auto;
             overflow: visible;
           }
         }
         /*
-          閉じた持ち手の名前のツールチップ。共通Tooltipと同じ面で、持ち手の外側に出す。
+          閉じたハンドルの名前のツールチップ。共通Tooltipと同じ面で、ハンドルの外側に出す。
           detailsはoverflowで切るが、固定配置の要素は切られない。
         */
         @supports (inset-block-start: anchor(start)) {
@@ -244,7 +252,7 @@
               opacity var(--ply-duration) ease,
               visibility 0s linear var(--ply-duration);
           }
-          /* 開いている間は名前が見えているので出さない。閉じた瞬間に残り火のように見えないよう、動きも付けない。 */
+          /* 開いている間は名前が見えているので出さない。閉じた瞬間に一瞬残って見えないよう、動きも付けない。 */
           & > :is(.start, .end)[open] > summary > .tip {
             transition: none;
           }
@@ -257,13 +265,13 @@
           & > :is(.start, .end):not([open]) > summary:is(:hover, :focus-visible) > .tip {
             opacity: 1;
             visibility: visible;
-            /* 閉じた直後に指が残っていても、紙が縮み切ってから出す。 */
+            /* 閉じた直後にポインターが残っていても、パネルが縮み切ってから出す。 */
             transition:
-              opacity var(--ply-duration) ease calc(var(--ply-duration) * 2 + 150ms),
-              visibility 0s linear calc(var(--ply-duration) * 2 + 150ms);
+              opacity var(--ply-duration) ease calc(var(--ply-duration-out) + 150ms),
+              visibility 0s linear calc(var(--ply-duration-out) + 150ms);
           }
         }
-        /* 開いた紙は幅が伸び、潜っていた名前と中身が出てくる。 */
+        /* 開いたパネルは幅が伸び、隠れていた名前と中身が出てくる。 */
         & > :is(.start, .end)[open] {
           inline-size: calc(var(--ply-wing-handle) + var(--ply-wing-panel) + var(--ply-wing-tuck));
         }
@@ -271,11 +279,11 @@
           grid-column: 1;
           justify-self: end;
           margin-inline-end: calc(var(--ply-wing-tuck) * -1);
-          /* ボタンの中心（外側の縁から4px＋半径18px）を紙の外側の縁に合わせる。 */
+          /* ボタンの中心（外側の縁から4px＋半径18px）をパネルの外側の縁に合わせる。 */
           &:not([open]) > summary {
             inset-inline-start: calc((var(--ply-space-1) + 1.125rem) * -1);
           }
-          /* 紙で切らない配置なので、見出しの帯の外側の上の角を紙の角丸に合わせる。 */
+          /* パネルで切らない配置なので、見出しの背景の外側の上の角をパネルの角丸に合わせる。 */
           & > summary {
             inset-inline-start: 0;
             border-start-start-radius: calc(var(--ply-radius-surface) - var(--ply-stroke-width));

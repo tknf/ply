@@ -145,7 +145,7 @@ export default () => (
             description="このプロジェクトの記事、添付ファイル、コメントを削除します。参加しているメンバー全員が閲覧できなくなり、共有済みのリンクからもアクセスできなくなります。"
             actions={
               <>
-                <ActionLink href="/files">添付ファイルを確認する</ActionLink>
+                <ActionLink href="/apps/files">添付ファイルを確認する</ActionLink>
                 <Dialog
                   id="danger-zone-project"
                   title="プロジェクトを削除しますか？"

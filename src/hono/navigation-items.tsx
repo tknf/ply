@@ -2,10 +2,15 @@ import { ActionLink } from "./button";
 import type { Child } from "hono/jsx";
 
 export type NavigationItem = {
+  /** 項目の名前。 */
   label: string;
+  /** 移動先のURL。現在地の項目もリンクのまま出す。 */
   href: string;
+  /** 今いる項目。aria-current="page"を付け、見た目でも現在地として示す。 */
   current?: boolean;
+  /** 名前の後に出す件数。0も表示し、省略すると出さない。 */
   count?: number;
+  /** 名前の前のアイコン（Iconなど）。 */
   icon?: Child;
 };
 

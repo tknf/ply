@@ -6,24 +6,45 @@ import { Tag } from "./tag";
 import { classes } from "./types";
 
 export type ColorPickerValue = {
+  /** 色を解釈する色空間。画面からは変えられず、`${name}[colorSpace]`でそのまま送る。 */
   colorSpace: "srgb" | "display-p3";
+  /** 色相。0〜360度。範囲外の値は範囲内に収める。 */
   hue: number;
+  /** HSVの彩度。0〜100パーセント。範囲外の値は範囲内に収める。 */
   saturation: number;
+  /** HSVの明度。0〜100パーセント。範囲外の値は範囲内に収める。 */
   brightness: number;
+  /** 不透明度。0〜1。範囲外の値は範囲内に収める。 */
   alpha: number;
 };
 
 export type ColorPickerProps = {
+  /** ルートのfieldsetのID。中の欄のIDの接頭辞にも使う。渡さなければ自動で生成する。 */
   id?: string;
+  /** ルートのfieldsetに追加するクラス。 */
   class?: string;
+  /** 欄全体の名前。legendに出し、色の面の読み上げ名にも使う。 */
   label: string;
+  /** 送信する名前の接頭辞。`${name}[hue]`・`[saturation]`・`[brightness]`・`[alpha]`・`[colorSpace]`で送信する。 */
   name: string;
+  /** 初期の色。 */
   value?: ColorPickerValue;
+  /** 欄の下に出す補足。fieldsetのaria-describedbyに関連付ける。 */
   help?: string;
+  /** 欄の下に出すエラー文。fieldsetをaria-invalidにする。検証は利用側で行う。 */
   error?: string;
+  /** 色の面とスライダーをすべて使えなくする。値は送信しない。 */
   disabled?: boolean;
+  /** 別の場所にあるformのID。送信する全ての欄に付ける。 */
   form?: string;
+  /** 色の面を矢印キーで動かす時の、彩度・明度の幅（0より大きく100以下）。Shiftを押すと10倍。 */
   step?: number;
+  /**
+   * 使わない。互換のために型だけを残し、渡しても何も変わらない。
+   * 上流のcolor-pickerでは色相環を矢印キーで動かす幅だが、このコンポーネントは色相環を持たず、
+   * 色相のスライダーは他のスライダーと同じくブラウザの標準の動きで値を変える。
+   * @deprecated 効果が無い。渡さない。
+   */
   hueStep?: number;
 };
 
@@ -60,7 +81,6 @@ export const ColorPicker = ({
   disabled,
   form,
   step = 1,
-  hueStep = 1,
 }: ColorPickerProps) => {
   const generatedId = useId();
   const pickerId = id ?? `ply-color-picker-${generatedId}`;
@@ -100,9 +120,6 @@ export const ColorPicker = ({
       data-controller="color-picker"
       data-color-picker-value-value={JSON.stringify(current)}
       data-color-picker-step-value={Number.isFinite(step) && step > 0 && step <= 100 ? step : 1}
-      data-color-picker-hue-step-value={
-        Number.isFinite(hueStep) && hueStep > 0 && hueStep <= 360 ? hueStep : 1
-      }
       style={`--color-picker-hue: ${current.hue}; --color-picker-saturation: ${current.saturation / 100}; --color-picker-brightness: ${current.brightness / 100}; --color-picker-alpha: ${current.alpha}; --color-picker-color: color(${current.colorSpace} ${rgb} / ${current.alpha}); --color-picker-hue-color: color(${current.colorSpace} ${hueColor} / 1); --color-picker-fallback: color(srgb ${rgb} / ${current.alpha})`}
     >
       <legend id={`${pickerId}-label`}>{label}</legend>

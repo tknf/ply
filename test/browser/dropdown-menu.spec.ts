@@ -5,6 +5,49 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/components/dropdown-menu");
 });
 
+test("Endで末尾へ移りEnterで選んだ値をdropdown-menu:selectで渡し、操作へ戻る", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.locator('[data-example="hono"]').evaluate((element) => {
+    element.addEventListener("dropdown-menu:select", (event) => {
+      if (
+        event instanceof CustomEvent &&
+        typeof event.detail === "object" &&
+        event.detail !== null &&
+        "value" in event.detail &&
+        typeof event.detail.value === "string"
+      ) {
+        element.setAttribute("data-selected", event.detail.value);
+      }
+    });
+  });
+  await page.getByRole("button", { name: "項目の操作", exact: true }).click();
+  await page.keyboard.press("End");
+  await expect(page.getByRole("menuitem", { name: "複製する", exact: true })).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page.locator('[data-example="hono"]')).toHaveAttribute("data-selected", "copy");
+  await expect(page.getByRole("button", { name: "項目の操作", exact: true })).toBeFocused();
+});
+
+test("主操作とDropdownを接続しメニューを開ける", async ({ page }) => {
+  await page
+    .getByText("トリガーのサイズ・アイコンのみ・主要操作との組み合わせ", { exact: true })
+    .click();
+  const group = page.getByRole("group", { name: "公開操作", exact: true });
+  const primary = group.getByRole("button", { name: "公開する", exact: true });
+  const trigger = group.getByRole("button", { name: "公開方法を選ぶ", exact: true });
+  const left = await primary.boundingBox(),
+    right = await trigger.boundingBox();
+  if (!left || !right) throw new Error("接続ボタンがありません");
+  expect(right.x - left.x - left.width).toBeCloseTo(-1, 1);
+  expect(right.y).toBeCloseTo(left.y, 1);
+  await trigger.click();
+  await expect(
+    page.getByRole("menuitem", { name: "日時を指定して公開", exact: true }),
+  ).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(trigger).toBeFocused();
+});
+
 test("多段メニューを左右矢印で往復しEscapeで元の操作へ戻る", async ({ page }) => {
   await page.getByText("サブメニュー・多段の階層・無効なサブメニュー", { exact: true }).click();
   const trigger = page.getByRole("button", { name: "書き出しと共有", exact: true });
@@ -105,7 +148,12 @@ test("右端と狭い画面でも親子メニューが画面内に収まる", as
   await page.getByText("右寄せ・右から左・長文・スクロール", { exact: true }).click();
   await page.getByRole("button", { name: "右端の操作", exact: true }).click();
   await page.keyboard.press("ArrowRight");
+  await expect(page.getByRole("menu")).toHaveCount(2);
   for (const menu of await page.getByRole("menu").all()) {
+    // 開く動きは少し行き過ぎてから戻るので、途中の拡大した状態で測らないよう、動きの終わりを待つ。
+    await menu.evaluate((element) =>
+      Promise.all(element.getAnimations().map((animation) => animation.finished)),
+    );
     const box = await menu.boundingBox();
     expect(box).not.toBeNull();
     if (box) {

@@ -1,0 +1,107 @@
+@layer components {
+  /*
+    リアクション。同じ絵文字や言葉を一つの小さなリアクションにまとめ、付けた人数を淡い太字で添える。
+    リアクションは枠の細い平らなピルで、自分も付けているリアクションは淡い青の面と青い縁・青い数にする。
+    押せるリアクションはホバーすると淡い面、押すと内側へへこむ（ActionTileと同じ手触り）。
+    追加の操作はリアクションの終わりに置くPopoverで、開く操作は枠も影もない青いアイコン（Buttonのlink）にTooltipで名前を出す。
+    中は短い言葉でリアクションする欄（開いた時に移る）とEmojiPicker。文字の指定はこのファイルが持つ（専用の操作）。
+  */
+  .ply-reactions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ply-space-1);
+    min-inline-size: 0;
+    & > ul {
+      display: contents;
+      list-style: none;
+      & > li {
+        display: flex;
+        min-inline-size: 0;
+        max-inline-size: 100%;
+      }
+      & > li > .reaction {
+        appearance: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        min-inline-size: 0;
+        max-inline-size: 100%;
+        min-block-size: 1.75rem;
+        margin: 0;
+        /*
+          Badgeと同じく、折り返した行の間（行の余り2つ分）と、縁から文字まで（余白＋行の余り）を同じにする。
+          行の高さを「一行の高さと文字の大きさの間」に詰め、残りを上下に半分ずつ取る（縁の幅は一行の高さに含める）。
+        */
+        padding-block: calc((1.75rem - 2 * var(--ply-stroke-width) - 1lh) / 2);
+        padding-inline: 0.5rem 0.625rem;
+        border: var(--ply-stroke-width) solid var(--ply-border);
+        /* 一行では高さの半分で止まってピルになり、折り返すとカードと同じ角丸になる。 */
+        border-radius: var(--ply-radius-surface);
+        background: var(--ply-surface);
+        color: var(--ply-text);
+        font-family: inherit;
+        font-size: var(--ply-small);
+        font-weight: 400;
+        line-height: calc((1.75rem - 2 * var(--ply-stroke-width) + 1em) / 2);
+        text-align: start;
+        transition:
+          background-color var(--ply-duration) ease,
+          border-color var(--ply-duration) ease,
+          box-shadow var(--ply-duration) ease;
+        /* 言葉のリアクションは太字で読ませる（絵文字は太さで変わらない）。 */
+        & > .content {
+          min-inline-size: 0;
+          font-weight: 700;
+          overflow-wrap: anywhere;
+          word-break: auto-phrase;
+        }
+        & > .count {
+          flex: none;
+          align-self: start;
+          color: var(--ply-muted);
+          font-weight: 700;
+          font-variant-numeric: tabular-nums;
+        }
+        &[data-mine="true"] {
+          border-color: color-mix(in srgb, var(--ply-link) 45%, var(--ply-surface));
+          background: var(--ply-cover);
+          & > .count {
+            color: var(--ply-link);
+          }
+        }
+      }
+      & > li > button.reaction {
+        cursor: pointer;
+        &:hover {
+          background: color-mix(in srgb, var(--ply-ink) 4%, var(--ply-surface));
+        }
+        &[data-mine="true"]:hover {
+          background: color-mix(in srgb, var(--ply-link) 14%, var(--ply-surface));
+        }
+        &:active {
+          box-shadow: var(--ply-shadow-control-pressed);
+        }
+        &:focus-visible {
+          outline: 0.125rem solid var(--ply-link);
+          outline-offset: 0.0625rem;
+        }
+      }
+    }
+  }
+  /* 追加のパネル。上に短い言葉でリアクションする欄、下に絵文字パネルを置く。 */
+  .ply-reactions > .ply-popover > .panel > .body > .add {
+    display: grid;
+    gap: var(--ply-space-3);
+    min-inline-size: 0;
+    /* 絵文字パネルは、下の言葉の欄と幅をそろえてパネルいっぱいに置く（8列は保てる幅）。 */
+    & > .ply-emoji-picker {
+      inline-size: 100%;
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-reactions > ul > li > .reaction[data-mine="true"] {
+      border-color: Highlight;
+    }
+  }
+}

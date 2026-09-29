@@ -6,8 +6,21 @@ export default () => (
     description="4月から6月にかけて、売上は毎月15万円ずつ増加"
     tableLabel="月別売上の数値"
     graphic={
-      <svg viewBox="0 0 420 170" width="420" height="170">
-        <path d="M40 20H410M40 65H410M40 110H410" stroke="var(--ply-border)" />
+      <svg viewBox="0 0 420 142" width="420" height="142">
+        {/* 棒は青から紫寄りへの塗り。 */}
+        <defs>
+          <linearGradient id="chart-frame-bar" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="var(--ply-link)" />
+            <stop
+              offset="100%"
+              stop-color="color-mix(in srgb, var(--ply-link) 70%, var(--ply-plum))"
+            />
+          </linearGradient>
+        </defs>
+        <path
+          d="M40 20H410M40 65H410M40 110H410"
+          stroke="color-mix(in srgb, var(--ply-ink) 10%, transparent)"
+        />
         <text x="4" y="24" fill="var(--ply-muted)" font-size="11">
           80
         </text>
@@ -17,9 +30,9 @@ export default () => (
         <text x="11" y="114" fill="var(--ply-muted)" font-size="11">
           0
         </text>
-        <rect x="78" y="59" width="58" height="51" rx="4" fill="var(--ply-link)" />
-        <rect x="202" y="42" width="58" height="68" rx="4" fill="var(--ply-link)" />
-        <rect x="326" y="25" width="58" height="85" rx="4" fill="var(--ply-link)" />
+        <rect x="78" y="59" width="58" height="51" rx="6" fill="url(#chart-frame-bar)" />
+        <rect x="202" y="42" width="58" height="68" rx="6" fill="url(#chart-frame-bar)" />
+        <rect x="326" y="25" width="58" height="85" rx="6" fill="url(#chart-frame-bar)" />
         <text x="90" y="133" fill="var(--ply-muted)" font-size="12">
           4月
         </text>

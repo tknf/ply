@@ -29,6 +29,7 @@ export class PickerController extends Controller<HTMLElement> {
     this.element.addEventListener("compositionend", this.filter);
     this.element.addEventListener("focusin", this.openOnFocus);
     this.element.addEventListener("click", this.handleClick);
+    this.element.addEventListener("combobox:beforechange", this.alignSelectionDetail, true);
     queueMicrotask(() => {
       if (!this.element.isConnected) return;
       this.labelTarget.htmlFor = this.searchTarget.id;
@@ -46,6 +47,7 @@ export class PickerController extends Controller<HTMLElement> {
     this.element.removeEventListener("compositionend", this.filter);
     this.element.removeEventListener("focusin", this.openOnFocus);
     this.element.removeEventListener("click", this.handleClick);
+    this.element.removeEventListener("combobox:beforechange", this.alignSelectionDetail, true);
     window.clearTimeout(this.resetTask);
     this.form = null;
     this.labelTarget.htmlFor = this.nativeTarget.id;
@@ -67,7 +69,13 @@ export class PickerController extends Controller<HTMLElement> {
         ? selected.filter((candidate) => candidate !== value)
         : [...selected, value]
       : [value];
-    this.commit(next);
+    // 一つを選ぶ時に選択済みの候補を選び直しても、標準のselectと同じく変更イベントを発火しない。
+    if (
+      next.length === selected.length &&
+      next.every((candidate, index) => candidate === selected[index])
+    )
+      this.fromNative();
+    else this.commit(next);
     const combobox = this.combobox();
     if (combobox) {
       combobox.value = "";
@@ -75,6 +83,20 @@ export class PickerController extends Controller<HTMLElement> {
     }
     this.searchTarget.focus({ preventScroll: true });
     this.showAllOptions();
+  };
+
+  /**
+   * 検索欄のComboboxは選択を保つために常に複数選択で動く。一つを選ぶ時は、
+   * `combobox:beforechange`のdetail.selectedを実際に選ぶ結果（押した候補だけ）に直す。
+   */
+  private alignSelectionDetail = (event: Event) => {
+    if (this.multipleValue || event.target !== this.element || !(event instanceof CustomEvent))
+      return;
+    const detail: unknown = event.detail;
+    if (typeof detail !== "object" || detail === null) return;
+    if (!("value" in detail) || typeof detail.value !== "string") return;
+    if (!("selected" in detail) || !Array.isArray(detail.selected)) return;
+    detail.selected.splice(0, detail.selected.length, detail.value);
   };
 
   /** 非同期で取得した候補を入れ替える。既存の選択値が残る場合は保持する。 */

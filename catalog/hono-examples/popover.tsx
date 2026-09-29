@@ -4,7 +4,7 @@ export default () => (
   <div class="ply-stack">
     <Popover id="hono-popover" label="共有範囲">
       <p>この案件に参加しているメンバーが閲覧できます。</p>
-      <a href="/examples/settings">設定を開く</a>
+      <a href="/apps/settings">設定を開く</a>
     </Popover>
     <Disclosure summary="説明だけ・アイコンのみのトリガー">
       <div class="ply-cluster">
@@ -32,13 +32,13 @@ export default () => (
         label="関連するページ"
         title="案件の管理"
         actions={
-          <ActionLink href="/examples/settings" variant="primary">
+          <ActionLink href="/apps/settings" variant="primary">
             設定を開く
           </ActionLink>
         }
       >
-        <a href="/examples/project">案件の状況を見る</a>
-        <a href="/examples/schedule">予定を見る</a>
+        <a href="/apps/project">案件の状況を見る</a>
+        <a href="/apps/schedule">予定を見る</a>
       </Popover>
     </Disclosure>
     <Disclosure summary="短い入力・必須入力の検証">
@@ -52,7 +52,7 @@ export default () => (
           </Button>
         }
       >
-        <form id="popover-search-form" action="/search" method="get">
+        <form id="popover-search-form" action="/apps/search" method="get">
           <Field id="popover-query" label="キーワード" help="必須項目です。">
             {(attributes) => <Input {...attributes} name="q" required placeholder="例：案内" />}
           </Field>

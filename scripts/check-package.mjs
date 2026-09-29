@@ -17,8 +17,8 @@ for (const file of await readdir("src/css", { recursive: true })) {
   }
 }
 const components = await import(pathToFileURL(resolve(pkg.exports["./hono"].import)).href);
-if (typeof components.Button !== "function") throw new Error("Honoの公開入口が不正");
-console.log("Hono・controllersの公開入口、型定義、配布CSSを確認しました。");
+if (typeof components.Button !== "function") throw new Error("Honoのエントリーポイントが不正");
+console.log("Hono・controllersのエントリーポイント、型定義、配布CSSを確認しました。");
 
 // 掲載する各例を配布済みの公開型で検査する。ソース型だけの成功にしない。
 const temporary = await mkdtemp(resolve(".ply-consumer-"));

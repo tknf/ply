@@ -1,14 +1,15 @@
 @layer components {
   /*
-    書く面は一枚の紙。紙そのものを欄にし、本文の欄は枠で囲まない。
-    書いている間は紙全体に輪を出す。
+    入力エリアは一枚のカード。カードそのものを入力欄にし、本文の欄は枠で囲まない。
+    入力中はカード全体にフォーカスリングを出す。
   */
   .ply-composer {
     container: ply-composer / inline-size;
     display: grid;
-    gap: var(--ply-space-4);
+    /* 欄・添付・操作の段の間は、カードの余白よりはっきり狭くする。 */
+    gap: var(--ply-space-3);
     min-inline-size: 0;
-    padding-block: var(--ply-space-5) var(--ply-space-4);
+    padding-block: var(--ply-space-5);
     padding-inline: var(--ply-space-6);
     border-radius: var(--ply-radius-surface);
     background: var(--ply-surface) var(--ply-fill-paper);
@@ -19,15 +20,16 @@
         0 0 0 var(--ply-frame-width) var(--ply-link),
         var(--ply-shadow-paper);
     }
-    &:has(> .ply-field > .ply-input[data-invalid="true"]) {
+    &:has(> .ply-field > :is(.ply-input, .editor)[data-invalid="true"]) {
       box-shadow:
         0 0 0 var(--ply-stroke-width) var(--ply-danger),
         var(--ply-shadow-paper);
     }
   }
 
+  /* 名前の行は本文の見出し。行の余りと合わせてカードの余白よりはっきり狭く見える間にし、本文に寄せる。 */
   .ply-composer > .ply-field {
-    gap: var(--ply-space-3);
+    gap: var(--ply-space-1);
   }
 
   /* 名前・宛先・状態を一行に並べる。名前は本文と同じ大きさの太字、宛先と状態は補足の文字。 */
@@ -57,7 +59,7 @@
     }
   }
 
-  /* 本文は本文の大きさと行間で書く。field-sizingに対応するブラウザでは、書いた分だけ紙が伸びる。 */
+  /* 本文は本文の大きさと行間で書く。field-sizingに対応するブラウザでは、入力した分だけカードが伸びる。 */
   .ply-composer > .ply-field > :is(.ply-input, .editor) {
     min-block-size: 4lh;
     padding-block: 0;
@@ -83,7 +85,7 @@
   }
 
   /*
-    差し替えた編集部品（ProseMirror・Tiptap・Lexxyなど）の書く場所は、深さによらず本文と同じ文字で書く。
+    差し替えたエディター（ProseMirror・Tiptapなど）の入力エリアは、深さによらず本文と同じ文字で書く。
     段落や箇条の間は、本文の欄と同じく一定の間隔にする。
   */
   .ply-composer > .ply-field > .editor {

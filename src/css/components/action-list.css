@@ -1,40 +1,51 @@
 @layer components {
   /*
-    道具への入口の一覧。行を枠で囲まず、始まりと終わりに罫線を引く。
-    行の間はHEYの人の一覧やNavigationと同じく、題名の書き始めから淡い線で区切る。
-    道具の色は印のアイコンの色だけに残し、題名と説明は一覧の文字の段で並べる。
+    ツールへのリンクの一覧。罫線や進む矢印を使わず、淡い背景の上にアイコンと太字の名前を並べる。
+    アイコンはValueListと同じく、ツールの色を淡く敷いた丸に塗りつぶしのアイコンを置き、名前と説明のまとまりの縦の中央にそろえる。
+    一覧（list）は背景の上に行を積み、ホバーした行を角丸の面にする。並べる時（grid）も同じ行の形のまま、
+    淡い面の角丸のタイルにしてグリッドに並べる。行もタイルも普段は平らで、押すと内側へへこむ（ActionTileと同じ手触り）。
   */
   .ply-action-list {
     display: grid;
     gap: 0;
     min-inline-size: 0;
     margin: 0;
-    padding: 0;
-    border-block-end: var(--ply-stroke-width) solid var(--ply-border);
+    padding-block: var(--ply-space-1);
+    padding-inline: var(--ply-space-1);
+    border-radius: var(--ply-radius-field);
+    /* 背景はページの灰色より淡くし、中の行の面と押した時のへこみを見分けやすくする。 */
+    background: color-mix(in srgb, var(--ply-ink) 2.5%, var(--ply-surface));
     list-style: none;
     color: var(--ply-text);
     font-size: var(--ply-body);
     line-height: var(--ply-label-leading);
     & > li {
       min-inline-size: 0;
-      border-block-start: var(--ply-stroke-width) solid var(--ply-border);
       & > a {
-        position: relative;
+        --ply-action-list-accent: var(--ply-link);
         display: grid;
-        grid-template-columns: 1.5rem minmax(0, 1fr) 1rem;
+        grid-template-columns: 2rem minmax(0, 1fr);
+        /* 並べたタイルの背が違っても、名前の書き始めの高さをそろえる。 */
         align-content: start;
         align-items: start;
-        gap: 0.125rem var(--ply-space-4);
+        gap: 0 var(--ply-space-3);
         block-size: 100%;
         min-inline-size: 0;
-        padding-block: var(--ply-space-4);
-        padding-inline: var(--ply-space-2);
+        padding-block: var(--ply-space-2);
+        padding-inline: var(--ply-space-2) var(--ply-space-3);
+        border-radius: var(--ply-radius-control);
         color: inherit;
         text-decoration: none;
         overflow-wrap: anywhere;
-        transition: background-color var(--ply-duration) ease;
+        transition:
+          background-color var(--ply-duration) ease,
+          box-shadow var(--ply-duration) ease;
         &:hover {
-          background: color-mix(in srgb, var(--ply-background) 55%, transparent);
+          background: color-mix(in srgb, var(--ply-ink) 4%, transparent);
+        }
+        &:active {
+          background: color-mix(in srgb, var(--ply-ink) 6%, transparent);
+          box-shadow: var(--ply-shadow-control-pressed);
         }
         &:focus-visible {
           outline: 0.125rem solid var(--ply-link);
@@ -42,108 +53,129 @@
         }
         & > .title {
           grid-column: 2;
-          font-weight: 600;
+          font-weight: 700;
         }
         & > .description {
           grid-column: 2;
           color: var(--ply-muted);
-          font-size: var(--ply-small);
-          line-height: var(--ply-small-leading);
+          font-size: var(--ply-label);
+          line-height: var(--ply-label-leading);
         }
-        /* 道具の印。道具の色で塗り、題名の一行目にそろえる。 */
+        /* ツールのアイコン。ツールの色を淡く敷いた丸に置き、名前と説明のまとまりの縦の中央にそろえる。 */
         & > .icon {
           grid-column: 1;
-          grid-row: 1;
+          grid-row: 1 / span 2;
+          align-self: center;
           display: grid;
           place-items: center;
-          block-size: 1lh;
-          color: var(--ply-link);
+          inline-size: 2rem;
+          block-size: 2rem;
+          border-radius: 50%;
+          background: color-mix(in srgb, var(--ply-action-list-accent) 12%, var(--ply-surface));
+          color: var(--ply-action-list-accent);
           & > .ply-icon {
-            font-size: 1.25rem;
+            font-size: 1rem;
           }
         }
-        & > .arrow {
-          grid-column: 3;
-          grid-row: 1;
-          display: grid;
-          place-items: center;
-          block-size: 1lh;
-          color: var(--ply-muted);
-          transition: translate var(--ply-duration) ease;
+        /* 中身の見本がある行は背が高くなるので、アイコンを題名の一行目にそろえる。 */
+        &:has(> .preview) > .icon {
+          align-self: start;
+        }
+        /* 名前だけの行は、アイコンと名前を一行の中央でそろえる。 */
+        &:not(:has(> .description, > .preview)) {
+          align-items: center;
+          & > .icon {
+            grid-row: 1;
+          }
         }
         & > .preview {
           grid-column: 2;
           min-inline-size: 0;
-          margin-block-start: var(--ply-space-2);
+          margin-block-start: var(--ply-space-1);
           color: var(--ply-muted);
-          font-size: var(--ply-small);
-          line-height: var(--ply-small-leading);
+          font-size: var(--ply-label);
+          line-height: var(--ply-label-leading);
           & > * + * {
             margin-block-start: var(--ply-space-1);
           }
         }
-        /* 印のない入口は、題名を行の始まりから書く。 */
+        /* アイコンのないリンクは、題名を行の先頭から書く。 */
         &:not(:has(> .icon)) {
-          grid-template-columns: minmax(0, 1fr) 1rem;
+          grid-template-columns: minmax(0, 1fr);
           & > :is(.title, .description, .preview) {
             grid-column: 1;
           }
-          & > .arrow {
-            grid-column: 2;
+        }
+        &[data-accent="amber"] {
+          --ply-action-list-accent: var(--ply-amber);
+        }
+        &[data-accent="green"] {
+          --ply-action-list-accent: var(--ply-success);
+        }
+        &[data-accent="coral"] {
+          --ply-action-list-accent: var(--ply-coral-dark);
+        }
+        /* 対応が必要な行は、アイコン・名前・説明を危険の色で書く。 */
+        &[data-attention="true"] {
+          --ply-action-list-accent: var(--ply-danger);
+          /* 淡い背景の上でも本文と同じ7:1を保つよう、危険の色に濃い色（黒）を少し混ぜる。 */
+          & > :is(.title, .description) {
+            color: color-mix(in srgb, var(--ply-danger) 88%, var(--ply-ink));
           }
         }
-        &:hover > .arrow {
-          translate: var(--ply-space-1) 0;
-        }
-        /* 右から左に読む時は、進む向きの矢印を反転する。 */
-        &:dir(rtl) > .arrow > .ply-icon {
-          scale: -1 1;
-        }
-        &:hover:dir(rtl) > .arrow {
-          translate: calc(var(--ply-space-1) * -1) 0;
-        }
-        &[data-accent="amber"] > .icon {
-          color: var(--ply-amber);
-        }
-        &[data-accent="green"] > .icon {
-          color: var(--ply-success);
-        }
-        &[data-accent="coral"] > .icon {
-          color: var(--ply-coral-dark);
-        }
       }
     }
-    &:not([data-layout="grid"]) > li + li {
-      border-block-start-color: transparent;
-      & > a::before {
+    /* 行の間はNavigationと同じく、名前の書き始めから細い線で区切る。 */
+    &:not([data-layout="grid"]) > li + li > a {
+      position: relative;
+      &::before {
         content: "";
         position: absolute;
-        inset-block-start: calc(-1 * var(--ply-stroke-width));
-        inset-inline: calc(var(--ply-space-2) + 1.5rem + var(--ply-space-4)) 0;
+        inset-block-start: 0;
+        inset-inline: calc(var(--ply-space-2) + 2rem + var(--ply-space-3)) var(--ply-space-3);
         block-size: var(--ply-stroke-width);
-        background: color-mix(in srgb, var(--ply-ink) 8%, var(--ply-surface));
+        background: color-mix(in srgb, var(--ply-ink) 8%, transparent);
       }
-      & > a:not(:has(> .icon))::before {
-        inset-inline-start: var(--ply-space-2);
+      &:not(:has(> .icon))::before {
+        inset-inline-start: var(--ply-space-3);
+      }
+      /* ホバーした行と、その次の行の区切りは面に溶かす。 */
+      &:hover::before {
+        opacity: 0;
       }
     }
-    /* 並べる時も、各列の上に罫線を引き、一覧の終わりに一本の罫線を引く。 */
+    &:not([data-layout="grid"]) > li:has(> a:hover) + li > a::before {
+      opacity: 0;
+    }
+    /*
+      並べる時は、行と同じ形のまま淡い面の角丸のタイルにしてグリッドに並べる。背景は持たない。
+    */
     &[data-layout="grid"] {
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-      column-gap: var(--ply-space-6);
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+      gap: var(--ply-space-2);
+      padding-block: 0;
+      padding-inline: 0;
+      border-radius: 0;
+      background: transparent;
       & > li > a {
-        & > .preview {
-          grid-column: 2 / -1;
+        padding-block: var(--ply-space-3);
+        padding-inline: var(--ply-space-3);
+        border-radius: var(--ply-radius-field);
+        background: color-mix(in srgb, var(--ply-ink) 2.5%, var(--ply-surface));
+        &:hover {
+          background: color-mix(in srgb, var(--ply-ink) 5%, var(--ply-surface));
         }
-        &:not(:has(> .icon)) > .preview {
-          grid-column: 1 / -1;
+        &:active {
+          background: color-mix(in srgb, var(--ply-ink) 7%, var(--ply-surface));
+          box-shadow: var(--ply-shadow-control-pressed);
         }
       }
     }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .ply-action-list > li > a:hover > .arrow {
-      translate: none;
+  @media (forced-colors: active) {
+    .ply-action-list,
+    .ply-action-list[data-layout="grid"] > li > a {
+      border: var(--ply-stroke-width) solid CanvasText;
     }
   }
 }

@@ -7,7 +7,7 @@ test("Buttonは画面幅で文字サイズが緩やかに変わり文字拡大�
   for (const width of [375, 960, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/components/button");
-    const example = page.getByRole("region", { name: "Honoの利用例" });
+    const example = page.getByRole("region", { name: "見本" });
     const buttons = example.getByRole("button", {
       name: /^(保存する|編集する|確定する|プレビュー|削除する)$/,
     });
@@ -48,7 +48,11 @@ test("Buttonは画面幅で文字サイズが緩やかに変わり文字拡大�
       }
     }
     await expect
-      .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
+      .poll(() =>
+        page
+          .locator('[data-example="hono"]')
+          .evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
+      )
       .toBe(true);
     await example.screenshot({ path: testInfo.outputPath(`button-${width}-200.png`) });
   }
@@ -59,4 +63,56 @@ test("Buttonは画面幅で文字サイズが緩やかに変わり文字拡大�
   expect(small).toBeLessThan(medium);
   expect(medium).toBeLessThan(large);
   expect(large).toBeCloseTo(14, 2);
+});
+
+test("ボタンは浮かせず、ホバーすると面が濃くなり、押すと内側へへこみ、focusで輪郭が見える", async ({
+  page,
+}) => {
+  // 変化の途中ではなく、確定したスタイル同士を比較する。
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/components/button");
+  const buttons = page.locator('[data-example="hono"] .ply-button:not(:disabled)');
+  for (const button of await buttons.all()) {
+    const look = () =>
+      button.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          color: style.color,
+          border: style.borderInlineStartColor,
+          surface: `${style.backgroundColor} ${style.backgroundImage}`,
+          shadow: style.boxShadow,
+        };
+      });
+    await page.mouse.move(0, 0);
+    const before = await look();
+    // 普段は影を持たない（浮かせない）。
+    expect(before.shadow).toBe("none");
+    await button.hover();
+    const hovered = await look();
+    // ホバーすると面だけが変わり、文字と縁の色は変えない。影は付けない。
+    expect({ color: hovered.color, border: hovered.border }).toEqual({
+      color: before.color,
+      border: before.border,
+    });
+    expect(hovered.surface).not.toBe(before.surface);
+    expect(hovered.shadow).toBe("none");
+    const variant = await button.getAttribute("data-variant");
+    if (variant === "link") {
+      // 文字だけの操作は下線を引かず、ホバーすると淡い青のピルの面が現れる。
+      expect(before.surface.startsWith("rgba(0, 0, 0, 0)")).toBe(true);
+    } else {
+      await page.mouse.down();
+      const pressed = await look();
+      expect(pressed.shadow.split("),")[0]).toContain("inset");
+      await page.mouse.move(0, 0);
+      await page.mouse.up();
+    }
+    await button.focus();
+    await page.keyboard.press("Tab");
+    await button.focus();
+    await expect(button).toBeFocused();
+    expect(await button.evaluate((element) => getComputedStyle(element).outlineStyle)).toBe(
+      "solid",
+    );
+  }
 });

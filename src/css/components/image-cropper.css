@@ -47,7 +47,7 @@
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: var(--ply-radius-control);
       background: var(--ply-surface);
-      box-shadow: var(--ply-shadow-control);
+      box-shadow: none;
       isolation: isolate;
     }
 
@@ -137,15 +137,22 @@
     }
 
     /* 開閉の見た目はDisclosureが持つ。 */
+    /* 罫線の内側に余白を持たせ、見出しから調整の欄までの間より広くする。 */
     & > .layout > .settings > .position {
+      padding-block: var(--ply-space-3);
       border-block: var(--ply-stroke-width) solid var(--ply-border);
     }
 
     & > .layout > .settings > .position > .body > .ranges {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--ply-space-4);
-      padding-block-start: var(--ply-space-4);
+      gap: var(--ply-space-3) var(--ply-space-4);
+    }
+
+    /* JavaScriptが無いと動かないので、controllerが接続するまでハンドルと調整の欄を出さず、切り抜きの見本だけにする。 */
+    &:not([data-connected="true"]) > .layout > .settings,
+    &:not([data-connected="true"]) > .layout > .stage > .viewport > :is(.selection, .resize) {
+      display: none;
     }
 
     & > .layout > .settings > .instructions {

@@ -83,6 +83,50 @@ test("ドロップは標準の変更通知を送り単一選択とdisabledを守
   await transfer.dispose();
 });
 
+test("acceptに当てはまらないファイルを含むドロップは受け付けずに通知する", async ({ page }) => {
+  await page.goto("/components/file-input");
+  const control = root(page);
+  const input = control.locator("input[type=file]");
+  const drop = async (files: { name: string; type: string }[]) => {
+    const transfer = await page.evaluateHandle((entries) => {
+      const data = new DataTransfer();
+      for (const entry of entries)
+        data.items.add(new File(["sample"], entry.name, { type: entry.type }));
+      return data;
+    }, files);
+    await control.dispatchEvent("dragenter", { dataTransfer: transfer });
+    await control.dispatchEvent("drop", { dataTransfer: transfer });
+    await transfer.dispose();
+  };
+
+  await drop([
+    { name: "資料.pdf", type: "application/pdf" },
+    { name: "メモ.txt", type: "text/plain" },
+  ]);
+  await expect(control).toHaveAttribute("data-state", "idle");
+  await expect(control.getByRole("status")).toHaveText(
+    "選択できない形式のファイルが含まれています。",
+  );
+  expect(await input.evaluate((element: HTMLInputElement) => element.files?.length)).toBe(0);
+
+  // 拡張子は大文字と小文字を区別せず、MIMEの無いファイルも拡張子で受け付ける。
+  await drop([{ name: "資料.PDF", type: "" }]);
+  await expect(control.getByRole("listitem")).toHaveText("資料.PDF6 B");
+  await expect(control.getByRole("status")).toHaveText("1件のファイルを選択しました。");
+
+  await page.getByText("1ファイル・必須・エラー・利用不可", { exact: true }).click();
+  const image = root(page, "hono-file-single");
+  const imageTransfer = await page.evaluateHandle(() => {
+    const data = new DataTransfer();
+    data.items.add(new File(["sample"], "表紙.png", { type: "image/png" }));
+    return data;
+  });
+  await image.dispatchEvent("dragenter", { dataTransfer: imageTransfer });
+  await image.dispatchEvent("drop", { dataTransfer: imageTransfer });
+  await expect(image.getByRole("listitem")).toHaveText("表紙.png6 B");
+  await imageTransfer.dispose();
+});
+
 test.describe("JavaScriptなし", () => {
   test.use({ javaScriptEnabled: false });
 

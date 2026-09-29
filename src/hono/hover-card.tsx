@@ -4,13 +4,24 @@ import { Icon } from "./icon";
 import { OverlayClose, OverlayContent, overlayAnchorName } from "./overlay-content";
 
 export type HoverCardProps = PropsWithChildren<{
+  /** パネルのid。画面内で一意にする。見出しは`<id>-title`になる。 */
   id: string;
+  /** 開く操作（またはリンク）の文言。 */
   label: string;
+  /** パネルの見出し。省略するとlabelを使う。 */
   title?: string;
+  /** 見出しの下に置く短い説明。パネルの説明（`aria-describedby`）になる。 */
   description?: string;
+  /** パネルの幅。compactは16rem、defaultは20rem、wideは28remを上限にする。 */
   size?: "compact" | "default" | "wide";
+  /**
+   * 渡すと、labelを移動のリンクにし、隣に目のアイコンのプレビュー操作を置く。
+   * 押すとリンクは移動し、プレビュー操作はパネルを開く。
+   */
   href?: string;
+  /** 見出しの横の閉じる操作の名前。 */
   closeLabel?: string;
+  /** パネルの下の操作欄に並べる関連操作。関連する操作がある時だけ渡す。 */
   actions?: Child;
 }>;
 

@@ -19,7 +19,7 @@ export default () => (
             kind: "group",
             label: "編集",
             items: [
-              { label: "編集する", value: "edit", icon: "pencil", shortcut: "⌘ E" },
+              { label: "編集する", value: "edit", icon: "pencil", shortcut: "⌘E" },
               {
                 label: "複製する",
                 value: "copy",
@@ -121,9 +121,9 @@ export default () => (
         id="menu-links"
         label="関連ページ"
         items={[
-          { kind: "link", label: "記事一覧", href: "/search", icon: "files" },
-          { kind: "link", label: "記事一覧を別タブで開く", href: "/search", target: "_blank" },
-          { kind: "link", label: "利用できないページ", href: "/search", disabled: true },
+          { kind: "link", label: "記事一覧", href: "/apps/search", icon: "files" },
+          { kind: "link", label: "記事一覧を別タブで開く", href: "/apps/search", target: "_blank" },
+          { kind: "link", label: "利用できないページ", href: "/apps/search", disabled: true },
         ]}
       />
     </Disclosure>

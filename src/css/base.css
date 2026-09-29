@@ -1,7 +1,7 @@
 @layer base {
   :root {
     color-scheme: light;
-    /* スクロールバーは細く淡い親指だけにし、溝は透明にする。色は子へ引き継がれる。 */
+    /* スクロールバーはつまみを細く淡くし、トラックは透明にする。色は子へ引き継がれる。 */
     scrollbar-color: color-mix(in srgb, var(--ply-muted) 40%, transparent) transparent;
   }
 
@@ -10,7 +10,7 @@
   }
 
   body {
-    /* HEYと同じく地は白。作業面は縁取りではなく影で浮かせる。 */
+    /* 背景は白。作業面は縁取りではなく影で浮かせる。 */
     background: var(--ply-surface);
     color: var(--ply-text);
     font-family: var(--ply-control-font-family);
@@ -20,9 +20,27 @@
     overflow-wrap: anywhere;
   }
 
+  /*
+    リンクは下線を引かず、青い文字にする。
+    文章（段落・引用・図の説明）の中に混ざるリンクだけは、色だけに頼らないよう細く淡い下線を残す。
+    コンポーネントが持つリンク（クラスを持つもの）は、それぞれのコンポーネントが見た目を決める。
+  */
   a {
     color: var(--ply-link);
+    text-decoration: none;
+    transition: color var(--ply-duration) ease;
+    &:hover {
+      color: var(--ply-blue-dark);
+    }
+  }
+  :where(p, blockquote, figcaption) a:not([class]) {
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+    text-decoration-thickness: var(--ply-stroke-width);
     text-underline-offset: 0.2em;
+    &:hover {
+      text-decoration-color: currentColor;
+    }
   }
 
   :focus-visible {
@@ -30,7 +48,7 @@
     outline-offset: 0.1875rem;
   }
 
-  /* 見つけた所・目印は平らな淡い黄色の地。行をまたいでも各行に同じ地を敷く。 */
+  /* 検索の一致箇所・ハイライトは平らな淡い黄色の背景。行をまたいでも各行に同じ背景を敷く。 */
   mark {
     padding-inline: 0.15em;
     border-radius: 0.2em;
@@ -41,7 +59,8 @@
 }
 
 @layer utilities {
-  [hidden] {
+  /* Carouselのスライドは隠しても場所を残し、切り替えで高さが変わらないようにする（carousel.cssが見えなくする）。 */
+  [hidden]:not(.ply-carousel > .viewport > .slide) {
     display: none;
   }
 
@@ -49,7 +68,6 @@
   :where(
     .ply-card > .title > a,
     .ply-table > table > tbody > tr > :is(th, td) > a:only-child,
-    .ply-data-list > li > .body > a.title,
     .ply-file-item > .body > .title > a
   ) {
     position: relative;

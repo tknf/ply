@@ -6,7 +6,7 @@ type CalendarGeometry = {
   rtl: boolean;
 };
 
-/** 入力欄の末端に揃え、表示領域から8pxの余白を取って配置する。 */
+/** 入力欄の末尾側の端に揃え、表示領域から8pxの余白を取って配置する。 */
 export const calendarPosition = ({
   anchor,
   panel,

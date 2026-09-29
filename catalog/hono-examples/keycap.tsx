@@ -2,7 +2,7 @@ import { Keycap } from "../../src/hono";
 export default () => (
   <div class="ply-stack" data-space="small">
     <p>
-      <Keycap keys={["⌘", "S"]} aria-label="CommandとS" /> で保存。Windowsでは{" "}
+      <Keycap keys={["⌘", "S"]} label="CommandとS" /> で保存。Windowsでは{" "}
       <Keycap keys={["Ctrl", "S"]} /> を使います。
     </p>
     <p>

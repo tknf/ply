@@ -22,3 +22,26 @@ test("ImageCropperの移動操作が位置スライダーを同期する", async
   await expect(cropper).toHaveCSS("--image-cropper-x", "13");
   await expect(cropper.locator('[data-image-cropper-target="xControl"]')).toHaveValue("13");
 });
+
+test("ImageCropperはJavaScriptなしではハンドルと調整の欄を出さず、接続すると出す", async ({
+  browser,
+  page,
+}) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  try {
+    const staticPage = await context.newPage();
+    await staticPage.goto("http://127.0.0.1:5178/components/image-cropper");
+    const staticCropper = staticPage.locator("#hono-image-cropper");
+    await expect(staticCropper.locator("img")).toBeVisible();
+    await expect(staticCropper.getByRole("button", { name: "選択範囲を移動" })).toBeHidden();
+    await expect(staticCropper.getByRole("slider", { name: "拡大率" })).toBeHidden();
+  } finally {
+    await context.close();
+  }
+
+  await page.goto("/components/image-cropper");
+  const cropper = page.locator("#hono-image-cropper");
+  await expect(cropper).toHaveAttribute("data-connected", "true");
+  await expect(cropper.getByRole("button", { name: "選択範囲を移動" })).toBeVisible();
+  await expect(cropper.getByRole("slider", { name: "拡大率" })).toBeVisible();
+});

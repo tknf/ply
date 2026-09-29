@@ -14,7 +14,7 @@ for (const [name, file] of Object.entries(manifest)) {
   symbols.push(
     `<symbol id="ply-${name}" viewBox="0 0 256 256" fill="currentColor">${content}</symbol>`,
   );
-  // 縦並びの一覧など、HEYのように太く塗ったアイコンで項目を見分ける場所のための塗りつぶしの版。
+  // 縦並びの一覧など、太く塗ったアイコンで項目を見分ける場所のための塗りつぶし版。
   const filled = await readFile(
     `node_modules/@phosphor-icons/core/assets/fill/${file}-fill.svg`,
     "utf8",
@@ -26,6 +26,12 @@ for (const [name, file] of Object.entries(manifest)) {
   );
   // 同じ素材をSVG useとCSS background/maskのどちらからも使えるようにする。
   await writeFile(`src/css/assets/${name}.svg`, svg);
+  // 小さく置いても線が細くならないよう、CSSのアイコンに使う太字版も書き出す（Tagの削除の×など）。
+  const bold = await readFile(
+    `node_modules/@phosphor-icons/core/assets/bold/${file}-bold.svg`,
+    "utf8",
+  );
+  await writeFile(`src/css/assets/${name}-bold.svg`, bold);
 }
 const license = await readFile("node_modules/@phosphor-icons/core/LICENSE", "utf8");
 const sprite = `<svg xmlns="http://www.w3.org/2000/svg">\n<!-- Phosphor Icons / MIT\n${license.replaceAll("--", "—")}-->\n${symbols.join("\n")}\n</svg>\n`;

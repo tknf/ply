@@ -32,8 +32,8 @@
       list-style: none;
     }
     /*
-      行はNavigationと同じ作り。高さ36px・角丸8px、指を載せると淡い面。
-      今いる項目もNavigationと同じく、太字と終わりの側の青いチェック。
+      行はNavigationと同じ作り。高さ36px・角丸8px、ホバーすると淡い面。
+      今いる項目もNavigationと同じく、太字と末尾側の青いチェック。
     */
     & > ol > li > a {
       position: relative;

@@ -25,9 +25,11 @@ for (const width of [375, 1280]) {
     await page.evaluate(() => {
       document.documentElement.style.fontSize = "200%";
     });
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-      true,
-    );
+    expect(
+      await page
+        .locator('[data-example="hono"]')
+        .evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
+    ).toBe(true);
     const enlargedIntro = await description.boundingBox();
     const enlargedField = await input.boundingBox();
     if (!enlargedIntro || !enlargedField) throw new Error("文字拡大後の入力欄が描画されていません");

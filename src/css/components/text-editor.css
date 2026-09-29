@@ -1,0 +1,118 @@
+@layer components {
+  /*
+    書式ツールを並べた入力エリア。欄と同じ1pxの枠と内側の浅い影で沈め、ツールバーは細い線で入力エリアと分ける。
+    書式ツールは淡い黒のアイコンだけのButtonにし、ホバー時だけ淡い面を出す。ツールの間の区切りは細い縦線（狭い幅では間隔だけ）。
+    フォーカスは他の欄と同じく、青い縁の外に淡い青の輪を広げる。
+  */
+  .ply-text-editor {
+    container-type: inline-size;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    min-inline-size: 0;
+    border: var(--ply-stroke-width) solid var(--ply-border);
+    border-radius: var(--ply-radius-field);
+    background: var(--ply-surface);
+    box-shadow: var(--ply-shadow-input);
+    transition:
+      border-color var(--ply-duration) ease,
+      box-shadow var(--ply-duration) ease;
+    &:focus-within {
+      border-color: var(--ply-link);
+      box-shadow:
+        0 0 0 0.125rem var(--ply-focus-ring),
+        var(--ply-shadow-input);
+    }
+    & > .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--ply-space-1);
+      min-inline-size: 0;
+      padding-block: var(--ply-space-1);
+      padding-inline: var(--ply-space-2);
+      border-block-end: var(--ply-stroke-width) solid var(--ply-border);
+      & > .group {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.125rem;
+        & + .group {
+          padding-inline-start: var(--ply-space-1);
+          border-inline-start: var(--ply-stroke-width) solid var(--ply-border);
+        }
+        & > .ply-button {
+          color: var(--ply-muted);
+          &:hover:not(:disabled) {
+            color: var(--ply-text);
+          }
+          /* 現在の書式の表示。接続したエディターが、選択範囲の書式ツールにdata-active="true"を付ける。 */
+          &[data-active="true"] {
+            background: var(--ply-cover);
+            color: var(--ply-link);
+          }
+        }
+      }
+      & > .actions {
+        display: flex;
+        align-items: center;
+        gap: var(--ply-space-2);
+        margin-inline-start: auto;
+      }
+      /*
+        既定の書式ツールと操作が一行に収まらない幅（36rem未満）ではツールが折り返し、区切りの縦線が行の始まりに来てしまう。
+        行の始まりはCSSで見分けられないので、この幅では縦線を引かず、まとまりの間を広げて分ける。
+      */
+      @container (inline-size < 36rem) {
+        column-gap: var(--ply-space-3);
+        & > .group + .group {
+          padding-inline-start: 0;
+          border-inline-start: 0;
+        }
+      }
+    }
+    & > .area {
+      min-inline-size: 0;
+      & > :is(.input, [contenteditable]) {
+        display: block;
+        inline-size: 100%;
+        min-block-size: 8rem;
+        padding-block: var(--ply-space-3);
+        padding-inline: var(--ply-space-4);
+        border: 0;
+        background: transparent;
+        color: var(--ply-text);
+        font-family: var(--ply-font);
+        font-size: var(--ply-body);
+        line-height: 1.6;
+        outline: 0;
+        resize: vertical;
+        &::placeholder {
+          color: var(--ply-muted);
+        }
+      }
+    }
+    /* 使えない時は、他の使えない欄と同じ斜線を入力エリアに敷く（書式ツールも押せない）。 */
+    &:has(> .area > .input:disabled) {
+      background: var(--ply-hatch), var(--ply-surface);
+      box-shadow: none;
+      & > .area > .input {
+        color: var(--ply-muted);
+        cursor: not-allowed;
+      }
+    }
+    /* bottomの配置では、ツールバーを入力エリアの下に置く。 */
+    &[data-placement="bottom"] {
+      grid-template-rows: minmax(0, 1fr) auto;
+      & > .toolbar {
+        grid-row: 2;
+        border-block-end: 0;
+        border-block-start: var(--ply-stroke-width) solid var(--ply-border);
+      }
+    }
+  }
+  @media (forced-colors: active) {
+    .ply-text-editor:focus-within {
+      outline: 0.125rem solid Highlight;
+    }
+  }
+}

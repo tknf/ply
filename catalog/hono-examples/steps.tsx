@@ -5,7 +5,7 @@ export default () => (
     <Steps
       label="申し込みの手順"
       items={[
-        { label: "日時", state: "complete", href: "/reservation" },
+        { label: "日時", state: "complete", href: "/apps/schedule" },
         { label: "連絡先", state: "current" },
         { label: "確認", state: "upcoming" },
       ]}
@@ -15,8 +15,8 @@ export default () => (
         <Steps
           label="公開までの手順"
           items={[
-            { label: "記事の下書き", state: "complete", href: "/example" },
-            { label: "画像と代替テキスト", state: "complete", href: "/example" },
+            { label: "記事の下書き", state: "complete", href: "/apps/docs" },
+            { label: "画像と代替テキスト", state: "complete", href: "/apps/docs" },
             { label: "公開範囲と共有リンクの確認", state: "current" },
             { label: "担当者の承認", state: "upcoming" },
             { label: "公開", state: "upcoming" },
@@ -27,9 +27,9 @@ export default () => (
         <Steps
           label="終わった手順"
           items={[
-            { label: "日時", state: "complete", href: "/reservation" },
-            { label: "連絡先", state: "complete", href: "/reservation" },
-            { label: "確認", state: "complete", href: "/reservation" },
+            { label: "日時", state: "complete", href: "/apps/schedule" },
+            { label: "連絡先", state: "complete", href: "/apps/schedule" },
+            { label: "確認", state: "complete", href: "/apps/schedule" },
           ]}
         />
       </Disclosure>
@@ -38,7 +38,7 @@ export default () => (
           <Steps
             label="狭い場所の手順"
             items={[
-              { label: "日時", state: "complete", href: "/reservation" },
+              { label: "日時", state: "complete", href: "/apps/schedule" },
               { label: "連絡先", state: "current" },
               { label: "確認", state: "upcoming" },
             ]}
@@ -50,7 +50,7 @@ export default () => (
           <Steps
             label="خطوات الحجز"
             items={[
-              { label: "الموعد", state: "complete", href: "/reservation" },
+              { label: "الموعد", state: "complete", href: "/apps/schedule" },
               { label: "بيانات الاتصال", state: "current" },
               { label: "التأكيد", state: "upcoming" },
             ]}

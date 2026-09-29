@@ -4,9 +4,13 @@ import { Icon } from "./icon";
 
 export type EmptyStateProps = PropsWithChildren<
   ElementProps<"section"> & {
+    /** 枠内に太字で書く題名。何が無いのか、何が終わったのかを書く。 */
     title: string;
+    /** 場面。emptyは0件（灰）、startは初めて使う時（青）、completeは作業を終えた時（緑）。 */
     kind?: "empty" | "start" | "complete";
+    /** 枠の下に置く次の操作（ActionLinkやButton）。 */
     actions?: Child;
+    /** 題名の上に置くアイコン。渡した時だけ置く。completeは渡さなくてもペンで描くチェックを置く。 */
     icon?: Child;
   }
 >;
@@ -19,17 +23,22 @@ export const EmptyState = ({
   icon,
   class: className,
   ...attributes
-}: EmptyStateProps) => (
-  <section {...attributes} class={classes("ply-empty-state", className)} data-kind={kind}>
-    <div class="symbol" aria-hidden="true">
-      {icon != null && icon !== false ? (
-        icon
-      ) : (
-        <Icon name={kind === "complete" ? "check" : kind === "start" ? "pencil" : "search"} />
-      )}
-    </div>
-    <h3 class="title">{title}</h3>
-    <div class="body">{children}</div>
-    {actions != null && actions !== false && <div class="actions">{actions}</div>}
-  </section>
-);
+}: EmptyStateProps) => {
+  // 終わった時だけ、ペンで描くチェックを既定のアイコンにする。他の場面は渡された時だけアイコンを置く。
+  const symbol =
+    icon != null && icon !== false ? icon : kind === "complete" ? <Icon name="check" /> : null;
+  return (
+    <section {...attributes} class={classes("ply-empty-state", className)} data-kind={kind}>
+      <div class="slip">
+        {symbol && (
+          <div class="symbol" aria-hidden="true">
+            {symbol}
+          </div>
+        )}
+        <h3 class="title">{title}</h3>
+        <div class="body">{children}</div>
+      </div>
+      {actions != null && actions !== false && <div class="actions">{actions}</div>}
+    </section>
+  );
+};

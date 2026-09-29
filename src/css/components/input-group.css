@@ -67,9 +67,10 @@
       background: var(--ply-background);
     }
 
+    /* 隣に並ぶlargeのButtonと同じ文字の大きさ（操作の文字の8/7倍）にし、どの画面幅でも高さをそろえる。 */
     &[data-size="large"] {
       --ply-input-group-size: 2.5em;
-      font-size: var(--ply-body);
+      font-size: calc(var(--ply-button-font) * 8 / 7);
       line-height: var(--ply-control-leading);
     }
   }

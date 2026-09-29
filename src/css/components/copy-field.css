@@ -1,0 +1,67 @@
+@layer components {
+  /*
+    コピーして使う値の欄。読み取り専用の欄の末尾に、コピーボタンを置く。コピーするとアイコンがペンで描くチェックに変わり、
+    しばらくして元のアイコンに戻る。コピーできなかった時は欄の下に理由を出す。
+  */
+  .ply-copy-field {
+    min-inline-size: 0;
+    & > .ply-field > .row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--ply-space-2);
+      min-inline-size: 0;
+      & > .ply-input {
+        flex: 1 1 10rem;
+        min-inline-size: 0;
+        font-variant-numeric: tabular-nums;
+        text-overflow: ellipsis;
+      }
+      & > .ply-button {
+        flex: none;
+        & > .copied {
+          display: none;
+        }
+      }
+    }
+    /* コピーできなかった時は、Fieldのエラーと同じく欄の下に危険の色の文字とアイコンで書く。 */
+    & > .failure {
+      display: grid;
+      grid-template-columns: 1em minmax(0, 1fr);
+      align-items: start;
+      gap: 0.375em;
+      margin-block-start: var(--ply-space-1);
+      color: var(--ply-danger);
+      font-size: var(--ply-label);
+      line-height: var(--ply-label-leading);
+      & > .ply-icon {
+        inline-size: 1em;
+        block-size: 1em;
+        margin-block-start: calc(3em / 14);
+      }
+    }
+    &[data-copied="true"] > .ply-field > .row > .ply-button {
+      color: var(--ply-success);
+      & > .copy {
+        display: none;
+      }
+      & > .copied {
+        display: block;
+        animation: ply-copy-field-write 0.35s ease-out both;
+      }
+    }
+  }
+  @keyframes ply-copy-field-write {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ply-copy-field[data-copied="true"] > .ply-field > .row > .ply-button > .copied {
+      animation: none;
+    }
+  }
+}

@@ -27,7 +27,7 @@ test("着色したHTMLも文字として表示し、異なるコードのトー�
   expect(String(mismatch)).toContain("&lt;script&gt;");
 });
 
-test("行ごとに分けても文字は元のコードと同じで、行番号を文字に含めず目印の行に印を付ける", async () => {
+test("行ごとに分けても文字は元のコードと同じで、行番号を文字に含めず強調する行にマークを付ける", async () => {
   const code = "const a = 1;\n\nconst b = 2;";
   const tokens = [
     { content: "const", color: "#d73a49" },
@@ -47,4 +47,19 @@ test("行ごとに分けても文字は元のコードと同じで、行番号�
   expect(markup.match(/class="line"/g)).toHaveLength(3);
   expect(markup.match(/data-highlighted="true"/g)).toHaveLength(1);
   expect(markup).toContain('data-line-numbers="true"');
+});
+
+test("コピーの結果は成功をstatus、失敗を危険の色のalertとして別の通知に出す", async () => {
+  const markup = String(await html`${<CodeBlock label="例" code="a" copy />}`);
+  const toasts = markup.match(/<aside[^>]*class="ply-toast[^"]*"[^>]*>/g) ?? [];
+  expect(toasts).toHaveLength(2);
+  const [done, failed] = toasts;
+  expect(done).toContain('data-tone="success"');
+  expect(done).toContain('role="status"');
+  expect(done).toContain('aria-live="polite"');
+  expect(failed).toContain('data-tone="danger"');
+  expect(failed).toContain('role="alert"');
+  expect(failed).toContain('aria-live="assertive"');
+  expect(markup).toContain("#ply-x-circle-fill");
+  expect(String(await html`${<CodeBlock label="例" code="a" />}`)).not.toContain("ply-toast");
 });

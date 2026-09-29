@@ -1,19 +1,31 @@
 import type { Child } from "hono/jsx";
 import { Disclosure } from "./disclosure";
+import { classes, type ElementProps } from "./types";
 
+/** 凡例の一件。 */
 export type ChartLegendItem = {
+  /** 系列の名前。 */
   label: string;
+  /** マークの色。図の系列の色と合わせる。 */
   tone: "blue" | "green" | "amber" | "coral";
 };
 
-export type ChartFrameProps = {
+export type ChartFrameProps = ElementProps<"figure"> & {
+  /** 図の題名。figcaptionに太字で書く。 */
   title: string;
+  /** 題名の下に淡い文字で書く図の要点。図を見なくても結論が分かる一文にする。 */
   description?: string;
+  /** 利用側で描いた図（SVGなど）。読み上げから外すので、同じ値をtableで渡す。 */
   graphic: Child;
+  /** graphicと同じ値の表。table要素を渡す。Disclosureに畳んで置く。 */
   table: Child;
+  /** 数値の表を開く見出し。 */
   tableLabel: string;
+  /** measureは幅36remまで、wideは置き場所の幅いっぱいに広げる。 */
   size?: "measure" | "wide";
+  /** 図の下に並べる凡例。空なら置かない。 */
   legend?: readonly ChartLegendItem[];
+  /** 図の最後に「出典：」を付けて書く出典。 */
   source?: string;
 };
 
@@ -27,8 +39,10 @@ export const ChartFrame = ({
   size = "measure",
   legend = [],
   source,
+  class: className,
+  ...attributes
 }: ChartFrameProps) => (
-  <figure class="ply-chart-frame" data-size={size}>
+  <figure {...attributes} class={classes("ply-chart-frame", className)} data-size={size}>
     <figcaption>
       <strong>{title}</strong>
       {description && <span>{description}</span>}
@@ -48,7 +62,10 @@ export const ChartFrame = ({
     )}
     {/* 数値の表は他の開閉と同じDisclosureで畳む。表の見た目はply-tableの枠が持つ。 */}
     <Disclosure class="data" summary={tableLabel}>
-      <div class="ply-table">{table}</div>
+      {/* Tableは準備中の本文を隠すので、表示できる状態（ready）を明示する。 */}
+      <div class="ply-table" data-state="ready">
+        {table}
+      </div>
     </Disclosure>
     {source && <p class="source">出典：{source}</p>}
   </figure>

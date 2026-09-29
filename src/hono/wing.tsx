@@ -6,16 +6,24 @@ import { parseWingState } from "../internal/wing-state";
 export { wingCookieName } from "../internal/wing-state";
 
 export type WingPanel = {
+  /**
+   * パネルの名前。ハンドルの読み上げ名になり、開くと上端の見出しに出す。
+   * 広い配置で閉じている間は、ハンドルにホバーした時のツールチップで示す。
+   */
   label: string;
+  /** パネルの中身。パネルの中でスクロールする。 */
   content: Child;
+  /** ハンドルのアイコン。省略すると開閉の向きを示すアイコンを出す。 */
   icon?: IconName;
-  /** 初期状態。既定は展開。 */
+  /** 初期状態。既定は展開。savedStateやcookieに保存した状態があれば、そちらを優先する。 */
   open?: boolean;
 };
 
 export type WingProps = PropsWithChildren<
   ElementProps<"div"> & {
+    /** 作業面の先頭側（左から右へ書く言語では左）のパネル。省略するとその側を出さない。 */
     start?: WingPanel;
+    /** 作業面の末尾側（左から右へ書く言語では右）のパネル。省略するとその側を出さない。 */
     end?: WingPanel;
     /** 指定するとWingControllerが開閉状態をcookieへ保存する。サイト内で一意にする。 */
     storageKey?: string;
@@ -25,9 +33,9 @@ export type WingProps = PropsWithChildren<
 >;
 
 /**
- * summaryは作業面の縁から出る持ち手。共通Buttonの主操作のアイコンだけの形を中に置き、
- * アイコンを指定しない時だけ開閉の印を出す。押す要素はsummaryで、ボタンの見た目は読み上げない。
- * 広い配置で閉じている間は名前を画面に出さず、指を載せた時にツールチップで示す（読み上げの名前は中の文言）。
+ * summaryは作業面の縁から出るハンドル。共通Buttonの主操作のアイコンだけの形を中に置き、
+ * アイコンを指定しない時だけ開閉のアイコンを出す。押す要素はsummaryで、ボタンの見た目は読み上げない。
+ * 広い配置で閉じている間は名前を画面に出さず、ホバー時にツールチップで示す（読み上げの名前は中の文言）。
  * 開くと、ボタンと名前が上端の見出しになる。
  */
 const Panel = ({

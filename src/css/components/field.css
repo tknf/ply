@@ -26,7 +26,7 @@
       font-size: var(--ply-small);
       line-height: var(--ply-small-leading);
     }
-    /* 直す所は、欄のすぐ下に危険の色の文字とアイコンで書く。 */
+    /* 修正が必要な箇所は、欄のすぐ下に危険の色の文字とアイコンで示す。 */
     & > .error {
       display: grid;
       grid-template-columns: 1em minmax(0, 1fr);
@@ -206,8 +206,8 @@
     }
   }
   /*
-    選択肢の束はFieldと同じく、名前のラベルの下に選択肢を並べる。枠で囲まない。
-    行の間はHEYの設定の行のように、文字の高さより広めに空ける。
+    選択肢のグループはFieldと同じく、名前のラベルの下に選択肢を並べる。枠で囲まない。
+    行の間は文字の高さより広めに空ける。
   */
   .ply-choice-group {
     border: 0;
@@ -247,17 +247,15 @@
       appearance: none;
       display: grid;
       place-items: center;
-      /* 印は一行の高さと同じ大きさにし、名前の一行目と上下を揃える。 */
+      /* インジケーターは一行の高さと同じ大きさにし、名前の一行目と上下を揃える。 */
       inline-size: calc(10em / 7);
       block-size: calc(10em / 7);
       margin: 0;
       border: var(--ply-stroke-width) solid var(--ply-border);
       border-radius: var(--ply-radius-mark);
-      background: linear-gradient(
-        var(--ply-surface),
-        color-mix(in srgb, var(--ply-surface) 96%, var(--ply-ink))
-      );
-      box-shadow: var(--ply-shadow-hardware);
+      /* インジケーターの枠は浮かせず、入力欄と同じく内側へ少し沈めた四角にする。 */
+      background: var(--ply-surface);
+      box-shadow: var(--ply-shadow-input);
       color: var(--ply-surface);
       cursor: inherit;
       transition:
@@ -280,7 +278,7 @@
       &:indeterminate {
         background: var(--ply-fill-primary);
         border-color: var(--ply-link);
-        box-shadow: var(--ply-shadow-control-primary);
+        box-shadow: none;
       }
       &:checked::before,
       &:indeterminate::before {
@@ -336,22 +334,22 @@
       cursor: not-allowed;
     }
     /*
-      説明を伴う選択肢は、押す物と同じ縦の陰影と影の面。枠線は引かない。
-      選んだ面は淡い青にし、影を内側へ移して押し込んだ状態にする。
+      説明を伴う選択肢は、ActionTileと同じく浮かせない平らな淡い面。枠線は引かない。
+      ホバーすると面を少し濃くし、選んだ面は淡い青にして内側へへこませる。
     */
     &[data-kind="option"] {
       padding-block: var(--ply-space-3);
       padding-inline: var(--ply-space-4);
       border: var(--ply-stroke-width) solid transparent;
       border-radius: var(--ply-radius-field);
-      background: var(--ply-surface) var(--ply-fill-control);
-      box-shadow: var(--ply-shadow-control);
+      background: color-mix(in srgb, var(--ply-ink) 3%, var(--ply-surface));
+      box-shadow: none;
       transition:
         background-color var(--ply-duration) ease,
         box-shadow var(--ply-duration) ease;
     }
     &[data-kind="option"]:hover:not(:has(> input:disabled)) {
-      box-shadow: var(--ply-shadow-control-hover);
+      background: color-mix(in srgb, var(--ply-ink) 5%, var(--ply-surface));
     }
     &[data-kind="option"]:has(> input:checked) {
       background: var(--ply-info-soft);
@@ -383,7 +381,7 @@
     transition:
       border-color var(--ply-duration) ease,
       box-shadow var(--ply-duration) ease;
-    /* HEYの欄と同じく、青い縁の外に淡い青の輪を広げる。 */
+    /* 青い縁の外に淡い青の輪を広げる。 */
     &:focus-visible {
       outline: 0.125rem solid transparent;
       outline-offset: 0;

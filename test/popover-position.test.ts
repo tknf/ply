@@ -6,7 +6,7 @@ const geometry = () => ({
   viewport: { width: 1432, height: 887, offsetLeft: 0, offsetTop: 0 },
 });
 
-test("指摘画像のようにボタンが画面内にあるのに左上へ出た配置を拒否する", () => {
+test("ボタンが画面内にあるのに左上へ出た配置を拒否する", () => {
   const { anchor, viewport } = geometry();
   expect(isPopoverAnchored(anchor, { left: 0, right: 352, top: 0, bottom: 155 }, viewport)).toBe(
     false,

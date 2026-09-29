@@ -99,10 +99,10 @@ test("FilterBarの各項目は共通のActionLinkを使う", async () => {
   }
 });
 
-test("予定の事例はURLの月のカレンダーと、その月の表示形式を現在地として返す", async () => {
+test("予定の画面はURLの月のカレンダーと、その月の表示形式を現在地として返す", async () => {
   for (const [path, month] of [
-    ["/examples/schedule/august", 8],
-    ["/examples/schedule", 9],
+    ["/apps/schedule?month=8", 8],
+    ["/apps/schedule", 9],
   ] as const) {
     const response = await app.request(`http://localhost${path}`);
     expect(response.status).toBe(200);
@@ -111,7 +111,7 @@ test("予定の事例はURLの月のカレンダーと、その月の表示形�
     expect(result).toContain(`aria-label="2026年${month}月の日付グリッド"`);
     expect(result).toMatch(
       new RegExp(
-        `href="/examples/schedule\\?year=2026&amp;month=${month}&amp;view=month&amp;week=\\d+" aria-current="page"`,
+        `href="/apps/schedule\\?year=2026&amp;month=${month}&amp;view=month&amp;week=\\d+" aria-current="page"`,
       ),
     );
   }
@@ -268,6 +268,7 @@ test("同日の期間はサーバーが指定した種別を保持する", async
   expect(result).toContain('data-date-picker-mode-value="range"');
 });
 
+// 全ページを描き、コンポーネントのページは型の解析も行うので、既定の5秒では足りない。
 test("カタログの全経路を生成でき内部routeへ到達できる", async () => {
   const generatedRoutes = new Set(paths);
   const unresolved = new Set<string>();
@@ -284,14 +285,14 @@ test("カタログの全経路を生成でき内部routeへ到達できる", asy
     }
   }
   expect([...unresolved]).toEqual([]);
-});
+}, 30_000);
 
 test("Toolbarの使用例は標準フォーム操作を持ち表示と掲載コードでIDを重複させない", async () => {
   const response = await app.request("http://localhost/components/toolbar");
   const result = await response.text();
   const ids = [...result.matchAll(/(?<![-\w])id="([^"]+)"/g)].map((match) => match[1]);
   expect(new Set(ids).size).toBe(ids.length);
-  expect(result).toContain('action="/search" method="get"');
+  expect(result).toContain('action="/apps/search" method="get"');
   for (const prefix of ["hono-toolbar"]) {
     expect(result).toContain(`id="${prefix}-query"`);
     expect(result).toContain(`aria-describedby="${prefix}-help"`);

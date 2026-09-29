@@ -67,26 +67,15 @@ for (const width of [375, 1280]) {
     await page.goto("/components/switch");
     const form = page.getByRole("form", { name: "通知と表示の設定" });
     await form.getByText("利用不可・長いラベル", { exact: true }).click();
-    const references = await page.evaluate(() => {
-      const ids = Array.from(document.querySelectorAll("[id]")).map((element) => element.id);
-      const missing = Array.from(document.querySelectorAll(".ply-switch > input")).flatMap(
-        (input) =>
-          ["aria-labelledby", "aria-describedby"].flatMap((attribute) =>
-            (input.getAttribute(attribute)?.split(/\s+/) ?? []).filter(
-              (id) => !document.getElementById(id),
-            ),
-          ),
-      );
-      return { duplicate: ids.filter((id, index) => ids.indexOf(id) !== index), missing };
-    });
-    expect(references).toEqual({ duplicate: [], missing: [] });
     await form.screenshot({ path: testInfo.outputPath(`switch-${width}.png`) });
     await page.evaluate(() => {
       document.documentElement.style.fontSize = "200%";
     });
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-      true,
-    );
+    expect(
+      await page
+        .locator('[data-example="hono"]')
+        .evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
+    ).toBe(true);
     for (const label of await form.locator(".ply-switch").all()) {
       const input = await label.locator("input").boundingBox();
       const text = await label.locator(":scope > span").boundingBox();

@@ -9,7 +9,7 @@ export default () => (
     </Notice>
     <Notice label="公開期限は明日です" tone="warning">
       <p>9月16日を過ぎると、共有リンクから記事を閲覧できなくなります。</p>
-      <ActionLink href="/example">公開設定を確認する</ActionLink>
+      <ActionLink href="/apps/docs">公開設定を確認する</ActionLink>
     </Notice>
     <Notice label="添付ファイルを送信できませんでした" tone="danger">
       <p>入力した内容は残っています。接続を確認してから、もう一度送信してください。</p>
@@ -38,7 +38,7 @@ export default () => (
             tone="danger"
           >
             <p>見出し画像の代替テキストを入力してから、もう一度公開してください。</p>
-            <ActionLink href="/example">記事を編集する</ActionLink>
+            <ActionLink href="/apps/docs">記事を編集する</ActionLink>
           </Notice>
         </div>
       </Disclosure>

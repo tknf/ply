@@ -86,7 +86,7 @@
   }
   .ply-date-picker > .panel {
     position: fixed;
-    /* 出入りの動きはoverlay.cssの共通の定義。欄の下の開始側の角から膨らむ。 */
+    /* 開閉のアニメーションはoverlay.cssの共通の定義。欄の下の先頭側の角から膨らむ。 */
     transform-origin: top left;
     inset-block: 0 auto;
     inset-inline: 0 auto;
@@ -298,9 +298,9 @@
     border-radius: var(--ply-radius-control);
   }
 
+  /* 下の操作（クリアなど）は線で区切らず、カレンダーとの間の余白だけで分ける。 */
   .ply-date-picker > .panel > .actions {
     display: grid;
-    border-block-start: var(--ply-stroke-width) solid var(--ply-border);
     padding-block-start: var(--ply-space-1);
 
     gap: var(--ply-space-2);

@@ -1,6 +1,20 @@
 import { expect, test } from "vite-plus/test";
 import { html } from "hono/html";
-import { Calendar, Card, DataList, ErrorSummary, FileItem, Icon } from "../src/hono";
+import {
+  ActionTile,
+  Calendar,
+  Card,
+  DataList,
+  ErrorSummary,
+  FileItem,
+  Icon,
+  Keycap,
+  LayerCard,
+  Prompt,
+  Reactions,
+  Toast,
+  ToastStack,
+} from "../src/hono";
 
 const makeDay = () => ({
   day: 1,
@@ -59,4 +73,114 @@ test("共有Iconへ局所の役割名を付けても装飾としての属性を�
   expect(icon).toContain('class="ply-icon icon"');
   expect(icon).toContain('aria-hidden="true"');
   expect(icon).toContain('focusable="false"');
+});
+
+test("LayerCardは見出しを層に置き中身をカードに入れ操作がない時は空の領域を出さない", async () => {
+  const markup = String(await html`${<LayerCard title="今週の予約">予約はありません</LayerCard>}`);
+  expect(markup).toContain('<header class="heading"><h3 class="title">今週の予約</h3></header>');
+  expect(markup).toContain('<div class="body">予約はありません</div>');
+  expect(markup).not.toContain('class="actions"');
+  const withActions = String(
+    await html`${<LayerCard title="今週の予約" actions={<a href="/all">すべて見る</a>} />}`,
+  );
+  expect(withActions).toContain('<div class="actions"><a href="/all">すべて見る</a></div>');
+});
+
+test("ActionTileはhrefでリンク、無ければボタンになり、使えない状態と追加のclassを保つ", async () => {
+  const link = String(
+    await html`${<ActionTile href="/mail" label="通知" icon="mail" accent="coral" current />}`,
+  );
+  expect(link).toMatch(
+    /^<a class="ply-action-tile" data-accent="coral" href="\/mail" aria-current="page">/,
+  );
+  expect(link).toContain('<span class="name">通知</span>');
+  const disabledLink = String(
+    await html`${<ActionTile href="/report" label="報告" icon="chart" disabled />}`,
+  );
+  expect(disabledLink).toMatch(
+    /^<span class="ply-action-tile" data-disabled="true" role="link" aria-disabled="true">/,
+  );
+  const button = String(
+    await html`${<ActionTile label="削除する" icon="trash" class="extra" disabled data-action="table#remove" />}`,
+  );
+  expect(button).toMatch(/^<button type="button"/);
+  expect(button).toContain('class="ply-action-tile extra"');
+  expect(button).toContain('data-action="table#remove"');
+  expect(button).toContain("disabled");
+});
+
+test("ToastStackは既定で末尾側の下に置き、スタックのcontrollerを付けてToastを並べる", async () => {
+  const markup = String(
+    await html`${(
+      <ToastStack>
+        <Toast id="saved">保存しました</Toast>
+      </ToastStack>
+    )}`,
+  );
+  expect(markup).toContain('data-controller="toast-stack"');
+  expect(markup).toContain('data-placement="end"');
+  expect(markup).toContain('id="saved"');
+  const center = String(await html`${<ToastStack placement="center" />}`);
+  expect(center).toContain('data-placement="center"');
+});
+
+const makeReaction = (content: string, by: string[], mine = false) => ({
+  content,
+  name: content === "👍" ? "いいね" : undefined,
+  by,
+  mine,
+});
+
+test("Reactionsは付けた人数を数にし、自分のリアクションを押せる状態で示し、誰もいないリアクションは出さない", async () => {
+  const markup = String(
+    await html`${(
+      <Reactions
+        label="反応"
+        items={[
+          makeReaction("👍", ["田中 遥", "自分"], true),
+          makeReaction("🎉", ["佐藤 健"]),
+          makeReaction("誰もいないリアクション", []),
+        ]}
+        add={{ id: "r" }}
+      />
+    )}`,
+  );
+  expect(markup).toContain('aria-pressed="true"');
+  expect(markup).toContain('aria-label="いいね：田中 遥、自分"');
+  expect(markup).toContain('<span class="count" aria-hidden="true">2</span>');
+  expect(markup).not.toContain("誰もいないリアクション");
+  expect(markup).toContain('aria-label="リアクションを追加"');
+  expect(markup).toContain('data-controller="emoji-picker"');
+});
+
+test("Reactionsはaddが無ければ押せないリアクションにし、読み上げに付けた人を残す", async () => {
+  const markup = String(
+    await html`${<Reactions label="反応" items={[makeReaction("👍", ["田中 遥"])]} />}`,
+  );
+  expect(markup).not.toContain("<button");
+  expect(markup).toContain("いいね：田中 遥");
+});
+
+test("Keycapは小さい形と塗った面の上の形をdata属性で示す", async () => {
+  const markup = String(await html`${<Keycap keys={["⌘", "K"]} size="small" inverse />}`);
+  expect(markup).toContain('data-size="small"');
+  expect(markup).toContain('data-inverse="true"');
+  expect(markup).toContain("<kbd>⌘</kbd><kbd>K</kbd>");
+  expect(String(await html`${<Keycap keys={["Esc"]} />}`)).not.toContain("data-size");
+});
+
+test("PromptはLayerCardの層に問いを置き、ボタンの選択肢はnameとvalueを送る", async () => {
+  const markup = String(
+    await html`${(
+      <Prompt
+        question="どれに近いですか？"
+        name="kind"
+        choices={[{ value: "person", title: "人から", description: "大事なもの" }]}
+      />
+    )}`,
+  );
+  expect(markup).toContain('class="ply-layer-card ply-prompt"');
+  expect(markup).toContain('<h3 class="title">どれに近いですか？</h3>');
+  expect(markup).toContain('name="kind" value="person"');
+  expect(markup).toContain('data-pointer="true"');
 });

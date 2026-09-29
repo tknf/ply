@@ -2,13 +2,17 @@ import { Card, Badge, Button, ActionLink, Disclosure, DisclosureGroup } from "..
 export default () => (
   <div class="ply-stack">
     <div class="ply-split">
-      <Card title="仕事場の案内を更新する" href="/example" footer={<span>田中 遥 · 9月15日</span>}>
+      <Card
+        title="仕事場の案内を更新する"
+        href="/apps/docs"
+        footer={<span>田中 遥 · 9月15日</span>}
+      >
         <p>利用時間とキャンセル条件を見直します。</p>
         <Badge tone="info">確認待ち</Badge>
       </Card>
       <Card
         title="秋の読書会"
-        href="/reservation"
+        href="/apps/schedule"
         eyebrow={<span>イベント</span>}
         footer={<span>9月25日 18:00 · あと4席</span>}
       >
@@ -20,10 +24,10 @@ export default () => (
       <Disclosure summary="複数段落・内側の操作・長い見出し">
         <Card
           title="初めて利用する方に向けた仕事場の予約方法と当日の受付についてのご案内"
-          href="/example"
+          href="/apps/docs"
           footer={
             <div class="ply-cluster">
-              <ActionLink href="/example">編集する</ActionLink>
+              <ActionLink href="/apps/docs">編集する</ActionLink>
               <Button disabled>公開する</Button>
             </div>
           }
@@ -67,7 +71,7 @@ export default () => (
         <div dir="rtl" lang="ar">
           <Card
             title="نادي القراءة في الخريف"
-            href="/reservation"
+            href="/apps/schedule"
             eyebrow={<span>فعالية</span>}
             footer={<span>٢٥ سبتمبر · ٤ مقاعد متبقية</span>}
           >

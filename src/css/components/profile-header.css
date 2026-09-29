@@ -1,0 +1,83 @@
+@layer components {
+  /*
+    人物の見出し。大きなアバター・太字の大きな名前・淡い補足を中央に積み、
+    上の二つの角に所属のバッジと操作を置く。この人への設定は、名前の下の灰色のバーにまとめて並べる。
+  */
+  .ply-profile-header {
+    container: ply-profile-header / inline-size;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "badge actions"
+      "avatar avatar"
+      "name name"
+      "detail detail"
+      "preferences preferences";
+    justify-items: center;
+    row-gap: var(--ply-space-2);
+    min-inline-size: 0;
+    color: var(--ply-text);
+    text-align: center;
+    overflow-wrap: anywhere;
+    & > .badge {
+      grid-area: badge;
+      justify-self: start;
+    }
+    & > .actions {
+      grid-area: actions;
+      display: flex;
+      gap: var(--ply-space-2);
+      justify-self: end;
+    }
+    & > .avatar {
+      grid-area: avatar;
+      & > .ply-avatar {
+        inline-size: 4rem;
+        block-size: 4rem;
+        font-size: 1.5rem;
+      }
+    }
+    & > .name {
+      grid-area: name;
+      margin: 0;
+      font-size: var(--ply-title);
+      font-weight: 800;
+      line-height: 1.15;
+    }
+    & > .detail {
+      grid-area: detail;
+      margin: 0;
+      margin-block-start: calc(var(--ply-space-2) * -1);
+      color: var(--ply-muted);
+      font-size: var(--ply-label);
+    }
+    /* 設定のバー。灰色の面のピルに、アイコンと名前の操作を面を持たない形で並べる。 */
+    & > .preferences {
+      grid-area: preferences;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--ply-space-1);
+      max-inline-size: 100%;
+      margin-block-start: var(--ply-space-3);
+      padding-block: var(--ply-space-1);
+      padding-inline: var(--ply-space-2);
+      border-radius: var(--ply-radius-field);
+      background: var(--ply-background);
+      & > .ply-button,
+      & > .ply-dropdown-menu > .ply-button {
+        border-color: transparent;
+        background: transparent;
+        box-shadow: none;
+        &:hover:not(:disabled) {
+          background: var(--ply-surface);
+        }
+      }
+    }
+  }
+  @container ply-profile-header (inline-size < 20rem) {
+    .ply-profile-header > .preferences {
+      padding-inline: 0;
+    }
+  }
+}

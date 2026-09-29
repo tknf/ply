@@ -1,15 +1,33 @@
 import { Button } from "./button";
+import { LayerCard } from "./layer-card";
 import { useId } from "hono/jsx";
 import { Toast } from "./toast";
 import { classes, type ElementProps } from "./types";
 
-export type CodeToken = { content: string; color?: string };
+/** 着色の一区切り。 */
+export type CodeToken = {
+  /** 区切りの文字列。改行を含めてよい。全てのcontentをつなぐとcodeと同じになるようにする。 */
+  content: string;
+  /** 文字の色（CSSの色の値）。渡さなければ地の文字の色で書く。空白だけの区切りには色を付けない。 */
+  color?: string;
+};
 export type CodeBlockProps = ElementProps<"figure"> & {
+  /** 表示してコピーするコードの全文。改行と字下げをそのまま保ち、HTMLも文字として書く。 */
   code: string;
+  /** コードの名前（ファイル名や用途）。見出しの行と、コード領域のaria-labelにする。 */
   label: string;
+  /**
+   * 着色した区切りの並び。全てのcontentをつないだ文字列がcodeと一致する時だけ使い、
+   * 一致しなければ着色せずにcodeを書く。ハイライトは利用側で行う（Shikiの結果などを渡す）。
+   */
   tokens?: readonly CodeToken[];
+  /**
+   * 見出しの行にコピーの操作を置く。クリップボードに書き込める環境でだけ表示し、結果をToastで知らせる。
+   * 成功はrole="status"の成功の色、失敗はrole="alert"の危険の色で知らせる。
+   * ClipboardController・CodeBlockController・ToastControllerの登録が要る。
+   */
   copy?: boolean;
-  /** 行の頭に番号を振る。番号はコピーする内容に含めない。 */
+  /** 行の先頭に番号を振る。番号はコピーする内容に含めない。 */
   lineNumbers?: boolean;
   /** 淡い黄色の地で目印にする行（1から数える）。 */
   highlight?: readonly number[];
@@ -53,10 +71,11 @@ export const CodeBlock = ({
           : attributes["data-controller"]
       }
     >
-      <figcaption data-copy={copy ? "true" : undefined}>
-        <span class="label">{label}</span>
-        {copy && (
-          <>
+      {/* 名前とコピーはLayerCardの層の見出しの行に置き、コードは層の上のカードに書く。 */}
+      <LayerCard
+        title={label}
+        actions={
+          copy && (
             <Button
               size="compact"
               aria-label={`${label}をコピー`}
@@ -66,26 +85,38 @@ export const CodeBlock = ({
             >
               コピー
             </Button>
-          </>
-        )}
-      </figcaption>
-      <pre tabindex={0} role="region" aria-label={label}>
-        <code data-clipboard-target={copy ? "source" : undefined}>
-          {lines.map((line, index) => (
-            <span
-              class="line"
-              data-highlighted={highlight?.includes(index + 1) ? "true" : undefined}
-            >
-              {line.map(({ content, color }) =>
-                color && content.trim() ? <span style={{ color }}>{content}</span> : content,
-              )}
-              {index < lines.length - 1 && "\n"}
-            </span>
-          ))}
-        </code>
-      </pre>
+          )
+        }
+      >
+        <pre tabindex={0} role="region" aria-label={label}>
+          <code data-clipboard-target={copy ? "source" : undefined}>
+            {lines.map((line, index) => (
+              <span
+                class="line"
+                data-highlighted={highlight?.includes(index + 1) ? "true" : undefined}
+              >
+                {line.map(({ content, color }) =>
+                  color && content.trim() ? <span style={{ color }}>{content}</span> : content,
+                )}
+                {index < lines.length - 1 && "\n"}
+              </span>
+            ))}
+          </code>
+        </pre>
+      </LayerCard>
+      {/* 成功は控えめに読み上げ、失敗は直し方を急いで伝えるので、知らせを分けて持つ。 */}
       {copy && (
-        <Toast id={notificationId} tone="success" closeLabel="コピー結果の通知を閉じる">
+        <Toast id={`${notificationId}-done`} tone="success" closeLabel="コピー結果の通知を閉じる">
+          <span data-code-block-target="status" />
+        </Toast>
+      )}
+      {copy && (
+        <Toast
+          id={`${notificationId}-failed`}
+          tone="danger"
+          live="assertive"
+          closeLabel="コピー結果の通知を閉じる"
+        >
           <span data-code-block-target="status" />
         </Toast>
       )}

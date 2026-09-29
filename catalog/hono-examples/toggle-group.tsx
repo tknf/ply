@@ -1,4 +1,4 @@
-import { ToggleGroup } from "../../src/hono";
+import { ToggleGroup, Disclosure, DisclosureGroup } from "../../src/hono";
 
 export default () => (
   <div class="ply-stack">
@@ -20,5 +20,20 @@ export default () => (
       selected={["date", "status"]}
       multiple
     />
+    <DisclosureGroup label="並べ方の違い">
+      <Disclosure summary="縦に並べる" open>
+        <ToggleGroup
+          label="カードの段"
+          orientation="vertical"
+          items={[
+            { value: "not-now", label: "今はしない" },
+            { value: "maybe", label: "たぶん" },
+            { value: "on-hold", label: "保留" },
+            { value: "done", label: "完了" },
+          ]}
+          selected={["on-hold"]}
+        />
+      </Disclosure>
+    </DisclosureGroup>
   </div>
 );

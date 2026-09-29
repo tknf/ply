@@ -10,7 +10,7 @@ export default () => (
       <Badge tone="danger">送信失敗</Badge>
     </div>
     <p>
-      今月の予約 <Badge aria-label="検索結果0件">0件</Badge>
+      今月の予約 <Badge>0件</Badge>
     </p>
     <Badge tone="info">担当者と管理者による公開前の最終確認を待っています</Badge>
     <DisclosureGroup label="役割と状態の組み合わせ">

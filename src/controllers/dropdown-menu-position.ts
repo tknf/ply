@@ -8,7 +8,7 @@ type MenuGeometry = {
   align: "start" | "end";
 };
 
-/** 上下・左右の空きを選び、表示領域内へ収める。サブメニューは論理末端を優先する。 */
+/** 上下・左右の空きを選び、表示領域内へ収める。サブメニューは論理方向の末尾側を優先する。 */
 export const menuPosition = ({
   anchor,
   panel,
